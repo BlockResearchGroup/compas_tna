@@ -334,7 +334,7 @@ def vertical_from_zmax_xfunc(form, force, zmax=None, kmax=100, tol=1e-6, density
     from compas_tna.tna.diagrams.forcediagram import ForceDiagram
     form = FormDiagram.from_data(form)
     force = ForceDiagram.from_data(force)
-    vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, display=True)
+    vertical_from_zmax(form, force, zmax=zmax, kmax=100, tol=1e-6, density=1.0, display=True)
     return {'form': form.to_data(), 'force': force.to_data()}
 
 

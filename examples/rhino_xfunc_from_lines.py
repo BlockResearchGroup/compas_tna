@@ -5,11 +5,8 @@ from compas_tna.tna.diagrams.forcediagram import ForceDiagram
 from compas.utilities import XFunc
 from compas_rhino.helpers import network_draw
 
-
 DIR = os.path.dirname(__file__)
 TMP = os.path.join(DIR, '../temp')
-
-#horizontal_nodal = XFunc('compas_tna.tna.algorithms.horizontal.horizontal_nodal_xfunc',basedir=DIR, tmpdir=TMP)
 
 guids = rs.ObjectsByLayer('lines')
 lines = [[rs.CurveStartPoint(l), rs.CurveEndPoint(l)] for l in guids]
@@ -23,11 +20,7 @@ for fkey in form.face:
     form.set_face_attribute(fkey, 'is_unloaded', vertices[0] != vertices[-1] and len(vertices) > 4)
 
 data = XFunc('compas_tna.tna.algorithms.horizontal_nodal_xfunc',basedir=DIR, tmpdir=TMP)(form.to_data(), force.to_data(), kmax=100)
-
-form.data = data['form']
-force.data = data['force']
-
-data = XFunc('compas_tna.tna.algorithms.vertical_from_zmax_xfunc',basedir=DIR, tmpdir=TMP)(form.to_data(), force.to_data(), zmax=None, kmax=100)
+data = XFunc('compas_tna.tna.algorithms.vertical_from_zmax_xfunc',basedir=DIR, tmpdir=TMP)(data['form'], data['force'], zmax=2.0, kmax=100)
 
 form.data = data['form']
 force.data = data['force']
