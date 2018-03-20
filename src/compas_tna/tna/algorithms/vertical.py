@@ -27,6 +27,7 @@ __all__ = [
     'vertical_from_zmax',
     'vertical_from_formforce',
     'vertical_from_qind',
+    'vertical_from_zmax_xfunc',
 ]
 
 
@@ -326,6 +327,15 @@ def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=Tr
 
 def vertical_from_q():
     pass
+
+
+def vertical_from_zmax_xfunc(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, display=True):
+    from compas_tna.tna.diagrams.formdiagram import FormDiagram
+    from compas_tna.tna.diagrams.forcediagram import ForceDiagram
+    form = FormDiagram.from_data(form)
+    force = ForceDiagram.from_data(force)
+    vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, display=True)
+    return {'form': form.to_data(), 'force': force.to_data()}
 
 
 # ==============================================================================

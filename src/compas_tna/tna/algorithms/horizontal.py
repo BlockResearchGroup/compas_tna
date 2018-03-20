@@ -24,6 +24,7 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = [
     'horizontal',
     'horizontal_nodal',
+    'horizontal_nodal_xfunc',
 ]
 
 
