@@ -1,6 +1,6 @@
 from compas.datastructures import Network
-from compas.datastructures import network_find_faces
-from compas.datastructures import network_dual
+from compas.topology import network_find_faces
+from compas.topology import network_dual
 
 
 __author__    = ['Tom Van Mele', ]

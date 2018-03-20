@@ -3,7 +3,7 @@ import sys
 from numpy import array
 from numpy import float64
 
-from compas.geometry.angles import angle_smallest_vectors_2d
+from compas.geometry import angle_vectors_xy
 
 from compas.numerical.matrices import connectivity_matrix
 from compas.numerical.linalg import normrow
@@ -138,7 +138,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     # angle deviations
     # note that this does not account for flipped edges!
     # --------------------------------------------------------------------------
-    a = [angle_smallest_vectors_2d(uv[i], _uv[i]) for i in range(len(edges))]
+    a = [angle_vectors_xy(uv[i], _uv[i]) for i in range(len(edges))]
     # --------------------------------------------------------------------------
     # update form
     # --------------------------------------------------------------------------
@@ -255,7 +255,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     # angle deviations
     # note that this does not account for flipped edges!
     # --------------------------------------------------------------------------
-    a = [angle_smallest_vectors_2d(uv[i], _uv[i]) for i in range(len(edges))]
+    a = [angle_vectors_xy(uv[i], _uv[i]) for i in range(len(edges))]
     # --------------------------------------------------------------------------
     # update form
     # --------------------------------------------------------------------------

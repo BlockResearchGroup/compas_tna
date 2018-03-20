@@ -1,7 +1,7 @@
 """"""
 
-from compas.datastructures import Network
-from compas.datastructures.network.mixins.facemixin import FaceMixin
+from compas.datastructures import FaceNetwork
+# from compas.datastructures.network.mixins.facemixin import FaceMixin
 from compas.utilities import geometric_key
 
 
@@ -11,7 +11,7 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-class FormDiagram(FaceMixin, Network):
+class FormDiagram(FaceNetwork):
     """"""
 
     def __init__(self):
@@ -174,7 +174,7 @@ class FormDiagram(FaceMixin, Network):
 # ==============================================================================
 
 if __name__ == '__main__':
-    
+
     import compas
 
     form = FormDiagram.from_obj(compas.get_data('lines.obj'))
