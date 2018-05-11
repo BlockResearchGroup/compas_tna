@@ -1,7 +1,8 @@
-""""""
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
 from compas.datastructures import FaceNetwork
-# from compas.datastructures.network.mixins.facemixin import FaceMixin
 from compas.utilities import geometric_key
 
 
@@ -9,6 +10,9 @@ __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2014 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
+
+
+__all__ = []
 
 
 class FormDiagram(FaceNetwork):
@@ -176,5 +180,13 @@ class FormDiagram(FaceNetwork):
 if __name__ == '__main__':
 
     import compas
+    from compas.topology import network_find_faces
 
-    form = FormDiagram.from_obj(compas.get_data('lines.obj'))
+    form = FormDiagram.from_obj(compas.get('open_edges.obj'))
+
+    network_find_faces(form, form.breakpoints())
+
+    form.delete_face(0)
+
+    print(form.faces_on_boundary())
+

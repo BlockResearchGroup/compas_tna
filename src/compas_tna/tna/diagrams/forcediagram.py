@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from compas.datastructures import Network
 from compas.topology import network_find_faces
 from compas.topology import network_dual
@@ -79,7 +83,7 @@ if __name__ == '__main__':
 
     from compas_tna.tna.diagrams.formdiagram import FormDiagram
 
-    form  = FormDiagram.from_obj(compas.get_data('lines.obj'))
+    form  = FormDiagram.from_obj(compas.get('lines.obj'))
     force = ForceDiagram.from_formdiagram(form)
 
     # print force.to_data()
