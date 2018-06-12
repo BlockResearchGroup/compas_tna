@@ -7,7 +7,7 @@ from compas_tna.tna.algorithms.horizontal import horizontal_nodal
 from compas_ags.viewers import Viewer
 
 
-form = FormDiagram.from_obj(compas.get_data('butt_model.obj'))
+form = FormDiagram.from_obj(compas.get('butt_model.obj'))
 form.identify_anchors(anchor_degree=1)
 
 force = ForceDiagram.from_formdiagram(form)
