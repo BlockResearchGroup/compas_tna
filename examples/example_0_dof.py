@@ -3,9 +3,9 @@ import compas
 from compas_tna.tna.diagrams.formdiagram import FormDiagram
 from compas_ags.ags.graphstatics import identify_dof
 
-from compas.visualization.plotters.networkplotter import NetworkPlotter
+from compas.plotters import NetworkPlotter
 
-formdiagram = FormDiagram.from_obj(compas.get_data('lines.obj'))
+formdiagram = FormDiagram.from_obj(compas.get('lines.obj'))
 formdiagram.identify_anchors(anchor_degree=1)
 
 k, m, ind = identify_dof(formdiagram)
