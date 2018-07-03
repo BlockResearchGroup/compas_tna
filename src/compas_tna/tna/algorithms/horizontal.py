@@ -25,6 +25,7 @@ __all__ = [
     'horizontal',
     'horizontal_nodal',
     'horizontal_nodal_xfunc',
+    'horizontal_xfunc',
 ]
 
 
@@ -166,6 +167,15 @@ def horizontal_nodal_xfunc(form, force, alpha=100, kmax=100, display=True):
     form = FormDiagram.from_data(form)
     force = ForceDiagram.from_data(force)
     horizontal_nodal(form, force, alpha=alpha, kmax=kmax, display=display)
+    return {'form': form.to_data(), 'force': force.to_data()}
+
+
+def horizontal_xfunc(form, force, alpha=100, kmax=100, display=True):
+    from compas_tna.tna.diagrams.formdiagram import FormDiagram
+    from compas_tna.tna.diagrams.forcediagram import ForceDiagram
+    form = FormDiagram.from_data(form)
+    force = ForceDiagram.from_data(force)
+    horizontal(form, force, alpha=alpha, kmax=kmax, display=display)
     return {'form': form.to_data(), 'force': force.to_data()}
 
 
