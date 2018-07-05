@@ -1,0 +1,563 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>compas_tna.diagrams.ForceDiagram &#8212; compas_tna 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="compas_tna.equilibrium" href="../compas_tna.equilibrium.html" />
+    <link rel="prev" title="compas_tna.diagrams.FormDiagram" href="compas_tna.diagrams.FormDiagram.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../compas_tna.equilibrium.html" title="compas_tna.equilibrium"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="compas_tna.diagrams.FormDiagram.html" title="compas_tna.diagrams.FormDiagram"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">compas_tna 0.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../api.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../compas_tna.html" >compas_tna</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../compas_tna.diagrams.html" accesskey="U">compas_tna.diagrams</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="compas-tna-diagrams-forcediagram">
+<h1>compas_tna.diagrams.ForceDiagram</h1>
+<dl class="class">
+<dt id="compas_tna.diagrams.ForceDiagram">
+<em class="property">class </em><code class="descclassname">compas_tna.diagrams.</code><code class="descname">ForceDiagram</code><a class="reference internal" href="../../_modules/compas_tna/diagrams/forcediagram.html#ForceDiagram"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">compas.datastructures.mesh.mesh.Mesh</span></code></p>
+<dl class="method">
+<dt id="compas_tna.diagrams.ForceDiagram.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_tna/diagrams/forcediagram.html#ForceDiagram.__init__"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#compas_tna.diagrams.ForceDiagram.__init__" title="compas_tna.diagrams.ForceDiagram.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">add_face</span></code>(vertices[, fkey, attr_dict])</p></td>
+<td><p>Add a face to the mesh object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">add_vertex</span></code>([key, attr_dict])</p></td>
+<td><p>Add a vertex to the mesh object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code>()</p></td>
+<td><p>Clear all the mesh data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">clear_facedict</span></code>()</p></td>
+<td><p>Clear only the faces.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">clear_halfedgedict</span></code>()</p></td>
+<td><p>Clear only the half edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">clear_vertexdict</span></code>()</p></td>
+<td><p>Clear only the vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">collapse_edge</span></code>(u, v[, t, allow_boundary, fixed])</p></td>
+<td><p>Collapse an edge to its first or second vertex, or to an intermediate point.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">collapse_edge_tri</span></code>(u, v[, t, allow_boundary, …])</p></td>
+<td><p>Collapse an edge to its first or second vertex, or to an intermediate point.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">copy</span></code>()</p></td>
+<td><p>Make an independent copy of the mesh object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">cull_edges</span></code>()</p></td>
+<td><p>Remove all unused edges from the mesh object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">cull_vertices</span></code>()</p></td>
+<td><p>Remove all unused vertices from the mesh object.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">delete_face</span></code>(fkey)</p></td>
+<td><p>Delete a face from the mesh object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">delete_vertex</span></code>(key)</p></td>
+<td><p>Delete a vertex from the mesh and everything that is attached to it.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">dump</span></code>(filepath)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">dumps</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edge_coordinates</span></code>(u, v[, axes])</p></td>
+<td><p>Return the coordinates of the start and end point of an edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edge_direction</span></code>(u, v)</p></td>
+<td><p>Return the direction vector of an edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edge_faces</span></code>(u, v)</p></td>
+<td><p>Find the two faces adjacent to an edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edge_label_name</span></code>(u, v)</p></td>
+<td><p>Get the name of an edge label.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edge_length</span></code>(u, v)</p></td>
+<td><p>Return the length of an edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edge_midpoint</span></code>(u, v)</p></td>
+<td><p>Return the location of the midpoint of an edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edge_name</span></code>(u, v)</p></td>
+<td><p>Get the name of an edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edge_point</span></code>(u, v[, t])</p></td>
+<td><p>Return the location of a point along an edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edge_vector</span></code>(u, v)</p></td>
+<td><p>Return the vector of an edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edges</span></code>([data])</p></td>
+<td><p>Iterate over the edges of the mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edges_on_boundary</span></code>()</p></td>
+<td><p>Find the edges on the boundary.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">edges_where</span></code>(conditions)</p></td>
+<td><p>Get edges for which a certain condition or set of conditions is true.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_adjacency_halfedge</span></code>(f1, f2)</p></td>
+<td><p>Find the half-edge over which tow faces are adjacent.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_area</span></code>(fkey)</p></td>
+<td><p>Compute the area of a face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_center</span></code>(fkey)</p></td>
+<td><p>Compute the location of the center of mass of a face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_centroid</span></code>(fkey)</p></td>
+<td><p>Compute the location of the centroid of a face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_coordinates</span></code>(fkey[, axes])</p></td>
+<td><p>Compute the coordinates of the vertices of a face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_corners</span></code>(fkey)</p></td>
+<td><p>Return triplets of face vertices forming the corners of the face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_degree</span></code>(fkey)</p></td>
+<td><p>Count the neighbours of a face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_flatness</span></code>(fkey)</p></td>
+<td><p>Compute the flatness of the mesh face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_halfedges</span></code>(fkey)</p></td>
+<td><p>The halfedges of a face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_label_name</span></code>(fkey)</p></td>
+<td><p>Get the name of a face label.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_max_degree</span></code>()</p></td>
+<td><p>Compute the maximum degree of all faces.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_min_degree</span></code>()</p></td>
+<td><p>Compute the minimum degree of all faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_name</span></code>(fkey)</p></td>
+<td><p>Get the name of a face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_neighbours</span></code>(fkey)</p></td>
+<td><p>Return the neighbours of a face across its edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_normal</span></code>(fkey[, unitized])</p></td>
+<td><p>Compute the normal of a face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_vertex_ancestor</span></code>(fkey, key)</p></td>
+<td><p>Return the vertex before the specified vertex in a specific face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_vertex_descendant</span></code>(fkey, key)</p></td>
+<td><p>Return the vertex after the specified vertex in a specific face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">face_vertices</span></code>(fkey)</p></td>
+<td><p>The vertices of a face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">faces</span></code>([data])</p></td>
+<td><p>Iterate over the faces of the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">faces_on_boundary</span></code>()</p></td>
+<td><p>Find the faces on the boundary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">fixed</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">from_data</span></code>(data)</p></td>
+<td><p>Construct a datastructure from structured data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">from_formdiagram</span></code>(formdiagram)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">from_json</span></code>(filepath)</p></td>
+<td><p>Construct a datastructure from structured data contained in a json file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">from_lines</span></code>(lines[, delete_boundary_face, …])</p></td>
+<td><p>Construct a mesh object from a list of lines described by start and end point coordinates.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">from_obj</span></code>(filepath)</p></td>
+<td><p>Construct a mesh object from the data described in an OBJ file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">from_ply</span></code>(filepath)</p></td>
+<td><p>Construct a mesh object from the data described in a PLY file.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">from_points</span></code>(points[, boundary, holes])</p></td>
+<td><p>Construct a mesh from a delaunay triangulation of a set of points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">from_polygons</span></code>(polygons[, precision])</p></td>
+<td><p>Construct a mesh from a series of polygons.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">from_polyhedron</span></code>(f)</p></td>
+<td><p>Construct a mesh from a platonic solid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">from_stl</span></code>(filepath)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">from_vertices_and_faces</span></code>(vertices, faces)</p></td>
+<td><p>Construct a mesh object from a list of vertices and faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_any_edge</span></code>()</p></td>
+<td><p>Get the identifier of a random edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_any_face</span></code>()</p></td>
+<td><p>Get the identifier of a random face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_any_face_vertex</span></code>(fkey)</p></td>
+<td><p>Get the identifier of a random vertex of a specific face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_any_vertex</span></code>()</p></td>
+<td><p>Get the identifier of a random vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_any_vertices</span></code>(n[, exclude_leaves])</p></td>
+<td><p>Get a list of identifiers of a random set of n vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_edge_attribute</span></code>(key, name[, value])</p></td>
+<td><p>Get the value of a named attribute of one edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_edge_attributes</span></code>(key, names[, values])</p></td>
+<td><p>Get the value of a named attribute of one edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_edges_attribute</span></code>(name[, value, keys])</p></td>
+<td><p>Get the value of a named attribute of multiple edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_edges_attributes</span></code>(names[, values, keys])</p></td>
+<td><p>Get the values of multiple named attribute of multiple edges.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_face_attribute</span></code>(fkey, name[, value])</p></td>
+<td><p>Get the value of a named attribute of one face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_face_attributes</span></code>(fkey, names[, values])</p></td>
+<td><p>Get the value of a named attribute of one face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_faces_attribute</span></code>(name[, value, fkeys])</p></td>
+<td><p>Get the value of a named attribute of multiple faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_faces_attributes</span></code>(names[, values, fkeys])</p></td>
+<td><p>Get the values of multiple named attribute of multiple faces.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_vertex_attribute</span></code>(key, name[, value])</p></td>
+<td><p>Get the value of a named attribute of one vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_vertex_attributes</span></code>(key, names[, values])</p></td>
+<td><p>Get the value of a named attribute of one vertex.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_vertices_attribute</span></code>(name[, value, keys])</p></td>
+<td><p>Get the value of a named attribute of multiple vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">get_vertices_attributes</span></code>(names[, values, keys])</p></td>
+<td><p>Get the values of multiple named attribute of multiple vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">gkey_key</span></code>([precision])</p></td>
+<td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">has_edge</span></code>(u, v[, directed])</p></td>
+<td><p>Verify that the mesh contains a specific edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">has_vertex</span></code>(key)</p></td>
+<td><p>Verify that a vertex is in the mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">index_key</span></code>()</p></td>
+<td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">index_uv</span></code>()</p></td>
+<td><p>Returns a dictionary that maps edges in a list to the corresponding vertex key pairs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">insert_vertex</span></code>(fkey[, key, xyz, return_fkeys])</p></td>
+<td><p>Insert a vertex in the specified face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">is_edge_on_boundary</span></code>(u, v)</p></td>
+<td><p>Verify that an edge is on the boundary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">is_manifold</span></code>()</p></td>
+<td><p>Verify that the mesh is manifold.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">is_orientable</span></code>()</p></td>
+<td><p>Verify that the mesh is orientable.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">is_quadmesh</span></code>()</p></td>
+<td><p>Verify that the mesh consists of only quads.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">is_regular</span></code>()</p></td>
+<td><p>Verify that the mesh is regular.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">is_trimesh</span></code>()</p></td>
+<td><p>Verify that the mesh consists of only triangles.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">is_valid</span></code>()</p></td>
+<td><p>Verify that the mesh is valid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">is_vertex_connected</span></code>(key)</p></td>
+<td><p>Verify that a vertex is connected.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">is_vertex_on_boundary</span></code>(key)</p></td>
+<td><p>Verify that a vertex is on a boundary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">key_gkey</span></code>([precision])</p></td>
+<td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding <em>geometric key</em> up to a certain precision.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">key_index</span></code>()</p></td>
+<td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding index in a vertex list or array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">load</span></code>(filepath)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">loads</span></code>(s)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">number_of_edges</span></code>()</p></td>
+<td><p>Count the number of edges in the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">number_of_faces</span></code>()</p></td>
+<td><p>Count the number of faces in the mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">number_of_halfedges</span></code>()</p></td>
+<td><p>Count the number of halfedges in the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">number_of_vertices</span></code>()</p></td>
+<td><p>Count the number of vertices in the mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">ordered_edges</span></code>(form)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_edge_attribute</span></code>(key, name, value)</p></td>
+<td><p>Set one attribute of one edge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_edge_attributes</span></code>(key[, attr_dict])</p></td>
+<td><p>Set multiple attributes of one edge.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_edges_attribute</span></code>(name, value[, keys])</p></td>
+<td><p>Set one attribute of multiple edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_edges_attributes</span></code>([keys, attr_dict])</p></td>
+<td><p>Set multiple attributes of multiple edges.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_face_attribute</span></code>(fkey, name, value)</p></td>
+<td><p>Set one attribute of one face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_face_attributes</span></code>(fkey[, attr_dict])</p></td>
+<td><p>Set multiple attributes of one face.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_faces_attribute</span></code>(name, value[, fkeys])</p></td>
+<td><p>Set one attribute of multiple faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_faces_attributes</span></code>([fkeys, attr_dict])</p></td>
+<td><p>Set multiple attributes of multiple faces.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_vertex_attribute</span></code>(key, name, value)</p></td>
+<td><p>Set one attribute of one vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_vertex_attributes</span></code>(key[, attr_dict])</p></td>
+<td><p>Set multiple attributes of one vertex.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_vertices_attribute</span></code>(name, value[, keys])</p></td>
+<td><p>Set one attribute of multiple vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">set_vertices_attributes</span></code>([keys, attr_dict])</p></td>
+<td><p>Set multiple attributes of multiple vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">split_edge</span></code>(mesh, u, v[, t, allow_boundary])</p></td>
+<td><p>Split and edge by inserting a vertex along its length.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">split_edge_tri</span></code>(mesh, u, v[, t, allow_boundary])</p></td>
+<td><p>Split an edge of a triangle mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">split_face</span></code>(mesh, fkey, u, v)</p></td>
+<td><p>Split a face by inserting an edge between two specified vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">summary</span></code>()</p></td>
+<td><p>Print a summary of the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">swap_edge_tri</span></code>(u, v[, allow_boundary])</p></td>
+<td><p>Replace an edge of the mesh by an edge connecting the opposite vertices of the adjacent faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">to_data</span></code>()</p></td>
+<td><p>Returns a dictionary of structured data representing the data structure.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">to_json</span></code>([filepath])</p></td>
+<td><p>Serialise the structured data representing the data structure to json.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">to_obj</span></code>(filepath)</p></td>
+<td><p>Write the mesh to an OBJ file.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">to_vertices_and_faces</span></code>()</p></td>
+<td><p>Return the vertices and faces of a mesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">unweld_vertices</span></code>(mesh, fkey[, where])</p></td>
+<td><p>Unweld a face of the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">update_default_edge_attributes</span></code>([attr_dict])</p></td>
+<td><p>Update the default edge attributes (this also affects already existing edges).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">update_default_face_attributes</span></code>([attr_dict])</p></td>
+<td><p>Update the default face attributes (this also affects already existing faces).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">update_default_vertex_attributes</span></code>([attr_dict])</p></td>
+<td><p>Update the default vertex attributes (this also affects already existing vertices).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">uv_index</span></code>([form])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_area</span></code>(key)</p></td>
+<td><p>Compute the tributary area of a vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_coordinates</span></code>(key[, axes])</p></td>
+<td><p>Return the coordinates of a vertex.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_degree</span></code>(key)</p></td>
+<td><p>Count the neighbours of a vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_faces</span></code>(key[, ordered, include_none])</p></td>
+<td><p>The faces connected to a vertex.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_label_name</span></code>(key)</p></td>
+<td><p>Get the name of a vertex label.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_laplacian</span></code>(key)</p></td>
+<td><p>Compute the vector from a vertex to the centroid of its neighbours.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_max_degree</span></code>()</p></td>
+<td><p>Compute the maximum degree of all vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_min_degree</span></code>()</p></td>
+<td><p>Compute the minimum degree of all vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_name</span></code>(key)</p></td>
+<td><p>Get the name of a vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_neighbourhood</span></code>(key[, ring])</p></td>
+<td><p>Return the vertices in the neighbourhood of a vertex.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_neighbourhood_centroid</span></code>(key)</p></td>
+<td><p>Compute the centroid of the neighbours of a vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_neighbours</span></code>(key[, ordered])</p></td>
+<td><p>Return the neighbours of a vertex.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertex_normal</span></code>(key)</p></td>
+<td><p>Return the normal vector at the vertex as the weighted average of the normals of the neighbouring faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertices</span></code>([data])</p></td>
+<td><p>Iterate over the vertices of the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertices_on_boundary</span></code>([ordered])</p></td>
+<td><p>Find the vertices on the boundary.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal"><span class="pre">vertices_where</span></code>(conditions[, data])</p></td>
+<td><p>Get vertices for which a certain condition or set of conditions is true.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="compas_tna.diagrams.FormDiagram.html"
+                        title="previous chapter">compas_tna.diagrams.FormDiagram</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../compas_tna.equilibrium.html"
+                        title="next chapter">compas_tna.equilibrium</a></p>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../compas_tna.equilibrium.html" title="compas_tna.equilibrium"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="compas_tna.diagrams.FormDiagram.html" title="compas_tna.diagrams.FormDiagram"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">compas_tna 0.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../api.html" >API</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="../compas_tna.html" >compas_tna</a> &#187;</li>
+          <li class="nav-item nav-item-3"><a href="../compas_tna.diagrams.html" >compas_tna.diagrams</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Block Research Group - ETH Zurich.
+      Last updated on Jul 05, 2018.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

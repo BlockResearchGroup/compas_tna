@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>compas_tna.diagrams.formdiagram &#8212; compas_tna 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  false,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">compas_tna 0.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for compas_tna.diagrams.formdiagram</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">geometric_key</span>
+
+
+<span class="n">__author__</span>    <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Tom Van Mele&#39;</span><span class="p">,</span> <span class="p">]</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s1">&#39;Copyright 2014 - Block Research Group, ETH Zurich&#39;</span>
+<span class="n">__license__</span>   <span class="o">=</span> <span class="s1">&#39;MIT License&#39;</span>
+<span class="n">__email__</span>     <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;FormDiagram&#39;</span><span class="p">,</span> <span class="p">]</span>
+
+
+<div class="viewcode-block" id="FormDiagram"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.html#compas_tna.diagrams.FormDiagram">[docs]</a><span class="k">class</span> <span class="nc">FormDiagram</span><span class="p">(</span><span class="n">Mesh</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FormDiagram.__init__"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.html#compas_tna.diagrams.FormDiagram.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FormDiagram</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s1">&#39;x&#39;</span>            <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;y&#39;</span>            <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;z&#39;</span>            <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;px&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;py&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;pz&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;sw&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;t&#39;</span>            <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">&#39;cx&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;cy&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;cz&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;zpre&#39;</span>         <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;z-&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;z+&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;weight&#39;</span>       <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">&#39;is_anchor&#39;</span>    <span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;is_fixed&#39;</span>     <span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;is_prescribed&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;rx&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;ry&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;rz&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s1">&#39;q&#39;</span>      <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">&#39;l&#39;</span>      <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;f&#39;</span>      <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;qmin&#39;</span>   <span class="p">:</span> <span class="mf">1e-7</span><span class="p">,</span>
+            <span class="s1">&#39;qmax&#39;</span>   <span class="p">:</span> <span class="mf">1e+7</span><span class="p">,</span>
+            <span class="s1">&#39;lmin&#39;</span>   <span class="p">:</span> <span class="mf">1e-7</span><span class="p">,</span>
+            <span class="s1">&#39;lmax&#39;</span>   <span class="p">:</span> <span class="mf">1e+7</span><span class="p">,</span>
+            <span class="s1">&#39;fmin&#39;</span>   <span class="p">:</span> <span class="mf">1e-7</span><span class="p">,</span>
+            <span class="s1">&#39;fmax&#39;</span>   <span class="p">:</span> <span class="mf">1e+7</span><span class="p">,</span>
+            <span class="s1">&#39;a&#39;</span>      <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;is_ind&#39;</span> <span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s1">&#39;is_unloaded&#39;</span><span class="p">:</span> <span class="kc">False</span>
+        <span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s1">&#39;name&#39;</span>                       <span class="p">:</span> <span class="s1">&#39;FormDiagram&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;anchor_degree&#39;</span>              <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;autofaces&#39;</span>                  <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;color.vertex&#39;</span>               <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;color.edge&#39;</span>                 <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;color.face&#39;</span>                 <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;color.vertex:is_anchor&#39;</span>     <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;color.vertex:is_fixed&#39;</span>      <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;color.vertex:is_supported&#39;</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;color.vertex:is_prescribed&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;color.face:is_unloaded&#39;</span>     <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+        <span class="p">})</span></div>
+
+    <span class="k">def</span> <span class="nf">uv_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)</span>
+<span class="sd">        to the corresponding edge index in a list or array of edges.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary of uv-index pairs.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        * :meth:`index_uv`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}))}</span>
+
+    <span class="k">def</span> <span class="nf">index_uv</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps edges in a list to the corresponding</span>
+<span class="sd">        vertex key pairs.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict</span>
+<span class="sd">            A dictionary of index-uv pairs.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        * :meth:`uv_index`</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})))</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># edges</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># def branches</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># faces</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Convenience functions for retrieving the attributes of the formdiagram.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="k">def</span> <span class="nf">anchors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">]]</span>
+
+    <span class="k">def</span> <span class="nf">fixed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">]]</span></div>
+        <span class="c1"># return [key for key, attr in self.vertices(True) if attr[&#39;is_fixed&#39;]]</span>
+
+    <span class="c1"># def prescribed(self):</span>
+    <span class="c1">#     return [key for key, attr in self.vertices(True) if attr[&#39;is_prescribed&#39;]]</span>
+
+    <span class="c1"># # this implies the vertices have an attribute &#39;is_constrained&#39;</span>
+    <span class="c1"># def constrained(self):</span>
+    <span class="c1">#     return [key for key, attr in self.vertices(True) if attr[&#39;cx&#39;] or attr[&#39;cy&#39;] or attr[&#39;cz&#39;]]</span>
+
+    <span class="c1"># def independent_edges(self):</span>
+    <span class="c1">#     return [(u, v) for u, v, attr in self.edges(True) if attr[&#39;is_ind&#39;]]</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># Identify features of the formdiagram based on geometrical inputs.</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+
+    <span class="c1"># def identify_anchors(self, points=None, anchor_degree=None):</span>
+    <span class="c1">#     if not anchor_degree:</span>
+    <span class="c1">#         anchor_degree = self.attributes[&#39;anchor_degree&#39;]</span>
+    <span class="c1">#     for key, attr in self.vertices(True):</span>
+    <span class="c1">#         attr[&#39;is_anchor&#39;] = self.vertex_degree(key) &lt;= anchor_degree</span>
+    <span class="c1">#     if points:</span>
+    <span class="c1">#         xyz_key = {}</span>
+    <span class="c1">#         for key in self.vertices():</span>
+    <span class="c1">#             gkey = geometric_key(self.vertex_coordinates(key))</span>
+    <span class="c1">#             xyz_key[gkey] = key</span>
+    <span class="c1">#         for xyz in points:</span>
+    <span class="c1">#             gkey = geometric_key(xyz)</span>
+    <span class="c1">#             if gkey in xyz_key:</span>
+    <span class="c1">#                 key = xyz_key[gkey]</span>
+    <span class="c1">#                 self.vertex[key][&#39;is_anchor&#39;] = True</span>
+
+    <span class="c1"># def identify_prescribed(self, points=None):</span>
+    <span class="c1">#     if points:</span>
+    <span class="c1">#         xyz_key = {}</span>
+    <span class="c1">#         for key in self.vertices():</span>
+    <span class="c1">#             gkey = geometric_key(self.vertex_coordinates(key))</span>
+    <span class="c1">#             xyz_key[gkey] = key</span>
+    <span class="c1">#         for xyz in points:</span>
+    <span class="c1">#             gkey = geometric_key(xyz)</span>
+    <span class="c1">#             if gkey in xyz_key:</span>
+    <span class="c1">#                 key = xyz_key[gkey]</span>
+    <span class="c1">#                 self.vertex[key][&#39;is_prescribed&#39;] = True</span>
+
+    <span class="c1"># def identify_fixed(self, points=None):</span>
+    <span class="c1">#     if points:</span>
+    <span class="c1">#         xyz_key = {}</span>
+    <span class="c1">#         for key in self.vertices():</span>
+    <span class="c1">#             gkey = geometric_key(self.vertex_coordinates(key))</span>
+    <span class="c1">#             xyz_key[gkey] = key</span>
+    <span class="c1">#         for xyz in points:</span>
+    <span class="c1">#             gkey = geometric_key(xyz)</span>
+    <span class="c1">#             if gkey in xyz_key:</span>
+    <span class="c1">#                 key = xyz_key[gkey]</span>
+    <span class="c1">#                 self.vertex[key][&#39;is_fixed&#39;] = True</span>
+
+    <span class="c1"># def identify_constraints(self, points=None):</span>
+    <span class="c1">#     if points:</span>
+    <span class="c1">#         xyz_key = {}</span>
+    <span class="c1">#         for key in self.vertices():</span>
+    <span class="c1">#             gkey = geometric_key(self.vertex_coordinates(key))</span>
+    <span class="c1">#             xyz_key[gkey] = key</span>
+    <span class="c1">#         for xyz in points:</span>
+    <span class="c1">#             gkey = geometric_key(xyz)</span>
+    <span class="c1">#             if gkey in xyz_key:</span>
+    <span class="c1">#                 key = xyz_key[gkey]</span>
+    <span class="c1">#                 self.vertex[key][&#39;cx&#39;] = 1.0</span>
+    <span class="c1">#                 self.vertex[key][&#39;cy&#39;] = 1.0</span>
+
+    <span class="c1"># def identify_loads(self):</span>
+    <span class="c1">#     pass</span>
+
+    <span class="c1"># def identify_open_edges(self):</span>
+    <span class="c1">#     pass</span>
+
+    <span class="c1"># def identify_holes(self):</span>
+    <span class="c1">#     pass</span>
+
+    <span class="c1"># def identify_creases(self):</span>
+    <span class="c1">#     pass</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Debugging</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">compas</span>
+    <span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">fd_numpy</span>
+    <span class="kn">from</span> <span class="nn">compas.plotters</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
+    <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">pairwise</span>
+
+    <span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
+
+    <span class="c1"># anchors can be identified by matching geometrical locations</span>
+    <span class="c1"># or by vertex degree</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;vertex_degree&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}):</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="c1"># unsupported edges are on the boundary</span>
+    <span class="c1"># between anchors</span>
+
+    <span class="n">boundary</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices_on_boundary</span><span class="p">(</span><span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">unsupported</span> <span class="o">=</span> <span class="p">[[]]</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">:</span>
+        <span class="n">unsupported</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">]:</span>
+            <span class="n">unsupported</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">key</span><span class="p">])</span>
+
+    <span class="n">unsupported</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">unsupported</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">del</span> <span class="n">unsupported</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">unsupported</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">vertices</span><span class="p">):</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">set_edge_attribute</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># there should be a face on the outside of an unsupported boundary</span>
+    <span class="c1"># the outside edge of the face is not a real edge</span>
+    <span class="c1"># the face is also not really part of the structure and therefore not loaded</span>
+
+    <span class="k">for</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">unsupported</span><span class="p">:</span>
+        <span class="n">fkey</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">is_unloaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">unsupported</span><span class="p">:</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">set_edge_attribute</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="s1">&#39;is_edge&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># compute horizontal equilibrium</span>
+
+    <span class="n">vertices</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">(</span><span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}))</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}))</span>
+    <span class="n">qs</span> <span class="o">=</span> <span class="p">[</span><span class="n">form</span><span class="o">.</span><span class="n">get_edge_attribute</span><span class="p">(</span><span class="n">uv</span><span class="p">,</span> <span class="s1">&#39;q&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">uv</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span>
+    <span class="n">loads</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">((</span><span class="s1">&#39;px&#39;</span><span class="p">,</span> <span class="s1">&#39;py&#39;</span><span class="p">,</span> <span class="s1">&#39;pz&#39;</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+    <span class="n">xyz</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">fd_numpy</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">qs</span><span class="p">,</span> <span class="n">loads</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">{</span><span class="n">uv</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">uv</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})})</span>
+    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../index.html">compas_tna 0.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Block Research Group - ETH Zurich.
+      Last updated on Jul 05, 2018.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
+    </div>
+  </body>
+</html>

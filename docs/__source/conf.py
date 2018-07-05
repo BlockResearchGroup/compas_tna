@@ -7,7 +7,7 @@
 
 # -- General configuration ------------------------------------------------
 
-project          = 'COMPAS'
+project          = 'compas_tna'
 copyright        = '2017, Block Research Group - ETH Zurich'
 author           = 'Tom Van Mele'
 version          = '0.1'
@@ -16,7 +16,7 @@ release          = '0.1.0'
 master_doc       = 'index'
 source_suffix    = ['.rst', ]
 templates_path   = ['_templates', ]
-exclude_patterns = ['_build', ]
+exclude_patterns = []
 
 pygments_style   = 'sphinx'
 show_authors     = True

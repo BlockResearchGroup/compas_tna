@@ -1,14 +1,4 @@
 ********************************************************************************
-compas_tna
+Tutorial
 ********************************************************************************
 
-.. toctree::
-   :maxdepth: 3
-   :titlesonly:
-
-   overview
-   background
-   tutorial
-   examples
-   api
-   citing
