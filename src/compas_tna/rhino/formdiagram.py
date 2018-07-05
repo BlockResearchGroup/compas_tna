@@ -1,28 +1,25 @@
-# -*- coding: utf-8 -*-
-# @Date         : 2016-03-21 09:50:20
-# @Author       : Tom Van Mele (vanmelet@ethz.ch)
-# @Contributors : ...
-# @Version      : $Id$
-# @Copyright    : Block Research Group
-# @License      : Apache License, Version 2.0
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+import compas_rhino
+
+from compas_tna.diagrams import FormDiagram
 
 
-from compas_rhino.datastructures.mixins.attributes import EditAttributes
-from compas_rhino.datastructures.mixins.descriptors import Descriptors
-from compas_rhino.datastructures.mixins.keys import GetKeys
-from compas_rhino.datastructures.mixins.labels import DisplayLabels
-from compas_rhino.datastructures.mixins.geometry import DisplayGeometry
-import compas_rhino.utilities.drawing as rhino
-from compas_rhino.utilities.misc import add_gui_helpers
-
-from compas_tna.diagrams.formdiagram import FormDiagram
+__author__    = ['Tom Van Mele', ]
+__copyright__ = 'Copyright 2014 - Block Research Group, ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'vanmelet@ethz.ch'
 
 
-#@rhino.add_gui_helpers((EditAttributes, GetKeys, DisplayLabels, Descriptors,DisplayGeometry ))
-class FormDiagramRhino(FormDiagram):
+__all__ = ['RhinoFormDiagram', ]
+
+
+class RhinoFormDiagram(FormDiagram):
 
     def __init__(self):
-        super(FormDiagramRhino, self).__init__()
+        super(RhinoFormDiagram, self).__init__()
         self.attributes.update({
             'layer': 'FormDiagram'
         })
@@ -52,9 +49,6 @@ class FormDiagramRhino(FormDiagram):
             })
         return lines
 
-    # def draw(self):
-    #     rhino.xdraw_points(self.points(), layer=self.layer, redraw=False, clear=True)
-    #     rhino.xdraw_lines(self.lines(), layer=self.layer)
     def draw(self,
              name=None,
              layer=None,
@@ -92,9 +86,15 @@ class FormDiagramRhino(FormDiagram):
                 'color' : ecolor.get((u, v), color),
                 'arrow' : None,
             })
-        #rhino.delete_objects(rhino.get_objects('{0}.vertex.*'.format(self.name)))
-        #rhino.delete_objects(rhino.get_objects('{0}.edge.*'.format(self.name)))
         if show_vertices:
-            rhino.xdraw_points(points, layer=self.layer, clear=clear, redraw=False)
+            compas_rhino.xdraw_points(points, layer=self.layer, clear=clear, redraw=False)
         if show_edges:
-            rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=True)
+            compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=True)
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == "__main__":
+    pass

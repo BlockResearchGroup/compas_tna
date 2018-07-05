@@ -73,10 +73,10 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     uv_i  = form.uv_index()
     fixed = set(form.anchors() + form.fixed())  # do something about this!
     fixed = [k_i[key] for key in fixed]
-    edges = [[k_i[u], k_i[v]] for u, v in form.edges()]
+    edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
     xy    = array(form.get_vertices_attributes('xy'), dtype=float64)
-    lmin  = array(form.get_edges_attribute('lmin', 1e-7), dtype=float64).reshape((-1, 1))
-    lmax  = array(form.get_edges_attribute('lmax', 1e+7), dtype=float64).reshape((-1, 1))
+    lmin  = array(form.get_edges_attribute('lmin', 1e-7, where={'is_edge': True}), dtype=float64).reshape((-1, 1))
+    lmax  = array(form.get_edges_attribute('lmax', 1e+7, where={'is_edge': True}), dtype=float64).reshape((-1, 1))
     C     = connectivity_matrix(edges, 'csr')
     Ct    = C.transpose()
     CtC   = Ct.dot(C)
@@ -150,7 +150,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
         i = k_i[key]
         attr['x'] = xy[i, 0]
         attr['y'] = xy[i, 1]
-    for u, v, attr in form.edges(True):
+    for u, v, attr in form.edges_where({'is_edge': True}):
         i = uv_i[(u, v)]
         attr['q'] = q[i, 0]
         attr['a'] = a[i]
@@ -273,7 +273,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
 
 
 # ==============================================================================
-# Debugging
+# Main
 # ==============================================================================
 
 if __name__ == '__main__':

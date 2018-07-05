@@ -1,30 +1,28 @@
-# -*- coding: utf-8 -*-
-# @Date         : 2016-03-21 09:50:20
-# @Author       : Tom Van Mele (vanmelet@ethz.ch)
-# @Contributors : ...
-# @Version      : $Id$
-# @Copyright    : 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-# @License      : 'Apache License, Version 2.0'
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
 
+import compas_rhino
+import compas_tna
 
 from compas.utilities import i2rgb
 
-from compas_rhino.datastructures.mixins import EditAttributes
-from compas_rhino.datastructures.mixins import Descriptors
-from compas_rhino.datastructures.mixins import GetKeys
-from compas_rhino.datastructures.mixins import DisplayLabels
-from compas_rhino.datastructures.mixins import DisplayForces
-
-import compas_rhino.utilities as rhino
-
-from compas_tna.thrustdiagram import ThrustDiagram
+from compas_tna.diagrams import ThrustDiagram
 
 
-@rhino.add_gui_helpers((EditAttributes, Descriptors, GetKeys, DisplayLabels, DisplayForces,))
-class ThrustDiagramRhino(ThrustDiagram):
+__author__    = ['Tom Van Mele', ]
+__copyright__ = 'Copyright 2014 - Block Research Group, ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'vanmelet@ethz.ch'
+
+
+__all__ = []
+
+
+class RhinoThrustDiagram(ThrustDiagram):
 
     def __init__(self):
-        super(ThrustDiagramRhino, self).__init__()
+        super(RhinoThrustDiagram, self).__init__()
         self.attributes.update({
             'layer': 'ThrustDiagram',
         })
@@ -62,7 +60,7 @@ class ThrustDiagramRhino(ThrustDiagram):
                 interpolation.append([key_index[key] for key in face])
         if not xyz or not faces:
             return
-        rhino.xdraw_mesh(xyz,
+        compas_rhino.xdraw_mesh(xyz,
                          faces,
                          colors,
                          name,
@@ -96,15 +94,15 @@ class ThrustDiagramRhino(ThrustDiagram):
     #         rgbs  = [colors[index] for index in indices]
     #         color = [sum(component) / i for component in zip(*rgbs)]
     #         colors.append(color)
-    #     objects = rhino.get_objects('{0}.mesh'.format(thrustdiagram.attributes['name']))
+    #     objects = compas_rhino.get_objects('{0}.mesh'.format(thrustdiagram.attributes['name']))
     #     if objects:
-    #         rhino.set_mesh_vertex_colors(objects[0], colors)
+    #         compas_rhino.set_mesh_vertex_colors(objects[0], colors)
 
 
     # def uncolor_thrustdiagram(thrustdiagram):
-    #     objects = rhino.get_objects('{0}.mesh'.format(thrustdiagram.attributes['name']))
+    #     objects = compas_rhino.get_objects('{0}.mesh'.format(thrustdiagram.attributes['name']))
     #     if objects:
-    #         rhino.set_mesh_vertex_colors(objects[0], None)
+    #         compas_rhino.set_mesh_vertex_colors(objects[0], None)
 
     # --------------------------------------------------------------------------
     # display deviations
@@ -117,8 +115,8 @@ class ThrustDiagramRhino(ThrustDiagram):
                    color_above=None,
                    color_below=None,
                    scale=None):
-        objects = rhino.get_objects(name='{0}.deviation.*'.format(self.name))
-        rhino.delete_objects(objects)
+        objects = compas_rhino.get_objects(name='{0}.deviation.*'.format(self.name))
+        compas_rhino.delete_objects(objects)
         if not display:
             return
         scale       = scale or self.scale['deviation']
@@ -137,7 +135,7 @@ class ThrustDiagramRhino(ThrustDiagram):
                             'radius': radius,
                             'name'  : name,
                             'color' : color, })
-        rhino.xdraw_spheres(spheres, layer=layer, clear=clear)
+        compas_rhino.xdraw_spheres(spheres, layer=layer, clear=clear)
 
     def display_dkern(self,
                       display=True,
@@ -146,8 +144,8 @@ class ThrustDiagramRhino(ThrustDiagram):
                       color_above=None,
                       color_below=None,
                       scale=None):
-        objects = rhino.get_objects(name='{0}.deviation.*'.format(self.name))
-        rhino.delete_objects(objects)
+        objects = compas_rhino.get_objects(name='{0}.deviation.*'.format(self.name))
+        compas_rhino.delete_objects(objects)
         if not display:
             return
         scale       = scale or self.scale['deviation']
@@ -166,7 +164,7 @@ class ThrustDiagramRhino(ThrustDiagram):
                             'radius': radius,
                             'name'  : name,
                             'color' : color, })
-        rhino.xdraw_spheres(spheres, layer=layer, clear=False)
+        compas_rhino.xdraw_spheres(spheres, layer=layer, clear=False)
 
     def display_dthickness(self,
                            display=True,
@@ -175,8 +173,8 @@ class ThrustDiagramRhino(ThrustDiagram):
                            color_above=None,
                            color_below=None,
                            scale=None):
-        objects = rhino.get_objects(name='{0}.deviation.*'.format(self.name))
-        rhino.delete_objects(objects)
+        objects = compas_rhino.get_objects(name='{0}.deviation.*'.format(self.name))
+        compas_rhino.delete_objects(objects)
         if not display:
             return
         scale       = scale or self.scale['deviation']
@@ -194,4 +192,12 @@ class ThrustDiagramRhino(ThrustDiagram):
                             'radius': scale * (attr['dt']**2)**0.5,
                             'name'  : name,
                             'color' : color, })
-        rhino.xdraw_spheres(spheres, layer=layer, clear=False, redraw=False)
+        compas_rhino.xdraw_spheres(spheres, layer=layer, clear=False, redraw=False)
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == "__main__":
+    pass

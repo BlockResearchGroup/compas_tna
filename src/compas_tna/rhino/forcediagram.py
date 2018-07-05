@@ -1,27 +1,25 @@
-# -*- coding: utf-8 -*-
-# @Date         : 2016-03-21 09:50:20
-# @Author       : Tom Van Mele (vanmelet@ethz.ch)
-# @Contributors : ...
-# @Version      : $Id$
-# @Copyright    : 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-# @License      : 'Apache License, Version 2.0'
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+import compas_rhino
+
+from compas_tna.diagrams import ForceDiagram
 
 
-from compas_rhino.datastructures.mixins import EditAttributes
-from compas_rhino.datastructures.mixins import Descriptors
-from compas_rhino.datastructures.mixins import GetKeys
-from compas_rhino.datastructures.mixins import DisplayLabels
-
-import compas_rhino.utilities as rhino
-
-from compas_tna.forcediagram import ForceDiagram
+__author__    = ['Tom Van Mele', ]
+__copyright__ = 'Copyright 2014 - Block Research Group, ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'vanmelet@ethz.ch'
 
 
-@rhino.add_gui_helpers((EditAttributes, Descriptors, GetKeys, DisplayLabels, ))
-class ForceDiagramRhino(ForceDiagram):
+__all__ = ['RhinoForceDiagram', ]
+
+
+class RhinoForceDiagram(ForceDiagram):
 
     def __init__(self):
-        super(ForceDiagramRhino, self).__init__()
+        super(RhinoForceDiagram, self).__init__()
         self.attributes.update({
             'layer': 'ForceDiagram'
         })
@@ -50,3 +48,11 @@ class ForceDiagramRhino(ForceDiagram):
     def draw(self):
         rhino.xdraw_points(self.points(), layer=self.layer, redraw=False, clear=True)
         rhino.xdraw_lines(self.lines(), layer=self.layer)
+
+
+# ==============================================================================
+# Main
+# ==============================================================================
+
+if __name__ == "__main__":
+    pass
