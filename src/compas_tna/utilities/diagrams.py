@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import sys
 
 from numpy import array
@@ -13,22 +17,35 @@ from scipy.linalg import norm
 
 from scipy.sparse.linalg import factorized
 
-from compas.numerical.matrices import connectivity_matrix
-from compas.numerical.linalg import normrow
-from compas.numerical.linalg import chofactor
-from compas.numerical.linalg import lufactorized
+from compas.numerical import connectivity_matrix
+from compas.numerical import normrow
+from compas.numerical import chofactor
+from compas.numerical import lufactorized
 
-from compas.numerical.linalg import dof
-from compas.numerical.linalg import rref
-from compas.numerical.linalg import nonpivots
+from compas.numerical import dof
+from compas.numerical import rref
+from compas.numerical import nonpivots
 
-from compas.numerical.matrices import equilibrium_matrix
+from compas.numerical import equilibrium_matrix
 
 
 __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
+
+
+__all__ = [
+    'count_dof',
+    'identify_dof',
+    'parallelise',
+    'parallelise_sparse',
+    'parallelise_nodal',
+    'rot90',
+    'apply_bounds',
+    'update_q_from_qind',
+    'update_z',
+]
 
 
 EPS = 1 / sys.float_info.epsilon
@@ -171,7 +188,7 @@ def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-6, kmax=100, display
     B       = Cit.dot(Q).dot(Cf)
     for k in range(kmax):
         if display:
-            print k
+            print(k)
         updateloads(p, xyz)
         b            = p[free, 2] - B.dot(xyz[fixed, 2])
         z0           = xyz[free, 2].copy()

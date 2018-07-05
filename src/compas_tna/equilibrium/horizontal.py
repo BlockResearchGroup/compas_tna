@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import sys
 
 from numpy import array
@@ -5,14 +9,14 @@ from numpy import float64
 
 from compas.geometry import angle_vectors_xy
 
-from compas.numerical.matrices import connectivity_matrix
-from compas.numerical.linalg import normrow
-from compas.numerical.linalg import normalizerow
+from compas.numerical import connectivity_matrix
+from compas.numerical import normrow
+from compas.numerical import normalizerow
 
-from compas_tna.tna.utilities.diagrams import rot90
-from compas_tna.tna.utilities.diagrams import apply_bounds
-from compas_tna.tna.utilities.diagrams import parallelise_sparse
-from compas_tna.tna.utilities.diagrams import parallelise_nodal
+from compas_tna.utilities import rot90
+from compas_tna.utilities import apply_bounds
+from compas_tna.utilities import parallelise_sparse
+from compas_tna.utilities import parallelise_nodal
 
 
 __author__     = ['Tom Van Mele', ]
@@ -24,8 +28,6 @@ __email__      = 'vanmelet@ethz.ch'
 __all__ = [
     'horizontal',
     'horizontal_nodal',
-    'horizontal_nodal_xfunc',
-    'horizontal_xfunc',
 ]
 
 
@@ -33,7 +35,7 @@ EPS = 1 / sys.float_info.epsilon
 
 
 def horizontal(form, force, alpha=100.0, kmax=100, display=True):
-    """Compute horizontal equilibrium.
+    r"""Compute horizontal equilibrium.
 
     This implementation is based on the following formulation
 
@@ -114,7 +116,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
         apply_bounds(_l, _lmin, _lmax)
         # print, if allowed
         if display:
-            print k
+            print(k)
         if alpha != 1.0:
             # if emphasis is not entirely on the form
             # update the form diagram
@@ -161,24 +163,6 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
         attr['y'] = _xy[i, 1]
 
 
-def horizontal_nodal_xfunc(form, force, alpha=100, kmax=100, display=True):
-    from compas_tna.tna.diagrams.formdiagram import FormDiagram
-    from compas_tna.tna.diagrams.forcediagram import ForceDiagram
-    form = FormDiagram.from_data(form)
-    force = ForceDiagram.from_data(force)
-    horizontal_nodal(form, force, alpha=alpha, kmax=kmax, display=display)
-    return {'form': form.to_data(), 'force': force.to_data()}
-
-
-def horizontal_xfunc(form, force, alpha=100, kmax=100, display=True):
-    from compas_tna.tna.diagrams.formdiagram import FormDiagram
-    from compas_tna.tna.diagrams.forcediagram import ForceDiagram
-    form = FormDiagram.from_data(form)
-    force = ForceDiagram.from_data(force)
-    horizontal(form, force, alpha=alpha, kmax=kmax, display=display)
-    return {'form': form.to_data(), 'force': force.to_data()}
-
-
 # this is experimental!
 def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     """Compute horizontal equilibrium using a node-per-node approach.
@@ -208,7 +192,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     ij_e   = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
     fixed  = set(form.anchors() + form.fixed())  # do something about this!
     fixed  = [k_i[key] for key in fixed]
-    edges  = [[k_i[u], k_i[v]] for u, v in form.edges()]
+    edges  = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
     xy     = array(form.get_vertices_attributes('xy'), dtype=float64)
     C      = connectivity_matrix(edges, 'csr')
     # --------------------------------------------------------------------------
@@ -274,7 +258,8 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
         i = k_i[key]
         attr['x'] = xy[i, 0]
         attr['y'] = xy[i, 1]
-    for u, v, attr in form.edges(True):
+    for u, v in form.edges_where({'is_edge': True}):
+        attr = form.edgedata[u, v]
         i = uv_i[(u, v)]
         attr['q'] = q[i, 0]
         attr['a'] = a[i]
@@ -295,56 +280,61 @@ if __name__ == '__main__':
 
     import compas
 
-    from compas_tna.tna.diagrams.formdiagram import FormDiagram
-    from compas_tna.tna.diagrams.forcediagram import ForceDiagram
+    from compas.numerical import fd_numpy
+    from compas.plotters import MeshPlotter
+    from compas.utilities import pairwise
 
-    from compas.numerical.methods.forcedensity import fd
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+    from compas_tna.equilibrium import horizontal_nodal
 
-    from compas.visualization.plotters.networkplotter import NetworkPlotter
+    form = FormDiagram.from_obj(compas.get('faces.obj'))
 
-    form  = FormDiagram.from_obj(compas.get_data('open_edges.obj'))
+    for key in form.vertices_where({'vertex_degree': 2}):
+        form.vertex[key]['is_anchor'] = True
+
+    boundary = form.vertices_on_boundary(ordered=True)
+
+    unsupported = [[]]
+    for key in boundary:
+        unsupported[-1].append(key)
+        if form.vertex[key]['is_anchor']:
+            unsupported.append([key])
+
+    unsupported[-1] += unsupported[0]
+    del unsupported[0]
+
+    for vertices in unsupported:
+        for u, v in pairwise(vertices):
+            form.set_edge_attribute((u, v), 'q', 10)
+
+    for vertices in unsupported:
+        fkey = form.add_face(vertices, is_unloaded=True)
+
+    for vertices in unsupported:
+        u = vertices[-1]
+        v = vertices[0]
+        form.set_edge_attribute((u, v), 'is_edge', False)
+
+    vertices = form.get_vertices_attributes('xyz')
+    edges = list(form.edges_where({'is_edge': True}))
+    fixed = list(form.vertices_where({'is_anchor': True}))
+    qs = [form.get_edge_attribute(uv, 'q') for uv in edges]
+    loads = form.get_vertices_attributes(('px', 'py', 'pz'), (0, 0, 0))
+
+    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, qs, loads)
 
     for key, attr in form.vertices(True):
-        d = form.vertex_degree(key)
-        if d == 1:
-            attr['is_fixed'] = True
-
-    # initial horizontal equilibrium for the form diagram
-
-    k_i   = form.key_index()
-    xyz   = form.get_vertices_attributes(('x', 'y', 'z'))
-    loads = [[0, 0, 0] for key in form.vertices()]
-    q     = form.get_edges_attributes('q')
-    fixed = form.vertices_where({'is_fixed': True})
-    fixed = [k_i[key] for key in fixed]
-    edges = [(k_i[u], k_i[v]) for u, v in form.edges()]
-
-    xyz, q, f, l, r = fd(xyz, edges, fixed, q, loads)
-
-    for key, attr in form.vertices(True):
-        index = k_i[key]
-        attr['x'] = xyz[index][0]
-        attr['y'] = xyz[index][1]
-
-    # generate the force diagram
+        attr['x'] = xyz[key][0]
+        attr['y'] = xyz[key][1]
+        attr['z'] = xyz[key][2]
 
     force = ForceDiagram.from_formdiagram(form)
 
-    # parallelise the diagrams
+    horizontal_nodal(form, force)
 
-    horizontal(form, force, alpha=100)
-
-    # visualise
-
-    plotter = NetworkPlotter(force)
-
-    plotter.defaults['face.facecolor'] = '#eeeeee'
-    plotter.defaults['face.edgewidth'] = 0.0
-
-    plotter.draw_vertices(facecolor={key: '#ff0000' for key, attr in force.vertices(True) if attr['is_fixed']},
-                          text={key: key for key in force.vertices()},
-                          radius=0.2)
-
-    plotter.draw_edges()
-
+    plotter = MeshPlotter(force)
+    plotter.draw_vertices(text='key')
+    plotter.draw_faces()
+    plotter.draw_edges(text={(u, v): "{:.2f}".format(force.edge_length(u, v)) for u, v in force.edges()})
     plotter.show()

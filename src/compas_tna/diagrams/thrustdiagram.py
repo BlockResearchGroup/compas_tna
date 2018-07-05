@@ -1,35 +1,35 @@
-# -*- coding: utf-8 -*-
-# @Date         : 2016-03-21 09:50:20
-# @Author       : Tom Van Mele (vanmelet@ethz.ch)
-# @Contributors : ...
-# @Version      : $Id$
-# @Copyright    : 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-# @License      : 'Apache License, Version 2.0'
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
+from compas_tna.diagrams import FormDiagram
 
 
-from compas_tna.formdiagram import FormDiagram
+__author__    = ['Tom Van Mele', ]
+__copyright__ = 'Copyright 2014 - Block Research Group, ETH Zurich'
+__license__   = 'MIT License'
+__email__     = 'vanmelet@ethz.ch'
+
+
+__all__ = ['ThrustDiagram', ]
 
 
 class ThrustDiagram(FormDiagram):
     """"""
 
-    default_vertex_attributes = FormDiagram.default_vertex_attributes.copy()
-    default_edge_attributes = FormDiagram.default_edge_attributes.copy()
-
-    default_vertex_attributes.update({
-        'rx' : 0.0,
-        'ry' : 0.0,
-        'rz' : 0.0,
-        'dz' : 0.0,
-        'dk' : 0.0,
-        'dt' : 0.0,
-    })
-    default_edge_attributes.update({
-        'f' : 0.0,
-    })
-
     def __init__(self):
         super(ThrustDiagram, self).__init__()
+        self.default_vertex_attributes.update({
+            'rx' : 0.0,
+            'ry' : 0.0,
+            'rz' : 0.0,
+            'dz' : 0.0,
+            'dk' : 0.0,
+            'dt' : 0.0,
+        })
+        self.default_edge_attributes.update({
+            'f' : 0.0,
+        })
         self.attributes.update({
             'name'                  : 'ThrustDiagram',
             'color.load:applied'    : (0, 255, 0),
@@ -144,7 +144,7 @@ class ThrustDiagram(FormDiagram):
 
 
 # ==============================================================================
-# Debugging
+# Main
 # ==============================================================================
 
 if __name__ == '__main__':

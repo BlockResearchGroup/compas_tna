@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 import sys
 
 from numpy import array
@@ -7,14 +11,14 @@ from scipy.sparse.linalg import spsolve
 
 from scipy.sparse import diags
 
-from compas.numerical.matrices import connectivity_matrix
-from compas.numerical.matrices import equilibrium_matrix
-from compas.numerical.linalg import normrow
+from compas.numerical import connectivity_matrix
+from compas.numerical import equilibrium_matrix
+from compas.numerical import normrow
 
-from compas_tna.tna.utilities.loads import LoadUpdater
+from compas_tna.utilities import LoadUpdater
 
-from compas_tna.tna.utilities.diagrams import update_z
-from compas_tna.tna.utilities.diagrams import update_q_from_qind
+from compas_tna.utilities import update_z
+from compas_tna.utilities import update_q_from_qind
 
 
 __author__     = ['Tom Van Mele', ]
@@ -27,7 +31,6 @@ __all__ = [
     'vertical_from_zmax',
     'vertical_from_formforce',
     'vertical_from_qind',
-    'vertical_from_zmax_xfunc',
 ]
 
 
@@ -119,7 +122,7 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
     _scale = 1.0
     for k in range(kmax):
         if display:
-            print k
+            print(k)
         update_loads(p, xyz)
         f            = _scale * _l
         q            = f / l
@@ -327,15 +330,6 @@ def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=Tr
 
 def vertical_from_q():
     pass
-
-
-def vertical_from_zmax_xfunc(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, display=True):
-    from compas_tna.tna.diagrams.formdiagram import FormDiagram
-    from compas_tna.tna.diagrams.forcediagram import ForceDiagram
-    form = FormDiagram.from_data(form)
-    force = ForceDiagram.from_data(force)
-    vertical_from_zmax(form, force, zmax=zmax, kmax=100, tol=1e-6, density=1.0, display=True)
-    return {'form': form.to_data(), 'force': force.to_data()}
 
 
 # ==============================================================================

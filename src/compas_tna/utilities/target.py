@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import division
+
 from numpy import hstack
 from numpy import take
 from numpy import einsum
@@ -11,6 +15,9 @@ __author__     = ['Tom Van Mele', ]
 __copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
 __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
+
+
+__all__ = ['update_target', ]
 
 
 def update_target(heightfield, samples):
