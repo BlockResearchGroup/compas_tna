@@ -52,11 +52,11 @@ EPS = 1 / sys.float_info.epsilon
 
 
 def count_dof(form):
-    k2i   = form.k2i()
+    k2i   = form.key_index()
     xyz   = form.xyz()
     fixed = form.anchors(k2i=k2i)
-    free  = list(set(range(len(form.vertex))) - set(fixed))
-    edges = [(k2i[u], k2i[v]) for u, v in form.edges()]
+    free  = list(set(range(form.number_of_vertices())) - set(fixed))
+    edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'is_edge': True})]
     C     = connectivity_matrix(edges)
     E     = equilibrium_matrix(C, xyz, free)
     return dof(E)
@@ -64,11 +64,11 @@ def count_dof(form):
 
 def identify_dof(form, **kwargs):
     algo  = kwargs.get('algo') or 'sympy'
-    k2i   = form.k2i()
+    k2i   = form.key_index()
     xyz   = form.xyz()
     fixed = form.anchors(k2i=k2i)
-    free  = list(set(range(len(form.vertex))) - set(fixed))
-    edges = [(k2i[u], k2i[v]) for u, v in form.edges()]
+    free  = list(set(range(form.number_of_vertices())) - set(fixed))
+    edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'is_edge': True})]
     C     = connectivity_matrix(edges)
     E     = equilibrium_matrix(C, xyz, free)
     return nonpivots(rref(E, algo=algo))

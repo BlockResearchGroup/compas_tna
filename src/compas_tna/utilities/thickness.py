@@ -18,10 +18,10 @@ __all__ = ['distribute', ]
 def distribute(formdiagram, config=None):
     points = []
     values = []
-    xi     = []
-    index_key = dict()
+    xi = []
+    index_key = {}
     index = 0
-    for key, attr in formdiagram.vertices_iter(True):
+    for key, attr in formdiagram.vertices(True):
         if attr['t']:
             points.append((attr['x'], attr['y']))
             values.append(attr['t'])

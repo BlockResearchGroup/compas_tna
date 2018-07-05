@@ -21,14 +21,14 @@ __all__ = ['LoadUpdater', ]
 
 class LoadUpdater(object):
     """"""
-    def __init__(self, network, p0, thickness=1.0, density=1.0, live=0.0):
-        self.network = network
+    def __init__(self, mesh, p0, thickness=1.0, density=1.0, live=0.0):
+        self.mesh = mesh
         self.p0 = p0
         self.thickness = thickness
         self.density = density
         self.live = live
-        self.is_unloaded = {fkey: network.get_face_attribute(fkey, 'is_unloaded') for fkey in network.face}
-        self.key_index = {key: index for index, key in enumerate(self.network.vertices())}
+        self.is_unloaded = {fkey: mesh.get_face_attribute(fkey, 'is_unloaded') for fkey in mesh.faces()}
+        self.key_index = self.mesh.key_index()
 
     def __call__(self, p, xyz):
         ta = self._tributary_areas(xyz)
@@ -39,27 +39,26 @@ class LoadUpdater(object):
     # centroid can be calculated much faster
     # using a face-vertex incidence matrix
     def _tributary_areas(self, xyz):
-        network = self.network
+        mesh = self.mesh
         is_unloaded = self.is_unloaded
         key_index = self.key_index
         fkey_centroid = {}
-        for fkey in network.faces():
-            vertices = network.face_vertices(fkey)
+        for fkey in mesh.faces():
             if is_unloaded[fkey]:
                 continue
-            fkey_centroid[fkey] = array(centroid_points([xyz[key_index[key]] for key in set(vertices)]))
+            fkey_centroid[fkey] = array(mesh.face_centroid(fkey))
         areas = zeros((xyz.shape[0], 1))
-        for u in network.vertices():
+        for u in mesh.vertices():
             p0 = xyz[key_index[u]]
             a = 0
-            for v in network.halfedge[u]:
+            for v in mesh.halfedge[u]:
                 p1  = xyz[key_index[v]]
                 p01 = p1 - p0
-                fkey = network.halfedge[u][v]
+                fkey = mesh.halfedge[u][v]
                 if fkey in fkey_centroid:
                     p2 = fkey_centroid[fkey]
                     a += 0.25 * length_vector(cross_vectors(p01, p2 - p0))
-                fkey = network.halfedge[v][u]
+                fkey = mesh.halfedge[v][u]
                 if fkey in fkey_centroid:
                     p3 = fkey_centroid[fkey]
                     a += 0.25 * length_vector(cross_vectors(p01, p3 - p0))
@@ -67,33 +66,33 @@ class LoadUpdater(object):
         return areas
 
 
-# def create_load_updater(network, p0, thickness=1.0, density=1.0, live=0.0, is_unloaded=None):
-#     key_index = dict((key, index) for index, key in network.vertices_enum())
-#     def tributary_areas(network, xyz):
+# def create_load_updater(mesh, p0, thickness=1.0, density=1.0, live=0.0, is_unloaded=None):
+#     key_index = dict((key, index) for index, key in mesh.vertices_enum())
+#     def tributary_areas(mesh, xyz):
 #         fkey_centroid = {}
-#         for fkey, vertices in network.face.iteritems():
+#         for fkey, vertices in mesh.face.iteritems():
 #             if is_unloaded[fkey]:
 #                 continue
 #             fkey_centroid[fkey] = array(centroid([xyz[key_index[key]] for key in set(vertices)]))
 #         areas = zeros((xyz.shape[0], 1))
-#         for u in network.vertex.iterkeys():
+#         for u in mesh.vertex.iterkeys():
 #             p0 = xyz[key_index[u]]
 #             a = 0
-#             for v in network.halfedge[u]:
+#             for v in mesh.halfedge[u]:
 #                 p1  = xyz[key_index[v]]
 #                 p01 = p1 - p0
-#                 fkey = network.halfedge[u][v]
+#                 fkey = mesh.halfedge[u][v]
 #                 if fkey in fkey_centroid:
 #                     p2 = fkey_centroid[fkey]
 #                     a += 0.25 * length(cross(p01, p2 - p0))
-#                 fkey = network.halfedge[v][u]
+#                 fkey = mesh.halfedge[v][u]
 #                 if fkey in fkey_centroid:
 #                     p3 = fkey_centroid[fkey]
 #                     a += 0.25 * length(cross(p01, p3 - p0))
 #             areas[key_index[u]] = a
 #         return areas
 #     def updater(p, xyz):
-#         ta = tributary_areas(network, xyz)
+#         ta = tributary_areas(mesh, xyz)
 #         sw = ta * thickness * density + ta * live
 #         p[:, 2] = p0[:, 2] + sw[:, 0]
 #         return p

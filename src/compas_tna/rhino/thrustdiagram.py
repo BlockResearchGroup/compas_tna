@@ -124,7 +124,7 @@ class RhinoThrustDiagram(ThrustDiagram):
         color_below = color_below or self.color['deviation:below']
         layer       = layer or self.layer
         spheres = []
-        for key, attr in self.vertices_iter(True):
+        for key, attr in self.vertices(True):
             if not attr['dz']:
                 continue
             pos    = self.vertex_coordinates(key)
@@ -153,7 +153,7 @@ class RhinoThrustDiagram(ThrustDiagram):
         color_below = color_below or self.color['deviation:below']
         layer       = layer or self.layer
         spheres = []
-        for key, attr in self.vertices_iter(True):
+        for key, attr in self.vertices(True):
             if not attr['dk']:
                 continue
             pos    = self.vertex_coordinates(key)
@@ -182,7 +182,7 @@ class RhinoThrustDiagram(ThrustDiagram):
         color_below = color_below or self.color['deviation:below']
         layer       = layer or self.layer
         spheres = []
-        for key, attr in self.vertices_iter(True):
+        for key, attr in self.vertices(True):
             if not attr['dt']:
                 continue
             pos   = (attr['x'], attr['y'], attr['z'])
