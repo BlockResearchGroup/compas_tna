@@ -53,6 +53,23 @@ class RhinoFormDiagram(FormDiagram):
     # visualisation
     # ==========================================================================
 
+    def hide_(self, spec):
+        name = self.attributes['name']
+        guids = compas_rhino.get_objects(name="{}.{}.*".format(name, spec))
+        compas_rhino.delete_objects(guids)
+
+    def hide_reactions(self):
+        self.hide_('reaction')
+
+    def hide_selfweight(self):
+        self.hide_('selfweight')
+
+    def hide_loads(self):
+        self.hide_('load')
+
+    def hide_residuals(self):
+        self.hide_('residual')
+
     def show_reactions(self):
         self.hide_reactions()
 
@@ -80,34 +97,50 @@ class RhinoFormDiagram(FormDiagram):
 
         compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
 
-    def hide_reactions(self):
-        name = self.attributes['name']
-        guids = compas_rhino.get_objects(name="{}.reaction.*".format(name))
-        compas_rhino.delete_objects(guids)
-
     def show_selfweight(self):
-        pass
+        self.hide_selfweigt()
 
-    def hide_selfweight(self):
-        pass
+        name = self.attributes['name']
+        layer = self.attributes['layer']
+        color = self.attributes['color.selfweight']
+        scale = self.attributes['scale.selfweight']
+
+        lines = []
+        for key, attr in self.vertices(True):
+            lines.append({})
+
+        compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
 
     def show_loads(self):
-        pass
+        self.hide_loads()
 
-    def hide_loads(self):
-        pass
+        name = self.attributes['name']
+        layer = self.attributes['layer']
+        color = self.attributes['color.load']
+        scale = self.attributes['scale.load']
+
+        lines = []
+        for key, attr in self.vertices(True):
+            lines.append({})
+
+        compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
 
     def show_residuals(self):
-        pass
+        self.hide_residuals()
 
-    def hide_residuals(self):
-        pass
+        name = self.attributes['name']
+        layer = self.attributes['layer']
+        color = self.attributes['color.residual']
+        scale = self.attributes['scale.residual']
 
-    def show_axial(self):
-        pass
+        lines = []
+        for key, attr in self.vertices(True):
+            if attr['is_anchor']:
+                continue
 
-    def hide_axial(self):
-        pass
+            lines.append({})
+
+        compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
 
 
 # ==============================================================================

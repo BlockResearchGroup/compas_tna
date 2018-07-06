@@ -72,9 +72,11 @@ class FormDiagram(Mesh):
             'color.reaction'             : (0, 255, 0),
             'color.residual'             : (0, 255, 255),
             'color.load'                 : (0, 0, 255),
+            'color.selfweight'           : (0, 0, 255),
             'scale.reaction'             : 1.0,
             'scale.residual'             : 1.0,
             'scale.load'                 : 1.0,
+            'scale.selfweight'           : 1.0,
         })
 
     def uv_index(self):
