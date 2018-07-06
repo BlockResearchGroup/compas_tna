@@ -4,8 +4,13 @@ from __future__ import division
 
 import sys
 
-from numpy import array
-from numpy import float64
+try:
+    from numpy import array
+    from numpy import float64
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise    
 
 from compas.geometry import angle_vectors_xy
 
@@ -34,7 +39,7 @@ __all__ = [
 EPS = 1 / sys.float_info.epsilon
 
 
-def horizontal(form, force, alpha=100.0, kmax=100, display=True):
+def horizontal(formdata, forcedata, alpha=100.0, kmax=100, display=True):
     r"""Compute horizontal equilibrium.
 
     This implementation is based on the following formulation
@@ -61,6 +66,11 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
         Display information about the current iteration (the default is True).
 
     """
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
     # --------------------------------------------------------------------------
     # alpha == 1 : form diagram fixed
     # alpha == 0 : force diagram fixed
@@ -162,9 +172,10 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
         attr['x'] = _xy[i, 0]
         attr['y'] = _xy[i, 1]
 
+    return form.to_data(), force.to_data()
 
-# this is experimental!
-def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
+
+def horizontal_nodal(formdata, forcedata, alpha=100, kmax=100, display=True):
     """Compute horizontal equilibrium using a node-per-node approach.
 
     Parameters
@@ -181,6 +192,12 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
         Display information about the current iteration (the default is True).
 
     """
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
+    
     alpha = float(alpha) / 100.0
     alpha = max(0., min(1., alpha))
     # --------------------------------------------------------------------------
@@ -236,6 +253,8 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     # --------------------------------------------------------------------------
     uv  = C.dot(xy)
     _uv = _C.dot(_xy)
+    l   = normrow(uv)
+    _l  = normrow(_uv)
     # --------------------------------------------------------------------------
     # compute the force densities
     # --------------------------------------------------------------------------
@@ -262,6 +281,8 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
         attr = form.edgedata[u, v]
         i = uv_i[(u, v)]
         attr['q'] = q[i, 0]
+        attr['f'] = f[i, 0]
+        attr['l'] = l[i, 0]
         attr['a'] = a[i]
     # --------------------------------------------------------------------------
     # update force
@@ -270,6 +291,8 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
         i = _k_i[key]
         attr['x'] = _xy[i, 0]
         attr['y'] = _xy[i, 1]
+
+    return form.to_data(), force.to_data()
 
 
 # ==============================================================================
@@ -331,7 +354,10 @@ if __name__ == '__main__':
 
     force = ForceDiagram.from_formdiagram(form)
 
-    horizontal_nodal(form, force)
+    formdata, forcedata = horizontal_nodal(form.to_data(), force.to_data())
+
+    form.data = formdata
+    force.data = forcedata
 
     plotter = MeshPlotter(force)
     plotter.draw_vertices(text='key')

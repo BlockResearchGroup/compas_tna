@@ -7,16 +7,14 @@ compas_tna.rhino
 
 
 """
+from __future__ import absolute_import
 
-from .formdiagram import *
-from .forcediagram import *
-from .thrustdiagram import *
+from .rhinoformdiagram import *
+from .rhinoforcediagram import *
+# from .rhinothrustdiagram import *
 
-from .utilities import *
+from . import rhinoformdiagram
+from . import rhinoforcediagram
+# from . import rhinothrustdiagram
 
-import formdiagram
-import forcediagram
-import thrustdiagram
-import utilities
-
-__all__ = formdiagram.__all__ + forcediagram.__all__ + thrustdiagram.__all__ + utilities.__all__
+__all__ = rhinoformdiagram.__all__ + rhinoforcediagram.__all__

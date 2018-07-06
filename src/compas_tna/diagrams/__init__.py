@@ -24,13 +24,14 @@ ForceDiagram
     ForceDiagram
 
 """
+from __future__ import absolute_import
 
 from .formdiagram import *
 from .forcediagram import *
 from .thrustdiagram import *
 
-import formdiagram
-import forcediagram
-import thrustdiagram
+from . import formdiagram
+from . import forcediagram
+from . import thrustdiagram
 
 __all__ = formdiagram.__all__ + forcediagram.__all__ + thrustdiagram.__all__

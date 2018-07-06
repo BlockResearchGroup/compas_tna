@@ -4,12 +4,15 @@ from __future__ import division
 
 import sys
 
-from numpy import array
-from numpy import float64
+try:
+    from numpy import array
+    from numpy import float64
+    from scipy.sparse.linalg import spsolve
+    from scipy.sparse import diags
 
-from scipy.sparse.linalg import spsolve
-
-from scipy.sparse import diags
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import equilibrium_matrix
@@ -37,7 +40,7 @@ __all__ = [
 EPS = 1 / sys.float_info.epsilon
 
 
-def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, display=True):
+def vertical_from_zmax(formdata, forcedata, zmax=None, kmax=100, tol=1e-6, density=1.0, display=True):
     """For the given form and force diagram, compute the scale of the force
     diagram for which the highest point of the thrust network is equal to a
     specified value.
@@ -65,6 +68,12 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
         If True, information about the current iteration will be displayed.
 
     """
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
+
     tol2 = tol ** 2
     if not zmax:
         # use the bounding box for this
@@ -88,7 +97,7 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
     fixed   = set(anchors + fixed)
     fixed   = [k_i[key] for key in fixed]
     free    = list(set(range(vcount)) - set(fixed))
-    edges   = [(k_i[u], k_i[v]) for u, v in form.edges()]
+    edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
     xyz     = array(form.get_vertices_attributes('xyz'), dtype=float64)
     thick   = array(form.get_vertices_attribute('t'), dtype=float64).reshape((-1, 1))
     p       = array(form.get_vertices_attributes(('px', 'py', 'pz')), dtype=float64)
@@ -111,27 +120,27 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
     # --------------------------------------------------------------------------
     # lengths
     # --------------------------------------------------------------------------
-    uvw  = C.dot(xyz)
-    _uvw = _C.dot(_xyz)
-    l    = normrow(uvw)
-    _l   = normrow(_uvw)
+    uv  = C.dot(xyz[:, 0:2])
+    _uv = _C.dot(_xyz[:, 0:2])
+    l    = normrow(uv)
+    _l   = normrow(_uv)
     # --------------------------------------------------------------------------
     # scale to zmax
     # note that zmax should not exceed scale * diagonal
     # --------------------------------------------------------------------------
-    _scale = 1.0
+    scale = 1.0
     for k in range(kmax):
         if display:
             print(k)
         update_loads(p, xyz)
-        f            = _scale * _l
-        q            = f / l
+        h            = scale * _l
+        q            = h / l
         Q            = diags([q.ravel()], [0])
         A            = Cit.dot(Q).dot(Ci)
         b            = p[free, 2] - Cit.dot(Q).dot(Cf).dot(xyz[fixed, 2])
         xyz[free, 2] = spsolve(A, b)
         z     = max(xyz[free, 2])
-        _scale = _scale * (z / zmax)
+        scale = scale * (z / zmax)
         res2  = (z - zmax) ** 2
         if res2 < tol2:
             break
@@ -150,7 +159,8 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
         attr['ry'] = r[index, 1]
         attr['rz'] = r[index, 2]
         attr['sw'] = sw[index, 2]
-    for u, v, attr in form.edges(True):
+    for u, v in form.edges_where({'is_edge': True}):
+        attr = form.edgedata[u, v]
         index = uv_i[(u, v)]
         attr['q'] = q[index, 0]
         attr['f'] = f[index, 0]
@@ -158,10 +168,12 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
     # --------------------------------------------------------------------------
     # update force
     # --------------------------------------------------------------------------
-    force.scale = _scale
+    force.attributes['scale'] = scale
+
+    return form.to_data(), force.to_data()
 
 
-def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, display=True):
+def vertical_from_formforce(formdata, forcedata, kmax=100, tol=1e-6, density=1.0, display=True):
     """For the given form and force diagram, compute the thrust network.
 
     Parameters
@@ -183,6 +195,11 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
         If True, information about the current iteration will be displayed.
 
     """
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
     # --------------------------------------------------------------------------
     # FormDiagram
     # --------------------------------------------------------------------------
@@ -194,7 +211,7 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
     fixed   = set(anchors + fixed)
     fixed   = [k_i[key] for key in fixed]
     free    = list(set(range(vcount)) - set(fixed))
-    edges   = [(k_i[u], k_i[v]) for u, v in form.edges()]
+    edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
     xyz     = array(form.get_vertices_attributes('xyz'), dtype=float64)
     thick   = array(form.get_vertices_attribute('t'), dtype=float64).reshape((-1, 1))
     p       = array(form.get_vertices_attributes(('px', 'py', 'pz')), dtype=float64)
@@ -203,7 +220,7 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
     # --------------------------------------------------------------------------
     # ForceDiagram
     # --------------------------------------------------------------------------
-    _scale = force.scale
+    scale = force.attributes['scale']
     _xyz   = array(force.get_vertices_attributes('xyz'), dtype=float64)
     _edges = force.ordered_edges(form)
     _C     = connectivity_matrix(_edges, 'csr')
@@ -214,12 +231,12 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
     # --------------------------------------------------------------------------
     # compute forcedensity
     # --------------------------------------------------------------------------
-    uvw  = C.dot(xyz)
-    _uvw = _C.dot(_xyz)
-    l    = normrow(uvw)
-    _l   = normrow(_uvw)
-    f    = _scale * _l
-    q    = f / l
+    uv  = C.dot(xyz[:, 0:2])
+    _uv = _C.dot(_xyz[:, 0:2])
+    l    = normrow(uv)
+    _l   = normrow(_uv)
+    h    = scale * _l
+    q    = h / l
     Q    = diags([q.ravel()], [0])
     # --------------------------------------------------------------------------
     # compute vertical
@@ -240,11 +257,14 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
         attr['ry'] = r[index, 1]
         attr['rz'] = r[index, 2]
         attr['sw'] = sw[index, 2]
-    for u, v, attr in form.edges(True):
+    for u, v in form.edges_where({'is_edge': True}):
+        attr = form.edgedata[u, v]
         index = uv_i[(u, v)]
         attr['q'] = q[index, 0]
         attr['f'] = f[index, 0]
         attr['l'] = l[index, 0]
+
+    return form.to_data(), force.to_data()
 
 
 def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=True):
@@ -275,22 +295,28 @@ def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=Tr
         indeterminate frameworks. International Journal of Solids Structures 1986:22(4):409-28.
 
     """
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
+
     k_i     = form.key_index()
     uv_i    = form.uv_index()
     vcount  = form.number_of_vertices()
-    ecount  = form.number_of_edges()
     anchors = form.anchors()
     fixed   = form.fixed()
     fixed   = set(anchors + fixed)
     fixed   = [k_i[key] for key in fixed]
     free    = list(set(range(vcount)) - set(fixed))
     dep     = list(set(range(ecount)) - set(ind))
-    edges   = [(k_i[u], k_i[v]) for u, v in form.edges()]
+    edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
+    ecount  = len(edges)
     xyz     = array(form.get_vertices_attributes('xyz'), dtype=float64)
     thick   = array(form.get_vertices_attribute('t'), dtype=float64).reshape((-1, 1))
     p       = array(form.get_vertices_attributes(('px', 'py', 'pz')), dtype=float64)
     p0      = p.copy()
-    q       = array(form.get_edges_attribute('q'), dtype=float64).reshape((-1, 1))
+    q       = array(form.get_edges_attribute('q', where={'is_edge': True}), dtype=float64).reshape((-1, 1))
     C       = connectivity_matrix(edges, 'csr')
     E       = equilibrium_matrix(C, xyz[:, 0:2], free, 'csr')
     # --------------------------------------------------------------------------
@@ -321,15 +347,14 @@ def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=Tr
         attr['ry'] = r[index, 1]
         attr['rz'] = r[index, 2]
         attr['sw'] = sw[index, 2]
-    for u, v, attr in form.edges(True):
+    for u, v in form.edges_where({'is_edge': True}):
+        attr = form.edgedata[u, v]
         index = uv_i[(u, v)]
         attr['q'] = q[index, 0]
         attr['f'] = f[index, 0]
         attr['l'] = l[index, 0]
 
-
-def vertical_from_q():
-    pass
+    return form.to_data(), force.to_data()
 
 
 # ==============================================================================

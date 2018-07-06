@@ -33,8 +33,8 @@ class ForceDiagram(Mesh):
             'lmax': 1e+7,
         })
         self.attributes.update({
-            'name'                  : 'ForceDiagram',
-            'color.vertex:is_fixed' : (0, 0, 0),
+            'name'  : 'ForceDiagram',
+            'scale' : 1.0,
         })
 
     # --------------------------------------------------------------------------

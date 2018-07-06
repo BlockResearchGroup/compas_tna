@@ -4,6 +4,7 @@ from __future__ import division
 
 import compas_rhino
 
+from compas_rhino import MeshArtist
 from compas_tna.diagrams import ForceDiagram
 
 
@@ -24,30 +25,12 @@ class RhinoForceDiagram(ForceDiagram):
             'layer': 'ForceDiagram'
         })
 
-    def points(self):
-        points = []
-        for key in self.vertices_iter():
-            points.append({
-                'pos'   : self.vertex_coordinates(key),
-                'name'  : self.vertex_name(key),
-                'color' : self.color['vertex'],
-            })
-        return points
-
-    def lines(self):
-        lines  = []
-        for u, v, attr in self.edges_iter(True):
-            lines.append({
-                'start' : self.vertex_coordinates(u),
-                'end'   : self.vertex_coordinates(v),
-                'name'  : self.edge_name(u, v),
-                'color' : self.color['edge'],
-            })
-        return lines
-
     def draw(self):
-        rhino.xdraw_points(self.points(), layer=self.layer, redraw=False, clear=True)
-        rhino.xdraw_lines(self.lines(), layer=self.layer)
+        artist = MeshArtist(self, layer=self.attributes['layer'])
+        artist.clear_layer()
+        artist.draw_vertices()
+        artist.draw_edges()
+        artist.redraw()
 
 
 # ==============================================================================

@@ -2,8 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from numpy import array
-from scipy.interpolate import griddata
+import sys
+
+try:
+    from numpy import array
+    from scipy.interpolate import griddata
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 
 __author__     = ['Tom Van Mele', ]

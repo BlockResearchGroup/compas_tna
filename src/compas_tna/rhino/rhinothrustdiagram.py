@@ -16,7 +16,7 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = []
+__all__ = ['RhinoThrustDiagram', ]
 
 
 class RhinoThrustDiagram(ThrustDiagram):

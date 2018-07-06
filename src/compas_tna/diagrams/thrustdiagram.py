@@ -101,7 +101,7 @@ class ThrustDiagram(FormDiagram):
         if key is None:
             return dict(
                 (key, self._lump_force(key, fkey_centroid))
-                for key in self.vertices_iter()
+                for key in self.vertices()
             )
         return self._lump_force(key, fkey_centroid)
 
@@ -130,7 +130,7 @@ class ThrustDiagram(FormDiagram):
         if key is None:
             return dict(
                 (key, self._lump_stress(key, fkey_centroid))
-                for key in self.vertices_iter()
+                for key in self.vertices()
             )
         return self._lump_stress(key, fkey_centroid)
 

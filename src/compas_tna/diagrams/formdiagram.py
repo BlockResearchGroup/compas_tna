@@ -62,8 +62,6 @@ class FormDiagram(Mesh):
         })
         self.attributes.update({
             'name'                       : 'FormDiagram',
-            'anchor_degree'              : 1,
-            'autofaces'                  : True,
             'color.vertex'               : (255, 255, 255),
             'color.edge'                 : (0, 0, 0),
             'color.face'                 : (0, 255, 255),
@@ -71,7 +69,6 @@ class FormDiagram(Mesh):
             'color.vertex:is_fixed'      : (0, 0, 0),
             'color.vertex:is_supported'  : (255, 0, 0),
             'color.vertex:is_prescribed' : (0, 255, 0),
-            'color.face:is_unloaded'     : (0, 0, 255),
         })
 
     def uv_index(self):
@@ -125,84 +122,17 @@ class FormDiagram(Mesh):
         return [key for key, attr in self.vertices(True) if attr['is_anchor']]
         # return [key for key, attr in self.vertices(True) if attr['is_fixed']]
 
-    # def prescribed(self):
-    #     return [key for key, attr in self.vertices(True) if attr['is_prescribed']]
-
-    # # this implies the vertices have an attribute 'is_constrained'
-    # def constrained(self):
-    #     return [key for key, attr in self.vertices(True) if attr['cx'] or attr['cy'] or attr['cz']]
-
-    # def independent_edges(self):
-    #     return [(u, v) for u, v, attr in self.edges(True) if attr['is_ind']]
-
     # --------------------------------------------------------------------------
     # Identify features of the formdiagram based on geometrical inputs.
     # --------------------------------------------------------------------------
 
-    # def identify_anchors(self, points=None, anchor_degree=None):
-    #     if not anchor_degree:
-    #         anchor_degree = self.attributes['anchor_degree']
-    #     for key, attr in self.vertices(True):
-    #         attr['is_anchor'] = self.vertex_degree(key) <= anchor_degree
-    #     if points:
-    #         xyz_key = {}
-    #         for key in self.vertices():
-    #             gkey = geometric_key(self.vertex_coordinates(key))
-    #             xyz_key[gkey] = key
-    #         for xyz in points:
-    #             gkey = geometric_key(xyz)
-    #             if gkey in xyz_key:
-    #                 key = xyz_key[gkey]
-    #                 self.vertex[key]['is_anchor'] = True
-
-    # def identify_prescribed(self, points=None):
-    #     if points:
-    #         xyz_key = {}
-    #         for key in self.vertices():
-    #             gkey = geometric_key(self.vertex_coordinates(key))
-    #             xyz_key[gkey] = key
-    #         for xyz in points:
-    #             gkey = geometric_key(xyz)
-    #             if gkey in xyz_key:
-    #                 key = xyz_key[gkey]
-    #                 self.vertex[key]['is_prescribed'] = True
-
-    # def identify_fixed(self, points=None):
-    #     if points:
-    #         xyz_key = {}
-    #         for key in self.vertices():
-    #             gkey = geometric_key(self.vertex_coordinates(key))
-    #             xyz_key[gkey] = key
-    #         for xyz in points:
-    #             gkey = geometric_key(xyz)
-    #             if gkey in xyz_key:
-    #                 key = xyz_key[gkey]
-    #                 self.vertex[key]['is_fixed'] = True
-
-    # def identify_constraints(self, points=None):
-    #     if points:
-    #         xyz_key = {}
-    #         for key in self.vertices():
-    #             gkey = geometric_key(self.vertex_coordinates(key))
-    #             xyz_key[gkey] = key
-    #         for xyz in points:
-    #             gkey = geometric_key(xyz)
-    #             if gkey in xyz_key:
-    #                 key = xyz_key[gkey]
-    #                 self.vertex[key]['cx'] = 1.0
-    #                 self.vertex[key]['cy'] = 1.0
-
-    # def identify_loads(self):
-    #     pass
-
-    # def identify_open_edges(self):
-    #     pass
-
-    # def identify_holes(self):
-    #     pass
-
-    # def identify_creases(self):
-    #     pass
+    def identify_vertices(self, points):
+        xyz_key = self.key_xyz()
+        for xyz in points:
+            gkey = geometric_key(xyz)
+            if gkey in xyz_key:
+                key = xyz_key[gkey]
+                self.vertex[key]['is_anchor'] = True
 
 
 # ==============================================================================

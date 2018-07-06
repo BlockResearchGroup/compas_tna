@@ -4,18 +4,23 @@ from __future__ import division
 
 import sys
 
-from numpy import array
-from numpy import float64
-from numpy import empty_like
-from numpy.linalg import cond
+try:
+    from numpy import array
+    from numpy import float64
+    from numpy import empty_like
+    from numpy.linalg import cond
 
-from scipy.linalg import cho_factor
-from scipy.linalg import cho_solve
-from scipy.linalg import lstsq
-from scipy.linalg import solve
-from scipy.linalg import norm
+    from scipy.linalg import cho_factor
+    from scipy.linalg import cho_solve
+    from scipy.linalg import lstsq
+    from scipy.linalg import solve
+    from scipy.linalg import norm
 
-from scipy.sparse.linalg import factorized
+    from scipy.sparse.linalg import factorized
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import normrow

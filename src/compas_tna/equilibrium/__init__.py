@@ -28,10 +28,13 @@ Vertical
     vertical_from_qind
 
 """
+from __future__ import absolute_import
+
+from . import horizontal
+from . import vertical
+
+__all__ = horizontal.__all__ + vertical.__all__
+
 from .horizontal import *
 from .vertical import *
 
-import horizontal
-import vertical
-
-__all__ = horizontal.__all__ + vertical.__all__

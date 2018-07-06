@@ -2,13 +2,19 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from numpy import hstack
-from numpy import take
-from numpy import einsum
+import sys
 
-from scipy.interpolate import griddata
+try:
+    from numpy import hstack
+    from numpy import take
+    from numpy import einsum
 
-from scipy.spatial.qhull import Delaunay
+    from scipy.interpolate import griddata
+    from scipy.spatial.qhull import Delaunay
+
+except ImportError:
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 
 __author__     = ['Tom Van Mele', ]
