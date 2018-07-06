@@ -7,6 +7,11 @@ import compas_rhino
 from compas_rhino import MeshArtist
 from compas_tna.diagrams import FormDiagram
 
+from compas_rhino.helpers.selectors import VertexSelector
+from compas_rhino.helpers.selectors import EdgeSelector
+from compas_rhino.helpers.modifiers import VertexModifier
+from compas_rhino.helpers.modifiers import EdgeModifier
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2014 - Block Research Group, ETH Zurich'
@@ -18,6 +23,14 @@ __all__ = ['RhinoFormDiagram', ]
 
 
 class RhinoFormDiagram(FormDiagram):
+
+    select_vertex   = VertexSelector.select_vertex
+    select_vertices = VertexSelector.select_vertices
+    select_edge     = EdgeSelector.select_edge
+    select_edges    = EdgeSelector.select_edges
+
+    update_vertex_attributes = VertexModifier.update_vertex_attributes
+    update_edge_attributes   = EdgeModifier.update_edge_attributes
 
     def __init__(self):
         super(RhinoFormDiagram, self).__init__()
@@ -107,7 +120,20 @@ class RhinoFormDiagram(FormDiagram):
 
         lines = []
         for key, attr in self.vertices(True):
-            lines.append({})
+            if attr['is_anchor']:
+                continue
+
+            sw = attr['sw']
+            x, y, z = attr['x'], attr['y'], attr['z']
+            ep = x, y, z - scale * sw
+
+            lines.append({
+                'start' : (x, y, z),
+                'end'   : ep,
+                'name'  : "{}.selfweight.{}".format(name, key),
+                'color' : color,
+                'arrow' : 'end'
+            })
 
         compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
 
@@ -121,7 +147,20 @@ class RhinoFormDiagram(FormDiagram):
 
         lines = []
         for key, attr in self.vertices(True):
-            lines.append({})
+            if attr['is_anchor']:
+                continue
+
+            px, py, pz = attr['px'], attr['py'], attr['pz']
+            x, y, z = attr['x'], attr['y'], attr['z']
+            ep = x - scale * px, y - scale * py, z - scale * pz
+
+            lines.append({
+                'start' : (x, y, z),
+                'end'   : ep,
+                'name'  : "{}.load.{}".format(name, key),
+                'color' : color,
+                'arrow' : 'start'
+            })
 
         compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
 
@@ -138,7 +177,17 @@ class RhinoFormDiagram(FormDiagram):
             if attr['is_anchor']:
                 continue
 
-            lines.append({})
+            rx, ry, rz = attr['rx'], attr['ry'], attr['rz']
+            x, y, z = attr['x'], attr['y'], attr['z']
+            ep = x + scale * rx, y + scale * ry, z + scale * rz
+
+            lines.append({
+                'start' : (x, y, z),
+                'end'   : ep,
+                'name'  : "{}.residual.{}".format(name, key),
+                'color' : color,
+                'arrow' : 'end'
+            })
 
         compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
 
