@@ -78,4 +78,6 @@ form.data = formdata
 force.data = forcedata
 
 form.draw()
+form.show_reactions()
+
 force.draw()

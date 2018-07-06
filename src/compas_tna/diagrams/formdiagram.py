@@ -64,11 +64,17 @@ class FormDiagram(Mesh):
             'name'                       : 'FormDiagram',
             'color.vertex'               : (255, 255, 255),
             'color.edge'                 : (0, 0, 0),
-            'color.face'                 : (0, 255, 255),
+            'color.face'                 : (210, 210, 210),
             'color.vertex:is_anchor'     : (255, 0, 0),
             'color.vertex:is_fixed'      : (0, 0, 0),
             'color.vertex:is_supported'  : (255, 0, 0),
             'color.vertex:is_prescribed' : (0, 255, 0),
+            'color.reaction'             : (0, 255, 0),
+            'color.residual'             : (0, 255, 255),
+            'color.load'                 : (0, 0, 255),
+            'scale.reaction'             : 1.0,
+            'scale.residual'             : 1.0,
+            'scale.load'                 : 1.0,
         })
 
     def uv_index(self):

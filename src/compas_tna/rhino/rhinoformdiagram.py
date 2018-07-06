@@ -26,9 +26,14 @@ class RhinoFormDiagram(FormDiagram):
         })
 
     def draw(self):
+        vertexcolor = {}
+        for name in ('is_fixed', 'is_anchor'):
+            a = 'color.vertex:{}'.format(name)
+            vertexcolor.update({key: self.attributes[a] for key in self.vertices_where({name: True})})
+
         artist = MeshArtist(self, layer=self.attributes['layer'])
         artist.clear_layer()
-        artist.draw_vertices()
+        artist.draw_vertices(color=vertexcolor)
         artist.draw_edges(keys=list(self.edges_where({'is_edge': True})))
         artist.draw_faces(fkeys=list(self.faces_where({'is_unloaded': False})))
         artist.redraw()
@@ -39,17 +44,46 @@ class RhinoFormDiagram(FormDiagram):
 
     # anchor vertex
     # move vertex
-    # ...
+    # pull down vertex
+    # smooth pattern
+    # subdivide
+    # constrain vertex locations
 
     # ==========================================================================
     # visualisation
     # ==========================================================================
 
     def show_reactions(self):
-        pass
+        self.hide_reactions()
+
+        name = self.attributes['name']
+        layer = self.attributes['layer']
+        color = self.attributes['color.reaction']
+        scale = self.attributes['scale.reaction']
+
+        lines = []
+        for key, attr in self.vertices(True):
+            if not attr['is_anchor']:
+                continue
+
+            rx, ry, rz = attr['rx'], attr['ry'], attr['rz']
+            x, y, z = attr['x'], attr['y'], attr['z']
+            ep = x + scale * rx, y + scale * ry, z + scale * rz
+
+            lines.append({
+                'start' : (x, y, z),
+                'end'   : ep,
+                'name'  : "{}.reaction.{}".format(name, key),
+                'color' : color,
+                'arrow' : 'start'
+            })
+
+        compas_rhino.xdraw_lines(lines, layer=layer, clear=False, redraw=True)
 
     def hide_reactions(self):
-        pass
+        name = self.attributes['name']
+        guids = compas_rhino.get_objects(name="{}.reaction.*".format(name))
+        compas_rhino.delete_objects(guids)
 
     def show_selfweight(self):
         pass
