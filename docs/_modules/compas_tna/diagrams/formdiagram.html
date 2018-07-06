@@ -109,16 +109,21 @@
         <span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
             <span class="s1">&#39;name&#39;</span>                       <span class="p">:</span> <span class="s1">&#39;FormDiagram&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;anchor_degree&#39;</span>              <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s1">&#39;autofaces&#39;</span>                  <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
             <span class="s1">&#39;color.vertex&#39;</span>               <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
             <span class="s1">&#39;color.edge&#39;</span>                 <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.face&#39;</span>                 <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;color.face&#39;</span>                 <span class="p">:</span> <span class="p">(</span><span class="mi">210</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="mi">210</span><span class="p">),</span>
             <span class="s1">&#39;color.vertex:is_anchor&#39;</span>     <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
             <span class="s1">&#39;color.vertex:is_fixed&#39;</span>      <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
             <span class="s1">&#39;color.vertex:is_supported&#39;</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
             <span class="s1">&#39;color.vertex:is_prescribed&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.face:is_unloaded&#39;</span>     <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;color.reaction&#39;</span>             <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="s1">&#39;color.residual&#39;</span>             <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;color.load&#39;</span>                 <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;color.selfweight&#39;</span>           <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;scale.reaction&#39;</span>             <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">&#39;scale.residual&#39;</span>             <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">&#39;scale.load&#39;</span>                 <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s1">&#39;scale.selfweight&#39;</span>           <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
         <span class="p">})</span></div>
 
     <span class="k">def</span> <span class="nf">uv_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -157,8 +162,6 @@
     <span class="c1"># edges</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="c1"># def branches</span>
-
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># faces</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -171,91 +174,24 @@
         <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">]]</span>
 
     <span class="k">def</span> <span class="nf">fixed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">]]</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">]]</span>
         <span class="c1"># return [key for key, attr in self.vertices(True) if attr[&#39;is_fixed&#39;]]</span>
-
-    <span class="c1"># def prescribed(self):</span>
-    <span class="c1">#     return [key for key, attr in self.vertices(True) if attr[&#39;is_prescribed&#39;]]</span>
-
-    <span class="c1"># # this implies the vertices have an attribute &#39;is_constrained&#39;</span>
-    <span class="c1"># def constrained(self):</span>
-    <span class="c1">#     return [key for key, attr in self.vertices(True) if attr[&#39;cx&#39;] or attr[&#39;cy&#39;] or attr[&#39;cz&#39;]]</span>
-
-    <span class="c1"># def independent_edges(self):</span>
-    <span class="c1">#     return [(u, v) for u, v, attr in self.edges(True) if attr[&#39;is_ind&#39;]]</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Identify features of the formdiagram based on geometrical inputs.</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="c1"># def identify_anchors(self, points=None, anchor_degree=None):</span>
-    <span class="c1">#     if not anchor_degree:</span>
-    <span class="c1">#         anchor_degree = self.attributes[&#39;anchor_degree&#39;]</span>
-    <span class="c1">#     for key, attr in self.vertices(True):</span>
-    <span class="c1">#         attr[&#39;is_anchor&#39;] = self.vertex_degree(key) &lt;= anchor_degree</span>
-    <span class="c1">#     if points:</span>
-    <span class="c1">#         xyz_key = {}</span>
-    <span class="c1">#         for key in self.vertices():</span>
-    <span class="c1">#             gkey = geometric_key(self.vertex_coordinates(key))</span>
-    <span class="c1">#             xyz_key[gkey] = key</span>
-    <span class="c1">#         for xyz in points:</span>
-    <span class="c1">#             gkey = geometric_key(xyz)</span>
-    <span class="c1">#             if gkey in xyz_key:</span>
-    <span class="c1">#                 key = xyz_key[gkey]</span>
-    <span class="c1">#                 self.vertex[key][&#39;is_anchor&#39;] = True</span>
-
-    <span class="c1"># def identify_prescribed(self, points=None):</span>
-    <span class="c1">#     if points:</span>
-    <span class="c1">#         xyz_key = {}</span>
-    <span class="c1">#         for key in self.vertices():</span>
-    <span class="c1">#             gkey = geometric_key(self.vertex_coordinates(key))</span>
-    <span class="c1">#             xyz_key[gkey] = key</span>
-    <span class="c1">#         for xyz in points:</span>
-    <span class="c1">#             gkey = geometric_key(xyz)</span>
-    <span class="c1">#             if gkey in xyz_key:</span>
-    <span class="c1">#                 key = xyz_key[gkey]</span>
-    <span class="c1">#                 self.vertex[key][&#39;is_prescribed&#39;] = True</span>
-
-    <span class="c1"># def identify_fixed(self, points=None):</span>
-    <span class="c1">#     if points:</span>
-    <span class="c1">#         xyz_key = {}</span>
-    <span class="c1">#         for key in self.vertices():</span>
-    <span class="c1">#             gkey = geometric_key(self.vertex_coordinates(key))</span>
-    <span class="c1">#             xyz_key[gkey] = key</span>
-    <span class="c1">#         for xyz in points:</span>
-    <span class="c1">#             gkey = geometric_key(xyz)</span>
-    <span class="c1">#             if gkey in xyz_key:</span>
-    <span class="c1">#                 key = xyz_key[gkey]</span>
-    <span class="c1">#                 self.vertex[key][&#39;is_fixed&#39;] = True</span>
-
-    <span class="c1"># def identify_constraints(self, points=None):</span>
-    <span class="c1">#     if points:</span>
-    <span class="c1">#         xyz_key = {}</span>
-    <span class="c1">#         for key in self.vertices():</span>
-    <span class="c1">#             gkey = geometric_key(self.vertex_coordinates(key))</span>
-    <span class="c1">#             xyz_key[gkey] = key</span>
-    <span class="c1">#         for xyz in points:</span>
-    <span class="c1">#             gkey = geometric_key(xyz)</span>
-    <span class="c1">#             if gkey in xyz_key:</span>
-    <span class="c1">#                 key = xyz_key[gkey]</span>
-    <span class="c1">#                 self.vertex[key][&#39;cx&#39;] = 1.0</span>
-    <span class="c1">#                 self.vertex[key][&#39;cy&#39;] = 1.0</span>
-
-    <span class="c1"># def identify_loads(self):</span>
-    <span class="c1">#     pass</span>
-
-    <span class="c1"># def identify_open_edges(self):</span>
-    <span class="c1">#     pass</span>
-
-    <span class="c1"># def identify_holes(self):</span>
-    <span class="c1">#     pass</span>
-
-    <span class="c1"># def identify_creases(self):</span>
-    <span class="c1">#     pass</span>
+    <span class="k">def</span> <span class="nf">identify_vertices</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points</span><span class="p">):</span>
+        <span class="n">xyz_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_xyz</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+            <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">gkey</span> <span class="ow">in</span> <span class="n">xyz_key</span><span class="p">:</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">xyz_key</span><span class="p">[</span><span class="n">gkey</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vertex</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
 <span class="c1"># ==============================================================================</span>
-<span class="c1"># Debugging</span>
+<span class="c1"># Main</span>
 <span class="c1"># ==============================================================================</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -359,7 +295,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Block Research Group - ETH Zurich.
-      Last updated on Jul 05, 2018.
+      Last updated on Jul 06, 2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
     </div>
   </body>
