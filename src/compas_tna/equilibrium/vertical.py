@@ -34,13 +34,41 @@ __all__ = [
     'vertical_from_zmax',
     'vertical_from_formforce',
     'vertical_from_qind',
+    'vertical_from_zmax_xfunc',
+    'vertical_from_formforce_xfunc',
+    'vertical_from_qind_xfunc',
 ]
 
 
 EPS = 1 / sys.float_info.epsilon
 
 
-def vertical_from_zmax(formdata, forcedata, zmax=None, kmax=100, tol=1e-6, density=1.0, display=True):
+def vertical_from_zmax_xfunc(formdata, forcedata, *args, **kwargs):
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
+    vertical_from_zmax(form, force, *args, **kwargs)
+    return form.to_data(), force.to_data()
+
+
+def vertical_from_formforce_xfunc(formdata, forcedata, *args, **kwargs):
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
+    vertical_from_formforce(form, force, *args, **kwargs)
+    return form.to_data(), force.to_data()
+
+
+def vertical_from_qind_xfunc(formdata, *args, **kwargs):
+    from compas_tna.diagrams import FormDiagram
+    form = FormDiagram.from_data(formdata)
+    vertical_from_qind(form, *args, **kwargs)
+    return form.to_data()
+
+
+def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, display=True):
     """For the given form and force diagram, compute the scale of the force
     diagram for which the highest point of the thrust network is equal to a
     specified value.
@@ -68,12 +96,6 @@ def vertical_from_zmax(formdata, forcedata, zmax=None, kmax=100, tol=1e-6, densi
         If True, information about the current iteration will be displayed.
 
     """
-    from compas_tna.diagrams import FormDiagram
-    from compas_tna.diagrams import ForceDiagram
-
-    form = FormDiagram.from_data(formdata)
-    force = ForceDiagram.from_data(forcedata)
-
     tol2 = tol ** 2
     if not zmax:
         # use the bounding box for this
@@ -170,10 +192,8 @@ def vertical_from_zmax(formdata, forcedata, zmax=None, kmax=100, tol=1e-6, densi
     # --------------------------------------------------------------------------
     force.attributes['scale'] = scale
 
-    return form.to_data(), force.to_data()
 
-
-def vertical_from_formforce(formdata, forcedata, kmax=100, tol=1e-6, density=1.0, display=True):
+def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, display=True):
     """For the given form and force diagram, compute the thrust network.
 
     Parameters
@@ -195,11 +215,6 @@ def vertical_from_formforce(formdata, forcedata, kmax=100, tol=1e-6, density=1.0
         If True, information about the current iteration will be displayed.
 
     """
-    from compas_tna.diagrams import FormDiagram
-    from compas_tna.diagrams import ForceDiagram
-
-    form = FormDiagram.from_data(formdata)
-    force = ForceDiagram.from_data(forcedata)
     # --------------------------------------------------------------------------
     # FormDiagram
     # --------------------------------------------------------------------------
@@ -264,8 +279,6 @@ def vertical_from_formforce(formdata, forcedata, kmax=100, tol=1e-6, density=1.0
         attr['f'] = f[index, 0]
         attr['l'] = l[index, 0]
 
-    return form.to_data(), force.to_data()
-
 
 def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=True):
     """Compute vertical equilibrium from the force densities of the independent edges.
@@ -295,12 +308,6 @@ def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=Tr
         indeterminate frameworks. International Journal of Solids Structures 1986:22(4):409-28.
 
     """
-    from compas_tna.diagrams import FormDiagram
-    from compas_tna.diagrams import ForceDiagram
-
-    form = FormDiagram.from_data(formdata)
-    force = ForceDiagram.from_data(forcedata)
-
     k_i     = form.key_index()
     uv_i    = form.uv_index()
     vcount  = form.number_of_vertices()
@@ -353,8 +360,6 @@ def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=Tr
         attr['q'] = q[index, 0]
         attr['f'] = f[index, 0]
         attr['l'] = l[index, 0]
-
-    return form.to_data(), force.to_data()
 
 
 # ==============================================================================

@@ -34,7 +34,7 @@ class LoadUpdater(object):
         self.thickness = thickness
         self.density = density
         self.live = live
-        self.is_unloaded = {fkey: mesh.get_face_attribute(fkey, 'is_unloaded') for fkey in mesh.faces()}
+        self.is_loaded = {fkey: mesh.get_face_attribute(fkey, 'is_loaded') for fkey in mesh.faces()}
         self.key_index = self.mesh.key_index()
 
     def __call__(self, p, xyz):
@@ -47,11 +47,11 @@ class LoadUpdater(object):
     # using a face-vertex incidence matrix
     def _tributary_areas(self, xyz):
         mesh = self.mesh
-        is_unloaded = self.is_unloaded
+        is_loaded = self.is_loaded
         key_index = self.key_index
         fkey_centroid = {}
         for fkey in mesh.faces():
-            if is_unloaded[fkey]:
+            if not is_loaded[fkey]:
                 continue
             fkey_centroid[fkey] = array(mesh.face_centroid(fkey))
         areas = zeros((xyz.shape[0], 1))

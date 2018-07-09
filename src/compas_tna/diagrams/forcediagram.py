@@ -83,11 +83,11 @@ if __name__ == '__main__':
     import compas
 
     from compas.numerical import fd_numpy
-    from compas.plotters import MeshPlotter
     from compas.utilities import pairwise
 
-    from compas_tna.tna.diagrams.formdiagram import FormDiagram
-    from compas_tna.tna.algorithms.horizontal import horizontal_nodal
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.equilibrium import horizontal_nodal
+    from compas_tna.viewers import Viewer2
 
     form = FormDiagram.from_obj(compas.get('faces.obj'))
 
@@ -110,7 +110,7 @@ if __name__ == '__main__':
             form.set_edge_attribute((u, v), 'q', 10)
 
     for vertices in unsupported:
-        fkey = form.add_face(vertices, is_unloaded=True)
+        fkey = form.add_face(vertices, is_loaded=False)
 
     for vertices in unsupported:
         u = vertices[-1]
@@ -132,8 +132,11 @@ if __name__ == '__main__':
 
     force = ForceDiagram.from_formdiagram(form)
 
-    plotter = MeshPlotter(force)
-    plotter.draw_vertices(text='key')
-    plotter.draw_faces()
-    plotter.draw_edges()
-    plotter.show()
+    # visualise
+
+    viewer = Viewer2(form, force)
+
+    viewer.setup()
+    viewer.draw_form()
+    viewer.draw_force()
+    viewer.show()

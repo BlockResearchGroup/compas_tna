@@ -23,7 +23,12 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = []
+__all__ = ['Viewer2', ]
+
+
+# the viewer should hold two instances of the plotter
+# with coordinated setup of axes
+# => everything you can do with a plotter, you can do for both form and force
 
 
 class Viewer2(object):
@@ -31,7 +36,24 @@ class Viewer2(object):
     def __init__(self, form, force):
         self.form = form
         self.force = force
-        self.defaults = {}
+        self.default = {
+            'facecolor'          : '#ffffff',
+            'edgecolor'          : '#000000',
+            'vertexcolor'        : '#ffffff',
+            'vertexsize'         : 0.1,
+            'edgewidth'          : 1.0,
+            'compressioncolor'   : '#0000ff',
+            'tensioncolor'       : '#ff0000',
+            'externalforcecolor' : '#00ff00',
+            'externalforcewidth' : 2.0,
+            'textcolor'          : '#000000',
+            'fontsize'           : 8,
+            'pointsize'          : 0.1,
+            'linewidth'          : 1.0,
+            'pointcolor'         : '#ffffff',
+            'linecolor'          : '#000000',
+            'linestyle'          : '-',
+        }
 
     def show(self):
         plt.show()
@@ -62,8 +84,8 @@ class Viewer2(object):
                   vertices_on=True,
                   edges_on=True,
                   faces_on=False,
-                  forces_on=True,
-                  arrows_on=True,
+                  forces_on=False,
+                  arrows_on=False,
                   vertexcolor=None,
                   edgecolor=None,
                   facecolor=None,
@@ -71,51 +93,213 @@ class Viewer2(object):
                   vertexlabel=None,
                   facelabel=None,
                   vertexsize=None,
-                  forcescale=1.0,
-                  lines=None,
-                  points=None):
+                  forcescale=1.0):
 
         vertexlabel = vertexlabel or {}
         edgelabel   = edgelabel or {}
         facelabel   = facelabel or {}
-        vertexsize  = size_to_sizedict(vertexsize, self.form.vertices(), self.default_vertexsize)
-        vertexcolor = color_to_colordict(vertexcolor, self.form.vertices(), self.default_vertexcolor)
-        edgecolor   = color_to_colordict(edgecolor, self.form.edges_where(), self.default_edgecolor)
-        facecolor   = color_to_colordict(facecolor, self.form.faces_where(), self.default_facecolor)
+
+        vertexsize  = size_to_sizedict(vertexsize, self.form.vertices(), self.default['vertexsize'])
+        vertexcolor = color_to_colordict(vertexcolor, self.form.vertices(), self.default['vertexcolor'])
+        edgecolor   = color_to_colordict(edgecolor, self.form.edges_where({'is_edge': True}), self.default['edgecolor'])
+        facecolor   = color_to_colordict(facecolor, self.form.faces_where({'is_loaded': True}), self.default['facecolor'])
 
         x = self.form.get_vertices_attribute('x')
         y = self.form.get_vertices_attribute('y')
 
-        if lines:
-            x += [line['start'][0] for line in lines]
-            x += [line['end'][0] for line in lines]
-            y += [line['start'][1] for line in lines]
-            y += [line['end'][1] for line in lines]
+        xmin, ymin = min(x), min(y)
+        xmax, ymax = max(x), max(y)
+
+        dx, dy = -xmin, -ymin
+        scale  = max(10.0 / fabs(xmax - xmin), 10.0 / fabs(ymax - ymin))
+        key_xy = {k: [scale * (a['x'] + dx), scale * (a['y'] + dy)] for k, a in self.form.vertices(True)}
+
+        # vertices
+
+        if vertices_on:
+            points = []
+            for key, attr in self.form.vertices(True):
+                bgcolor = vertexcolor[key]
+                points.append({
+                    'pos'       : key_xy[key],
+                    'radius'    : vertexsize[key],
+                    'facecolor' : vertexcolor[key],
+                    'edgecolor' : self.default['edgecolor'],
+                    'linewidth' : self.default['edgewidth'] * 0.5,
+                    'text'      : None if key not in vertexlabel else str(vertexlabel[key]),
+                    'textcolor' : '#000000' if is_color_light(bgcolor) else '#ffffff',
+                    'fontsize'  : self.default['fontsize'],
+                })
+            draw_xpoints_xy(points, self.ax1)
+
+        # edges
+
+        if edges_on:
+            leaves = set(self.form.leaves())
+            lines  = []
+            arrows = []
+
+            for u, v in self.form.edges_where({'is_edge': True}):
+
+                sp = key_xy[u]
+                ep = key_xy[v]
+
+                if u in leaves or v in leaves:
+                    text  = None if (u, v) not in edgelabel else str(edgelabel[(u, v)])
+
+                    arrows.append({
+                        'start'    : sp,
+                        'end'      : ep,
+                        'width'    : self.default['externalforcewidth'],
+                        'color'    : self.default['externalforcecolor'],
+                        'text'     : text,
+                        'fontsize' : self.default['fontsize']
+                    })
+
+                else:
+                    if forces_on:
+                        force = self.form.get_edge_attribute((u, v), 'f')
+                        width = forcescale * fabs(force)
+                        color = self.default['tensioncolor'] if force > 0 else self.default['compressioncolor']
+                        text  = None if (u, v) not in edgelabel else str(edgelabel[(u, v)])
+
+                        lines.append({
+                            'start'    : sp,
+                            'end'      : ep,
+                            'width'    : width,
+                            'color'    : color,
+                            'text'     : text,
+                            'fontsize' : self.default['fontsize']
+                        })
+
+                    arrows.append({
+                        'start' : sp,
+                        'end'   : ep,
+                        'width' : self.default['edgewidth']
+                    })
+
+            if arrows:
+                if arrows_on:
+                    draw_xarrows_xy(arrows, self.ax1)
+                else:
+                    draw_xlines_xy(arrows, self.ax1)
+            if lines:
+                draw_xlines_xy(lines, self.ax1, alpha=0.5)
+
+        # labels
+
+        # labels = []
+
+        # for fkey in self.form.faces():
+        #     x, y, z = self.form.face_centroid(fkey)
+
+        #     labels.append({
+        #         'pos'       : [x, y],
+        #         'radius'    : self.default['vertexsize'] * 2.0,
+        #         'facecolor' : '#cccccc',
+        #         'edgecolor' : '#000000',
+        #         'linewidth' : self.default['edgewidth'] * 0.25,
+        #         'text'      : fkey,
+        #         'textcolor' : '#000000' if is_color_light(bgcolor) else '#ffffff',
+        #         'fontsize'  : self.default['fontsize'],
+        #     })
+
+        # draw_xpoints_xy(labels, self.ax1)
+
+    def draw_force(self,
+                   vertices_on=True,
+                   edges_on=True,
+                   faces_on=False,
+                   forces_on=False,
+                   arrows_on=False,
+                   vertexcolor=None,
+                   edgecolor=None,
+                   facecolor=None,
+                   edgelabel=None,
+                   vertexlabel=None,
+                   facelabel=None,
+                   vertexsize=None):
+
+        vertexlabel = vertexlabel or {}
+        edgelabel   = edgelabel or {}
+        facelabel   = facelabel or {}
+
+        vertexsize  = size_to_sizedict(vertexsize, self.force.vertices(), self.default['vertexsize'])
+        vertexcolor = color_to_colordict(vertexcolor, self.force.vertices(), self.default['vertexcolor'])
+        edgecolor   = color_to_colordict(edgecolor, self.force.edges(), self.default['edgecolor'])
+        facecolor   = color_to_colordict(facecolor, self.force.faces(), self.default['facecolor'])
+
+        x = self.force.get_vertices_attribute('x')
+        y = self.force.get_vertices_attribute('y')
 
         xmin, ymin = min(x), min(y)
         xmax, ymax = max(x), max(y)
+
         dx, dy = -xmin, -ymin
-        scale  = max(fabs(xmax - xmin) / 10.0, fabs(ymax - ymin) / 10.0)
+        scale  = max(10.0 / fabs(xmax - xmin), 10.0 / fabs(ymax - ymin))
+        key_xy = {k: [scale * (a['x'] + dx), scale * (a['y'] + dy)] for k, a in self.force.vertices(True)}
+
+        # vertices
 
         if vertices_on:
-            _points = []
-            for key, attr in self.form.vertices(True):
+            points = []
+            for key, attr in self.force.vertices(True):
                 bgcolor = vertexcolor[key]
-                _points.append({
-                    'pos'       : [(attr['x'] + dx) / scale, (attr['y'] + dy) / scale],
+                points.append({
+                    'pos'       : key_xy[key],
                     'radius'    : vertexsize[key],
                     'facecolor' : vertexcolor[key],
-                    'edgecolor' : self.default_edgecolor,
-                    'linewidth' : self.default_edgewidth * 0.5,
+                    'edgecolor' : self.default['edgecolor'],
+                    'linewidth' : self.default['edgewidth'] * 0.5,
                     'text'      : None if key not in vertexlabel else str(vertexlabel[key]),
                     'textcolor' : '#000000' if is_color_light(bgcolor) else '#ffffff',
-                    'fontsize'  : self.default_fontsize,
+                    'fontsize'  : self.default['fontsize'],
                 })
-            draw_xpoints_xy(_points, self.ax1)
+            draw_xpoints_xy(points, self.ax2)
 
+        # edges
 
-    def draw_force(self):
-        pass
+        if edges_on:
+            leaves = set(self.form.leaves())
+            arrows = []
+            for u, v, attr in self.force.edges(True):
+                sp = key_xy[u]
+                ep = key_xy[v]
+
+                arrows.append({
+                    'start' : sp,
+                    'end'   : ep,
+                    'color' : self.default['edgecolor'],
+                    'width' : self.default['edgewidth'],
+                })
+
+            if arrows_on:
+                draw_xarrows_xy(arrows, self.ax2)
+            else:
+                draw_xlines_xy(arrows, self.ax2)
+
+        # labels
+
+        labels = []
+
+        for fkey in self.force.faces():
+            x, y, z = self.force.face_centroid(fkey)
+
+            text = fkey
+
+            labels.append({
+                'pos'       : [scale * (x + dx), scale * (y + dy)],
+                'radius'    : self.default['vertexsize'] * 2.0,
+                'facecolor' : '#cccccc',
+                'edgecolor' : '#000000',
+                'linewidth' : self.default['edgewidth'] * 0.25,
+                'text'      : text,
+                'textcolor' : '#000000' if is_color_light(bgcolor) else '#ffffff',
+                'fontsize'  : self.default['fontsize'],
+            })
+
+        draw_xpoints_xy(labels, self.ax2)
+
 
 
 # ==============================================================================

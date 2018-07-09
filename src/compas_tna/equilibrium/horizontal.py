@@ -32,14 +32,28 @@ __email__      = 'vanmelet@ethz.ch'
 
 __all__ = [
     'horizontal',
+    'horizontal_xfunc',
     'horizontal_nodal',
+    'horizontal_nodal_xfunc',
 ]
 
 
 EPS = 1 / sys.float_info.epsilon
 
 
-def horizontal(formdata, forcedata, alpha=100.0, kmax=100, display=True):
+def horizontal_xfunc(formdata, forcedata, *args, **kwargs):
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
+
+    horizontal(form, force, *args, **kwargs)
+
+    return form.to_data(), force.to_data()
+
+
+def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     r"""Compute horizontal equilibrium.
 
     This implementation is based on the following formulation
@@ -66,11 +80,6 @@ def horizontal(formdata, forcedata, alpha=100.0, kmax=100, display=True):
         Display information about the current iteration (the default is True).
 
     """
-    from compas_tna.diagrams import FormDiagram
-    from compas_tna.diagrams import ForceDiagram
-
-    form = FormDiagram.from_data(formdata)
-    force = ForceDiagram.from_data(forcedata)
     # --------------------------------------------------------------------------
     # alpha == 1 : form diagram fixed
     # alpha == 0 : force diagram fixed
@@ -172,16 +181,26 @@ def horizontal(formdata, forcedata, alpha=100.0, kmax=100, display=True):
         attr['x'] = _xy[i, 0]
         attr['y'] = _xy[i, 1]
 
+
+def horizontal_nodal_xfunc(formdata, forcedata, *args, **kwargs):
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
+
+    horizontal_nodal(form, force, *args, **kwargs)
+
     return form.to_data(), force.to_data()
 
 
-def horizontal_nodal(formdata, forcedata, alpha=100, kmax=100, display=True):
+def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     """Compute horizontal equilibrium using a node-per-node approach.
 
     Parameters
     ----------
-    form : compas_tna.diagrams.formdiagram.FormDiagram
-    force : compas_tna.diagrams.forcediagram.ForceDiagram
+    form : compas_tna.diagrams.FormDiagram
+    force : compas_tna.diagrams.ForceDiagram
     alpha : float
         Weighting factor for computation of the target vectors (the default is
         100.0, which implies that the target vectors are the edges of the form diagram).
@@ -192,12 +211,6 @@ def horizontal_nodal(formdata, forcedata, alpha=100, kmax=100, display=True):
         Display information about the current iteration (the default is True).
 
     """
-    from compas_tna.diagrams import FormDiagram
-    from compas_tna.diagrams import ForceDiagram
-
-    form = FormDiagram.from_data(formdata)
-    force = ForceDiagram.from_data(forcedata)
-    
     alpha = float(alpha) / 100.0
     alpha = max(0., min(1., alpha))
     # --------------------------------------------------------------------------
@@ -292,8 +305,6 @@ def horizontal_nodal(formdata, forcedata, alpha=100, kmax=100, display=True):
         attr['x'] = _xy[i, 0]
         attr['y'] = _xy[i, 1]
 
-    return form.to_data(), force.to_data()
-
 
 # ==============================================================================
 # Main
@@ -304,12 +315,13 @@ if __name__ == '__main__':
     import compas
 
     from compas.numerical import fd_numpy
-    from compas.plotters import MeshPlotter
     from compas.utilities import pairwise
 
     from compas_tna.diagrams import FormDiagram
     from compas_tna.diagrams import ForceDiagram
     from compas_tna.equilibrium import horizontal_nodal
+
+    from compas_tna.viewers import Viewer2
 
     form = FormDiagram.from_obj(compas.get('faces.obj'))
 
@@ -332,7 +344,7 @@ if __name__ == '__main__':
             form.set_edge_attribute((u, v), 'q', 10)
 
     for vertices in unsupported:
-        fkey = form.add_face(vertices, is_unloaded=True)
+        fkey = form.add_face(vertices, is_loaded=False)
 
     for vertices in unsupported:
         u = vertices[-1]
@@ -352,15 +364,22 @@ if __name__ == '__main__':
         attr['y'] = xyz[key][1]
         attr['z'] = xyz[key][2]
 
+    # force
+
     force = ForceDiagram.from_formdiagram(form)
+
+    # equilibrium
 
     formdata, forcedata = horizontal_nodal(form.to_data(), force.to_data())
 
     form.data = formdata
     force.data = forcedata
 
-    plotter = MeshPlotter(force)
-    plotter.draw_vertices(text='key')
-    plotter.draw_faces()
-    plotter.draw_edges(text={(u, v): "{:.2f}".format(force.edge_length(u, v)) for u, v in force.edges()})
-    plotter.show()
+    # visualise
+
+    viewer = Viewer2(form, force)
+
+    viewer.setup()
+    viewer.draw_form()
+    viewer.draw_force(vertexsize=0.05)
+    viewer.show()

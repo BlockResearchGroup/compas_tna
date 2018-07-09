@@ -5,6 +5,8 @@ from __future__ import division
 from compas.datastructures import Mesh
 from compas.utilities import geometric_key
 
+from compas.datastructures.mesh.mesh import TPL
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2014 - Block Research Group, ETH Zurich'
@@ -58,7 +60,7 @@ class FormDiagram(Mesh):
             'is_edge': True,
         })
         self.default_face_attributes.update({
-            'is_unloaded': False
+            'is_loaded': True
         })
         self.attributes.update({
             'name'                       : 'FormDiagram',
@@ -78,6 +80,19 @@ class FormDiagram(Mesh):
             'scale.load'                 : 1.0,
             'scale.selfweight'           : 1.0,
         })
+
+    def __str__(self):
+        """Compile a summary of the mesh."""
+        numv = self.number_of_vertices()
+        nume = len(list(self.edges_where({'is_edge': True})))
+        numf = self.number_of_faces()
+
+        vmin = self.vertex_min_degree()
+        vmax = self.vertex_max_degree()
+        fmin = self.face_min_degree()
+        fmax = self.face_max_degree()
+
+        return TPL.format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
 
     def uv_index(self):
         """Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)
@@ -110,6 +125,13 @@ class FormDiagram(Mesh):
 
         """
         return dict(enumerate(self.edges_where({'is_edge': True})))
+
+    # --------------------------------------------------------------------------
+    # vertices
+    # --------------------------------------------------------------------------
+
+    def leaves(self):
+        return self.vertices_where({'vertex_degree': 1})
 
     # --------------------------------------------------------------------------
     # edges
@@ -150,9 +172,12 @@ class FormDiagram(Mesh):
 if __name__ == '__main__':
 
     import compas
+
     from compas.numerical import fd_numpy
-    from compas.plotters import MeshPlotter
     from compas.utilities import pairwise
+
+    from compas_tna.viewers import Viewer2
+
 
     form = FormDiagram.from_obj(compas.get('faces.obj'))
 
@@ -185,7 +210,7 @@ if __name__ == '__main__':
     # the face is also not really part of the structure and therefore not loaded
 
     for vertices in unsupported:
-        fkey = form.add_face(vertices, is_unloaded=True)
+        fkey = form.add_face(vertices, is_loaded=False)
 
     for vertices in unsupported:
         u = vertices[-1]
@@ -207,8 +232,10 @@ if __name__ == '__main__':
         attr['y'] = xyz[key][1]
         attr['z'] = xyz[key][2]
 
-    plotter = MeshPlotter(form)
-    plotter.draw_vertices(text='key', facecolor={key: '#ff0000' for key in form.vertices_where({'is_anchor': True})})
-    plotter.draw_faces()
-    plotter.draw_edges(color={uv: '#ff0000' for uv in form.edges_where({'is_edge': False})})
-    plotter.show()
+    # visualise
+
+    viewer = Viewer2(form, None)
+
+    viewer.setup()
+    viewer.draw_form()
+    viewer.show()
