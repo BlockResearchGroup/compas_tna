@@ -44,12 +44,18 @@ EPS = 1 / sys.float_info.epsilon
 def horizontal_xfunc(formdata, forcedata, *args, **kwargs):
     from compas_tna.diagrams import FormDiagram
     from compas_tna.diagrams import ForceDiagram
-
     form = FormDiagram.from_data(formdata)
     force = ForceDiagram.from_data(forcedata)
-
     horizontal(form, force, *args, **kwargs)
+    return form.to_data(), force.to_data()
 
+
+def horizontal_nodal_xfunc(formdata, forcedata, *args, **kwargs):
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
+    horizontal_nodal(form, force, *args, **kwargs)
     return form.to_data(), force.to_data()
 
 
@@ -180,18 +186,6 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
         i = _k_i[key]
         attr['x'] = _xy[i, 0]
         attr['y'] = _xy[i, 1]
-
-
-def horizontal_nodal_xfunc(formdata, forcedata, *args, **kwargs):
-    from compas_tna.diagrams import FormDiagram
-    from compas_tna.diagrams import ForceDiagram
-
-    form = FormDiagram.from_data(formdata)
-    force = ForceDiagram.from_data(forcedata)
-
-    horizontal_nodal(form, force, *args, **kwargs)
-
-    return form.to_data(), force.to_data()
 
 
 def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):

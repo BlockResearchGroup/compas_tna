@@ -33,6 +33,8 @@ lines    = [(vertices[u], vertices[v], 0) for u, v in edges]
 form = FormDiagram.from_lines(lines)
 
 # ==============================================================================
+# duality.py 289
+# mesh.py 442
 
 boundary = form.vertices_on_boundary(ordered=True)
 
