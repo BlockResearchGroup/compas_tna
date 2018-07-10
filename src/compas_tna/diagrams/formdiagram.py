@@ -265,7 +265,6 @@ class FormDiagram(Mesh):
 
     def relax(self, fixed):
         from compas.numerical import fd_numpy
-
         key_index = self.key_index()
         vertices = self.get_vertices_attributes('xyz')
         edges = list(self.edges_where({'is_edge': True}))
@@ -299,71 +298,4 @@ class FormDiagram(Mesh):
 
 if __name__ == '__main__':
 
-    import compas
-
-    from compas.numerical import fd_numpy
-    from compas.utilities import pairwise
-
-    from compas_tna.viewers import Viewer2
-
-
-    form = FormDiagram.from_obj(compas.get('faces.obj'))
-
-    # anchors can be identified by matching geometrical locations
-    # or by vertex degree
-
-    for key in form.vertices_where({'vertex_degree': 2}):
-        form.vertex[key]['is_anchor'] = True
-
-    # unsupported edges are on the boundary
-    # between anchors
-
-    boundary = form.vertices_on_boundary()
-
-    unsupported = [[]]
-    for key in boundary:
-        unsupported[-1].append(key)
-        if form.vertex[key]['is_anchor']:
-            unsupported.append([key])
-
-    unsupported[-1] += unsupported[0]
-    del unsupported[0]
-
-    for vertices in unsupported:
-        for u, v in pairwise(vertices):
-            form.set_edge_attribute((u, v), 'q', 10)
-
-    # there should be a face on the outside of an unsupported boundary
-    # the outside edge of the face is not a real edge
-    # the face is also not really part of the structure and therefore not loaded
-
-    for vertices in unsupported:
-        fkey = form.add_face(vertices, is_loaded=False)
-
-    for vertices in unsupported:
-        u = vertices[-1]
-        v = vertices[0]
-        form.set_edge_attribute((u, v), 'is_edge', False)
-
-    # compute horizontal equilibrium
-
-    vertices = form.get_vertices_attributes('xyz')
-    edges = list(form.edges_where({'is_edge': True}))
-    fixed = list(form.vertices_where({'is_anchor': True}))
-    qs = [form.get_edge_attribute(uv, 'q') for uv in edges]
-    loads = form.get_vertices_attributes(('px', 'py', 'pz'), (0, 0, 0))
-
-    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, qs, loads)
-
-    for key, attr in form.vertices(True):
-        attr['x'] = xyz[key][0]
-        attr['y'] = xyz[key][1]
-        attr['z'] = xyz[key][2]
-
-    # visualise
-
-    viewer = Viewer2(form, None)
-
-    viewer.setup()
-    viewer.draw_form()
-    viewer.show()
+    pass

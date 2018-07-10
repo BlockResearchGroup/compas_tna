@@ -27,8 +27,6 @@ from compas.geometry import length_vector_xy
 
 from compas.geometry import convex_hull_xy
 
-from compas.plotters import MeshPlotter
-
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 
@@ -58,15 +56,17 @@ faces    = obj.parser.faces
 
 form = FormDiagram.from_vertices_and_faces(vertices, faces)
 
+# ==============================================================================
+
 form.collapse_small_edges(tol=0.5)
 
 # ==============================================================================
 
 boundaries = form.vertices_on_boundary()
 
-fixed = set(list(flatten(boundaries)))
+# ==============================================================================
 
-form.relax(fixed=fixed)
+form.relax(fixed=set(list(flatten(boundaries))))
 
 # ==============================================================================
 
@@ -163,16 +163,6 @@ for vertices in unsupported:
 # ==============================================================================
 
 force = ForceDiagram.from_formdiagram(form)
-
-# plotter = MeshPlotter(form)
-
-# plotter.draw_vertices(radius=0.02, text={key: form.vertex_degree(key) for key in form.vertices_where({'is_anchor': True})})
-# plotter.draw_edges()
-# plotter.draw_faces()
-
-# plotter.show()
-
-# print(form, force)
 
 horizontal_nodal(form, force)
 vertical_from_zmax(form, force)

@@ -57,7 +57,7 @@ for key in form.vertices_where({'vertex_degree': 2}):
 # split boundary into unsuppported openings
 # ==============================================================================
 
-boundary = form.vertices_on_boundary(ordered=True)
+boundary = form.vertices_on_boundary()[0]
 
 unsupported = [[]]
 for key in boundary:

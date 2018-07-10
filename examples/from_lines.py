@@ -36,7 +36,7 @@ form = FormDiagram.from_lines(lines)
 # duality.py 289
 # mesh.py 442
 
-boundary = form.vertices_on_boundary(ordered=True)
+boundary = form.vertices_on_boundary()[0]
 
 for u, v in pairwise(boundary + boundary[0:1]):
 
@@ -61,7 +61,10 @@ viewer = Viewer2(form, force)
 
 viewer.setup()
 
-viewer.draw_form(vertexlabel={key: "{:.1f}".format(attr['z']) for key, attr in form.vertices(True)}, vertexsize=0.2)
+viewer.draw_form(
+    vertexlabel={key: "{:.1f}".format(attr['z']) for key, attr in form.vertices(True)},
+    vertexsize=0.2
+)
 viewer.draw_force()
 
 viewer.show()
