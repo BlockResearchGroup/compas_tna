@@ -136,9 +136,11 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100):
                 if (i, j) in ij_e:
                     e = ij_e[(i, j)]
                     t = targets[e]
-                else:
+                elif (j, i) in ij_e:
                     e = ij_e[(j, i)]
                     t = -targets[e]
+                else:
+                    continue
 
                 xy[j] += xy0[i] + l[e, 0] * t
 

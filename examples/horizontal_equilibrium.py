@@ -8,6 +8,8 @@ import compas_tna
 from compas.numerical import fd_numpy
 from compas.utilities import pairwise
 
+from compas.geometry import convex_hull_xy
+
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 
@@ -97,6 +99,10 @@ for vertices in unsupported:
 # ==============================================================================
 
 relax_formdiagram(form)
+
+hull = convex_hull_xy([form.vertex_coordinates(key) for key in boundary])
+
+print(hull)
 
 # ==============================================================================
 

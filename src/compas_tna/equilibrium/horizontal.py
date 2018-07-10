@@ -96,7 +96,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     # --------------------------------------------------------------------------
     k_i   = form.key_index()
     uv_i  = form.uv_index()
-    fixed = set(form.anchors() + form.fixed())  # do something about this!
+    fixed = set(form.anchors() + form.fixed())
     fixed = [k_i[key] for key in fixed]
     edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
     xy    = array(form.get_vertices_attributes('xy'), dtype=float64)
@@ -175,7 +175,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
         i = k_i[key]
         attr['x'] = xy[i, 0]
         attr['y'] = xy[i, 1]
-    for u, v, attr in form.edges_where({'is_edge': True}):
+    for u, v, attr in form.edges_where({'is_edge': True}, True):
         i = uv_i[(u, v)]
         attr['q'] = q[i, 0]
         attr['a'] = a[i]
@@ -214,7 +214,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     uv_i   = form.uv_index()
     i_nbrs = {k_i[key]: [k_i[nbr] for nbr in form.vertex_neighbours(key)] for key in form.vertices()}
     ij_e   = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
-    fixed  = set(form.anchors() + form.fixed())  # do something about this!
+    fixed  = set(form.anchors() + form.fixed())
     fixed  = [k_i[key] for key in fixed]
     edges  = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
     xy     = array(form.get_vertices_attributes('xy'), dtype=float64)
@@ -284,8 +284,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
         i = k_i[key]
         attr['x'] = xy[i, 0]
         attr['y'] = xy[i, 1]
-    for u, v in form.edges_where({'is_edge': True}):
-        attr = form.edgedata[u, v]
+    for u, v, attr in form.edges_where({'is_edge': True}, True):
         i = uv_i[(u, v)]
         attr['q'] = q[i, 0]
         attr['f'] = f[i, 0]

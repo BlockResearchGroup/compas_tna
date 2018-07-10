@@ -3,19 +3,19 @@ from __future__ import absolute_import
 from __future__ import division
 
 import compas
-import compas_rhino
 import compas_tna
 
-from compas.utilities import XFunc
+from compas.numerical import fd_numpy
 from compas.utilities import pairwise
+from compas.utilities import i_to_red
 
-from compas_tna.rhino import RhinoFormDiagram
-from compas_tna.rhino import RhinoForceDiagram
+from compas_tna.diagrams import FormDiagram
+from compas_tna.diagrams import ForceDiagram
 
-fd_numpy = XFunc('compas.numerical.fd_numpy')
-horizontal_nodal = XFunc('compas_tna.equilibrium.horizontal_nodal')
-vertical_from_formforce = XFunc('compas_tna.equilibrium.vertical_from_formforce')
-vertical_from_zmax = XFunc('compas_tna.equilibrium.vertical_from_zmax')
+from compas_tna.equilibrium import horizontal_nodal
+from compas_tna.equilibrium import vertical_from_zmax
+
+from compas_tna.viewers import Viewer2
 
 
 __author__    = ['Tom Van Mele', ]
@@ -27,12 +27,37 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = []
 
 
-form = RhinoFormDiagram.from_obj(compas.get('faces.obj'))
+def relax_formdiagram(form):
+    vertices = form.get_vertices_attributes('xyz')
+    edges = list(form.edges_where({'is_edge': True}))
+    fixed = list(form.vertices_where({'is_anchor': True}))
+    qs = [form.get_edge_attribute(uv, 'q') for uv in edges]
+    loads = form.get_vertices_attributes(('px', 'py', 'pz'), (0, 0, 0))
+    xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, qs, loads)
+    for key, attr in form.vertices(True):
+        attr['x'] = xyz[key][0]
+        attr['y'] = xyz[key][1]
+        attr['z'] = xyz[key][2]
+
+
+# ==============================================================================
+# init form
+# ==============================================================================
+
+form = FormDiagram.from_obj(compas.get('faces.obj'))
+
+# ==============================================================================
+# identify anchors
+# ==============================================================================
 
 for key in form.vertices_where({'vertex_degree': 2}):
     form.vertex[key]['is_anchor'] = True
 
-boundary = form.vertices_on_boundary(ordered=True)
+# ==============================================================================
+# split boundary into unsuppported openings
+# ==============================================================================
+
+boundary = form.vertices_on_boundary(ordered=True)[0]
 
 unsupported = [[]]
 for key in boundary:
@@ -43,41 +68,69 @@ for key in boundary:
 unsupported[-1] += unsupported[0]
 del unsupported[0]
 
+# ==============================================================================
+# set force densities of openings
+# to control curvature (sag)
+# ==============================================================================
+
 for vertices in unsupported:
     for u, v in pairwise(vertices):
         form.set_edge_attribute((u, v), 'q', 10)
 
+# ==============================================================================
+# mark openings as unloaded
+# ==============================================================================
+
 for vertices in unsupported:
-    fkey = form.add_face(vertices, is_unloaded=True)
+    fkey = form.add_face(vertices, is_loaded=False)
+
+# ==============================================================================
+# mark outside edges of openings as not relevant
+# ==============================================================================
 
 for vertices in unsupported:
     u = vertices[-1]
     v = vertices[0]
     form.set_edge_attribute((u, v), 'is_edge', False)
 
-vertices = form.get_vertices_attributes('xyz')
-edges = list(form.edges_where({'is_edge': True}))
-fixed = list(form.vertices_where({'is_anchor': True}))
-qs = [form.get_edge_attribute(uv, 'q') for uv in edges]
-loads = form.get_vertices_attributes(('px', 'py', 'pz'), (0, 0, 0))
+# ==============================================================================
+# use force density method
+# to compute feasible open edges geometry
+# ==============================================================================
 
-xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, qs, loads)
+relax_formdiagram(form)
 
-for key, attr in form.vertices(True):
-    attr['x'] = xyz[key][0]
-    attr['y'] = xyz[key][1]
-    attr['z'] = xyz[key][2]
+# ==============================================================================
 
-force = RhinoForceDiagram.from_formdiagram(form)
+force = ForceDiagram.from_formdiagram(form)
 
-formdata, forcedata = horizontal_nodal(form.to_data(), force.to_data())
-# formdata, forcedata = vertical_from_formforce(formdata, forcedata, density=0.05)
-formdata, forcedata = vertical_from_zmax(formdata, forcedata, density=0.05)
+# ==============================================================================
 
-form.data = formdata
-force.data = forcedata
+horizontal_nodal(form, force)
+vertical_from_zmax(form, force)
 
-form.draw()
-form.show_reactions()
+# ==============================================================================
+# visualise
+# ==============================================================================
 
-force.draw()
+viewer = Viewer2(form, force)
+
+viewer.setup()
+
+z = form.get_vertices_attribute('z')
+zmin, zmax = min(z), max(z)
+
+vertexcolor = {key: i_to_red((attr['z'] - zmin) / (zmax - zmin)) for key, attr in form.vertices(True)}
+
+# for key in form.vertices_where({'is_anchor': True}):
+#     vertexcolor[key] = '#000000'
+
+viewer.draw_form(
+    # vertexlabel={key: key for key, attr in form.vertices(True)},
+    vertexsize=0.1,
+    vertexcolor=vertexcolor
+)
+viewer.draw_force()
+
+viewer.show()
+

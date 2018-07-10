@@ -43,7 +43,7 @@ class ForceDiagram(Mesh):
 
     @classmethod
     def from_formdiagram(cls, formdiagram):
-        return mesh_dual(formdiagram, cls)
+        return formdiagram.dual(cls)
 
     # --------------------------------------------------------------------------
     # Convenience functions for retrieving attributes of the force diagram.

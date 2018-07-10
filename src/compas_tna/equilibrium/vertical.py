@@ -174,6 +174,7 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
     f   = q * l
     r   = Ct.dot(Q).dot(C).dot(xyz) - p
     sw  = p - p0
+
     for key, attr in form.vertices(True):
         index = k_i[key]
         attr['z']  = xyz[index, 2]
@@ -181,8 +182,7 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
         attr['ry'] = r[index, 1]
         attr['rz'] = r[index, 2]
         attr['sw'] = sw[index, 2]
-    for u, v in form.edges_where({'is_edge': True}):
-        attr = form.edgedata[u, v]
+    for u, v, attr in form.edges_where({'is_edge': True}, True):
         index = uv_i[(u, v)]
         attr['q'] = q[index, 0]
         attr['f'] = f[index, 0]
@@ -272,8 +272,7 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
         attr['ry'] = r[index, 1]
         attr['rz'] = r[index, 2]
         attr['sw'] = sw[index, 2]
-    for u, v in form.edges_where({'is_edge': True}):
-        attr = form.edgedata[u, v]
+    for u, v, attr in form.edges_where({'is_edge': True}, True):
         index = uv_i[(u, v)]
         attr['q'] = q[index, 0]
         attr['f'] = f[index, 0]
@@ -354,8 +353,7 @@ def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=Tr
         attr['ry'] = r[index, 1]
         attr['rz'] = r[index, 2]
         attr['sw'] = sw[index, 2]
-    for u, v in form.edges_where({'is_edge': True}):
-        attr = form.edgedata[u, v]
+    for u, v, attr in form.edges_where({'is_edge': True}, True):
         index = uv_i[(u, v)]
         attr['q'] = q[index, 0]
         attr['f'] = f[index, 0]
