@@ -2,11 +2,21 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from math import pi
+from math import sin
+from math import cos
+from math import sqrt
+
 from compas.datastructures import Mesh
 from compas.utilities import geometric_key
 from compas.utilities import pairwise
 
 from compas.datastructures.mesh.mesh import TPL
+
+from compas.geometry import subtract_vectors_xy
+from compas.geometry import add_vectors_xy
+from compas.geometry import normalize_vector_xy
+from compas.geometry import cross_vectors
 
 
 __author__    = ['Tom Van Mele', ]
@@ -24,28 +34,19 @@ class FormDiagram(Mesh):
     def __init__(self):
         super(FormDiagram, self).__init__()
         self.default_vertex_attributes.update({
-            'x'            : 0.0,
-            'y'            : 0.0,
-            'z'            : 0.0,
-            'px'           : 0.0,
-            'py'           : 0.0,
-            'pz'           : 0.0,
-            'sw'           : 0.0,
-            't'            : 1.0,
-            'cx'           : 0.0,
-            'cy'           : 0.0,
-            'cz'           : 0.0,
-            'zpre'         : 0.0,
-            'z-'           : 0.0,
-            'z+'           : 0.0,
-            'weight'       : 1.0,
-            'is_anchor'    : False,
-            'is_fixed'     : False,
-            'is_prescribed': False,
-            'rx'           : 0.0,
-            'ry'           : 0.0,
-            'rz'           : 0.0,
-            'is_vertex'    : True,
+            'x'         : 0.0,
+            'y'         : 0.0,
+            'z'         : 0.0,
+            'px'        : 0.0,
+            'py'        : 0.0,
+            'pz'        : 0.0,
+            'sw'        : 0.0,
+            't'         : 1.0,
+            'is_anchor' : False,
+            'is_fixed'  : False,
+            'rx'        : 0.0,
+            'ry'        : 0.0,
+            'rz'        : 0.0,
         })
         self.default_edge_attributes.update({
             'q'      : 1.0,
@@ -81,6 +82,9 @@ class FormDiagram(Mesh):
             'scale.residual'             : 1.0,
             'scale.load'                 : 1.0,
             'scale.selfweight'           : 1.0,
+            'foot.scale'                 : 0.1,
+            'foot.alpha'                 : 45,
+            'foot.tol'                   : 0.1,
         })
 
     def __str__(self):
@@ -162,6 +166,28 @@ class FormDiagram(Mesh):
     def corners(self):
         return self.vertices_where({'vertex_degree': 2})
 
+    # --------------------------------------------------------------------------
+    # edges
+    # --------------------------------------------------------------------------
+
+    # --------------------------------------------------------------------------
+    # faces
+    # --------------------------------------------------------------------------
+
+    # --------------------------------------------------------------------------
+    # helpers
+    # --------------------------------------------------------------------------
+
+    def anchors(self):
+        return [key for key, attr in self.vertices(True) if attr['is_anchor']]
+
+    def fixed(self):
+        return [key for key, attr in self.vertices(True) if attr['is_fixed']]
+
+    # --------------------------------------------------------------------------
+    # boundary
+    # --------------------------------------------------------------------------
+
     def vertices_on_boundary(self):
         """Find the vertices on the boundary.
 
@@ -192,17 +218,15 @@ class FormDiagram(Mesh):
                 if face is None:
                     vertices_set.add(key)
                     vertices_set.add(nbr)
-
         vertices_all = list(vertices_set)
 
         boundaries = []
-
         key = sorted([(key, self.vertex_coordinates(key)) for key in vertices_all], key=lambda x: (x[1][1], x[1][0]))[0][0]
 
         while vertices_all:
-            
             vertices = []
             start = key
+
             while 1:
                 for nbr, fkey in iter(self.halfedge[key].items()):
                     if fkey is None:
@@ -220,23 +244,10 @@ class FormDiagram(Mesh):
 
         return boundaries
 
-    # --------------------------------------------------------------------------
-    # edges
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # faces
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # Convenience functions for retrieving the attributes of the formdiagram.
-    # --------------------------------------------------------------------------
-
-    def anchors(self):
-        return [key for key, attr in self.vertices(True) if attr['is_anchor']]
-
-    def fixed(self):
-        return [key for key, attr in self.vertices(True) if attr['is_fixed']]
+    def is_boundary_convex(self, boundary):
+        # return dict with key => True/False
+        # return dict with key => cross_z
+        pass
 
     # --------------------------------------------------------------------------
     # postprocess
@@ -280,16 +291,120 @@ class FormDiagram(Mesh):
             attr['y'] = xyz[index][1]
             attr['z'] = xyz[index][2]
 
-    def identify_unsupported(self):
-        boundaries = self.vertices_on_boundary(ordered=True)
-        boundary = boundaries[0]
-        unsupported = [[]]
+    def update_exterior(self, boundary, feet=2):
+        """"""
+        segments = self.split_boundary(boundary)
+        if not feet:
+            for vertices in segments:
+                if len(vertices) > 2:
+                    self.add_face(vertices, is_loaded=False)
+                    u = vertices[-1]
+                    v = vertices[0]
+                    self.set_edge_attribute((u, v), 'is_edge', False)
+                else:
+                    u, v = vertices
+                    self.set_edge_attribute((u, v), 'is_edge', False)
+        else:
+            self.add_feet(segments, feet=feet)
+
+    def update_interior(self, boundaries):
+        """"""
+        for vertices in boundaries:
+            self.add_face(vertices, is_loaded=False)
+
+    def split_boundary(self, boundary):
+        """"""
+        segment = []
+        segments = [segment]
         for key in boundary:
-            unsupported[-1].append(key)
-            if form.vertex[key]['is_anchor']:
-                unsupported.append([key])
-        unsupported[-1] += unsupported[0]
-        del unsupported[0]
+            segment.append(key)
+            if self.vertex[key]['is_anchor']:
+                segment = [key]
+                segments.append(segment)
+        segments[-1] += segments[0]
+        del segments[0]
+        return segments
+
+    def add_feet(self, segments, feet=2):
+        """"""
+        def rotate(point, angle):
+            x = cos(angle) * point[0] - sin(angle) * point[1]
+            y = sin(angle) * point[0] + cos(angle) * point[1]
+            return x, y, 0
+
+        def cross_z(ab, ac):
+            return ab[0] * ac[1] - ab[1] * ac[0]
+
+        scale = self.attributes['foot.scale']
+        alpha = self.attributes['foot.alpha'] * pi / 180
+        tol   = self.attributes['foot.tol']
+
+        key_foot = {}
+        key_xy = {key: self.vertex_coordinates(key, 'xy') for key in self.vertices()}
+
+        for i, vertices in enumerate(segments):
+            key = vertices[0]
+            after = vertices[1]
+            before = segments[i - 1][-2]
+
+            b = key_xy[before]
+            o = key_xy[key]
+            a = key_xy[after]
+
+            ob = normalize_vector_xy(subtract_vectors_xy(b, o))
+            oa = normalize_vector_xy(subtract_vectors_xy(a, o))
+
+            z = cross_z(ob, oa)
+
+            if z > +tol:
+                r = normalize_vector_xy(add_vectors_xy(oa, ob))
+                r = [-scale * axis for axis in r]
+
+            elif z < -tol:
+                r = normalize_vector_xy(add_vectors_xy(oa, ob))
+                r = [+scale * axis for axis in r]
+
+            else:
+                ba = normalize_vector_xy(subtract_vectors_xy(a, b))
+                r = cross_vectors([0, 0, 1], ba)
+                r = [+scale * axis for axis in r]
+
+            if feet == 1:
+                x, y, z = add_vectors_xy(o, r)
+                m = self.add_vertex(x=x, y=y, z=0, is_fixed=True)
+                key_foot[key] = m
+
+            elif feet == 2:
+                lx, ly, lz = add_vectors_xy(o, rotate(r, +alpha))
+                rx, ry, rz = add_vectors_xy(o, rotate(r, -alpha))
+                l = self.add_vertex(x=lx, y=ly, z=0, is_fixed=True)
+                r = self.add_vertex(x=rx, y=ry, z=0, is_fixed=True)
+                key_foot[key] = l, r
+
+            else:
+                pass
+
+        for vertices in segments:
+            l = vertices[0]
+            r = vertices[-1]
+
+            if feet == 1:
+                lm = key_foot[l]
+                rm = key_foot[r]
+                self.add_face([lm] + vertices + [rm], is_loaded=False)
+                self.set_edge_attribute((rm, lm), 'is_edge', False)
+
+            elif feet == 2:
+                lb = key_foot[l][0]
+                la = key_foot[l][1]
+                rb = key_foot[r][0]
+                self.add_face([lb, l, la], is_loaded=False)
+                self.add_face([la] + vertices + [rb], is_loaded=False)
+                self.set_edge_attribute((lb, la), 'is_edge', False)
+                self.set_edge_attribute((la, rb), 'is_edge', False)
+            
+            else:
+                pass
 
 
 # ==============================================================================

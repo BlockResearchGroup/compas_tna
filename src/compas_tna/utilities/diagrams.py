@@ -121,6 +121,8 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100):
 
     for k in range(kmax):
 
+        print(k)
+
         xy0 = xy.copy()
         uv  = C.dot(xy)
         l   = normrow(uv)

@@ -253,8 +253,10 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     # --------------------------------------------------------------------------
     # parallelise
     # --------------------------------------------------------------------------
-    parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=fixed, kmax=kmax)
-    parallelise_nodal(_xy, _C, targets, _i_nbrs, _ij_e, kmax=kmax)
+    if alpha < 1:
+        parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=fixed, kmax=kmax)
+    if alpha > 0:
+        parallelise_nodal(_xy, _C, targets, _i_nbrs, _ij_e, kmax=kmax)
     # --------------------------------------------------------------------------
     # update the coordinate difference vectors
     # --------------------------------------------------------------------------

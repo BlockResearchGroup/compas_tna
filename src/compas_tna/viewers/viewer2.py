@@ -107,12 +107,12 @@ class Viewer2(object):
         x = self.form.get_vertices_attribute('x')
         y = self.form.get_vertices_attribute('y')
 
-        xmin, ymin = min(x), min(y)
-        xmax, ymax = max(x), max(y)
+        xmin, xmax = min(x), max(x)
+        ymin, ymax = min(y), max(y)
 
         dx, dy = -xmin, -ymin
 
-        scale = max(10.0 / fabs(xmax - xmin), 10.0 / fabs(ymax - ymin))
+        scale = min(10.0 / fabs(xmax - xmin), 10.0 / fabs(ymax - ymin))
 
         key_xy = {k: [scale * (a['x'] + dx), scale * (a['y'] + dy)] for k, a in self.form.vertices(True)}
 
@@ -247,7 +247,7 @@ class Viewer2(object):
         xmax, ymax = max(x), max(y)
 
         dx, dy = -xmin, -ymin
-        scale  = max(10.0 / fabs(xmax - xmin), 10.0 / fabs(ymax - ymin))
+        scale  = min(10.0 / fabs(xmax - xmin), 10.0 / fabs(ymax - ymin))
         key_xy = {k: [scale * (a['x'] + dx), scale * (a['y'] + dy)] for k, a in self.force.vertices(True)}
 
         # vertices
