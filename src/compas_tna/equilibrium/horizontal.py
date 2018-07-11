@@ -100,8 +100,8 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     fixed = [k_i[key] for key in fixed]
     edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
     xy    = array(form.get_vertices_attributes('xy'), dtype=float64)
-    lmin  = array(form.get_edges_attribute('lmin', 1e-7, where={'is_edge': True}), dtype=float64).reshape((-1, 1))
-    lmax  = array(form.get_edges_attribute('lmax', 1e+7, where={'is_edge': True}), dtype=float64).reshape((-1, 1))
+    lmin  = array([attr.get('lmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    lmax  = array([attr.get('lmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
     C     = connectivity_matrix(edges, 'csr')
     Ct    = C.transpose()
     CtC   = Ct.dot(C)

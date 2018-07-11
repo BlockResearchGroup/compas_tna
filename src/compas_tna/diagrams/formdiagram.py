@@ -2,6 +2,8 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import sys
+
 from math import pi
 from math import sin
 from math import cos
@@ -17,6 +19,14 @@ from compas.geometry import subtract_vectors_xy
 from compas.geometry import add_vectors_xy
 from compas.geometry import normalize_vector_xy
 from compas.geometry import cross_vectors
+
+if 'ironpython' in sys.version.lower():
+    from compas.utilities import XFunc
+    fd_numpy = XFunc('compas.numerical.fd_numpy')
+else:
+    from compas.numerical import fd_numpy
+
+
 
 
 __author__    = ['Tom Van Mele', ]
@@ -261,7 +271,7 @@ class FormDiagram(Mesh):
                 if l < tol:
                     self.collapse_edge(v, u, t=0.5, allow_boundary=True)
 
-    def set_anchors(self, points=None, degree=0):
+    def set_anchors(self, points=None, degree=0, keys=None):
         if points:
             xyz_key = self.key_xyz()
             for xyz in points:
@@ -273,9 +283,10 @@ class FormDiagram(Mesh):
             for key in self.vertices():
                 if self.vertex_degree(key) <= degree:
                     self.set_vertex_attribute(key, 'is_anchor', True)
+        if keys:
+            self.set_vertices_attribute('is_anchor', True, keys=keys)
 
     def relax(self, fixed):
-        from compas.numerical import fd_numpy
         key_index = self.key_index()
         vertices = self.get_vertices_attributes('xyz')
         edges = list(self.edges_where({'is_edge': True}))
@@ -292,6 +303,9 @@ class FormDiagram(Mesh):
             attr['z'] = xyz[index][2]
 
     def smooth_interior(self):
+        pass
+
+    def update_boundary_conditions(self):
         pass
 
     def update_exterior(self, boundary, feet=2):

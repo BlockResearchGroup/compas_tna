@@ -154,7 +154,8 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
     for k in range(kmax):
         if display:
             print(k)
-        update_loads(p, xyz)
+        if k < 10 or k % 10 == 0:
+            update_loads(p, xyz)
         h            = scale * _l
         q            = h / l
         Q            = diags([q.ravel()], [0])
