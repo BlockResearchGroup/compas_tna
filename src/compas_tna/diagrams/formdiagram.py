@@ -291,6 +291,9 @@ class FormDiagram(Mesh):
             attr['y'] = xyz[index][1]
             attr['z'] = xyz[index][2]
 
+    def smooth_interior(self):
+        pass
+
     def update_exterior(self, boundary, feet=2):
         """"""
         segments = self.split_boundary(boundary)
