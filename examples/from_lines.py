@@ -28,27 +28,26 @@ filepath = compas.get('lines.obj')
 obj      = OBJ(filepath)
 vertices = obj.parser.vertices
 edges    = obj.parser.lines
+points   = obj.parser.points
 lines    = [(vertices[u], vertices[v], 0) for u, v in edges]
+
+print(points)
 
 form = FormDiagram.from_lines(lines)
 
+form.attributes['foot.scale'] = 1.0
+
 # ==============================================================================
-# duality.py 289
-# mesh.py 442
 
-boundary = form.vertices_on_boundary()[0]
+boundaries = form.vertices_on_boundary()
 
-for u, v in pairwise(boundary + boundary[0:1]):
+exterior = boundaries[0]
+interior = boundaries[1:]
 
-    form.set_vertex_attribute(u, 'is_anchor', True)
+form.set_vertices_attribute('is_anchor', True, keys=exterior)
 
-    if (u, v) not in form.edgedata:
-        form.edgedata[u, v] = {}
-    form.edgedata[(u, v)]['is_edge'] = False
-
-    if (v, u) not in form.edgedata:
-        form.edgedata[v, u] = {}
-    form.edgedata[(v, u)]['is_edge'] = False
+form.update_exterior(exterior, feet=2)
+form.update_interior(interior)
 
 # ==============================================================================
 
@@ -61,8 +60,13 @@ viewer = Viewer2(form, force)
 
 viewer.setup()
 
+vertexcolor = {}
+vertexcolor.update({key: '#00ff00' for key in form.fixed()})
+vertexcolor.update({key: '#ff0000' for key in form.anchors()})
+
 viewer.draw_form(
-    vertexlabel={key: "{:.1f}".format(attr['z']) for key, attr in form.vertices(True)},
+    vertexcolor=vertexcolor,
+    vertexlabel={key: key for key in form.vertices()},
     vertexsize=0.2
 )
 viewer.draw_force()

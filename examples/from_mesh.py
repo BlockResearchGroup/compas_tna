@@ -19,6 +19,7 @@ from compas_tna.diagrams import ForceDiagram
 from compas_tna.equilibrium import horizontal_nodal
 from compas_tna.equilibrium import vertical_from_zmax
 
+from compas_tna.viewers import FormViewer
 from compas_tna.viewers import Viewer2
 
 
@@ -32,6 +33,8 @@ __email__     = 'vanmelet@ethz.ch'
 
 file = compas_tna.get('mesh.obj')
 form = FormDiagram.from_obj(file)
+
+form.attributes['foot.scale'] = 0.5
 
 # collapse edges that are shorter than 0.5
 
@@ -50,7 +53,7 @@ form.set_vertices_attribute('is_anchor', True, keys=exterior)
 
 # update the boundary conditions
 
-form.update_exterior(exterior, feet=1)
+form.update_exterior(exterior, feet=2)
 form.update_interior(interior)
 
 # relax the interior
@@ -70,24 +73,18 @@ vertical_from_zmax(form, force)
 
 # visualise result
 
-viewer = Viewer2(form, force)
-viewer.default['edgewidth'] = 0.1
-viewer.setup()
+viewer = FormViewer(form)
+viewer.defaults['edge.fontsize'] = 4
 
-vertexcolor = {}
+edgelabels = {(u, v): "{:.1f}".format(attr['a']) for u, v, attr in form.edges_where({'is_edge': True}, True) if attr['a'] > 0.1} 
 
-z = form.get_vertices_attribute('z')
-zmin, zmax = min(z), max(z)
-zrange = zmax - zmin
-
-vertexcolor.update({key: i_to_red((attr['z'] - zmin) / (zrange)) for key, attr in form.vertices(True)})
-vertexcolor.update({key: '#00ff00' for key in form.vertices_where({'is_fixed': True})})
-vertexcolor.update({key: '#000000' for key in form.vertices_where({'is_anchor': True})})
-
-viewer.draw_form(
-    vertexsize=0.01,
-    vertexcolor=vertexcolor,
+viewer.draw_vertices(keys=list(form.vertices_where({'is_external': False})))
+viewer.draw_edges(
+    keys=list(form.edges_where({'is_edge': True, 'is_external': False})),
+    width=0.1,
+    text=edgelabels
 )
-viewer.draw_force(vertices_on=False, vertexsize=0.02)
+viewer.draw_reactions(scale=0.1)
+viewer.draw_horizontalforces(scale=0.2)
 
 viewer.show()

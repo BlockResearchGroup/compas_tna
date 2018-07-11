@@ -44,33 +44,35 @@ class FormDiagram(Mesh):
     def __init__(self):
         super(FormDiagram, self).__init__()
         self.default_vertex_attributes.update({
-            'x'         : 0.0,
-            'y'         : 0.0,
-            'z'         : 0.0,
-            'px'        : 0.0,
-            'py'        : 0.0,
-            'pz'        : 0.0,
-            'sw'        : 0.0,
-            't'         : 1.0,
-            'is_anchor' : False,
-            'is_fixed'  : False,
-            'rx'        : 0.0,
-            'ry'        : 0.0,
-            'rz'        : 0.0,
+            'x'           : 0.0,
+            'y'           : 0.0,
+            'z'           : 0.0,
+            'px'          : 0.0,
+            'py'          : 0.0,
+            'pz'          : 0.0,
+            'sw'          : 0.0,
+            't'           : 1.0,
+            'is_anchor'   : False,
+            'is_fixed'    : False,
+            'is_external' : False,
+            'rx'          : 0.0,
+            'ry'          : 0.0,
+            'rz'          : 0.0,
         })
         self.default_edge_attributes.update({
-            'q'      : 1.0,
-            'l'      : 0.0,
-            'f'      : 0.0,
-            'qmin'   : 1e-7,
-            'qmax'   : 1e+7,
-            'lmin'   : 1e-7,
-            'lmax'   : 1e+7,
-            'fmin'   : 1e-7,
-            'fmax'   : 1e+7,
-            'a'      : 0.0,
-            'is_ind' : False,
-            'is_edge': True,
+            'q'           : 1.0,
+            'l'           : 0.0,
+            'f'           : 0.0,
+            'qmin'        : 1e-7,
+            'qmax'        : 1e+7,
+            'lmin'        : 1e-7,
+            'lmax'        : 1e+7,
+            'fmin'        : 1e-7,
+            'fmax'        : 1e+7,
+            'a'           : 0.0,
+            'is_ind'      : False,
+            'is_edge'     : True,
+            'is_external' : False
         })
         self.default_face_attributes.update({
             'is_loaded': True
@@ -388,14 +390,14 @@ class FormDiagram(Mesh):
 
             if feet == 1:
                 x, y, z = add_vectors_xy(o, r)
-                m = self.add_vertex(x=x, y=y, z=0, is_fixed=True)
+                m = self.add_vertex(x=x, y=y, z=0, is_fixed=True, is_external=True)
                 key_foot[key] = m
 
             elif feet == 2:
                 lx, ly, lz = add_vectors_xy(o, rotate(r, +alpha))
                 rx, ry, rz = add_vectors_xy(o, rotate(r, -alpha))
-                l = self.add_vertex(x=lx, y=ly, z=0, is_fixed=True)
-                r = self.add_vertex(x=rx, y=ry, z=0, is_fixed=True)
+                l = self.add_vertex(x=lx, y=ly, z=0, is_fixed=True, is_external=True)
+                r = self.add_vertex(x=rx, y=ry, z=0, is_fixed=True, is_external=True)
                 key_foot[key] = l, r
 
             else:
@@ -409,6 +411,7 @@ class FormDiagram(Mesh):
                 lm = key_foot[l]
                 rm = key_foot[r]
                 self.add_face([lm] + vertices + [rm], is_loaded=False)
+                self.set_edge_attribute((l, lm), 'is_external', True)
                 self.set_edge_attribute((rm, lm), 'is_edge', False)
 
             elif feet == 2:
@@ -417,6 +420,8 @@ class FormDiagram(Mesh):
                 rb = key_foot[r][0]
                 self.add_face([lb, l, la], is_loaded=False)
                 self.add_face([la] + vertices + [rb], is_loaded=False)
+                self.set_edge_attribute((l, lb), 'is_external', True)
+                self.set_edge_attribute((l, la), 'is_external', True)
                 self.set_edge_attribute((lb, la), 'is_edge', False)
                 self.set_edge_attribute((la, rb), 'is_edge', False)
             

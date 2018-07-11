@@ -6,8 +6,18 @@ compas_tna.viewers
 .. module:: compas_tna.viewers
 
 
-Viewer2
-=======
+Diagram viewers
+===============
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    FormViewer
+    ForceViewer
+
+TNA viewers
+===========
 
 .. autosummary::
     :toctree: generated/
@@ -15,13 +25,13 @@ Viewer2
 
     Viewer2
 
-Viewer3
-=======
-
 """
 from __future__ import absolute_import
+
+from . import formviewer
+from .formviewer import *
 
 from . import viewer2
 from .viewer2 import *
 
-__all__ = viewer2.__all__
+__all__ = formviewer.__all__ + viewer2.__all__
