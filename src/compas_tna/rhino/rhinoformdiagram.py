@@ -12,6 +12,7 @@ from compas_rhino.helpers.selectors import EdgeSelector
 from compas_rhino.helpers.modifiers import VertexModifier
 from compas_rhino.helpers.modifiers import EdgeModifier
 
+from compas_rhino.utilities import XFunc
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2014 - Block Research Group, ETH Zurich'
@@ -61,6 +62,27 @@ class RhinoFormDiagram(FormDiagram):
     # smooth pattern
     # subdivide
     # constrain vertex locations
+
+    # --------------------------------------------------------------------------
+    # postprocess
+    # --------------------------------------------------------------------------
+
+    def relax(self, fixed):
+        fd_numpy = XFunc('compas.numerical.fd_numpy')
+        key_index = self.key_index()
+        vertices = self.get_vertices_attributes('xyz')
+        edges = list(self.edges_where({'is_edge': True}))
+        edges = [(key_index[u], key_index[v]) for u, v in edges]
+        fixed = list(fixed)
+        fixed = [key_index[key] for key in fixed]
+        qs = [self.get_edge_attribute(uv, 'q') for uv in edges]
+        loads = self.get_vertices_attributes(('px', 'py', 'pz'), (0, 0, 0))
+        xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, qs, loads)
+        for key, attr in self.vertices(True):
+            index = key_index[key]
+            attr['x'] = xyz[index][0]
+            attr['y'] = xyz[index][1]
+            attr['z'] = xyz[index][2]
 
     # ==========================================================================
     # visualisation
