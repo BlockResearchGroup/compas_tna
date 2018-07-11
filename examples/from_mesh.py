@@ -45,14 +45,14 @@ __email__     = 'vanmelet@ethz.ch'
 
 
 file = compas_tna.get('clean.obj')
-file = compas.get('faces.obj')
+# file = compas.get('faces.obj')
 
 form = FormDiagram.from_obj(file)
 
 # this should still work after updating
-keys = form.edges_on_boundary()
-print(keys)
-form.set_edges_attribute('q', 10.0, keys=keys)
+# keys = form.edges_on_boundary()
+# print(keys)
+# form.set_edges_attribute('q', 10.0, keys=keys)
 
 # ==============================================================================
 
@@ -63,14 +63,17 @@ boundaries = form.vertices_on_boundary()
 exterior = boundaries[0]
 interior = boundaries[1:]
 
-for key in form.corners():
+# for key in form.corners():
+#     form.set_vertex_attribute(key, 'is_anchor', True)
+
+for key in exterior:
     form.set_vertex_attribute(key, 'is_anchor', True)
 
-form.update_exterior(exterior, feet=0)
+form.update_exterior(exterior, feet=1)
 form.update_interior(interior)
 
-# fixed = set(list(flatten(boundaries)) + form.fixed())
-fixed = set(form.anchors() + form.fixed())
+fixed = set(list(flatten(boundaries)) + form.fixed())
+# fixed = set(form.anchors() + form.fixed())
 
 form.relax(fixed=fixed)
 
@@ -99,7 +102,7 @@ vertexcolor.update({key: '#00ff00' for key in form.vertices_where({'is_fixed': T
 vertexcolor.update({key: '#000000' for key in form.vertices_where({'is_anchor': True})})
 
 viewer.draw_form(
-    vertexsize=0.01,
+    vertexsize=0.1,
     vertexcolor=vertexcolor,
 )
 viewer.draw_force(vertices_on=False, vertexsize=0.02)
