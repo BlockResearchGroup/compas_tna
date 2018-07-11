@@ -22,7 +22,7 @@ __all__ = ['FormArtist', ]
 class FormArtist(MeshArtist):
 
     @property
-    def form(self)
+    def form(self):
         return self.datastructure
 
     def clear(self):

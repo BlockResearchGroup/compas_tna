@@ -14,6 +14,12 @@ from compas_tna.rhino import RhinoForceDiagram as ForceDiagram
 
 from compas_tna.rhino import FormArtist
 
+
+# todo: edit attributes of selected vertices
+#       mark as anchors, or fixed
+#       assign constraints
+
+
 __author__    = ['Tom Van Mele', 'Matthias Rippmann']
 __copyright__ = 'Copyright 2017, BRG - ETH Zurich',
 __license__   = 'MIT'

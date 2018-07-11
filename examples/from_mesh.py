@@ -16,7 +16,7 @@ from compas.utilities import i_to_red
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 
-from compas_tna.equilibrium import horizontal_nodal
+from compas_tna.equilibrium import horizontal
 from compas_tna.equilibrium import vertical_from_zmax
 
 from compas_tna.viewers import FormViewer
@@ -53,7 +53,7 @@ form.set_vertices_attribute('is_anchor', True, keys=exterior)
 
 # update the boundary conditions
 
-form.update_exterior(exterior, feet=2)
+form.update_exterior(exterior, feet=1)
 form.update_interior(interior)
 
 # relax the interior
@@ -68,12 +68,12 @@ force = ForceDiagram.from_formdiagram(form)
 
 # compute equilibrium
 
-horizontal_nodal(form, force)
-vertical_from_zmax(form, force)
+horizontal(form, force)
+vertical_from_zmax(form, force, zmax=15)
 
 # visualise result
 
-viewer = FormViewer(form)
+viewer = FormViewer(form, figsize=(16, 9))
 viewer.defaults['edge.fontsize'] = 4
 
 edgelabels = {(u, v): "{:.1f}".format(attr['a']) for u, v, attr in form.edges_where({'is_edge': True}, True) if attr['a'] > 0.1} 
@@ -84,7 +84,7 @@ viewer.draw_edges(
     width=0.1,
     text=edgelabels
 )
-viewer.draw_reactions(scale=0.1)
-viewer.draw_horizontalforces(scale=0.2)
+viewer.draw_reactions(scale=0.01)
+viewer.draw_horizontalforces(scale=0.02)
 
 viewer.show()

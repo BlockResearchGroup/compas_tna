@@ -21,10 +21,24 @@ from compas_tna.diagrams import ForceDiagram
 from compas_rhino import MeshArtist
 
 
+# todo: select a rhino mesh as input
+
+
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
+
+
+def horizontal(form, force, *args, **kwargs):
+    def callback(line, args):
+        print(line)
+        compas_rhino.wait()
+
+    f = XFunc('compas_tna.equilibrium.horizontal_xfunc', callback=callback)
+    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
+    form.data = formdata
+    force.data = forcedata
 
 
 def horizontal_nodal(form, force, *args, **kwargs):

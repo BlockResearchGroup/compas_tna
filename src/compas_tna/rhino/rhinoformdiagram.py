@@ -14,7 +14,7 @@ from compas_rhino.helpers.modifiers import EdgeModifier
 from compas_rhino.utilities import XFunc
 
 from compas_tna.diagrams import FormDiagram
-from compas_tna.rhino import FormArtist
+from compas_tna.rhino.artists.formartist import FormArtist
 
 
 __author__    = ['Tom Van Mele', ]
