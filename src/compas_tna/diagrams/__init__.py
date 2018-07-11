@@ -28,10 +28,10 @@ from __future__ import absolute_import
 
 from .formdiagram import *
 from .forcediagram import *
-from .thrustdiagram import *
+# from .thrustdiagram import *
 
 from . import formdiagram
 from . import forcediagram
-from . import thrustdiagram
+# from . import thrustdiagram
 
-__all__ = formdiagram.__all__ + forcediagram.__all__ + thrustdiagram.__all__
+__all__ = formdiagram.__all__ + forcediagram.__all__

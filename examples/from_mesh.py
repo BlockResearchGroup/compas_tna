@@ -44,8 +44,8 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-file = compas_tna.get('clean.obj')
-# file = compas.get('faces.obj')
+# file = compas_tna.get('clean.obj')
+file = compas.get('faces.obj')
 
 form = FormDiagram.from_obj(file)
 
