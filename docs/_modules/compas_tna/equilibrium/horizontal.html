@@ -351,12 +351,13 @@
     <span class="kn">import</span> <span class="nn">compas</span>
 
     <span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">fd_numpy</span>
-    <span class="kn">from</span> <span class="nn">compas.plotters</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
     <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">pairwise</span>
 
     <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="k">import</span> <span class="n">FormDiagram</span>
     <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="k">import</span> <span class="n">ForceDiagram</span>
     <span class="kn">from</span> <span class="nn">compas_tna.equilibrium</span> <span class="k">import</span> <span class="n">horizontal_nodal</span>
+
+    <span class="kn">from</span> <span class="nn">compas_tna.viewers</span> <span class="k">import</span> <span class="n">Viewer2</span>
 
     <span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
 
@@ -379,7 +380,7 @@
             <span class="n">form</span><span class="o">.</span><span class="n">set_edge_attribute</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">unsupported</span><span class="p">:</span>
-        <span class="n">fkey</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">is_unloaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">fkey</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">is_loaded</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">unsupported</span><span class="p">:</span>
         <span class="n">u</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -399,18 +400,25 @@
         <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
 
+    <span class="c1"># force</span>
+
     <span class="n">force</span> <span class="o">=</span> <span class="n">ForceDiagram</span><span class="o">.</span><span class="n">from_formdiagram</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+
+    <span class="c1"># equilibrium</span>
 
     <span class="n">formdata</span><span class="p">,</span> <span class="n">forcedata</span> <span class="o">=</span> <span class="n">horizontal_nodal</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">(),</span> <span class="n">force</span><span class="o">.</span><span class="n">to_data</span><span class="p">())</span>
 
     <span class="n">form</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">formdata</span>
     <span class="n">force</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">forcedata</span>
 
-    <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">force</span><span class="p">)</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">)</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">force</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">force</span><span class="o">.</span><span class="n">edges</span><span class="p">()})</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="c1"># visualise</span>
+
+    <span class="n">viewer</span> <span class="o">=</span> <span class="n">Viewer2</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">force</span><span class="p">)</span>
+
+    <span class="n">viewer</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+    <span class="n">viewer</span><span class="o">.</span><span class="n">draw_form</span><span class="p">()</span>
+    <span class="n">viewer</span><span class="o">.</span><span class="n">draw_force</span><span class="p">(</span><span class="n">vertexsize</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+    <span class="n">viewer</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 
           </div>
@@ -447,7 +455,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2017, Block Research Group - ETH Zurich.
-      Last updated on Jul 06, 2018.
+      Last updated on Jul 09, 2018.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.6.
     </div>
   </body>
