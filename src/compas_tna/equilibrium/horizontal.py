@@ -217,6 +217,10 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     fixed  = set(form.anchors() + form.fixed())
     fixed  = [k_i[key] for key in fixed]
     edges  = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
+    lmin   = array([attr.get('lmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    lmax   = array([attr.get('lmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    fmin   = array([attr.get('fmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    fmax   = array([attr.get('fmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
     xy     = array(form.get_vertices_attributes('xy'), dtype=float64)
     C      = connectivity_matrix(edges, 'csr')
     # --------------------------------------------------------------------------
@@ -254,9 +258,9 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     # parallelise
     # --------------------------------------------------------------------------
     if alpha < 1:
-        parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=fixed, kmax=kmax)
+        parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=fixed, kmax=kmax, lmin=lmin, lmax=lmax)
     if alpha > 0:
-        parallelise_nodal(_xy, _C, targets, _i_nbrs, _ij_e, kmax=kmax)
+        parallelise_nodal(_xy, _C, targets, _i_nbrs, _ij_e, kmax=kmax, lmin=fmin, lmax=fmax)
     # --------------------------------------------------------------------------
     # update the coordinate difference vectors
     # --------------------------------------------------------------------------

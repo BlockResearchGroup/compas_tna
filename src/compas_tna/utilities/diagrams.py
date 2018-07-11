@@ -113,7 +113,7 @@ def parallelise_sparse(A, B, X, known, k=1, key=None):
 
 
 # replace these for loops
-def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100):
+def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=None, lmax=None):
     fixed = fixed or []
     fixed = set(fixed)
 
@@ -126,6 +126,9 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100):
         xy0 = xy.copy()
         uv  = C.dot(xy)
         l   = normrow(uv)
+
+        if lmin is not None and lmax is not None:
+            apply_bounds(l, lmin, lmax)
 
         for j in range(n):
             if j in fixed:

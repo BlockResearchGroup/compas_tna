@@ -16,7 +16,7 @@ from compas.utilities import i_to_red
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 
-from compas_tna.equilibrium import horizontal
+from compas_tna.equilibrium import horizontal_nodal
 from compas_tna.equilibrium import vertical_from_zmax
 
 from compas_tna.viewers import Viewer2
@@ -65,7 +65,7 @@ force = ForceDiagram.from_formdiagram(form)
 
 # compute equilibrium
 
-horizontal(form, force)
+horizontal_nodal(form, force)
 vertical_from_zmax(form, force)
 
 # visualise result
