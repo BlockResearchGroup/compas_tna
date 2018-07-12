@@ -75,7 +75,7 @@ force = ForceDiagram.from_formdiagram(form)
 # compute equilibrium
 
 horizontal(form, force)
-vertical_from_zmax(form, force, zmax=20)
+vertical_from_zmax(form, force, zmax=15)
 
 # draw the result
 

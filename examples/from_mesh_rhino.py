@@ -20,6 +20,7 @@ from compas_tna.diagrams import ForceDiagram
 
 from compas_tna.equilibrium import horizontal_nodal_rhino as horizontal_nodal
 from compas_tna.equilibrium import vertical_from_zmax_rhino as vertical_from_zmax
+from compas_tna.equilibrium import vertical_from_formforce_rhino as vertical_from_formforce
 
 from compas_tna.rhino import FormArtist
 
@@ -40,16 +41,9 @@ __email__     = 'vanmelet@ethz.ch'
 file = compas_tna.get('mesh.obj')
 form = FormDiagram.from_obj(file)
 
-artist = FormArtist(form, layer='FormDiagram')
-
 # collapse edges that are shorter than 0.5
 
 form.collapse_small_edges(tol=0.5)
-
-artist.clear()
-artist.draw_vertices()
-artist.draw_edges()
-artist.redraw()
 
 # extract the exterior and interior boundaries
 
@@ -73,11 +67,6 @@ fixed = set(list(flatten(boundaries)) + form.fixed())
 
 form.relax(fixed=fixed)
 
-artist.clear()
-artist.draw_vertices()
-artist.draw_edges()
-artist.redraw()
-
 # create the force diagram
 
 force = ForceDiagram.from_formdiagram(form)
@@ -85,12 +74,20 @@ force = ForceDiagram.from_formdiagram(form)
 # compute equilibrium
 
 horizontal_nodal(form, force)
-vertical_from_zmax(form, force, zmax=15)
+vertical_from_zmax(form, force, zmax=10)
 
 # visualise result
 
-artist.clear()
-artist.draw_vertices()
-artist.draw_edges()
-artist.draw_faces(join_faces=True)
+artist = FormArtist(form, layer='FormDiagram')
+
+artist.clear_layer()
+
+artist.draw_vertices(keys=list(form.vertices_where({'is_external': False})))
+artist.draw_edges(keys=list(form.edges_where({'is_edge': True, 'is_external': False})))
+artist.draw_faces(fkeys=list(form.faces_where({'is_loaded': True})), join_faces=True)
+
+artist.draw_reactions(scale=0.1)
+# artist.draw_residuals(scale=1.0)
+artist.draw_forces(scale=0.01)
+
 artist.redraw()

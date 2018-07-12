@@ -31,6 +31,7 @@ class FormArtist(MeshArtist):
         self.clear_selfweight()
         self.clear_reactions()
         self.clear_forces()
+        self.clear_residuals()
 
     def clear_loads(self):
         compas_rhino.delete_objects_by_name(name='{}.load.*'.format(self.form.name))
@@ -43,6 +44,9 @@ class FormArtist(MeshArtist):
 
     def clear_forces(self):
         compas_rhino.delete_objects_by_name(name='{}.force.*'.format(self.form.name))
+
+    def clear_residuals(self):
+        compas_rhino.delete_objects_by_name(name='{}.residual.*'.format(self.form.name))
 
     def draw_loads(self, scale=None, color=None):
         self.clear_loads()
@@ -93,9 +97,8 @@ class FormArtist(MeshArtist):
 
         compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
-    def draw_reactions(self, scale=None, color=None, clear_reactions=True):
-        if clear_reactions:
-            self.clear_reactions()
+    def draw_reactions(self, scale=None, color=None):
+        self.clear_reactions()
 
         lines = []
         color = color or self.form.attributes['color.reaction']
@@ -160,6 +163,52 @@ class FormArtist(MeshArtist):
             })
 
         compas_rhino.xdraw_cylinders(lines, layer=self.layer, clear=False, redraw=False)
+
+    def draw_residuals(self, scale=None, color=None):
+        self.clear_residuals()
+
+        lines = []
+        color = color or self.form.attributes['color.residual']
+        scale = scale or self.form.attributes['scale.residual']
+
+        for key, attr in self.form.vertices_where({'is_anchor': False}, True):
+            rx = attr['rx']
+            ry = attr['ry']
+            rz = attr['rz']
+
+            for nbr in self.form.vertex_neighbours(key):
+                is_external = self.form.get_edge_attribute((key, nbr), 'is_external', False)
+
+                if is_external:
+                    f = self.form.get_edge_attribute((key, nbr), 'f', 0.0)
+                    u = self.form.edge_direction(key, nbr)
+                    u[2] = 0
+                    v = scale_vector(u, f)
+
+                    rx += v[0]
+                    ry += v[1]
+
+            sp = self.form.vertex_coordinates(key)
+            e1 = sp[0] + scale * rx, sp[1] + scale * ry, sp[2]
+            e2 = sp[0], sp[1], sp[2] + scale * rz
+
+            lines.append({
+                'start' : sp,
+                'end'   : e1,
+                'color' : color,
+                'arrow' : 'start',
+                'name'  : "{}.reaction.{}".format(self.form.name, key)
+            })
+
+            lines.append({
+                'start' : sp,
+                'end'   : e2,
+                'color' : color,
+                'arrow' : 'start',
+                'name'  : "{}.reaction.{}".format(self.form.name, key)
+            })
+
+        compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
 
 # ==============================================================================

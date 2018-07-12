@@ -18,6 +18,8 @@ from compas_tna.diagrams import ForceDiagram
 
 from compas_tna.equilibrium import horizontal
 from compas_tna.equilibrium import vertical_from_zmax
+from compas_tna.equilibrium import vertical_from_average
+from compas_tna.equilibrium import vertical_from_formforce
 
 from compas_tna.viewers import FormViewer
 from compas_tna.viewers import Viewer2
@@ -34,7 +36,7 @@ __email__     = 'vanmelet@ethz.ch'
 
 # make a form diagram from an obj file
 
-form = FormDiagram.from_obj(compas_tna.get('mesh.obj'))
+form = FormDiagram.from_obj(compas.get('faces.obj'))
 
 form.attributes['foot.scale'] = 0.5
 
@@ -71,7 +73,8 @@ force = ForceDiagram.from_formdiagram(form)
 # compute equilibrium
 
 horizontal(form, force)
-vertical_from_zmax(form, force, zmax=15, kmax=100)
+vertical_from_zmax(form, force, zmax=5, kmax=100)
+vertical_from_formforce(form, force, kmax=300, tol=1e-1)
 
 # visualise result
 
@@ -89,7 +92,7 @@ viewer.draw_edges(
     width=0.1,
     text=edgelabels
 )
-# viewer.draw_reactions(scale=0.01)
-# viewer.draw_horizontalforces(scale=0.02)
+viewer.draw_reactions(scale=1.0)
+viewer.draw_horizontalforces(scale=1.0)
 
 viewer.show()
