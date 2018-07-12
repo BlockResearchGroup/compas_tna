@@ -70,7 +70,6 @@ holes = [compas_rhino.get_polyline_coordinates(guid) for guid in guids]
 # and around the holes
 
 faces = delaunay_from_points(points, boundary=boundary, holes=holes)
-
 form = FormDiagram.from_vertices_and_faces(points, faces)
 
 mesh_flip_cycles(form)
@@ -103,7 +102,7 @@ force = ForceDiagram.from_formdiagram(form)
 # compute equilibrium
 
 horizontal(form, force)
-vertical_from_zmax(form, force, zmax=10)
+vertical_from_zmax(form, force, zmax=20)
 
 # draw the result
 
@@ -114,8 +113,8 @@ artist.draw_vertices(keys=list(form.vertices_where({'is_external': False})))
 artist.draw_edges(keys=list(form.edges_where({'is_edge': True, 'is_external': False})))
 artist.draw_faces(fkeys=list(form.faces_where({'is_loaded': True})), join_faces=True)
 
-artist.draw_reactions(scale=0.1)
-artist.draw_forces(scale=0.001)
+artist.draw_reactions(scale=0.01)
+artist.draw_forces(scale=0.0001)
 
 artist.redraw()
 
