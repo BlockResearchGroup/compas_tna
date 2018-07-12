@@ -151,7 +151,7 @@ class FormDiagram(Mesh):
         dual = cls()
 
         fkey_centroid = {fkey: self.face_centroid(fkey) for fkey in self.faces()}
-        outer = self.vertices_on_boundary()[0]
+        outer = self.vertices_on_boundaries()[0]
         inner = list(set(self.vertices()) - set(outer))
         vertices = {}
         faces = {}
@@ -203,7 +203,7 @@ class FormDiagram(Mesh):
     # boundary
     # --------------------------------------------------------------------------
 
-    def vertices_on_boundary(self):
+    def vertices_on_boundaries(self):
         """Find the vertices on the boundary.
 
         Parameters
@@ -269,7 +269,7 @@ class FormDiagram(Mesh):
     # --------------------------------------------------------------------------
 
     def collapse_small_edges(self, tol=1e-2):
-        boundaries = self.vertices_on_boundary()
+        boundaries = self.vertices_on_boundaries()
         for boundary in boundaries:
             for u, v in pairwise(boundary):
                 l = self.edge_length(u, v)

@@ -18,7 +18,10 @@ from compas.utilities import XFunc
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 
-from compas_rhino import MeshArtist
+from compas_tna.equilibrium import horizontal_nodal_rhino as horizontal_nodal
+from compas_tna.equilibrium import vertical_from_zmax_rhino as vertical_from_zmax
+
+from compas_tna.rhino import FormArtist
 
 
 # todo: select a rhino mesh as input
@@ -32,45 +35,12 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-def horizontal(form, force, *args, **kwargs):
-    def callback(line, args):
-        print(line)
-        compas_rhino.wait()
-
-    f = XFunc('compas_tna.equilibrium.horizontal_xfunc', callback=callback)
-    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
-    form.data = formdata
-    force.data = forcedata
-
-
-def horizontal_nodal(form, force, *args, **kwargs):
-    def callback(line, args):
-        print(line)
-        compas_rhino.wait()
-
-    f = XFunc('compas_tna.equilibrium.horizontal_nodal_xfunc', callback=callback)
-    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
-    form.data = formdata
-    force.data = forcedata
-
-
-def vertical_from_zmax(form, force, *args, **kwargs):
-    def callback(line, args):
-        print(line)
-        compas_rhino.wait()
-
-    f = XFunc('compas_tna.equilibrium.vertical_from_zmax_xfunc', callback=callback)
-    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
-    form.data = formdata
-    force.data = forcedata
-
-
 # make a form diagram from an obj file
 
 file = compas_tna.get('mesh.obj')
 form = FormDiagram.from_obj(file)
 
-artist = MeshArtist(form, layer='FormDiagram')
+artist = FormArtist(form, layer='FormDiagram')
 
 # collapse edges that are shorter than 0.5
 
@@ -83,7 +53,7 @@ artist.redraw()
 
 # extract the exterior and interior boundaries
 
-boundaries = form.vertices_on_boundary()
+boundaries = form.vertices_on_boundaries()
 
 exterior = boundaries[0]
 interior = boundaries[1:]
@@ -122,5 +92,5 @@ vertical_from_zmax(form, force, zmax=15)
 artist.clear()
 artist.draw_vertices()
 artist.draw_edges()
-artist.draw_faces()
+artist.draw_faces(join_faces=True)
 artist.redraw()

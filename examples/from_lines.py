@@ -39,7 +39,7 @@ form.attributes['foot.scale'] = 1.0
 
 # ==============================================================================
 
-boundaries = form.vertices_on_boundary()
+boundaries = form.vertices_on_boundaries()
 
 exterior = boundaries[0]
 interior = boundaries[1:]

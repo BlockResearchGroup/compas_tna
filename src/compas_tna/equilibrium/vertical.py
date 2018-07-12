@@ -14,6 +14,8 @@ except ImportError:
     if 'ironpython' not in sys.version.lower():
         raise
 
+from compas.utilities import XFunc
+
 from compas.numerical import connectivity_matrix
 from compas.numerical import equilibrium_matrix
 from compas.numerical import normrow
@@ -37,6 +39,7 @@ __all__ = [
     'vertical_from_zmax_xfunc',
     'vertical_from_formforce_xfunc',
     'vertical_from_qind_xfunc',
+    'vertical_from_zmax_rhino'
 ]
 
 
@@ -66,6 +69,19 @@ def vertical_from_qind_xfunc(formdata, *args, **kwargs):
     form = FormDiagram.from_data(formdata)
     vertical_from_qind(form, *args, **kwargs)
     return form.to_data()
+
+
+def vertical_from_zmax_rhino(form, force, *args, **kwargs):
+    import compas_rhino
+
+    def callback(line, args):
+        print(line)
+        compas_rhino.wait()
+
+    f = XFunc('compas_tna.equilibrium.vertical_from_zmax_xfunc', callback=callback)
+    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
+    form.data = formdata
+    force.data = forcedata
 
 
 def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, display=True):

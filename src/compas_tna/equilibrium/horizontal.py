@@ -12,6 +12,7 @@ except ImportError:
     if 'ironpython' not in sys.version.lower():
         raise    
 
+from compas.utilities import XFunc
 from compas.geometry import angle_vectors_xy
 
 from compas.numerical import connectivity_matrix
@@ -35,6 +36,8 @@ __all__ = [
     'horizontal_xfunc',
     'horizontal_nodal',
     'horizontal_nodal_xfunc',
+    'horizontal_rhino',
+    'horizontal_nodal_rhino',
 ]
 
 
@@ -57,6 +60,32 @@ def horizontal_nodal_xfunc(formdata, forcedata, *args, **kwargs):
     force = ForceDiagram.from_data(forcedata)
     horizontal_nodal(form, force, *args, **kwargs)
     return form.to_data(), force.to_data()
+
+
+def horizontal_rhino(form, force, *args, **kwargs):
+    import compas_rhino
+
+    def callback(line, args):
+        print(line)
+        compas_rhino.wait()
+
+    f = XFunc('compas_tna.equilibrium.horizontal_xfunc', callback=callback)
+    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
+    form.data = formdata
+    force.data = forcedata
+
+
+def horizontal_nodal_rhino(form, force, *args, **kwargs):
+    import compas_rhino
+
+    def callback(line, args):
+        print(line)
+        compas_rhino.wait()
+
+    f = XFunc('compas_tna.equilibrium.horizontal_nodal_xfunc', callback=callback)
+    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
+    form.data = formdata
+    force.data = forcedata
 
 
 def horizontal(form, force, alpha=100.0, kmax=100, display=True):

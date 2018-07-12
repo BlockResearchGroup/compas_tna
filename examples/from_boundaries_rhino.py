@@ -15,6 +15,9 @@ from compas.topology import mesh_flip_cycles
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 
+from compas_tna.equilibrium import horizontal_rhino as horizontal
+from compas_tna.equilibrium import vertical_from_zmax_rhino as vertical_from_zmax
+
 from compas_tna.rhino import FormArtist
 
 
@@ -23,33 +26,8 @@ __copyright__ = 'Copyright 2017, BRG - ETH Zurich',
 __license__   = 'MIT'
 __email__     = 'van.mele@arch.ethz.ch'
 
-__all__ = []
-
 
 # uses docs/_examples/mesh-delaunay.3dm
-
-
-def horizontal(form, force, *args, **kwargs):
-    def callback(line, args):
-        print(line)
-        compas_rhino.wait()
-
-    f = XFunc('compas_tna.equilibrium.horizontal_xfunc', callback=callback)
-    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
-    form.data = formdata
-    force.data = forcedata
-
-
-def vertical_from_zmax(form, force, *args, **kwargs):
-    def callback(line, args):
-        print(line)
-        compas_rhino.wait()
-
-    f = XFunc('compas_tna.equilibrium.vertical_from_zmax_xfunc', callback=callback)
-    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
-    form.data = formdata
-    force.data = forcedata
-
 
 # select the points
 # select the boundary
@@ -76,7 +54,7 @@ mesh_flip_cycles(form)
 
 # process mesh into form diagram
 
-boundaries = form.vertices_on_boundary()
+boundaries = form.vertices_on_boundaries()
 
 exterior = boundaries[0]
 interior = boundaries[1:]
@@ -89,11 +67,6 @@ form.set_vertices_attribute('is_anchor', True, keys=exterior)
 
 form.update_exterior(exterior, feet=2)
 form.update_interior(interior)
-
-# relax the interior
-
-# fixed = set(list(flatten(boundaries)) + form.fixed())
-# form.relax(fixed=fixed)
 
 # create the force diagram
 
