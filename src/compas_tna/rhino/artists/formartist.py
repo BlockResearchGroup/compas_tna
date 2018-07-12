@@ -125,7 +125,6 @@ class FormArtist(MeshArtist):
                 'start' : sp,
                 'end'   : e1,
                 'color' : color,
-                'width' : width,
                 'arrow' : 'start',
                 'name'  : "{}.reaction.{}".format(self.form.name, key)
             })
@@ -134,7 +133,6 @@ class FormArtist(MeshArtist):
                 'start' : sp,
                 'end'   : e2,
                 'color' : color,
-                'width' : width,
                 'arrow' : 'start',
                 'name'  : "{}.reaction.{}".format(self.form.name, key)
             })
