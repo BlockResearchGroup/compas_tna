@@ -1,0 +1,59 @@
+{
+    "menus" : [],
+
+    "toolbars" : 
+    [
+    	{
+    		"name"  : "compas_tna",
+    		"items" : 
+    		[
+                { "text" : "init", "left" : "tna.init" },
+                { "text" : "settings", "left" : "tna.update_settings" }
+    		]	
+    	},
+    	{
+    		"name"  : "Form",
+    		"items" : 
+    		[
+                { "text" : "obj", "left" : "tna.form_from_obj" },
+                { "text" : "lines", "left" : "tna.form_from_lines" },
+                { "text" : "boundaries", "left" : "tna.form_from_boundaries" },
+                { "text" : "mesh", "left" : "tna.form_from_mesh" },
+                { "text" : "surface", "left" : "tna.form_from_surface" },
+
+                { "type" : "separator" },
+
+                { "text" : "attr", "left" : "tna.form_update_attributes" },
+                { "text" : "v_attr", "left" : "tna.form_update_vertex_attributes" },
+                { "text" : "e_attr", "left" : "tna.form_update_edge_attributes" },
+                { "text" : "f_attr", "left" : "tna.form_update_face_attributes" }
+    		]	
+    	},
+    	{
+    		"name"  : "Force",
+    		"items" : 
+    		[
+    		]	
+    	},
+    	{
+    		"name"  : "Forward",
+    		"items" : 
+    		[
+    		]	
+    	}
+    ],
+
+    "toolbargroups": 
+    [
+    	{
+            "name"     : "compas_tna",
+            "toolbars" : 
+            [
+            	"compas_tna",
+            	"Form",
+            	"Force",
+            	"Forward"
+            ]
+        }
+    ]
+}

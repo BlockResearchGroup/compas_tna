@@ -79,6 +79,7 @@ class FormDiagram(Mesh):
         })
         self.attributes.update({
             'name'                       : 'FormDiagram',
+            'layer'                      : 'FormDiagram',
             'color.vertex'               : (255, 255, 255),
             'color.edge'                 : (0, 0, 0),
             'color.face'                 : (210, 210, 210),

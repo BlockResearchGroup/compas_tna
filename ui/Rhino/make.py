@@ -2,6 +2,18 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+import sys
+import os
+import json
+
+import compas
+
+from frontcontroller import TNAFrontController
+from rui import *
+
+
+HERE = os.path.abspath(os.path.dirname(__file__))
+
 
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
@@ -9,12 +21,10 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-from frontcontroller import HiLoShellFrontController
-
-with open(os.path.join(HERE, 'rui_config.json'), 'r') as fp:
+with open(os.path.join(HERE, 'config.json'), 'r') as fp:
     config = json.load(fp)
 
-Front = HiLoShellFrontController
+Front = TNAFrontController
 front = Front.instancename
 
 macros  = get_macros(Front, front)
@@ -41,9 +51,6 @@ rui = Rui('./{}.rui'.format(front))
 
 rui.init()
 rui.add_macros(macros)
-
-# for name in rui.macros:
-#     print(name)
 
 for toolbar in config['toolbars']:
     for item in toolbar['items']:
