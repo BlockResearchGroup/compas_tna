@@ -22,6 +22,8 @@ from compas_rhino import MeshArtist
 
 
 # todo: select a rhino mesh as input
+# todo: use the form artist
+# todo: simplify redrawing
 
 
 __author__    = ['Tom Van Mele', ]

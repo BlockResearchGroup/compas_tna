@@ -139,8 +139,26 @@ class FormArtist(MeshArtist):
 
         compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
-    def draw_forces(self):
+    def draw_forces(self, scale=None, color=None):
         self.clear_forces()
+
+        lines = []
+        color = color or self.form.attributes['color.force']
+        scale = scale or self.form.attributes['scale.force']
+
+        for u, v, attr in self.form.edges_where({'is_edge': True, 'is_external': False}, True):
+            sp, ep = self.form.edge_coordinates(u, v)
+            radius = scale * attr['f']
+
+            lines.append({
+                'start'  : sp,
+                'end'    : ep,
+                'radius' : radius,
+                'color'  : color,
+                'name'   : "{}.force.{}-{}".format(self.form.name, u, v)
+            })
+
+        compas_rhino.xdraw_cylinders(lines, layer=self.layer, clear=False, redraw=False)
 
 
 # ==============================================================================

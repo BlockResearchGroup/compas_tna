@@ -23,6 +23,9 @@ from compas_tna.viewers import FormViewer
 from compas_tna.viewers import Viewer2
 
 
+# todo: update attributes from kwargs
+
+
 __author__    = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2016 - Block Research Group, ETH Zurich'
 __license__   = 'MIT License'
@@ -31,8 +34,7 @@ __email__     = 'vanmelet@ethz.ch'
 
 # make a form diagram from an obj file
 
-file = compas_tna.get('mesh.obj')
-form = FormDiagram.from_obj(file)
+form = FormDiagram.from_obj(compas_tna.get('mesh.obj'))
 
 form.attributes['foot.scale'] = 0.5
 

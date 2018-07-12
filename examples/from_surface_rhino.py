@@ -22,7 +22,7 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-# per path of the surface, use the uv space to align quadmesh
+# per patch of the surface, use the uv space to align quadmesh
 # merge vertices at the seems
 # unanchor (is_anchor: False) all vertices along unsupported openings
 # add corresponding faces

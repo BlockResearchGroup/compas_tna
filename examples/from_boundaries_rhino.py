@@ -109,9 +109,13 @@ vertical_from_zmax(form, force, zmax=40)
 
 artist = FormArtist(form, layer="FormDiagram")
 artist.clear_layer()
+
 artist.draw_vertices(keys=list(form.vertices_where({'is_external': False})))
 artist.draw_edges(keys=list(form.edges_where({'is_edge': True, 'is_external': False})))
 artist.draw_faces(fkeys=list(form.faces_where({'is_loaded': True})), join_faces=True)
+
 artist.draw_reactions(scale=0.01)
+artist.draw_forces(scale=0.0001)
+
 artist.redraw()
 
