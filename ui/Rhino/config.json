@@ -26,7 +26,11 @@
                 { "text" : "attr", "left" : "tna.form_update_attributes" },
                 { "text" : "v_attr", "left" : "tna.form_update_vertex_attributes" },
                 { "text" : "e_attr", "left" : "tna.form_update_edge_attributes" },
-                { "text" : "f_attr", "left" : "tna.form_update_face_attributes" }
+                { "text" : "f_attr", "left" : "tna.form_update_face_attributes" },
+
+                { "type" : "separator" },
+
+                { "text" : "reactions", "left" : "tna.form_show_reactions", "right" : "tna.form_hide_reactions" }
     		]	
     	},
     	{

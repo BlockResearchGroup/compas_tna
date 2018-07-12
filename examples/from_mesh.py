@@ -71,7 +71,7 @@ force = ForceDiagram.from_formdiagram(form)
 # compute equilibrium
 
 horizontal(form, force)
-vertical_from_zmax(form, force, zmax=15)
+vertical_from_zmax(form, force, zmax=15, kmax=100)
 
 # visualise result
 
@@ -80,13 +80,16 @@ viewer.defaults['edge.fontsize'] = 4
 
 edgelabels = {(u, v): "{:.1f}".format(attr['a']) for u, v, attr in form.edges_where({'is_edge': True}, True) if attr['a'] > 0.1} 
 
-viewer.draw_vertices(keys=list(form.vertices_where({'is_external': False})))
+viewer.draw_vertices(
+    keys=list(form.vertices_where({'is_external': False})),
+    text={key: "{:.1f}".format(attr['z']) for key, attr in form.vertices(True)}
+)
 viewer.draw_edges(
     keys=list(form.edges_where({'is_edge': True, 'is_external': False})),
     width=0.1,
     text=edgelabels
 )
-viewer.draw_reactions(scale=0.01)
-viewer.draw_horizontalforces(scale=0.02)
+# viewer.draw_reactions(scale=0.01)
+# viewer.draw_horizontalforces(scale=0.02)
 
 viewer.show()

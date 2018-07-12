@@ -154,7 +154,8 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
     for k in range(kmax):
         if display:
             print(k)
-        update_loads(p, xyz)
+        if k < kmax - 1:
+            update_loads(p, xyz)
         h            = scale * _l
         q            = h / l
         Q            = diags([q.ravel()], [0])
@@ -163,9 +164,9 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
         xyz[free, 2] = spsolve(A, b)
         z     = max(xyz[free, 2])
         scale = scale * (z / zmax)
-        res2  = (z - zmax) ** 2
-        if res2 < tol2:
-            break
+        # res2  = (z - zmax) ** 2
+        # if res2 < tol2:
+        #     break
     # --------------------------------------------------------------------------
     # update form
     # --------------------------------------------------------------------------

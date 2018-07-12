@@ -103,7 +103,7 @@ force = ForceDiagram.from_formdiagram(form)
 # compute equilibrium
 
 horizontal(form, force)
-vertical_from_zmax(form, force, zmax=40)
+vertical_from_zmax(form, force, zmax=10)
 
 # draw the result
 
@@ -114,8 +114,8 @@ artist.draw_vertices(keys=list(form.vertices_where({'is_external': False})))
 artist.draw_edges(keys=list(form.edges_where({'is_edge': True, 'is_external': False})))
 artist.draw_faces(fkeys=list(form.faces_where({'is_loaded': True})), join_faces=True)
 
-artist.draw_reactions(scale=0.01)
-artist.draw_forces(scale=0.0001)
+artist.draw_reactions(scale=0.1)
+artist.draw_forces(scale=0.001)
 
 artist.redraw()
 

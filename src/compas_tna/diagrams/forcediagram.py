@@ -29,8 +29,6 @@ class ForceDiagram(Mesh):
         })
         self.default_edge_attributes.update({
             'l'   : 0.0,
-            'lmin': 1e-7,
-            'lmax': 1e+7,
         })
         self.attributes.update({
             'name'  : 'ForceDiagram',

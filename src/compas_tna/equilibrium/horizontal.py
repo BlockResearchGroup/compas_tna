@@ -100,8 +100,10 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     fixed = [k_i[key] for key in fixed]
     edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
     xy    = array(form.get_vertices_attributes('xy'), dtype=float64)
-    lmin  = array([attr.get('lmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    lmax  = array([attr.get('lmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    lmin   = array([attr.get('lmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    lmax   = array([attr.get('lmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    fmin   = array([attr.get('fmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    fmax   = array([attr.get('fmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
     C     = connectivity_matrix(edges, 'csr')
     Ct    = C.transpose()
     CtC   = Ct.dot(C)
@@ -114,8 +116,6 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     _fixed = _fixed or [0]
     _edges = force.ordered_edges(form)
     _xy    = array(force.get_vertices_attributes('xy'), dtype=float64)
-    _lmin  = array(force.get_edges_attribute('lmin', 1e-7), dtype=float64).reshape((-1, 1))
-    _lmax  = array(force.get_edges_attribute('lmax', 1e+7), dtype=float64).reshape((-1, 1))
     _C     = connectivity_matrix(_edges, 'csr')
     _Ct    = _C.transpose()
     _Ct_C  = _Ct.dot(_C)
@@ -138,7 +138,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     for k in range(kmax):
         # apply length bounds
         apply_bounds(l, lmin, lmax)
-        apply_bounds(_l, _lmin, _lmax)
+        apply_bounds(_l, fmin, fmax)
         # print, if allowed
         if display:
             print(k)
