@@ -91,10 +91,11 @@ class FormArtist(MeshArtist):
                 'name'  : "{}.selfweight.{}".format(self.form.name, key)
             })
 
-        compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)        
+        compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
-    def draw_reactions(self, scale=None, color=None):
-        self.clear_reactions()
+    def draw_reactions(self, scale=None, color=None, clear_reactions=True):
+        if clear_reactions:
+            self.clear_reactions()
 
         lines = []
         color = color or self.form.attributes['color.reaction']
