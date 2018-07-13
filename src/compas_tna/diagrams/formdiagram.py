@@ -61,6 +61,7 @@ class FormDiagram(Mesh):
             'rx'          : 0.0,
             'ry'          : 0.0,
             'rz'          : 0.0,
+            'zT'          : 0.0
         })
         self.default_edge_attributes.update({
             'q'           : 1.0,
@@ -108,9 +109,10 @@ class FormDiagram(Mesh):
 
             'density'                    : 1.0,
 
-            'foot.scale'                 : 0.1,
-            'foot.alpha'                 : 45,
-            'foot.tol'                   : 0.1,
+            'feet.scale'                 : 0.1,
+            'feet.alpha'                 : 45,
+            'feet.tol'                   : 0.1,
+            'feet.mode'                  : 1,
         })
 
     def __str__(self):
@@ -391,9 +393,9 @@ class FormDiagram(Mesh):
         def cross_z(ab, ac):
             return ab[0] * ac[1] - ab[1] * ac[0]
 
-        scale = self.attributes['foot.scale']
-        alpha = self.attributes['foot.alpha'] * pi / 180
-        tol   = self.attributes['foot.tol']
+        scale = self.attributes['feet.scale']
+        alpha = self.attributes['feet.alpha'] * pi / 180
+        tol   = self.attributes['feet.tol']
 
         key_foot = {}
         key_xy = {key: self.vertex_coordinates(key, 'xy') for key in self.vertices()}

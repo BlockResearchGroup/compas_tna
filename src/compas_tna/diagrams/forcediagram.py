@@ -25,7 +25,7 @@ class ForceDiagram(Mesh):
             'x' : 0.0,
             'y' : 0.0,
             'z' : 0.0,
-            'is_fixed'   : False,
+            'is_fixed' : False,
         })
         self.default_edge_attributes.update({
             'l'   : 0.0,

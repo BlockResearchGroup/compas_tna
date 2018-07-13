@@ -40,6 +40,7 @@ from compas.numerical import equilibrium_matrix
 from compas.numerical import normrow
 
 from compas_tna.utilities import LoadUpdater
+from compas_tna.utilities import update_target
 
 from compas_tna.utilities import update_z
 from compas_tna.utilities import update_q_from_qind
@@ -55,13 +56,17 @@ __all__ = [
     'vertical_from_zmax',
     'vertical_from_formforce',
     'vertical_from_qind',
+    'vertical_from_target',
+
     'vertical_from_zmax_xfunc',
     'vertical_from_formforce_xfunc',
     'vertical_from_qind_xfunc',
+    'vertical_from_target_xfunc',
+
     'vertical_from_zmax_rhino',
     'vertical_from_formforce_rhino',
     'vertical_from_qind_rhino',
-    # 'vertical_from_average'
+    'vertical_from_target_rhino'
 ]
 
 
@@ -93,13 +98,20 @@ def vertical_from_qind_xfunc(formdata, *args, **kwargs):
     return form.to_data()
 
 
+def vertical_from_target_xfunc(formdata, forcedata, *args, **kwargs):
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
+    vertical_from_target(form, force, *args, **kwargs)
+    return form.to_data(), force.to_data()
+
+
 def vertical_from_zmax_rhino(form, force, *args, **kwargs):
     import compas_rhino
-
     def callback(line, args):
         print(line)
         compas_rhino.wait()
-
     f = XFunc('compas_tna.equilibrium.vertical_from_zmax_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
     formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
     form.data = formdata
@@ -108,11 +120,9 @@ def vertical_from_zmax_rhino(form, force, *args, **kwargs):
 
 def vertical_from_formforce_rhino(form, force, *args, **kwargs):
     import compas_rhino
-
     def callback(line, args):
         print(line)
         compas_rhino.wait()
-
     f = XFunc('compas_tna.equilibrium.vertical_from_formforce_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
     formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
     form.data = formdata
@@ -121,14 +131,23 @@ def vertical_from_formforce_rhino(form, force, *args, **kwargs):
 
 def vertical_from_qind_rhino(form, *args, **kwargs):
     import compas_rhino
-
     def callback(line, args):
         print(line)
         compas_rhino.wait()
-
     f = XFunc('compas_tna.equilibrium.vertical_from_qind_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
     formdata = f(form.to_data(), *args, **kwargs)
     form.data = formdata
+
+
+def vertical_from_target_rhino(form, force, *args, **kwargs):
+    import compas_rhino
+    def callback(line, args):
+        print(line)
+        compas_rhino.wait()
+    f = XFunc('compas_tna.equilibrium.vertical_from_target_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
+    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
+    form.data = formdata
+    force.data = forcedata
 
 
 def vertical_from_zmax(form, force, zmax=None, kmax=50, tol=1e-6, density=1.0, display=True):
@@ -239,7 +258,7 @@ def vertical_from_zmax(form, force, zmax=None, kmax=50, tol=1e-6, density=1.0, d
         z    = max(xyz[free, 2])
         return ((z - zmax) ** 2) ** 0.5
 
-    res = minimize_scalar(objective, bounds=(1.0, 100.0), method='Bounded')
+    res = minimize_scalar(objective, bounds=(1.0, 1000.0), method='Bounded')
     scale = res.x
 
     update_loads(p, xyz)
@@ -281,96 +300,104 @@ def vertical_from_zmax(form, force, zmax=None, kmax=50, tol=1e-6, density=1.0, d
     force.attributes['scale'] = scale
 
 
-# def vertical_from_average(form, force, zaverage):
-#     k_i     = form.key_index()
-#     uv_i    = form.uv_index()
-#     vcount  = len(form.vertex)
-#     anchors = form.anchors()
-#     fixed   = form.fixed()
-#     fixed   = set(anchors + fixed)
-#     fixed   = [k_i[key] for key in fixed]
-#     free    = list(set(range(vcount)) - set(fixed))
-#     edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
-#     xyz     = array(form.get_vertices_attributes('xyz'), dtype=float64)
-#     thick   = array(form.get_vertices_attribute('t'), dtype=float64).reshape((-1, 1))
-#     p       = array(form.get_vertices_attributes(('px', 'py', 'pz')), dtype=float64)
-#     p0      = p.copy()
-#     C       = connectivity_matrix(edges, 'csr')
-#     Ci      = C[:, free]
-#     Cf      = C[:, fixed]
-#     Cit     = Ci.transpose()
-#     Ct      = C.transpose()
-#     # --------------------------------------------------------------------------
-#     # ForceDiagram
-#     # --------------------------------------------------------------------------
-#     _xyz   = array(force.get_vertices_attributes('xyz'), dtype=float64)
-#     _edges = force.ordered_edges(form)
-#     _C     = connectivity_matrix(_edges, 'csr')
-#     # --------------------------------------------------------------------------
-#     # load updater
-#     # --------------------------------------------------------------------------
-#     update_loads = LoadUpdater(form, p0, thickness=thick, density=1.0)
-#     update_loads(p, xyz)
+def vertical_from_target(form, force, kmax=50, tol=1e-6, density=1.0, display=True):
+    k_i     = form.key_index()
+    uv_i    = form.uv_index()
+    vcount  = len(form.vertex)
+    anchors = form.anchors()
+    fixed   = form.fixed()
+    fixed   = set(anchors + fixed)
+    fixed   = [k_i[key] for key in fixed]
+    free    = list(set(range(vcount)) - set(fixed))
+    edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
+    xyz     = array(form.get_vertices_attributes('xyz'), dtype=float64)
+    thick   = array(form.get_vertices_attribute('t'), dtype=float64).reshape((-1, 1))
+    p       = array(form.get_vertices_attributes(('px', 'py', 'pz')), dtype=float64)
+    C       = connectivity_matrix(edges, 'csr')
+    Ci      = C[:, free]
+    Cf      = C[:, fixed]
+    Cit     = Ci.transpose()
+    Ct      = C.transpose()
+    # --------------------------------------------------------------------------
+    # ForceDiagram
+    # --------------------------------------------------------------------------
+    _xyz   = array(force.get_vertices_attributes('xyz'), dtype=float64)
+    _edges = force.ordered_edges(form)
+    _C     = connectivity_matrix(_edges, 'csr')
+    #===========================================================================
+    # original data
+    #===========================================================================
+    p0 = p.copy()
+    xyz0 = xyz.copy()
+    # --------------------------------------------------------------------------
+    # target
+    # --------------------------------------------------------------------------
+    # heightfield = array(target, dtype=float64).reshape((-1, 3))
+    # zT = update_target(heightfield, xyz)
+    zT = array(form.get_vertices_attribute('zT'), dtype=float64).reshape((-1, 1))
+    xyz[:, 2] = zT[:, 0]
+    # --------------------------------------------------------------------------
+    # load updater
+    # --------------------------------------------------------------------------
+    update_loads = LoadUpdater(form, p0, thickness=thick, density=1.0)
+    update_loads(p, xyz)
+    # --------------------------------------------------------------------------
+    # optimise scale
+    # --------------------------------------------------------------------------
+    n      = vcount
+    ni     = len(free)
+    eye_n0 = diagflat([1] * n + [0])
+    nul_ni = zeros((ni, ni))
+    uv     = C.dot(xyz[:, 0:2])
+    l      = normrow(uv)
+    _uv    = _C.dot(_xyz[:, 0:2])
+    _l     = normrow(_uv)
+    q      = _l / l
+    Q      = diags([q.flatten()], [0])
+    A      = Cit.dot(Q).dot(C)
+    pzi    = p[free, 2].reshape((-1, 1))
+    Aeq    = hstack((A.toarray(), pzi))
+    beq    = zeros((ni, 1))
+    Ceq    = vstack(( hstack((eye_n0, Aeq.T )), hstack((Aeq, nul_ni)) ))
+    deq    = vstack((zT, zeros((1, 1)), beq))
+    res    = solve(Ceq.T.dot(Ceq), Ceq.T.dot(deq))
+    scale  = absolute(reciprocal(res[n][0]))
+    # --------------------------------------------------------------------------
+    # update
+    # --------------------------------------------------------------------------
+    _l = normrow(_uv)
+    _l = scale * _l
+    q  = _l / l
+    Q  = diags([q.flatten()], [0])
 
-#     zT = array([zaverage] * vcount).reshape((-1, 1))
+    A            = Cit.dot(Q).dot(Ci)
+    b            = p[free, 2] - Cit.dot(Q).dot(Cf).dot(xyz[fixed, 2])
+    xyz[free, 2] = spsolve(A, b)
 
-#     # --------------------------------------------------------------------------
-#     # lengths
-#     # --------------------------------------------------------------------------
-#     n      = vcount
-#     ni     = len(free)
-#     eye_n0 = diagflat([1] * n + [0])
-#     nul_ni = zeros((ni, ni))
-#     uv     = C.dot(xyz[:, 0:2])
-#     l      = normrow(uv)
-#     _uv    = _C.dot(_xyz[:, 0:2])
-#     _l     = normrow(_uv)
-#     q      = _l / l
-#     Q      = diags([q.flatten()], [0])
-#     A      = Cit.dot(Q).dot(C)
-#     pzi    = p[free, 2].reshape((-1, 1))
-#     Aeq    = hstack((A.toarray(), pzi))
-#     beq    = zeros((ni, 1))
-#     Ceq    = vstack(( hstack((eye_n0, Aeq.T )), hstack((Aeq, nul_ni)) ))
-#     deq    = vstack((zT, zeros((1, 1)), beq))
-#     res    = solve(Ceq.T.dot(Ceq), Ceq.T.dot(deq))
-#     scale  = absolute(reciprocal(res[n][0]))
-
-#     _l = normrow(_uv)
-#     _l = scale * _l
-#     q  = _l / l
-#     Q  = diags([q.flatten()], [0])
-
-#     A = Cit.dot(Q).dot(Ci).toarray() 
-#     A_factor = cho_factor(A)
-#     for k in range(10):
-#         print(k)
-#         update_loads(p, xyz)
-#         b = p[free, 2] - Cit.dot(Q).dot(Cf).dot(xyz[fixed, 2])
-#         xyz[free, 2] = cho_solve(A_factor, b)
-
-#     uvw = C.dot(xyz)
-#     l   = normrow(uvw)
-#     f   = q * l
-#     r   = Ct.dot(Q).dot(C).dot(xyz) - p
-#     sw  = p - p0
-
-#     for key, attr in form.vertices(True):
-#         index = k_i[key]
-#         attr['z']  = xyz[index, 2]
-#         attr['rx'] = r[index, 0]
-#         attr['ry'] = r[index, 1]
-#         attr['rz'] = r[index, 2]
-#         attr['sw'] = sw[index, 2]
-#     for u, v, attr in form.edges_where({'is_edge': True}, True):
-#         index = uv_i[(u, v)]
-#         attr['q'] = q[index, 0]
-#         attr['f'] = f[index, 0]
-#         attr['l'] = l[index, 0]
-#     # --------------------------------------------------------------------------
-#     # update force
-#     # --------------------------------------------------------------------------
-#     force.attributes['scale'] = scale
+    uvw = C.dot(xyz)
+    l   = normrow(uvw)
+    f   = q * l
+    r   = Ct.dot(Q).dot(C).dot(xyz) - p
+    sw  = p - p0
+    # --------------------------------------------------------------------------
+    # form
+    # --------------------------------------------------------------------------
+    for key, attr in form.vertices(True):
+        index = k_i[key]
+        attr['z']  = xyz[index, 2]
+        attr['rx'] = r[index, 0]
+        attr['ry'] = r[index, 1]
+        attr['rz'] = r[index, 2]
+        attr['sw'] = sw[index, 2]
+    for u, v, attr in form.edges_where({'is_edge': True}, True):
+        index = uv_i[(u, v)]
+        attr['q'] = q[index, 0]
+        attr['f'] = f[index, 0]
+        attr['l'] = l[index, 0]
+    # --------------------------------------------------------------------------
+    # update force
+    # --------------------------------------------------------------------------
+    force.attributes['scale'] = scale
 
 
 def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, display=True):

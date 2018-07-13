@@ -24,24 +24,25 @@
                 { "type" : "separator" },
 
                 { "text" : "redraw", "left" : "tna.form_redraw" },
+
+                { "type" : "separator" },
+
+                { "text" : "sel_parallel", "left" : "tna.form_select_parallel_edges" },
+                { "text" : "sel_continuous", "left" : "tna.form_select_continuous_edges" },
+                { "text" : "sel_bedges", "left" : "tna.form_select_boundary_edges" },
+                { "text" : "sel_bvertices", "left" : "tna.form_select_boundary_vertices" },
+
+                { "type" : "separator" },
+
+                { "text" : "@", "left" : "tna.form_update_attributes" },
+                { "text" : "v_@", "left" : "tna.form_update_vertex_attributes" },
+                { "text" : "e_@", "left" : "tna.form_update_edge_attributes" },
+
+                { "type" : "separator" },
+
                 { "text" : "relax", "left" : "tna.form_relax" },
-
-                { "type" : "separator" },
-
-                { "text" : "select_parallel", "left" : "tna.form_select_parallel_edges" },
-                { "text" : "select_continuous", "left" : "tna.form_select_continuous_edges" },
-                { "text" : "select_bedges", "left" : "tna.form_select_boundary_edges" },
-                { "text" : "select_bvertices", "left" : "tna.form_select_boundary_vertices" },
-
-                { "type" : "separator" },
-
-                { "text" : "attr", "left" : "tna.form_update_attributes" },
-                { "text" : "v_attr", "left" : "tna.form_update_vertex_attributes" },
-                { "text" : "e_attr", "left" : "tna.form_update_edge_attributes" },
-
-                { "type" : "separator" },
-
                 { "text" : "update boundaries", "left" : "tna.form_update_boundaries" },
+                { "text" : "set target", "left" : "tna.form_set_target" },
 
                 { "type" : "separator" },
 
@@ -70,9 +71,14 @@
     		"items" : 
     		[
                 { "text" : "settings", "left" : "tna.forward_update_settings" },
+
+                { "type" : "separator" },
+
                 { "text" : "horizontal", "left" : "tna.forward_horizontal" },
+                { "text" : "horizontal_nodal", "left" : "tna.forward_horizontal_nodal" },
                 { "text" : "zmax", "left" : "tna.forward_vertical_zmax" },
-                { "text" : "formforce", "left" : "tna.forward_vertical_formforce" }
+                { "text" : "formforce", "left" : "tna.forward_vertical_formforce" },
+                { "text" : "target", "left" : "tna.forward_vertical_target" }
     		]	
     	}
     ],

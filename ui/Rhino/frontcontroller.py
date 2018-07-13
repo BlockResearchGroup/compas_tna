@@ -8,6 +8,8 @@ import compas
 import compas_rhino
 import compas_tna
 
+from compas.topology import mesh_flip_cycles
+
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 
@@ -22,9 +24,13 @@ from compas_rhino.helpers.modifiers import VertexModifier
 from compas_rhino.helpers.modifiers import EdgeModifier
 from compas_rhino.helpers.modifiers import FaceModifier
 
+from compas_rhino.geometry import RhinoSurface
+
 from compas_tna.equilibrium import horizontal_rhino as horizontal
+from compas_tna.equilibrium import horizontal_nodal_rhino as horizontal_nodal
 from compas_tna.equilibrium import vertical_from_zmax_rhino as vertical_from_zmax
 from compas_tna.equilibrium import vertical_from_formforce_rhino as vertical_from_formforce
+from compas_tna.equilibrium import vertical_from_target_rhino as vertical_from_target
 
 try:
     import rhinoscriptsyntax as rs
@@ -310,6 +316,11 @@ class TNAFrontController(object):
         self.form.draw()
         self.force.draw()
 
+    def forward_horizontal_nodal(self):
+        horizontal_nodal(self.form, self.force)
+        self.form.draw()
+        self.force.draw()
+
     def forward_vertical_zmax(self):
         vertical_from_zmax(self.form, self.force)
         self.form.draw()
@@ -317,6 +328,16 @@ class TNAFrontController(object):
 
     def forward_vertical_formforce(self):
         vertical_from_formforce(self.form, self.force)
+        self.form.draw()
+        self.force.draw()
+
+    def forward_vertical_target(self):
+        vertical_from_target(self.form, self.force)
+        self.form.draw()
+        self.force.draw()
+
+    def forward_vertical_qind(self):
+        vertical_from_qind(self.form, self.force)
         self.form.draw()
         self.force.draw()
 
@@ -336,6 +357,7 @@ class TNAFrontController(object):
         if not guid:
             return
         self.form = RhinoForm.from_mesh(guid)
+        mesh_flip_cycles(self.form)
         self.form.draw()
 
     def form_from_surface(self):
@@ -386,8 +408,36 @@ class TNAFrontController(object):
         boundaries = self.form.vertices_on_boundaries()
         exterior = boundaries[0]
         interior = boundaries[1:]
-        self.form.update_exterior(exterior, feet=1)
+        self.form.update_exterior(exterior, feet=self.form.attributes['feet.mode'])
         self.form.update_interior(interior)
+
+    def form_set_target(self):
+        guid = compas_rhino.select_surface()
+        surface = RhinoSurface(guid)
+        points = self.form.get_vertices_attributes('xyz')
+        projections = surface.project_points(points)
+        key_index = self.form.key_index()
+        for key, attr in self.form.vertices(True):
+            if attr['is_anchor']:
+                continue
+            if attr['is_external']:
+                continue
+            index = key_index[key]
+            attr['zT'] = projections[index][2]
+
+    # def form_set_target(self):
+    #     guid = compas_rhino.select_surface()
+    #     surface = RhinoSurface(guid)
+    #     points = self.form.get_vertices_attributes('xyz')
+    #     projections = surface.project_points(points)
+    #     key_index = self.form.key_index()
+    #     for key, attr in self.form.vertices(True):
+    #         if attr['is_anchor']:
+    #             continue
+    #         if attr['is_external']:
+    #             continue
+    #         index = key_index[key]
+    #         attr['zT'] = projections[index][2]
 
     def form_show_reactions(self):
         artist = FormArtist(self.form, layer=self.form.attributes['layer'])

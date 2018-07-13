@@ -99,3 +99,19 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+
+# COMPAS
+
+*.3dmbak
+*.rhl
+*.rui_bak
+
+__temp/**
+!__temp/PLACEHOLDER
+
+temp/**
+!temp/PLACEHOLDER
+
+
+
