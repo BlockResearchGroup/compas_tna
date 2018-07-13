@@ -445,8 +445,6 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
     # --------------------------------------------------------------------------
     scale = force.attributes['scale']
 
-    print(scale)
-
     _xyz   = array(force.get_vertices_attributes('xyz'), dtype=float64)
     _edges = force.ordered_edges(form)
     _C     = connectivity_matrix(_edges, 'csr')
