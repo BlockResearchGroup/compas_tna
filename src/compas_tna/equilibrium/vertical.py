@@ -23,9 +23,15 @@ try:
 
     from scipy.sparse.linalg import spsolve
 
+    from scipy.optimize import minimize
+    from scipy.optimize import minimize_scalar
+
 except ImportError:
     if 'ironpython' not in sys.version.lower():
         raise
+
+import compas
+import compas_tna
 
 from compas.utilities import XFunc
 
@@ -55,7 +61,7 @@ __all__ = [
     'vertical_from_zmax_rhino',
     'vertical_from_formforce_rhino',
     'vertical_from_qind_rhino',
-    'vertical_from_average'
+    # 'vertical_from_average'
 ]
 
 
@@ -94,7 +100,7 @@ def vertical_from_zmax_rhino(form, force, *args, **kwargs):
         print(line)
         compas_rhino.wait()
 
-    f = XFunc('compas_tna.equilibrium.vertical_from_zmax_xfunc', callback=callback)
+    f = XFunc('compas_tna.equilibrium.vertical_from_zmax_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
     formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
     form.data = formdata
     force.data = forcedata
@@ -107,7 +113,7 @@ def vertical_from_formforce_rhino(form, force, *args, **kwargs):
         print(line)
         compas_rhino.wait()
 
-    f = XFunc('compas_tna.equilibrium.vertical_from_formforce_xfunc', callback=callback)
+    f = XFunc('compas_tna.equilibrium.vertical_from_formforce_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
     formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
     form.data = formdata
     force.data = forcedata
@@ -120,7 +126,7 @@ def vertical_from_qind_rhino(form, *args, **kwargs):
         print(line)
         compas_rhino.wait()
 
-    f = XFunc('compas_tna.equilibrium.vertical_from_qind_xfunc', callback=callback)
+    f = XFunc('compas_tna.equilibrium.vertical_from_qind_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
     formdata = f(form.to_data(), *args, **kwargs)
     form.data = formdata
 
@@ -209,116 +215,47 @@ def vertical_from_zmax(form, force, zmax=None, kmax=50, tol=1e-6, density=1.0, d
     # --------------------------------------------------------------------------
     scale = 1.0
 
-    for k in range(kmax):
-        if display:
-            print(k)
-        update_loads(p, xyz)
-        h            = scale * _l
-        q            = h / l
-        Q            = diags([q.ravel()], [0])
-        A            = Cit.dot(Q).dot(Ci)
-        b            = p[free, 2] - Cit.dot(Q).dot(Cf).dot(xyz[fixed, 2])
-        xyz[free, 2] = spsolve(A, b)
-        z            = max(xyz[free, 2])
-        res2         = (z - zmax) ** 2
-        if res2 < tol2:
-            break
-        scale = scale * (z / zmax)
+    # for k in range(kmax):
+    #     if display:
+    #         print(k)
+    #     update_loads(p, xyz)
+    #     h            = scale * _l
+    #     q            = h / l
+    #     Q            = diags([q.ravel()], [0])
+    #     A            = Cit.dot(Q).dot(Ci)
+    #     b            = p[free, 2] - Cit.dot(Q).dot(Cf).dot(xyz[fixed, 2])
+    #     xyz[free, 2] = spsolve(A, b)
+    #     z            = max(xyz[free, 2])
+    #     res2         = (z - zmax) ** 2
+    #     if res2 < tol2:
+    #         break
+    #     scale = scale * (z / zmax)
+
+    def objective(scale):
+        h    = scale * _l
+        q    = h / l
+        Q    = diags([q.ravel()], [0])
+        update_z(xyz, Q, C, p, free, fixed, update_loads, tol=tol, kmax=kmax, display=display)
+        z    = max(xyz[free, 2])
+        return ((z - zmax) ** 2) ** 0.5
+
+    res = minimize_scalar(objective, bounds=(1.0, 100.0), method='Bounded')
+    scale = res.x
+
+    update_loads(p, xyz)
+
+    h            = scale * _l
+    q            = h / l
+    Q            = diags([q.ravel()], [0])
+    A            = Cit.dot(Q).dot(Ci)
+    b            = p[free, 2] - Cit.dot(Q).dot(Cf).dot(xyz[fixed, 2])
+    xyz[free, 2] = spsolve(A, b)
+
+    update_loads(p, xyz)
 
     # --------------------------------------------------------------------------
     # update form
     # --------------------------------------------------------------------------
-    uvw = C.dot(xyz)
-    l   = normrow(uvw)
-    f   = q * l
-    r   = Ct.dot(Q).dot(C).dot(xyz) - p
-    sw  = p - p0
-
-    for key, attr in form.vertices(True):
-        index = k_i[key]
-        attr['z']  = xyz[index, 2]
-        attr['rx'] = r[index, 0]
-        attr['ry'] = r[index, 1]
-        attr['rz'] = r[index, 2]
-        attr['sw'] = sw[index, 2]
-    for u, v, attr in form.edges_where({'is_edge': True}, True):
-        index = uv_i[(u, v)]
-        attr['q'] = q[index, 0]
-        attr['f'] = f[index, 0]
-        attr['l'] = l[index, 0]
-    # --------------------------------------------------------------------------
-    # update force
-    # --------------------------------------------------------------------------
-    force.attributes['scale'] = scale
-
-
-def vertical_from_average(form, force, zaverage):
-    k_i     = form.key_index()
-    uv_i    = form.uv_index()
-    vcount  = len(form.vertex)
-    anchors = form.anchors()
-    fixed   = form.fixed()
-    fixed   = set(anchors + fixed)
-    fixed   = [k_i[key] for key in fixed]
-    free    = list(set(range(vcount)) - set(fixed))
-    edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
-    xyz     = array(form.get_vertices_attributes('xyz'), dtype=float64)
-    thick   = array(form.get_vertices_attribute('t'), dtype=float64).reshape((-1, 1))
-    p       = array(form.get_vertices_attributes(('px', 'py', 'pz')), dtype=float64)
-    p0      = p.copy()
-    C       = connectivity_matrix(edges, 'csr')
-    Ci      = C[:, free]
-    Cf      = C[:, fixed]
-    Cit     = Ci.transpose()
-    Ct      = C.transpose()
-    # --------------------------------------------------------------------------
-    # ForceDiagram
-    # --------------------------------------------------------------------------
-    _xyz   = array(force.get_vertices_attributes('xyz'), dtype=float64)
-    _edges = force.ordered_edges(form)
-    _C     = connectivity_matrix(_edges, 'csr')
-    # --------------------------------------------------------------------------
-    # load updater
-    # --------------------------------------------------------------------------
-    update_loads = LoadUpdater(form, p0, thickness=thick, density=1.0)
-    update_loads(p, xyz)
-
-    zT = array([zaverage] * vcount).reshape((-1, 1))
-
-    # --------------------------------------------------------------------------
-    # lengths
-    # --------------------------------------------------------------------------
-    n      = vcount
-    ni     = len(free)
-    eye_n0 = diagflat([1] * n + [0])
-    nul_ni = zeros((ni, ni))
-    uv     = C.dot(xyz[:, 0:2])
-    l      = normrow(uv)
-    _uv    = _C.dot(_xyz[:, 0:2])
-    _l     = normrow(_uv)
-    q      = _l / l
-    Q      = diags([q.flatten()], [0])
-    A      = Cit.dot(Q).dot(C)
-    pzi    = p[free, 2].reshape((-1, 1))
-    Aeq    = hstack((A.toarray(), pzi))
-    beq    = zeros((ni, 1))
-    Ceq    = vstack(( hstack((eye_n0, Aeq.T )), hstack((Aeq, nul_ni)) ))
-    deq    = vstack((zT, zeros((1, 1)), beq))
-    res    = solve(Ceq.T.dot(Ceq), Ceq.T.dot(deq))
-    scale  = absolute(reciprocal(res[n][0]))
-
-    _l = normrow(_uv)
-    _l = scale * _l
-    q  = _l / l
-    Q  = diags([q.flatten()], [0])
-
-    A = Cit.dot(Q).dot(Ci).toarray() 
-    A_factor = cho_factor(A)
-    for k in range(10):
-        print(k)
-        update_loads(p, xyz)
-        b = p[free, 2] - Cit.dot(Q).dot(Cf).dot(xyz[fixed, 2])
-        xyz[free, 2] = cho_solve(A_factor, b)
 
     uvw = C.dot(xyz)
     l   = normrow(uvw)
@@ -342,6 +279,98 @@ def vertical_from_average(form, force, zaverage):
     # update force
     # --------------------------------------------------------------------------
     force.attributes['scale'] = scale
+
+
+# def vertical_from_average(form, force, zaverage):
+#     k_i     = form.key_index()
+#     uv_i    = form.uv_index()
+#     vcount  = len(form.vertex)
+#     anchors = form.anchors()
+#     fixed   = form.fixed()
+#     fixed   = set(anchors + fixed)
+#     fixed   = [k_i[key] for key in fixed]
+#     free    = list(set(range(vcount)) - set(fixed))
+#     edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
+#     xyz     = array(form.get_vertices_attributes('xyz'), dtype=float64)
+#     thick   = array(form.get_vertices_attribute('t'), dtype=float64).reshape((-1, 1))
+#     p       = array(form.get_vertices_attributes(('px', 'py', 'pz')), dtype=float64)
+#     p0      = p.copy()
+#     C       = connectivity_matrix(edges, 'csr')
+#     Ci      = C[:, free]
+#     Cf      = C[:, fixed]
+#     Cit     = Ci.transpose()
+#     Ct      = C.transpose()
+#     # --------------------------------------------------------------------------
+#     # ForceDiagram
+#     # --------------------------------------------------------------------------
+#     _xyz   = array(force.get_vertices_attributes('xyz'), dtype=float64)
+#     _edges = force.ordered_edges(form)
+#     _C     = connectivity_matrix(_edges, 'csr')
+#     # --------------------------------------------------------------------------
+#     # load updater
+#     # --------------------------------------------------------------------------
+#     update_loads = LoadUpdater(form, p0, thickness=thick, density=1.0)
+#     update_loads(p, xyz)
+
+#     zT = array([zaverage] * vcount).reshape((-1, 1))
+
+#     # --------------------------------------------------------------------------
+#     # lengths
+#     # --------------------------------------------------------------------------
+#     n      = vcount
+#     ni     = len(free)
+#     eye_n0 = diagflat([1] * n + [0])
+#     nul_ni = zeros((ni, ni))
+#     uv     = C.dot(xyz[:, 0:2])
+#     l      = normrow(uv)
+#     _uv    = _C.dot(_xyz[:, 0:2])
+#     _l     = normrow(_uv)
+#     q      = _l / l
+#     Q      = diags([q.flatten()], [0])
+#     A      = Cit.dot(Q).dot(C)
+#     pzi    = p[free, 2].reshape((-1, 1))
+#     Aeq    = hstack((A.toarray(), pzi))
+#     beq    = zeros((ni, 1))
+#     Ceq    = vstack(( hstack((eye_n0, Aeq.T )), hstack((Aeq, nul_ni)) ))
+#     deq    = vstack((zT, zeros((1, 1)), beq))
+#     res    = solve(Ceq.T.dot(Ceq), Ceq.T.dot(deq))
+#     scale  = absolute(reciprocal(res[n][0]))
+
+#     _l = normrow(_uv)
+#     _l = scale * _l
+#     q  = _l / l
+#     Q  = diags([q.flatten()], [0])
+
+#     A = Cit.dot(Q).dot(Ci).toarray() 
+#     A_factor = cho_factor(A)
+#     for k in range(10):
+#         print(k)
+#         update_loads(p, xyz)
+#         b = p[free, 2] - Cit.dot(Q).dot(Cf).dot(xyz[fixed, 2])
+#         xyz[free, 2] = cho_solve(A_factor, b)
+
+#     uvw = C.dot(xyz)
+#     l   = normrow(uvw)
+#     f   = q * l
+#     r   = Ct.dot(Q).dot(C).dot(xyz) - p
+#     sw  = p - p0
+
+#     for key, attr in form.vertices(True):
+#         index = k_i[key]
+#         attr['z']  = xyz[index, 2]
+#         attr['rx'] = r[index, 0]
+#         attr['ry'] = r[index, 1]
+#         attr['rz'] = r[index, 2]
+#         attr['sw'] = sw[index, 2]
+#     for u, v, attr in form.edges_where({'is_edge': True}, True):
+#         index = uv_i[(u, v)]
+#         attr['q'] = q[index, 0]
+#         attr['f'] = f[index, 0]
+#         attr['l'] = l[index, 0]
+#     # --------------------------------------------------------------------------
+#     # update force
+#     # --------------------------------------------------------------------------
+#     force.attributes['scale'] = scale
 
 
 def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, display=True):
@@ -383,10 +412,14 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
     p       = array(form.get_vertices_attributes(('px', 'py', 'pz')), dtype=float64)
     p0      = p.copy()
     C       = connectivity_matrix(edges, 'csr')
+    Ct      = C.transpose()
     # --------------------------------------------------------------------------
     # ForceDiagram
     # --------------------------------------------------------------------------
     scale = force.attributes['scale']
+
+    print(scale)
+
     _xyz   = array(force.get_vertices_attributes('xyz'), dtype=float64)
     _edges = force.ordered_edges(form)
     _C     = connectivity_matrix(_edges, 'csr')
@@ -414,8 +447,9 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
     uvw = C.dot(xyz)
     l   = normrow(uvw)
     f   = q * l
-    r   = C.transpose().dot(Q).dot(C).dot(xyz) - p
+    r   = Ct.dot(Q).dot(C).dot(xyz) - p
     sw  = p - p0
+
     for key, attr in form.vertices(True):
         index = k_i[key]
         attr['z']  = xyz[index, 2]

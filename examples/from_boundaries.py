@@ -5,6 +5,9 @@ from __future__ import division
 import compas
 import compas_tna
 
+from compas.geometry import mesh_smooth_area
+from compas.topology import trimesh_remesh
+
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 
@@ -20,10 +23,36 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-# ==============================================================================
-# make a form diagram from an obj file
+vertices = [(0.0, 0.0, 0.0), (10.0, 0.0, 0.0), (10.0, 10.0, 0.0), (0.0, 10.0, 0.0)]
+faces = [[0, 1, 2, 3]]
 
-form = FormDiagram.from_obj(compas.get('faces.obj'))
+form = FormDiagram.from_vertices_and_faces(vertices, faces)
+
+key = form.insert_vertex(0)
+
+viewer = FormViewer(form, figsize=(10, 7))
+
+viewer.draw_edges(width=0.5)
+
+def callback(mesh, k, args):
+    print(k)
+    viewer.update_edges()
+    viewer.update()
+
+trimesh_remesh(
+    form,
+    2.0,
+    kmax=200,
+    allow_boundary_split=True,
+    allow_boundary_swap=True,
+    allow_boundary_collapse=False,
+    callback=callback)
+
+mesh_smooth_area(form, fixed=form.vertices_on_boundary())
+
+viewer.update_edges()
+viewer.update(pause=2.0)
+viewer.show()
 
 # ==============================================================================
 # update the boundary conditions
@@ -35,7 +64,7 @@ interior = boundaries[1:]
 
 form.set_vertices_attribute('is_anchor', True, keys=exterior)
 
-form.update_exterior(exterior, feet=1)
+form.update_exterior(exterior, feet=2)
 form.update_interior(interior)
 
 # ==============================================================================
@@ -56,8 +85,7 @@ print('residual:', form.residual())
 # ==============================================================================
 # visualise result
 
-viewer = FormViewer(form, figsize=(16, 9))
-viewer.defaults['edge.fontsize'] = 4
+viewer = FormViewer(form, figsize=(10, 7))
 
 viewer.draw_vertices(
     keys=list(form.vertices_where({'is_external': False})),
@@ -70,3 +98,4 @@ viewer.draw_reactions(scale=0.1)
 viewer.draw_horizontalforces(scale=1.0)
 
 viewer.show()
+

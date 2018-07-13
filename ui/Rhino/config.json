@@ -23,26 +23,56 @@
 
                 { "type" : "separator" },
 
-                { "text" : "attr", "left" : "tna.form_update_attributes" },
-                { "text" : "v_attr", "left" : "tna.form_update_vertex_attributes" },
-                { "text" : "e_attr", "left" : "tna.form_update_edge_attributes" },
-                { "text" : "f_attr", "left" : "tna.form_update_face_attributes" },
+                { "text" : "redraw", "left" : "tna.form_redraw" },
+                { "text" : "relax", "left" : "tna.form_relax" },
 
                 { "type" : "separator" },
 
-                { "text" : "reactions", "left" : "tna.form_show_reactions", "right" : "tna.form_hide_reactions" }
+                { "text" : "select_parallel", "left" : "tna.form_select_parallel_edges" },
+                { "text" : "select_continuous", "left" : "tna.form_select_continuous_edges" },
+                { "text" : "select_bedges", "left" : "tna.form_select_boundary_edges" },
+                { "text" : "select_bvertices", "left" : "tna.form_select_boundary_vertices" },
+
+                { "type" : "separator" },
+
+                { "text" : "attr", "left" : "tna.form_update_attributes" },
+                { "text" : "v_attr", "left" : "tna.form_update_vertex_attributes" },
+                { "text" : "e_attr", "left" : "tna.form_update_edge_attributes" },
+
+                { "type" : "separator" },
+
+                { "text" : "update boundaries", "left" : "tna.form_update_boundaries" },
+
+                { "type" : "separator" },
+
+                { "text" : "reactions", "left" : "tna.form_show_reactions", "right" : "tna.form_hide_reactions" },
+                { "text" : "loads", "left" : "tna.form_show_loads", "right" : "tna.form_hide_loads" },
+                { "text" : "selfweight", "left" : "tna.form_show_selfweight", "right" : "tna.form_hide_selfweight" },
+                { "text" : "residuals", "left" : "tna.form_show_residuals", "right" : "tna.form_hide_residuals" },
+                { "text" : "forces", "left" : "tna.form_show_forces", "right" : "tna.form_hide_forces" }
     		]	
     	},
     	{
     		"name"  : "Force",
     		"items" : 
     		[
+                { "text" : "from_form", "left" : "tna.force_from_form" },
+
+                { "type" : "separator" },
+
+                { "text" : "attr", "left" : "tna.force_update_attributes" },
+                { "text" : "v_attr", "left" : "tna.force_update_vertex_attributes" },
+                { "text" : "e_attr", "left" : "tna.force_update_edge_attributes" }
     		]	
     	},
     	{
     		"name"  : "Forward",
     		"items" : 
     		[
+                { "text" : "settings", "left" : "tna.forward_update_settings" },
+                { "text" : "horizontal", "left" : "tna.forward_horizontal" },
+                { "text" : "zmax", "left" : "tna.forward_vertical_zmax" },
+                { "text" : "formforce", "left" : "tna.forward_vertical_formforce" }
     		]	
     	}
     ],

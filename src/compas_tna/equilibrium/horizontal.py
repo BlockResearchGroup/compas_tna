@@ -10,7 +10,10 @@ try:
 
 except ImportError:
     if 'ironpython' not in sys.version.lower():
-        raise    
+        raise
+
+import compas
+import compas_tna
 
 from compas.utilities import XFunc
 from compas.geometry import angle_vectors_xy
@@ -69,7 +72,7 @@ def horizontal_rhino(form, force, *args, **kwargs):
         print(line)
         compas_rhino.wait()
 
-    f = XFunc('compas_tna.equilibrium.horizontal_xfunc', callback=callback)
+    f = XFunc('compas_tna.equilibrium.horizontal_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
     formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
     form.data = formdata
     force.data = forcedata
@@ -82,7 +85,7 @@ def horizontal_nodal_rhino(form, force, *args, **kwargs):
         print(line)
         compas_rhino.wait()
 
-    f = XFunc('compas_tna.equilibrium.horizontal_nodal_xfunc', callback=callback)
+    f = XFunc('compas_tna.equilibrium.horizontal_nodal_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
     formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
     form.data = formdata
     force.data = forcedata

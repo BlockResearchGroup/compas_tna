@@ -54,19 +54,24 @@ class FormArtist(MeshArtist):
         lines = []
         color = color or self.form.attributes['color.load']
         scale = scale or self.form.attributes['scale.load']
+        tol   = self.form.attributes['tol.load']
+        tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
-            px = attr['px']
-            py = attr['py']
-            pz = attr['pz']
+            px = scale * attr['px']
+            py = scale * attr['py']
+            pz = scale * attr['pz']
+
+            if px ** 2 + py ** 2 + pz ** 2 < tol2:
+                continue
+
             sp = self.form.vertex_coordinates(key)
-            ep = sp[0] + scale * px, sp[1] + scale * py, sp[2] + scale * pz
+            ep = sp[0] + px, sp[1] + py, sp[2] + pz
 
             lines.append({
                 'start' : sp,
                 'end'   : ep,
                 'color' : color,
-                'width' : width,
                 'arrow' : 'end',
                 'name'  : "{}.load.{}".format(self.form.name, key)
             })
@@ -79,18 +84,25 @@ class FormArtist(MeshArtist):
         lines = []
         color = color or self.form.attributes['color.selfweight']
         scale = scale or self.form.attributes['scale.selfweight']
+        tol   = self.form.attributes['tol.selfweight']
+        tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
             t = attr['t']
             a = self.form.vertex_area(key)
             sp = self.form.vertex_coordinates(key)
-            ep = sp[0], sp[1], sp[2] + scale * t * a
+
+            dz = scale * t * a
+
+            if dz ** 2 < tol2:
+                continue
+
+            ep = sp[0], sp[1], sp[2] - dz
 
             lines.append({
                 'start' : sp,
                 'end'   : ep,
                 'color' : color,
-                'width' : width,
                 'arrow' : 'end',
                 'name'  : "{}.selfweight.{}".format(self.form.name, key)
             })
@@ -103,6 +115,8 @@ class FormArtist(MeshArtist):
         lines = []
         color = color or self.form.attributes['color.reaction']
         scale = scale or self.form.attributes['scale.reaction']
+        tol   = self.form.attributes['tol.reaction']
+        tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': True}, True):
             rx = attr['rx']
@@ -121,25 +135,31 @@ class FormArtist(MeshArtist):
                     rx += v[0]
                     ry += v[1]
 
+            rx = scale * rx
+            ry = scale * ry
+            rz = scale * rz
+
             sp = self.form.vertex_coordinates(key)
-            e1 = sp[0] + scale * rx, sp[1] + scale * ry, sp[2]
-            e2 = sp[0], sp[1], sp[2] + scale * rz
 
-            lines.append({
-                'start' : sp,
-                'end'   : e1,
-                'color' : color,
-                'arrow' : 'start',
-                'name'  : "{}.reaction.{}".format(self.form.name, key)
-            })
+            if rx ** 2 + ry ** 2 > tol2:
+                e1 = sp[0] + rx, sp[1] + ry, sp[2]
+                lines.append({
+                    'start' : sp,
+                    'end'   : e1,
+                    'color' : color,
+                    'arrow' : 'start',
+                    'name'  : "{}.reaction.{}".format(self.form.name, key)
+                })
 
-            lines.append({
-                'start' : sp,
-                'end'   : e2,
-                'color' : color,
-                'arrow' : 'start',
-                'name'  : "{}.reaction.{}".format(self.form.name, key)
-            })
+            if rz ** 2 > tol2:
+                e2 = sp[0], sp[1], sp[2] + rz
+                lines.append({
+                    'start' : sp,
+                    'end'   : e2,
+                    'color' : color,
+                    'arrow' : 'start',
+                    'name'  : "{}.reaction.{}".format(self.form.name, key)
+                })
 
         compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
@@ -149,10 +169,15 @@ class FormArtist(MeshArtist):
         lines = []
         color = color or self.form.attributes['color.force']
         scale = scale or self.form.attributes['scale.force']
+        tol   = self.form.attributes['tol.force']
+        tol2  = tol ** 2
 
         for u, v, attr in self.form.edges_where({'is_edge': True, 'is_external': False}, True):
             sp, ep = self.form.edge_coordinates(u, v)
             radius = scale * attr['f']
+
+            if radius ** 2 < tol2:
+                continue
 
             lines.append({
                 'start'  : sp,
@@ -170,42 +195,26 @@ class FormArtist(MeshArtist):
         lines = []
         color = color or self.form.attributes['color.residual']
         scale = scale or self.form.attributes['scale.residual']
+        tol   = self.form.attributes['tol.residual']
+        tol2  = tol ** 2
 
-        for key, attr in self.form.vertices_where({'is_anchor': False}, True):
-            rx = attr['rx']
-            ry = attr['ry']
-            rz = attr['rz']
+        for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
+            rx = scale * attr['rx']
+            ry = scale * attr['ry']
+            rz = scale * attr['rz']
 
-            for nbr in self.form.vertex_neighbours(key):
-                is_external = self.form.get_edge_attribute((key, nbr), 'is_external', False)
-
-                if is_external:
-                    f = self.form.get_edge_attribute((key, nbr), 'f', 0.0)
-                    u = self.form.edge_direction(key, nbr)
-                    u[2] = 0
-                    v = scale_vector(u, f)
-
-                    rx += v[0]
-                    ry += v[1]
+            if rx ** 2 + ry ** 2 + rz ** 2 < tol2:
+                continue
 
             sp = self.form.vertex_coordinates(key)
-            e1 = sp[0] + scale * rx, sp[1] + scale * ry, sp[2]
-            e2 = sp[0], sp[1], sp[2] + scale * rz
+            ep = sp[0] + rx, sp[1] + ry, sp[2] + rz
 
             lines.append({
                 'start' : sp,
-                'end'   : e1,
+                'end'   : ep,
                 'color' : color,
                 'arrow' : 'start',
-                'name'  : "{}.reaction.{}".format(self.form.name, key)
-            })
-
-            lines.append({
-                'start' : sp,
-                'end'   : e2,
-                'color' : color,
-                'arrow' : 'start',
-                'name'  : "{}.reaction.{}".format(self.form.name, key)
+                'name'  : "{}.residual.{}".format(self.form.name, key)
             })
 
         compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)

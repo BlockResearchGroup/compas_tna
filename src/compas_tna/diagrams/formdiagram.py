@@ -9,6 +9,9 @@ from math import sin
 from math import cos
 from math import sqrt
 
+import compas
+import compas_tna
+
 from compas.datastructures import Mesh
 from compas.utilities import geometric_key
 from compas.utilities import pairwise
@@ -22,7 +25,7 @@ from compas.geometry import cross_vectors
 
 if 'ironpython' in sys.version.lower():
     from compas.utilities import XFunc
-    fd_numpy = XFunc('compas.numerical.fd_numpy')
+    fd_numpy = XFunc('compas.numerical.fd_numpy', tmpdir=compas_tna.TEMP)
 else:
     from compas.numerical import fd_numpy
 
@@ -97,6 +100,14 @@ class FormDiagram(Mesh):
             'scale.load'                 : 1.0,
             'scale.force'                : 1.0,
             'scale.selfweight'           : 1.0,
+            'tol.reaction'               : 1e-3,
+            'tol.residual'               : 1e-3,
+            'tol.load'                   : 1e-3,
+            'tol.force'                  : 1e-3,
+            'tol.selfweight'             : 1e-3,
+
+            'density'                    : 1.0,
+
             'foot.scale'                 : 0.1,
             'foot.alpha'                 : 45,
             'foot.tol'                   : 0.1,
@@ -171,6 +182,21 @@ class FormDiagram(Mesh):
 
         return dual
 
+    def find_faces(self):
+        from compas.topology import network_find_faces
+        from compas.datastructures import Network
+
+        network = Network.from_lines(lines, precision=precision)
+
+        mesh = cls()
+
+        for key, attr in network.vertices(True):
+            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0)
+
+        mesh.halfedge = network.halfedge
+
+        network_find_faces(mesh, breakpoints=mesh.leaves())
+
     # --------------------------------------------------------------------------
     # vertices
     # --------------------------------------------------------------------------
@@ -198,6 +224,14 @@ class FormDiagram(Mesh):
 
     def fixed(self):
         return [key for key, attr in self.vertices(True) if attr['is_fixed']]
+
+    def residual(self):
+        R = 0
+        for key, attr in self.vertices_where({'is_anchor': False, 'is_external': False}, True):
+            rx, ry, rz = attr['rx'], attr['ry'], attr['rz']
+            l = sqrt(rx ** 2 + ry ** 2 + rz ** 2)
+            R += l
+        return R
 
     # --------------------------------------------------------------------------
     # boundary

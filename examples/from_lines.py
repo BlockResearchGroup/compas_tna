@@ -6,7 +6,6 @@ import compas
 import compas_tna
 
 from compas.files import OBJ
-from compas.utilities import pairwise
 
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
@@ -14,7 +13,7 @@ from compas_tna.diagrams import ForceDiagram
 from compas_tna.equilibrium import horizontal_nodal
 from compas_tna.equilibrium import vertical_from_zmax
 
-from compas_tna.viewers import Viewer2
+from compas_tna.viewers import FormViewer
 
 
 __author__    = ['Tom Van Mele', ]
@@ -23,21 +22,20 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
+# ==============================================================================
+# make a form diagram from a set of lines
+
 filepath = compas.get('lines.obj')
 
 obj      = OBJ(filepath)
 vertices = obj.parser.vertices
 edges    = obj.parser.lines
-points   = obj.parser.points
 lines    = [(vertices[u], vertices[v], 0) for u, v in edges]
-
-print(points)
 
 form = FormDiagram.from_lines(lines)
 
-form.attributes['foot.scale'] = 1.0
-
 # ==============================================================================
+# update boundary conditions
 
 boundaries = form.vertices_on_boundaries()
 
@@ -50,25 +48,34 @@ form.update_exterior(exterior, feet=2)
 form.update_interior(interior)
 
 # ==============================================================================
+# create the force diagram
 
 force = ForceDiagram.from_formdiagram(form)
+
+# ==============================================================================
+# compute equilibrium
 
 horizontal_nodal(form, force)
 vertical_from_zmax(form, force)
 
-viewer = Viewer2(form, force)
+print('scale:', force.attributes['scale'])
+print('zmax:', max(form.get_vertices_attribute('z')))
+print('residual:', form.residual())
 
-viewer.setup()
+# ==============================================================================
+# visualise the result
 
-vertexcolor = {}
-vertexcolor.update({key: '#00ff00' for key in form.fixed()})
-vertexcolor.update({key: '#ff0000' for key in form.anchors()})
+viewer = FormViewer(form)
 
-viewer.draw_form(
-    vertexcolor=vertexcolor,
-    vertexlabel={key: key for key in form.vertices()},
-    vertexsize=0.2
+viewer.draw_vertices(
+    keys=list(form.vertices_where({'is_external': False})),
+    text={key: "{:.1f}".format(attr['z']) for key, attr in form.vertices(True)}
 )
-viewer.draw_force()
+viewer.draw_edges(
+    keys=list(form.edges_where({'is_edge': True, 'is_external': False})),
+    width=0.1,
+)
+viewer.draw_reactions(scale=0.1)
+viewer.draw_horizontalforces(scale=1.0)
 
 viewer.show()

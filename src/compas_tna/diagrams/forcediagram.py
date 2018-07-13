@@ -32,6 +32,7 @@ class ForceDiagram(Mesh):
         })
         self.attributes.update({
             'name'  : 'ForceDiagram',
+            'layer' : 'ForceDiagram',
             'scale' : 1.0,
         })
 
