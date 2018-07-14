@@ -69,7 +69,12 @@ ymin, ymax = min(y), max(y)
 d = sqrt((xmax - xmin) ** 2 + (ymax - ymin) ** 2)
 
 horizontal_nodal(form, force)
-vertical_from_formforce(form, force, density=2.0 / d)
+# vertical_from_zmax(form, force, zmax=2)
+vertical_from_formforce(form, force)
+
+# force.attributes['scale'] = 6.0
+
+# vertical_from_formforce(form, force)
 
 print('scale:', force.attributes['scale'])
 print('zmax:', max(form.get_vertices_attribute('z')))
@@ -89,6 +94,6 @@ viewer.draw_edges(
     width=0.1,
 )
 viewer.draw_reactions(scale=1.0)
-viewer.draw_forces(scale=1.0)
+viewer.draw_horizontalforces(scale=1.0)
 
 viewer.show()

@@ -150,7 +150,7 @@ def vertical_from_target_rhino(form, force, *args, **kwargs):
     force.data = forcedata
 
 
-def vertical_from_zmax(form, force, zmax=None, kmax=50, tol=1e-6, density=1.0, display=True):
+def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, display=True):
     """For the given form and force diagram, compute the scale of the force
     diagram for which the highest point of the thrust network is equal to a
     specified value.
@@ -205,7 +205,6 @@ def vertical_from_zmax(form, force, zmax=None, kmax=50, tol=1e-6, density=1.0, d
     xyz     = array(form.get_vertices_attributes('xyz'), dtype=float64)
     thick   = array(form.get_vertices_attribute('t'), dtype=float64).reshape((-1, 1))
     p       = array(form.get_vertices_attributes(('px', 'py', 'pz')), dtype=float64)
-    p0      = p.copy()
     C       = connectivity_matrix(edges, 'csr')
     Ci      = C[:, free]
     Cf      = C[:, fixed]
@@ -217,6 +216,11 @@ def vertical_from_zmax(form, force, zmax=None, kmax=50, tol=1e-6, density=1.0, d
     _xyz   = array(force.get_vertices_attributes('xyz'), dtype=float64)
     _edges = force.ordered_edges(form)
     _C     = connectivity_matrix(_edges, 'csr')
+    # --------------------------------------------------------------------------
+    # original data
+    # --------------------------------------------------------------------------
+    p0 = p.copy()
+    xyz0 = xyz.copy()
     # --------------------------------------------------------------------------
     # load updater
     # --------------------------------------------------------------------------

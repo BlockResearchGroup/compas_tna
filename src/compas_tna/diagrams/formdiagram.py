@@ -346,8 +346,12 @@ class FormDiagram(Mesh):
     def smooth_interior(self):
         pass
 
-    def update_boundary_conditions(self):
-        pass
+    def update_boundaries(self, feet=1):
+        boundaries = self.vertices_on_boundaries()
+        exterior = boundaries[0]
+        interior = boundaries[1:]
+        self.update_exterior(exterior, feet=feet)
+        self.update_interior(interior)
 
     def update_exterior(self, boundary, feet=2):
         """"""
