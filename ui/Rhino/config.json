@@ -96,7 +96,8 @@
             	"compas_tna",
             	"Form",
             	"Force",
-            	"Forward"
+            	"Forward",
+                "Thrust"
             ]
         }
     ]
