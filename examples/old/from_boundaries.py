@@ -38,10 +38,12 @@ viewer = FormViewer(form, figsize=(10, 7))
 
 viewer.draw_edges(width=0.5)
 
+
 def callback(mesh, k, args):
     print(k)
     viewer.update_edges()
     viewer.update()
+
 
 trimesh_remesh(
     form,

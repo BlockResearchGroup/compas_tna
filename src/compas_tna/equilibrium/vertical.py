@@ -57,16 +57,19 @@ __all__ = [
     'vertical_from_formforce',
     'vertical_from_qind',
     'vertical_from_target',
+    'vertical_from_self',
 
     'vertical_from_zmax_xfunc',
     'vertical_from_formforce_xfunc',
     'vertical_from_qind_xfunc',
     'vertical_from_target_xfunc',
+    'vertical_from_self_xfunc',
 
     'vertical_from_zmax_rhino',
     'vertical_from_formforce_rhino',
     'vertical_from_qind_rhino',
-    'vertical_from_target_rhino'
+    'vertical_from_target_rhino',
+    'vertical_from_self_rhino',
 ]
 
 
@@ -104,6 +107,15 @@ def vertical_from_target_xfunc(formdata, forcedata, *args, **kwargs):
     form = FormDiagram.from_data(formdata)
     force = ForceDiagram.from_data(forcedata)
     vertical_from_target(form, force, *args, **kwargs)
+    return form.to_data(), force.to_data()
+
+
+def vertical_from_self_xfunc(formdata, forcedata, *args, **kwargs):
+    from compas_tna.diagrams import FormDiagram
+    from compas_tna.diagrams import ForceDiagram
+    form = FormDiagram.from_data(formdata)
+    force = ForceDiagram.from_data(forcedata)
+    vertical_from_self(form, force, *args, **kwargs)
     return form.to_data(), force.to_data()
 
 
@@ -145,6 +157,17 @@ def vertical_from_target_rhino(form, force, *args, **kwargs):
         print(line)
         compas_rhino.wait()
     f = XFunc('compas_tna.equilibrium.vertical_from_target_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
+    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
+    form.data = formdata
+    force.data = forcedata
+
+
+def vertical_from_self_rhino(form, force, *args, **kwargs):
+    import compas_rhino
+    def callback(line, args):
+        print(line)
+        compas_rhino.wait()
+    f = XFunc('compas_tna.equilibrium.vertical_from_self_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
     formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
     form.data = formdata
     force.data = forcedata
@@ -304,7 +327,7 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-3, density=1.0, 
     force.attributes['scale'] = scale
 
 
-def vertical_from_target(form, force, kmax=50, tol=1e-6, density=1.0, display=True):
+def vertical_from_target(form, force, density=1.0):
     k_i     = form.key_index()
     uv_i    = form.uv_index()
     vcount  = len(form.vertex)
@@ -328,9 +351,9 @@ def vertical_from_target(form, force, kmax=50, tol=1e-6, density=1.0, display=Tr
     _xyz   = array(force.get_vertices_attributes('xyz'), dtype=float64)
     _edges = force.ordered_edges(form)
     _C     = connectivity_matrix(_edges, 'csr')
-    #===========================================================================
+    # --------------------------------------------------------------------------
     # original data
-    #===========================================================================
+    # --------------------------------------------------------------------------
     p0 = p.copy()
     xyz0 = xyz.copy()
     # --------------------------------------------------------------------------
@@ -402,6 +425,16 @@ def vertical_from_target(form, force, kmax=50, tol=1e-6, density=1.0, display=Tr
     # update force
     # --------------------------------------------------------------------------
     force.attributes['scale'] = scale
+
+
+def vertical_from_self(form, force, density=1.0):
+    for key, attr in form.vertices(True):
+        if attr['is_anchor']:
+            continue
+        if attr['is_external']:
+            continue
+        attr['zT'] = attr['z']
+    vertical_from_target(form, force, density=density)
 
 
 def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, display=True):

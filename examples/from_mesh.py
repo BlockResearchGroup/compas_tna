@@ -15,6 +15,7 @@ from compas_tna.diagrams import ForceDiagram
 from compas_tna.equilibrium import horizontal
 from compas_tna.equilibrium import vertical_from_zmax
 from compas_tna.equilibrium import vertical_from_target
+from compas_tna.equilibrium import vertical_from_self
 from compas_tna.equilibrium import vertical_from_formforce
 
 from compas_tna.viewers import FormViewer
@@ -52,30 +53,15 @@ force = ForceDiagram.from_formdiagram(form)
 # ==============================================================================
 # compute equilibrium
 
-force.attributes['scale'] = 1.0
-
 horizontal(form, force, display=False)
+
 vertical_from_zmax(form, force, zmax=3, tol=1e-5)
-
-print('scale:', force.attributes['scale'])
-print('zmax:', max(form.get_vertices_attribute('z')))
-print('residual:', form.residual())
-
-for key, attr in form.vertices_where({'is_anchor': False, 'is_external': False}, True):
-    attr['zT'] = attr['z']
-
-for k in range(100):
-    vertical_from_target(form, force)
-
-print('scale:', force.attributes['scale'])
-print('zmax:', max(form.get_vertices_attribute('z')))
-print('residual:', form.residual())
-
+vertical_from_self(form, force)
 vertical_from_formforce(form, force)
 
-print('scale:', force.attributes['scale'])
-print('zmax:', max(form.get_vertices_attribute('z')))
-print('residual:', form.residual())
+# print('scale:', force.attributes['scale'])
+# print('zmax:', max(form.get_vertices_attribute('z')))
+# print('residual:', form.residual())
 
 # ==============================================================================
 # visualise result
@@ -85,7 +71,6 @@ viewer.defaults['edge.fontsize'] = 4
 
 viewer.draw_vertices(
     keys=list(form.vertices_where({'is_external': False}))
-    # text={key: "{:.1f}".format(attr['z']) for key, attr in form.vertices(True)}
 )
 viewer.draw_edges(
     keys=list(form.edges_where({'is_edge': True, 'is_external': False})),

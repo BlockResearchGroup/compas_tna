@@ -14,8 +14,9 @@ from compas_tna.diagrams import ForceDiagram
 
 from compas_tna.equilibrium import horizontal_nodal
 from compas_tna.equilibrium import vertical_from_zmax
-from compas_tna.equilibrium import vertical_from_formforce
 from compas_tna.equilibrium import vertical_from_target
+from compas_tna.equilibrium import vertical_from_self
+from compas_tna.equilibrium import vertical_from_formforce
 
 from compas_tna.viewers import FormViewer
 
@@ -59,30 +60,10 @@ force = ForceDiagram.from_formdiagram(form)
 # ==============================================================================
 # compute equilibrium
 
-force.attributes['scale'] = 1.0
-
-x = form.get_vertices_attribute('x')
-y = form.get_vertices_attribute('y')
-
-xmin, xmax = min(x), max(x)
-ymin, ymax = min(y), max(y)
-
-d = sqrt((xmax - xmin) ** 2 + (ymax - ymin) ** 2)
-
 horizontal_nodal(form, force)
-vertical_from_zmax(form, force, kmax=18, zmax=4)
-
-for key, attr in form.vertices_where({'is_anchor': False, 'is_external': False}, True):
-    attr['zT'] = attr['z']
-
-for k in range(10):
-    vertical_from_target(form, force)
-
+vertical_from_zmax(form, force, zmax=4)
+vertical_from_self(form, force)
 vertical_from_formforce(form, force)
-
-# force.attributes['scale'] = 6.0
-
-# vertical_from_formforce(form, force)
 
 print('scale:', force.attributes['scale'])
 print('zmax:', max(form.get_vertices_attribute('z')))
