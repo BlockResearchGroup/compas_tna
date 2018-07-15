@@ -55,7 +55,7 @@ force = ForceDiagram.from_formdiagram(form)
 force.attributes['scale'] = 1.0
 
 horizontal(form, force, display=False)
-vertical_from_zmax(form, force, zmax=3)
+vertical_from_zmax(form, force, zmax=3, tol=1e-5)
 
 print('scale:', force.attributes['scale'])
 print('zmax:', max(form.get_vertices_attribute('z')))
@@ -64,7 +64,8 @@ print('residual:', form.residual())
 for key, attr in form.vertices_where({'is_anchor': False, 'is_external': False}, True):
     attr['zT'] = attr['z']
 
-vertical_from_target(form, force)
+for k in range(100):
+    vertical_from_target(form, force)
 
 print('scale:', force.attributes['scale'])
 print('zmax:', max(form.get_vertices_attribute('z')))

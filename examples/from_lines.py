@@ -15,6 +15,7 @@ from compas_tna.diagrams import ForceDiagram
 from compas_tna.equilibrium import horizontal_nodal
 from compas_tna.equilibrium import vertical_from_zmax
 from compas_tna.equilibrium import vertical_from_formforce
+from compas_tna.equilibrium import vertical_from_target
 
 from compas_tna.viewers import FormViewer
 
@@ -69,7 +70,14 @@ ymin, ymax = min(y), max(y)
 d = sqrt((xmax - xmin) ** 2 + (ymax - ymin) ** 2)
 
 horizontal_nodal(form, force)
-# vertical_from_zmax(form, force, zmax=2)
+vertical_from_zmax(form, force, kmax=18, zmax=4)
+
+for key, attr in form.vertices_where({'is_anchor': False, 'is_external': False}, True):
+    attr['zT'] = attr['z']
+
+for k in range(10):
+    vertical_from_target(form, force)
+
 vertical_from_formforce(form, force)
 
 # force.attributes['scale'] = 6.0

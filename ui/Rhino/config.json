@@ -23,10 +23,6 @@
 
                 { "type" : "separator" },
 
-                { "text" : "redraw", "left" : "tna.form_redraw" },
-
-                { "type" : "separator" },
-
                 { "text" : "sel_parallel", "left" : "tna.form_select_parallel_edges" },
                 { "text" : "sel_continuous", "left" : "tna.form_select_continuous_edges" },
                 { "text" : "sel_bedges", "left" : "tna.form_select_boundary_edges" },
@@ -34,6 +30,7 @@
 
                 { "type" : "separator" },
 
+                { "text" : "redraw", "left" : "tna.form_redraw" },
                 { "text" : "@", "left" : "tna.form_update_attributes" },
                 { "text" : "v_@", "left" : "tna.form_update_vertex_attributes" },
                 { "text" : "e_@", "left" : "tna.form_update_edge_attributes" },
@@ -41,16 +38,7 @@
                 { "type" : "separator" },
 
                 { "text" : "relax", "left" : "tna.form_relax" },
-                { "text" : "update boundaries", "left" : "tna.form_update_boundaries" },
-                { "text" : "set target", "left" : "tna.form_set_target" },
-
-                { "type" : "separator" },
-
-                { "text" : "reactions", "left" : "tna.form_show_reactions", "right" : "tna.form_hide_reactions" },
-                { "text" : "loads", "left" : "tna.form_show_loads", "right" : "tna.form_hide_loads" },
-                { "text" : "selfweight", "left" : "tna.form_show_selfweight", "right" : "tna.form_hide_selfweight" },
-                { "text" : "residuals", "left" : "tna.form_show_residuals", "right" : "tna.form_hide_residuals" },
-                { "text" : "forces", "left" : "tna.form_show_forces", "right" : "tna.form_hide_forces" }
+                { "text" : "update boundaries", "left" : "tna.form_update_boundaries" }
     		]	
     	},
     	{
@@ -76,11 +64,27 @@
 
                 { "text" : "horizontal", "left" : "tna.forward_horizontal" },
                 { "text" : "horizontal_nodal", "left" : "tna.forward_horizontal_nodal" },
+
+                { "type" : "separator" },
+
                 { "text" : "zmax", "left" : "tna.forward_vertical_zmax" },
                 { "text" : "formforce", "left" : "tna.forward_vertical_formforce" },
-                { "text" : "target", "left" : "tna.forward_vertical_target" }
+                { "text" : "target", "left" : "tna.forward_vertical_target" },
+                { "text" : "self", "left" : "tna.forward_vertical_self" },
+                { "text" : "qind", "left" : "tna.forward_vertical_qind" }
     		]	
-    	}
+    	},
+        {
+            "name"  : "Thrust",
+            "items" : 
+            [
+                { "text" : "reactions", "left" : "tna.form_show_reactions", "right" : "tna.form_hide_reactions" },
+                { "text" : "loads", "left" : "tna.form_show_loads", "right" : "tna.form_hide_loads" },
+                { "text" : "selfweight", "left" : "tna.form_show_selfweight", "right" : "tna.form_hide_selfweight" },
+                { "text" : "residuals", "left" : "tna.form_show_residuals", "right" : "tna.form_hide_residuals" },
+                { "text" : "forces", "left" : "tna.form_show_forces", "right" : "tna.form_hide_forces" }
+            ]   
+        }
     ],
 
     "toolbargroups": 

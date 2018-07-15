@@ -150,7 +150,7 @@ def vertical_from_target_rhino(form, force, *args, **kwargs):
     force.data = forcedata
 
 
-def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, display=True):
+def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-3, density=1.0, display=True):
     """For the given form and force diagram, compute the scale of the force
     diagram for which the highest point of the thrust network is equal to a
     specified value.
@@ -262,10 +262,10 @@ def vertical_from_zmax(form, force, zmax=None, kmax=100, tol=1e-6, density=1.0, 
         z    = max(xyz[free, 2])
         return ((z - zmax) ** 2) ** 0.5
 
-    res = minimize_scalar(objective, bounds=(1.0, 1000.0), method='Bounded')
+    res = minimize_scalar(objective, bounds=(1.0, 100.0), method='Bounded')
     scale = res.x
 
-    update_loads(p, xyz)
+    # update_loads(p, xyz)
 
     h            = scale * _l
     q            = h / l
@@ -493,7 +493,10 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
         attr['l'] = l[index, 0]
 
 
-def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=True):
+# m is not required
+# can be inferred from E and ind
+# def vertical_from_qind(form, ind)
+def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-3, display=True):
     """Compute vertical equilibrium from the force densities of the independent edges.
 
     Parameters:
@@ -528,10 +531,10 @@ def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=Tr
     fixed   = form.fixed()
     fixed   = set(anchors + fixed)
     fixed   = [k_i[key] for key in fixed]
-    free    = list(set(range(vcount)) - set(fixed))
-    dep     = list(set(range(ecount)) - set(ind))
     edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
     ecount  = len(edges)
+    free    = list(set(range(vcount)) - set(fixed))
+    dep     = list(set(range(ecount)) - set(ind))
     xyz     = array(form.get_vertices_attributes('xyz'), dtype=float64)
     thick   = array(form.get_vertices_attribute('t'), dtype=float64).reshape((-1, 1))
     p       = array(form.get_vertices_attributes(('px', 'py', 'pz')), dtype=float64)
@@ -546,6 +549,7 @@ def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-6, display=Tr
     # --------------------------------------------------------------------------
     # update forcedensity based on given q[ind]
     # --------------------------------------------------------------------------
+    # update_q_from_qind(E, q, dep, ind)
     update_q_from_qind(q, E, ind, dep, m)
     Q = diags([q.ravel()], [0])
     # --------------------------------------------------------------------------

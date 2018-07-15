@@ -149,6 +149,7 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=N
 
                 xy[j] += xy0[i] + l[e, 0] * t
 
+            # add damping factor?
             xy[j] /= len(nbrs)
 
 
@@ -170,6 +171,8 @@ def apply_bounds(x, xmin, xmax):
 
 # move to AGS?
 # rename to compute_q_from_qind
+# m can be niferred from the length of ind and tje size of the rowspace of E
+# order f arguments is different compared to AGS
 def update_q_from_qind(q, E, ind, dep, m):
     qi = q[ind]
     Ei = E[:, ind]
@@ -191,21 +194,31 @@ def update_q_from_qind(q, E, ind, dep, m):
 
 
 # rename to compute_z
-def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-6, kmax=100, display=True):
+def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-3, kmax=100, display=True):
     Ci      = C[:, free]
     Cf      = C[:, fixed]
+    Ct      = C.transpose()
     Cit     = Ci.transpose()
     A       = Cit.dot(Q).dot(Ci)
     A_solve = factorized(A)
     B       = Cit.dot(Q).dot(Cf)
+    updateloads(p, xyz)
     for k in range(kmax):
         if display:
             print(k)
-        updateloads(p, xyz)
         b            = p[free, 2] - B.dot(xyz[fixed, 2])
-        z0           = xyz[free, 2].copy()
+        # z0           = xyz[free, 2].copy()
         xyz[free, 2] = A_solve(b)
-        res          = norm(xyz[free, 2] - z0)
+
+        updateloads(p, xyz)
+        # stopping should be based on residual forces
+        # not movement
+
+        # w = C.dot(xyz[:, 2])
+        # l = normrow(w)
+        r = Ct.dot(Q).dot(C).dot(xyz[:, 2]) - p[:, 2]
+
+        res = norm(r[free])
         if res < tol:
             break
     return res

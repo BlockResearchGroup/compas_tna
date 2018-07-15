@@ -257,7 +257,7 @@ class Rui(object):
         xml = minidom.parseString(root).toprettyxml(indent="  ")
         xml = '\n'.join([line for line in xml.split('\n') if line.strip()])
 
-        with open(self.filepath, 'w+') as fh:
+        with open(self.filepath, 'wb+') as fh:
             fh.write(xml.encode('utf-8'))
 
     # --------------------------------------------------------------------------
