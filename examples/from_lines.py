@@ -49,7 +49,7 @@ interior = boundaries[1:]
 
 form.set_vertices_attribute('is_anchor', True, keys=exterior)
 
-form.update_exterior(exterior, feet=2)
+form.update_exterior(exterior, feet=1)
 form.update_interior(interior)
 
 # ==============================================================================

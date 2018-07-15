@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from math import sqrt
-
 import compas
 import compas_tna
 
@@ -59,14 +57,14 @@ vertical_from_zmax(form, force, zmax=3, tol=1e-5)
 vertical_from_self(form, force)
 vertical_from_formforce(form, force)
 
-# print('scale:', force.attributes['scale'])
-# print('zmax:', max(form.get_vertices_attribute('z')))
-# print('residual:', form.residual())
+print('scale:', force.attributes['scale'])
+print('zmax:', max(form.get_vertices_attribute('z')))
+print('residual:', form.residual())
 
 # ==============================================================================
 # visualise result
 
-viewer = FormViewer(form, figsize=(14, 9))
+viewer = FormViewer(form, figsize=(10, 7))
 viewer.defaults['edge.fontsize'] = 4
 
 viewer.draw_vertices(

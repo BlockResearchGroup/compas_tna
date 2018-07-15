@@ -43,7 +43,7 @@ from compas_tna.utilities import LoadUpdater
 from compas_tna.utilities import update_target
 
 from compas_tna.utilities import update_z
-from compas_tna.utilities import update_q_from_qind
+from compas_ags.ags.graphstatics import update_q_from_qind
 
 
 __author__     = ['Tom Van Mele', ]
@@ -526,10 +526,7 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
         attr['l'] = l[index, 0]
 
 
-# m is not required
-# can be inferred from E and ind
-# def vertical_from_qind(form, ind)
-def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-3, display=True):
+def vertical_from_qind(form, ind, density=1.0, kmax=100, tol=1e-3, display=True):
     """Compute vertical equilibrium from the force densities of the independent edges.
 
     Parameters:
@@ -538,8 +535,6 @@ def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-3, display=Tr
         ind (int):
             The indices of the independent form edges. Should be identified
             using ForceDiagram.dof
-        m (int):
-            Should be identified using ForceDiagram.dof
         density (float):
             The density for computation of the self-weight of the thrust network
             (the default is 1.0). Set this to 0.0 to ignore self-weight and only
@@ -582,8 +577,7 @@ def vertical_from_qind(form, ind, m, density=1.0, kmax=100, tol=1e-3, display=Tr
     # --------------------------------------------------------------------------
     # update forcedensity based on given q[ind]
     # --------------------------------------------------------------------------
-    # update_q_from_qind(E, q, dep, ind)
-    update_q_from_qind(q, E, ind, dep, m)
+    update_q_from_qind(E, q, dep, ind)
     Q = diags([q.ravel()], [0])
     # --------------------------------------------------------------------------
     # compute vertical
