@@ -31,6 +31,19 @@ class FormActions(object):
     # construct
     # ==========================================================================
 
+    def form_from_json(self):
+        path = compas_rhino.select_file(folder=compas_tna.DATA, filter='JSON files (*.json)|*.json||')
+        if not path:
+            return
+        self.form = RhinoForm.from_json(path)
+        self.form.draw()
+
+    def to_json(self):
+        path = os.path.join(compas_tna.DATA, '{}.json'.format(self.form.attributes['name']))
+        if not path:
+            return
+        self.form.to_json(path)
+
     def form_from_obj(self):
         path = compas_rhino.select_file(folder=compas_tna.DATA, filter='OBJ files (*.obj)|*.obj||')
         if not path:
@@ -43,7 +56,6 @@ class FormActions(object):
         if not guid:
             return
         self.form = RhinoForm.from_mesh(guid)
-        mesh_flip_cycles(self.form)
         self.form.draw()
 
     def form_from_surface(self):
@@ -52,9 +64,6 @@ class FormActions(object):
             return
         self.form = RhinoForm.from_surface(guid)
         self.form.draw()
-
-    def form_from_boundaries(self):
-        pass
 
     def form_from_lines(self):
         guids = compas_rhino.select_lines()
@@ -87,7 +96,33 @@ class FormActions(object):
         self.form.update_face_attributes(keys)
 
     def form_move_vertex(self):
-        pass
+        key = self.form.select_vertex()
+        if key is None:
+            return
+        key_index = self.form.key_index()
+        xyz = self.form.get_vertices_attributes('xyz')
+        nbrs = [key_index[nbr] for nbr in self.form.vertex_neighbours(key)]
+        color = FromArgb(255, 255, 255)
+        def OnDynamicDraw(sender, e):
+            sp = e.CurrentPoint
+            for nbr in nbrs:
+                x, y, z = xyz[nbr]
+                ep = Point3d(x, y, z)
+                e.Display.DrawDottedLine(sp, ep, color)
+        gp = Rhino.Input.Custom.GetPoint()
+        gp.SetCommandPrompt('Point to move to?')
+        gp.DynamicDraw += OnDynamicDraw
+        gp.Get()
+        if gp.CommandResult() == Rhino.Commands.Result.Success:
+            x, y, z = list(gp.Point())
+            self.form.vertex[key]['x'] = x
+            self.form.vertex[key]['y'] = y
+            self.form.vertex[key]['z'] = z
+        self.form.draw()
+
+    def form_flip(self):
+        mesh_flip_cycles(self.form)
+        self.form.draw()
 
     # ==========================================================================
     # select
@@ -136,6 +171,16 @@ class FormActions(object):
         interior = boundaries[1:]
         self.form.update_exterior(exterior, feet=self.form.attributes['feet.mode'])
         self.form.update_interior(interior)
+
+    # ==========================================================================
+    # geometry
+    # ==========================================================================
+
+    def form_show_normals(self):
+        pass
+
+    def form_hide_normals(self):
+        pass
 
 
 # ==============================================================================

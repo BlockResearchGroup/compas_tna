@@ -15,9 +15,9 @@
     		"name"  : "Form",
     		"items" : 
     		[
+                { "text" : "json", "left" : "tna.form_from_json" },
                 { "text" : "obj", "left" : "tna.form_from_obj" },
                 { "text" : "lines", "left" : "tna.form_from_lines" },
-                { "text" : "boundaries", "left" : "tna.form_from_boundaries" },
                 { "text" : "mesh", "left" : "tna.form_from_mesh" },
                 { "text" : "surface", "left" : "tna.form_from_surface" },
 
@@ -38,7 +38,13 @@
                 { "type" : "separator" },
 
                 { "text" : "relax", "left" : "tna.form_relax" },
-                { "text" : "update boundaries", "left" : "tna.form_update_boundaries" }
+                { "text" : "update boundaries", "left" : "tna.form_update_boundaries" },
+                { "text" : "move vertex", "left" : "tna.form_move_vertex" },
+                { "text" : "flip", "left" : "tna.form_flip" },
+
+                { "type" : "separator" },
+
+                { "type" : "normals", "left" : "tna.form_show_normals", "right" : "tna.form_hide_normals" }
     		]	
     	},
     	{
@@ -51,7 +57,12 @@
 
                 { "text" : "attr", "left" : "tna.force_update_attributes" },
                 { "text" : "v_attr", "left" : "tna.force_update_vertex_attributes" },
-                { "text" : "e_attr", "left" : "tna.force_update_edge_attributes" }
+                { "text" : "e_attr", "left" : "tna.force_update_edge_attributes" },
+
+                { "type" : "separator" },
+
+                { "text" : "move", "left" : "tna.force_move" },
+                { "text" : "move vertices", "left" : "tna.force_move_vertices" }
     		]	
     	},
     	{

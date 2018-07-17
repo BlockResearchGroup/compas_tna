@@ -146,7 +146,7 @@ def vertical_from_qind_rhino(form, *args, **kwargs):
     def callback(line, args):
         print(line)
         compas_rhino.wait()
-    f = XFunc('compas_tna.equilibrium.vertical_from_qind_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
+    f = XFunc('compas_tna.equilibrium.vertical_from_qind_xfunc', tmpdir=compas_tna.TEMP, callback=callback, delete_files=False)
     formdata = f(form.to_data(), *args, **kwargs)
     form.data = formdata
 
@@ -526,7 +526,11 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
         attr['l'] = l[index, 0]
 
 
-def vertical_from_qind(form, ind, density=1.0, kmax=100, tol=1e-3, display=True):
+def vertical_from_q():
+    pass
+
+
+def vertical_from_qind(form, density=1.0, kmax=100, tol=1e-3, display=True):
     """Compute vertical equilibrium from the force densities of the independent edges.
 
     Parameters:
@@ -560,6 +564,7 @@ def vertical_from_qind(form, ind, density=1.0, kmax=100, tol=1e-3, display=True)
     fixed   = set(anchors + fixed)
     fixed   = [k_i[key] for key in fixed]
     edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
+    ind     = [index for index, (u, v, attr) in enumerate(form.edges_where({'is_edge': True}, True)) if attr['is_ind']]
     ecount  = len(edges)
     free    = list(set(range(vcount)) - set(fixed))
     dep     = list(set(range(ecount)) - set(ind))
