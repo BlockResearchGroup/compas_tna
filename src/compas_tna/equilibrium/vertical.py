@@ -428,11 +428,8 @@ def vertical_from_target(form, force, density=1.0):
 
 
 def vertical_from_self(form, force, density=1.0):
-    for key, attr in form.vertices(True):
-        if attr['is_anchor']:
-            continue
-        if attr['is_external']:
-            continue
+    conditions = {'is_anchor': False, 'is_external': False}
+    for key, attr in form.vertices_where(conditions, True):
         attr['zT'] = attr['z']
     vertical_from_target(form, force, density=density)
 
@@ -474,7 +471,7 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
     xyz     = array(form.get_vertices_attributes('xyz'), dtype=float64)
     thick   = array(form.get_vertices_attribute('t'), dtype=float64).reshape((-1, 1))
     p       = array(form.get_vertices_attributes(('px', 'py', 'pz')), dtype=float64)
-    p0      = p.copy()
+    p0      = array(p, copy=True)
     C       = connectivity_matrix(edges, 'csr')
     Ct      = C.transpose()
     # --------------------------------------------------------------------------
@@ -492,8 +489,8 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
     # --------------------------------------------------------------------------
     # compute forcedensity
     # --------------------------------------------------------------------------
-    uv  = C.dot(xyz[:, 0:2])
-    _uv = _C.dot(_xyz[:, 0:2])
+    uv   = C.dot(xyz[:, 0:2])
+    _uv  = _C.dot(_xyz[:, 0:2])
     l    = normrow(uv)
     _l   = normrow(_uv)
     h    = scale * _l
@@ -527,6 +524,8 @@ def vertical_from_formforce(form, force, kmax=100, tol=1e-6, density=1.0, displa
 
 
 def vertical_from_q():
+    """Compute vertical equilibrium from the force densities stored on the edges of the form diagram.
+    """
     pass
 
 

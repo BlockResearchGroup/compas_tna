@@ -48,7 +48,6 @@ __all__ = [
     'parallelise_nodal',
     'rot90',
     'apply_bounds',
-    'update_q_from_qind',
     'update_z',
 ]
 
@@ -169,31 +168,6 @@ def apply_bounds(x, xmin, xmax):
     x[xbig]   = xmax[xbig]
 
 
-# move to AGS?
-# rename to compute_q_from_qind
-# m can be niferred from the length of ind and tje size of the rowspace of E
-# order f arguments is different compared to AGS
-def update_q_from_qind(q, E, ind, dep, m):
-    qi = q[ind]
-    Ei = E[:, ind]
-    Ed = E[:, dep]
-    if m > 0:
-        Edt = Ed.transpose()
-        A = Edt.dot(Ed).toarray()
-        b = Edt.dot(Ei).dot(qi)
-    else:
-        A = Ed.toarray()
-        b = Ei.dot(qi)
-    if cond(A) > EPS:
-        res = lstsq(-A, b)
-        qd = res[0]
-    else:
-        qd = solve(-A, b)
-    q[dep] = qd
-    q[ind] = qi
-
-
-# rename to compute_z
 def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-3, kmax=100, display=True):
     Ci      = C[:, free]
     Cf      = C[:, fixed]
@@ -202,22 +176,19 @@ def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-3, kmax=100, display
     A       = Cit.dot(Q).dot(Ci)
     A_solve = factorized(A)
     B       = Cit.dot(Q).dot(Cf)
+    CtQC    = Ct.dot(Q).dot(C)
+
     updateloads(p, xyz)
+
     for k in range(kmax):
         if display:
             print(k)
         b            = p[free, 2] - B.dot(xyz[fixed, 2])
-        # z0           = xyz[free, 2].copy()
         xyz[free, 2] = A_solve(b)
 
         updateloads(p, xyz)
-        # stopping should be based on residual forces
-        # not movement
 
-        # w = C.dot(xyz[:, 2])
-        # l = normrow(w)
-        r = Ct.dot(Q).dot(C).dot(xyz[:, 2]) - p[:, 2]
-
+        r   = CtQC.dot(xyz[:, 2]) - p[:, 2]
         res = norm(r[free])
         if res < tol:
             break

@@ -158,43 +158,45 @@ class FormDiagram(Mesh):
         """
         return dict(enumerate(self.edges_where({'is_edge': True})))
 
-    def dual(self, cls):
-        dual = cls()
+    # --------------------------------------------------------------------------
+    # dual and reciprocal
+    # --------------------------------------------------------------------------
 
+    def dual(self, cls):
+        # be more explicit with the boundary functions
+        dual = cls()
         fkey_centroid = {fkey: self.face_centroid(fkey) for fkey in self.faces()}
-        outer = self.vertices_on_boundaries()[0]
+        outer = self.vertices_on_boundary()
         inner = list(set(self.vertices()) - set(outer))
         vertices = {}
         faces = {}
-
         for key in inner:
             fkeys = self.vertex_faces(key, ordered=True)
             for fkey in fkeys:
                 if fkey not in vertices:
                     vertices[fkey] = fkey_centroid[fkey]
             faces[key] = fkeys
-
         for key, (x, y, z) in vertices.items():
             dual.add_vertex(key, x=x, y=y, z=z)
-
         for fkey, vertices in faces.items():
             dual.add_face(vertices, fkey=fkey)
-
         return dual
 
     def find_faces(self):
+        # add planarity check
+        # rename finding faces function
+        # add a mesh from lines function
+        # add mesh from network
+        # mesh from mesh
+        # network from mesh
+        # network from network
         from compas.topology import network_find_faces
         from compas.datastructures import Network
-
         network = Network.from_lines(lines, precision=precision)
-
         mesh = cls()
-
         for key, attr in network.vertices(True):
             mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0)
-
         mesh.halfedge = network.halfedge
-
         network_find_faces(mesh, breakpoints=mesh.leaves())
 
     # --------------------------------------------------------------------------
@@ -202,9 +204,11 @@ class FormDiagram(Mesh):
     # --------------------------------------------------------------------------
 
     def leaves(self):
+        # consistent use of iterators and generators v lists
         return self.vertices_where({'vertex_degree': 1})
 
     def corners(self):
+        # consistent use of iterators and generators v lists
         return self.vertices_where({'vertex_degree': 2})
 
     # --------------------------------------------------------------------------
@@ -220,9 +224,11 @@ class FormDiagram(Mesh):
     # --------------------------------------------------------------------------
 
     def anchors(self):
+        # consistent use of iterators and generators v lists
         return [key for key, attr in self.vertices(True) if attr['is_anchor']]
 
     def fixed(self):
+        # consistent use of iterators and generators v lists
         return [key for key, attr in self.vertices(True) if attr['is_fixed']]
 
     def residual(self):
@@ -232,6 +238,14 @@ class FormDiagram(Mesh):
             l = sqrt(rx ** 2 + ry ** 2 + rz ** 2)
             R += l
         return R
+
+    def bbox(self):
+        x, y, z = zip(* self.get_vertices_attributes('xyz'))
+        return (min(x), min(y), min(z)), (max(x), max(y), max(z))
+
+    def init_scale(self):
+        (xmin, ymin, zmin), (xmax, ymax, zmax) = self.bbox()
+        return 5 / ((xmax - xmin) ** 2 + (ymax - ymin) ** 2) ** 0.5
 
     # --------------------------------------------------------------------------
     # boundary
@@ -310,21 +324,6 @@ class FormDiagram(Mesh):
                 if l < tol:
                     self.collapse_edge(v, u, t=0.5, allow_boundary=True)
 
-    def set_anchors(self, points=None, degree=0, keys=None):
-        if points:
-            xyz_key = self.key_xyz()
-            for xyz in points:
-                gkey = geometric_key(xyz)
-                if gkey in xyz_key:
-                    key = xyz_key[gkey]
-                    self.set_vertex_attribute(key, 'is_anchor', True)
-        if degree:
-            for key in self.vertices():
-                if self.vertex_degree(key) <= degree:
-                    self.set_vertex_attribute(key, 'is_anchor', True)
-        if keys:
-            self.set_vertices_attribute('is_anchor', True, keys=keys)
-
     def relax(self, fixed):
         key_index = self.key_index()
         vertices = self.get_vertices_attributes('xyz')
@@ -343,6 +342,25 @@ class FormDiagram(Mesh):
 
     def smooth_interior(self):
         pass
+
+    # --------------------------------------------------------------------------
+    # boundary conditions
+    # --------------------------------------------------------------------------
+
+    def set_anchors(self, points=None, degree=0, keys=None):
+        if points:
+            xyz_key = self.key_xyz()
+            for xyz in points:
+                gkey = geometric_key(xyz)
+                if gkey in xyz_key:
+                    key = xyz_key[gkey]
+                    self.set_vertex_attribute(key, 'is_anchor', True)
+        if degree:
+            for key in self.vertices():
+                if self.vertex_degree(key) <= degree:
+                    self.set_vertex_attribute(key, 'is_anchor', True)
+        if keys:
+            self.set_vertices_attribute('is_anchor', True, keys=keys)
 
     def update_boundaries(self, feet=1):
         boundaries = self.vertices_on_boundaries()

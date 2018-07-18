@@ -53,9 +53,9 @@ force = ForceDiagram.from_formdiagram(form)
 
 horizontal(form, force, display=False)
 
-vertical_from_zmax(form, force, zmax=3, tol=1e-5)
+vertical_from_zmax(form, force, zmax=3, tol=1e-3)
 vertical_from_self(form, force)
-vertical_from_formforce(form, force)
+vertical_from_formforce(form, force, tol=1e-3, kmax=200)
 
 print('scale:', force.attributes['scale'])
 print('zmax:', max(form.get_vertices_attribute('z')))
@@ -67,14 +67,17 @@ print('residual:', form.residual())
 viewer = FormViewer(form, figsize=(10, 7))
 viewer.defaults['edge.fontsize'] = 4
 
+v = form.vertices_where
+
 viewer.draw_vertices(
-    keys=list(form.vertices_where({'is_external': False}))
-)
+    keys=list(form.vertices_where({'is_external': False})),
+    radius=0.1)
+
 viewer.draw_edges(
     keys=list(form.edges_where({'is_edge': True, 'is_external': False})),
-    width=0.1,
-)
-viewer.draw_reactions(scale=0.1)
-viewer.draw_horizontalforces(scale=1.0)
+    width=0.1)
+
+viewer.draw_reactions(scale=0.2)
+viewer.draw_forces()
 
 viewer.show()

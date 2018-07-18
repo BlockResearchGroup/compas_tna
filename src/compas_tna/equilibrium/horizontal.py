@@ -67,11 +67,9 @@ def horizontal_nodal_xfunc(formdata, forcedata, *args, **kwargs):
 
 def horizontal_rhino(form, force, *args, **kwargs):
     import compas_rhino
-
     def callback(line, args):
         print(line)
         compas_rhino.wait()
-
     f = XFunc('compas_tna.equilibrium.horizontal_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
     formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
     form.data = formdata
@@ -80,11 +78,9 @@ def horizontal_rhino(form, force, *args, **kwargs):
 
 def horizontal_nodal_rhino(form, force, *args, **kwargs):
     import compas_rhino
-
     def callback(line, args):
         print(line)
         compas_rhino.wait()
-
     f = XFunc('compas_tna.equilibrium.horizontal_nodal_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
     formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
     form.data = formdata

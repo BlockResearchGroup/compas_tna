@@ -35,9 +35,6 @@ def identify_dof(form):
     return f(form.to_data())
 
 
-# form = FormDiagram.from_json(os.path.join(compas_tna.DATA, 'notrhino.json'))
-
-
 form = FormDiagram.from_obj(compas.get('lines.obj'))
 
 
@@ -48,7 +45,7 @@ form.set_edges_attribute('is_edge', False, keys=form.edges_on_boundary())
 k, m, ind = identify_dof(form)
 
 for u, v in ind:
-    form.set_edge_attributes((u, v), ('is_ind', 'q'), (True, random.choice(range(2, 10))))
+    form.set_edge_attributes((u, v), ('is_ind', 'q'), (True, random.choice(range(1, 5))))
 
 vertical_from_qind(form)
 
