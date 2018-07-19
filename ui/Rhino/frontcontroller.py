@@ -7,7 +7,7 @@ import compas_rhino
 import compas_tna
 
 from thrustactions import ThrustActions
-from forwardactions import ForwardActions
+from tnaactions import TNAActions
 from forceactions import ForceActions
 from formactions import FormActions
 
@@ -21,15 +21,17 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = []
 
 
-class TNAFrontController(ThrustActions, ForwardActions, ForceActions, FormActions):
+class TNAFrontController(VizActions, TNAActions, ForceActions, FormActions):
 
     instancename = 'tna'
 
     def __init__(self):
         self.settings = {
-            'forward.vertical.zmax'  : None,
-            'forward.vertical.scale' : 
-
+            'TNA.zmax'  : None,
+            'TNA.dr'    : 1e-3,
+            'TNA.dx'    : 1e-6,
+            'TNA.kmax'  : 100,
+            'TNA.alpha' : 100,
         }
         self.form = None
         self.force = None
