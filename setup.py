@@ -7,10 +7,9 @@ from os import path
 
 from setuptools import find_packages, setup
 
-requirements = []
-optional_requirements = {}
 
 here = path.abspath(path.dirname(__file__))
+
 
 def read(*names, **kwargs):
     return io.open(
@@ -18,12 +17,15 @@ def read(*names, **kwargs):
         encoding=kwargs.get('encoding', 'utf8')
     ).read()
 
+
 long_description = read('README.md')
+requirements = read('requirements.txt').split('\n')
+optional_requirements = {}
 
 setup(
     name='compas_tna',
     version='0.1.0',
-    description='Thrust Network Analysis',
+    description='COMPAS package for Thrust Network Analysis',
     long_description=long_description,
     license='MIT',
     url='https://github.com/BlockResearchGroup/compas_tna',
@@ -46,13 +48,26 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
     ],
     keywords=['architecture', 'engineering'],
-    # TODO: The following excludes don't seem to be really working
+    project_urls={},
+
     packages=find_packages('src'),
     package_dir={'': 'src'},
+    package_data={
+        '': ['__data/*.obj']
+    },
+    data_files=[
+    ],
     include_package_data=True,
+
     zip_safe=False,
+
     install_requires=requirements,
     python_requires='>=2.7',
-    extras_require=optional_requirements
-    # entry_points={},
+    extras_require=optional_requirements,
+
+    entry_points={
+        'console_scripts': [],
+    },
+
+    ext_modules=[]
 )

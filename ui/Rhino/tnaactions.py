@@ -33,41 +33,48 @@ class TNAActions(object):
     # update force diagram from q
     # update vertical equilibrium from q
 
-    def horizontal(self):
+    def count_qind(self):
+        pass
+
+    def identify_qind(self):
+        pass
+
+    def update_q_from_qind(self):
+        pass
+
+    # ==========================================================================
+    # scale of force diagram
+    # ==========================================================================
+
+    def compute_scale_from_zmax(self):
+        pass
+
+    def compute_scale_from_target(self):
+        pass
+
+    def compute_scale_from_bbox(self):
+        pass
+
+    # ==========================================================================
+    # horizontal
+    # ==========================================================================
+
+    def parallelise_formforce(self):
         horizontal(self.form, self.force)
         self.form.draw()
         self.force.draw()
 
-    def horizontal_nodal(self):
+    def parallelise_formforce_nodal(self):
         horizontal_nodal(self.form, self.force)
         self.form.draw()
         self.force.draw()
 
-    def vertical_zmax(self):
-        vertical_from_zmax(self.form, self.force)
-        self.form.draw()
-        self.force.draw()
+    # ==========================================================================
+    # vertical
+    # ==========================================================================
 
-    def vertical_formforce(self):
-        vertical_from_formforce(self.form, self.force)
-        self.form.draw()
-        self.force.draw()
-
-    def vertical_target(self):
-        guid = compas_rhino.select_surface()
-        surface = RhinoSurface(guid)
-        points = self.form.get_vertices_attributes('xyz')
-        projections = surface.project_points(points)
-        key_index = self.form.key_index()
-        for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
-            index = key_index[key]
-            attr['zT'] = projections[index][2]
-        vertical_from_target(self.form, self.force)
-        self.form.draw()
-        self.force.draw()
-
-    def vertical_qind(self):
-        vertical_from_qind(self.form, self.force)
+    def update_vertical(self):
+        vertical_from_q(self.form, self.force)
         self.form.draw()
         self.force.draw()
 

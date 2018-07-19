@@ -1,15 +1,11 @@
-graft src
-graft data
-
+prunt __temp
+prune docs
 prune examples
 prune temp
-prune docs
 prune ui
-
-include .bumpversion.cfg
-include .editorconfig
 
 include LICENSE
 include README.md
+include requirements.txt
 
 global-exclude *.py[cod] __pycache__ *.dylib
