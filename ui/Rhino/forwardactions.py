@@ -58,11 +58,7 @@ class ForwardActions(object):
         points = self.form.get_vertices_attributes('xyz')
         projections = surface.project_points(points)
         key_index = self.form.key_index()
-        for key, attr in self.form.vertices(True):
-            if attr['is_anchor']:
-                continue
-            if attr['is_external']:
-                continue
+        for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
             index = key_index[key]
             attr['zT'] = projections[index][2]
         vertical_from_target(self.form, self.force)

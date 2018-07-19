@@ -53,8 +53,10 @@ force = ForceDiagram.from_formdiagram(form)
 
 horizontal(form, force, display=False)
 
-vertical_from_zmax(form, force, zmax=3, tol=1e-3)
-vertical_from_self(form, force)
+scale = form.init_scale()
+
+force.attributes['scale'] = 5
+
 vertical_from_formforce(form, force, tol=1e-3, kmax=200)
 
 print('scale:', force.attributes['scale'])
@@ -66,8 +68,6 @@ print('residual:', form.residual())
 
 viewer = FormViewer(form, figsize=(10, 7))
 viewer.defaults['edge.fontsize'] = 4
-
-v = form.vertices_where
 
 viewer.draw_vertices(
     keys=list(form.vertices_where({'is_external': False})),

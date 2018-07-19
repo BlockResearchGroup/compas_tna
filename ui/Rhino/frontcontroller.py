@@ -27,7 +27,8 @@ class TNAFrontController(ThrustActions, ForwardActions, ForceActions, FormAction
 
     def __init__(self):
         self.settings = {
-            'forward.vertical.zmax' : None,
+            'forward.vertical.zmax'  : None,
+            'forward.vertical.scale' : 
 
         }
         self.form = None

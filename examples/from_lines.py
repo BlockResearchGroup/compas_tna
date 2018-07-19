@@ -62,7 +62,6 @@ force = ForceDiagram.from_formdiagram(form)
 
 horizontal_nodal(form, force)
 vertical_from_zmax(form, force, zmax=4)
-vertical_from_self(form, force)
 vertical_from_formforce(form, force)
 
 print('scale:', force.attributes['scale'])
@@ -76,13 +75,12 @@ viewer = FormViewer(form, figsize=(14, 9))
 
 viewer.draw_vertices(
     keys=list(form.vertices_where({'is_external': False})),
-    text={key: "{:.1f}".format(attr['z']) for key, attr in form.vertices(True)}
-)
+    text={key: "{:.1f}".format(attr['z']) for key, attr in form.vertices(True)})
 viewer.draw_edges(
     keys=list(form.edges_where({'is_edge': True, 'is_external': False})),
-    width=0.1,
-)
-viewer.draw_reactions(scale=1.0)
-viewer.draw_horizontalforces(scale=1.0)
+    width=0.1)
+viewer.draw_reactions(scale=0.1)
+viewer.draw_forces(scale=1.0)
+viewer.draw_faces(keys=form.faces_where({'is_loaded': True}))
 
 viewer.show()
