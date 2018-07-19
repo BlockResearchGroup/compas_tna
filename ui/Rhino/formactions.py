@@ -77,9 +77,6 @@ class FormActions(object):
     # update
     # ==========================================================================
 
-    def form_redraw(self):
-        self.form.draw()
-
     def form_update_attributes(self):
         compas_rhino.update_settings(self.form.attributes)
 
@@ -132,7 +129,6 @@ class FormActions(object):
         uv = self.form.select_edge()
         if not uv:
             return
-
         keys = self.form.get_parallel_edges(uv)
         self.form.highlight_edges(keys)
 
@@ -140,20 +136,25 @@ class FormActions(object):
         uv = self.form.select_edge()
         if not uv:
             return
-
         keys = self.form.get_continuous_edges(uv)
         self.form.highlight_edges(keys)
 
     def form_select_boundary_vertices(self):
         keys = set(self.form.vertices_on_boundary())
+        if not keys:
+            return
         self.form.highlight_vertices(keys)
 
     def form_select_boundary_edges(self):
         keys = set(self.form.edges_on_boundary())
+        if not keys:
+            return
         self.form.highlight_edges(keys)
 
     def form_select_boundary_faces(self):
         keys = set(self.form.faces_on_boundary())
+        if not keys:
+            return
         self.form.highlight_faces(keys)
 
     # ==========================================================================
@@ -173,8 +174,11 @@ class FormActions(object):
         self.form.update_interior(interior)
 
     # ==========================================================================
-    # geometry
+    # visualisation
     # ==========================================================================
+
+    def form_redraw(self):
+        self.form.draw()
 
     def form_show_normals(self):
         pass
