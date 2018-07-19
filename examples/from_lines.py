@@ -60,8 +60,8 @@ force = ForceDiagram.from_formdiagram(form)
 # ==============================================================================
 # compute equilibrium
 
-horizontal_nodal(form, force)
-vertical_from_zmax(form, force, zmax=4)
+horizontal_nodal(form, force, kmax=50)
+vertical_from_zmax(form, force, zmax=2)
 vertical_from_formforce(form, force)
 
 print('scale:', force.attributes['scale'])

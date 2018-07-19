@@ -4,12 +4,12 @@ from __future__ import division
 
 import compas
 import compas_rhino
-import compas_tna
 
-from thrustactions import ThrustActions
-from tnaactions import TNAActions
-from forceactions import ForceActions
+from patternactions import PatternActions
 from formactions import FormActions
+from forceactions import ForceActions
+from equilibriumactions import EquilibriumActions
+from vizactions import VizActions
 
 
 __author__    = ['Tom Van Mele', ]
@@ -21,7 +21,7 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = []
 
 
-class TNAFrontController(VizActions, TNAActions, ForceActions, FormActions):
+class TNAFrontController(VizActions, EquilibriumActions, ForceActions, FormActions, PatternActions):
 
     instancename = 'tna'
 
