@@ -18,7 +18,7 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = []
 
 
-class ThrustActions(object):
+class VizActions(object):
 
     # ==========================================================================
     # visualise

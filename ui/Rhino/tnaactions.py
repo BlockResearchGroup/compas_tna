@@ -25,34 +25,35 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = []
 
 
-class ForwardActions(object):
+class TNAActions(object):
 
-    def forward_update_settings(self):
-        settings = {key: value for key, value in self.settings.items() if key.startswith('forward')}
-        compas_rhino.update_settings(settings)
-        self.settings.update(settings)
+    # set scale (absolute, zmax, proportional, target, ...)
+    # update (horizontal) q from qind
+    # update (horizontal) q from force
+    # update force diagram from q
+    # update vertical equilibrium from q
 
-    def forward_horizontal(self):
+    def horizontal(self):
         horizontal(self.form, self.force)
         self.form.draw()
         self.force.draw()
 
-    def forward_horizontal_nodal(self):
+    def horizontal_nodal(self):
         horizontal_nodal(self.form, self.force)
         self.form.draw()
         self.force.draw()
 
-    def forward_vertical_zmax(self):
+    def vertical_zmax(self):
         vertical_from_zmax(self.form, self.force)
         self.form.draw()
         self.force.draw()
 
-    def forward_vertical_formforce(self):
+    def vertical_formforce(self):
         vertical_from_formforce(self.form, self.force)
         self.form.draw()
         self.force.draw()
 
-    def forward_vertical_target(self):
+    def vertical_target(self):
         guid = compas_rhino.select_surface()
         surface = RhinoSurface(guid)
         points = self.form.get_vertices_attributes('xyz')
@@ -69,18 +70,7 @@ class ForwardActions(object):
         self.form.draw()
         self.force.draw()
 
-    def forward_vertical_self(self):
-        for key, attr in self.form.vertices(True):
-            if attr['is_anchor']:
-                continue
-            if attr['is_external']:
-                continue
-            attr['zT'] = attr['z']
-        vertical_from_target(self.form, self.force)
-        self.form.draw()
-        self.force.draw()
-
-    def forward_vertical_qind(self):
+    def vertical_qind(self):
         vertical_from_qind(self.form, self.force)
         self.form.draw()
         self.force.draw()
