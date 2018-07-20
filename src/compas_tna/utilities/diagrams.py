@@ -111,7 +111,7 @@ def parallelise_sparse(A, B, X, known, k=1, key=None):
     return X
 
 
-# replace these for loops
+# replace the for loops
 def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=None, lmax=None):
     fixed = fixed or []
     fixed = set(fixed)
@@ -183,15 +183,17 @@ def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-3, kmax=100, display
     for k in range(kmax):
         if display:
             print(k)
-        b            = p[free, 2] - B.dot(xyz[fixed, 2])
-        xyz[free, 2] = A_solve(b)
+
+        xyz[free, 2] = A_solve(p[free, 2] - B.dot(xyz[fixed, 2]))
 
         updateloads(p, xyz)
 
         r   = CtQC.dot(xyz[:, 2]) - p[:, 2]
         res = norm(r[free])
+
         if res < tol:
             break
+
     return res
 
 

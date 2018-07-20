@@ -14,9 +14,6 @@ from compas_tna.diagrams import ForceDiagram
 
 from compas_tna.equilibrium import horizontal_nodal
 from compas_tna.equilibrium import vertical_from_zmax
-from compas_tna.equilibrium import vertical_from_target
-from compas_tna.equilibrium import vertical_from_self
-from compas_tna.equilibrium import vertical_from_formforce
 
 from compas_tna.viewers import FormViewer
 
@@ -39,6 +36,7 @@ lines    = [(vertices[u], vertices[v], 0) for u, v in edges]
 
 form = FormDiagram.from_lines(lines)
 
+
 # ==============================================================================
 # update boundary conditions
 
@@ -52,21 +50,24 @@ form.set_vertices_attribute('is_anchor', True, keys=exterior)
 form.update_exterior(exterior, feet=1)
 form.update_interior(interior)
 
+
 # ==============================================================================
 # create the force diagram
 
 force = ForceDiagram.from_formdiagram(form)
 
+
 # ==============================================================================
 # compute equilibrium
 
-horizontal_nodal(form, force, kmax=50)
-vertical_from_zmax(form, force, zmax=2)
-vertical_from_formforce(form, force)
+horizontal_nodal(form, force)
 
-print('scale:', force.attributes['scale'])
+scale = vertical_from_zmax(form, zmax=2)
+
+print('scale:', scale)
 print('zmax:', max(form.get_vertices_attribute('z')))
 print('residual:', form.residual())
+
 
 # ==============================================================================
 # visualise the result

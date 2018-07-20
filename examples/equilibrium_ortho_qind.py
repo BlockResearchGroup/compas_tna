@@ -13,6 +13,8 @@ from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 
 from compas_ags.ags import identify_dof
+from compas_ags.ags import update_forcedensity
+
 
 from compas_tna.equilibrium import horizontal
 from compas_tna.equilibrium import vertical_from_qind
@@ -38,7 +40,8 @@ k, m, ind = identify_dof(form)
 for u, v in ind:
     form.set_edge_attributes((u, v), ('is_ind', 'q'), (True, random.choice(range(1, 5))))
 
-vertical_from_qind(form, density=form.init_scale(), kmax=200)
+
+vertical_from_qind(form, kmax=200)
 
 
 viewer = FormViewer(form, figsize=(10, 7))

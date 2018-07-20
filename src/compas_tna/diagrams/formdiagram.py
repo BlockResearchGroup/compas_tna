@@ -111,6 +111,9 @@ class FormDiagram(Mesh):
             'feet.alpha'                 : 45,
             'feet.tol'                   : 0.1,
             'feet.mode'                  : 1,
+
+            'AGS.k'                      : None,
+            'AGS.m'                      : None,
         })
 
     def __str__(self):
@@ -232,20 +235,17 @@ class FormDiagram(Mesh):
         return [key for key, attr in self.vertices(True) if attr['is_fixed']]
 
     def residual(self):
+        # there is a discrepancy between the norm of residuals calculated by the equilibrium functions`
+        # and the result found here
         R = 0
-        for key, attr in self.vertices_where({'is_anchor': False, 'is_external': False}, True):
+        for key, attr in self.vertices_where({'is_anchor': False, 'is_fixed': False}, True):
             rx, ry, rz = attr['rx'], attr['ry'], attr['rz']
-            l = sqrt(rx ** 2 + ry ** 2 + rz ** 2)
-            R += l
+            R += sqrt(rx ** 2 + ry ** 2 + rz ** 2)
         return R
 
     def bbox(self):
         x, y, z = zip(* self.get_vertices_attributes('xyz'))
         return (min(x), min(y), min(z)), (max(x), max(y), max(z))
-
-    def init_scale(self):
-        (xmin, ymin, zmin), (xmax, ymax, zmax) = self.bbox()
-        return 5 / ((xmax - xmin) ** 2 + (ymax - ymin) ** 2) ** 0.5
 
     # --------------------------------------------------------------------------
     # boundary

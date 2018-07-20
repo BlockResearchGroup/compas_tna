@@ -163,6 +163,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     _l  = normrow(_uv)
     t   = alpha * normalizerow(uv) + (1 - alpha) * normalizerow(_uv)
     # parallelise
+    # add the outer loop to the parallelise function
     for k in range(kmax):
         # apply length bounds
         apply_bounds(l, lmin, lmax)

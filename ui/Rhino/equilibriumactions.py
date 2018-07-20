@@ -27,36 +27,34 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = []
 
 
-count_dof_f = XFunc('compas_ags.ags.graphstatics.count_dof_xfunc')
-identify_dof_f = XFunc('compas_ags.ags.graphstatics.identify_dof_xfunc')
-update_forcedensity_f = XFunc('compas_ags.ags.graphstatics.update_forcedensity_xfunc')
-update_forcediagram_f = XFunc('compas_ags.ags.graphstatics.update_forcediagram_xfunc')
+# not sure if these functions can be used directly
+# there is still an implementation difference between AGS and TNA
+# use only the low-level functions that deal with mathematical abstractions
+# or the wrappers for diagrams available in TNA
+
+count_dof_ = XFunc('compas_ags.ags.graphstatics.count_dof_xfunc')
+identify_dof_ = XFunc('compas_ags.ags.graphstatics.identify_dof_xfunc')
+update_q_from_qind_ = XFunc('compas_ags.ags.graphstatics.update_forcedensity_xfunc')
+update_forcediagram_from_q_ = XFunc('compas_ags.ags.graphstatics.update_forcediagram_xfunc')
 
 
 def count_dof(form):
-    return count_dof_f(form.to_data())
+    return count_dof_(form.to_data())
 
 
 def identify_dof(form):
-    return identify_dof_f(form.to_data())
+    return identify_dof_(form.to_data())
 
 
 def update_q_from_qind(form):
-    form.data = update_forcedensity_f(form.to_data())
+    form.data = update_q_from_qind_(form.to_data())
 
 
 def update_forcediagram_from_q(force, form):
-    force.data = update_forcediagram_f(force.to_data(), form.to_data())
+    force.data = update_forcediagram_from_q_(force.to_data(), form.to_data())
 
 
 class EquilibriumActions(object):
-
-    # ==========================================================================
-    # distribution: qind => 2D geometry of force diagram
-    #
-    # compute a force distribution from the independent edges
-    # update the geometry of the foce diagram accordingly
-    # ==========================================================================
 
     def count_qind(self):
         k, m = count_dof(self.form)
@@ -64,11 +62,18 @@ class EquilibriumActions(object):
 
     def identify_qind(self):
         k, m, ind = identify_dof(self.form)
-        print(k, m)
+        print(k, m, len(ind))
         self.form.set_edges_attribute('is_ind', False)
-        self.form.set_edges_attribute('is_ind', True, keys=ind)
+        self.form.set_edges_attribute('is_ind', True, keys=map(tuple, ind))
         self.form.draw()
         self.force.draw()
+
+    # ==========================================================================
+    # distribution: qind => 2D geometry of force diagram
+    #
+    # compute a force distribution from the independent edges
+    # update the geometry of the foce diagram accordingly
+    # ==========================================================================
 
     def update_q_from_qind(self):
         update_q_from_qind(self.form)
@@ -122,7 +127,8 @@ class EquilibriumActions(object):
     # ==========================================================================
 
     def update_vertical_from_q(self):
-        vertical_from_q(self.form, self.force.attributes['scale'])
+        scale = self.force.attributes['scale']
+        vertical_from_q(self.form, scale)
         self.form.draw()
 
 
