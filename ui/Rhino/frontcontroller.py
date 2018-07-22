@@ -21,7 +21,11 @@ __email__     = 'vanmelet@ethz.ch'
 __all__ = []
 
 
-class TNAFrontController(VizActions, EquilibriumActions, ForceActions, FormActions, PatternActions):
+class TNAFrontController(VizActions,
+                         EquilibriumActions,
+                         ForceActions,
+                         FormActions,
+                         PatternActions):
 
     instancename = 'tna'
 

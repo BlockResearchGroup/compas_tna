@@ -12,9 +12,7 @@ import compas_tna
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 
-from compas_ags.ags import identify_dof
-from compas_ags.ags import update_forcedensity
-
+from compas_ags.ags import form_identify_dof
 
 from compas_tna.equilibrium import horizontal
 from compas_tna.equilibrium import vertical_from_qind
@@ -35,7 +33,7 @@ form.set_vertices_attributes(('is_fixed', 'is_anchor'), (True, True), keys=form.
 form.set_edges_attribute('is_edge', False, keys=form.edges_on_boundary())
 
 
-k, m, ind = identify_dof(form)
+k, m, ind = form_identify_dof(form)
 
 for u, v in ind:
     form.set_edge_attributes((u, v), ('is_ind', 'q'), (True, random.choice(range(1, 5))))

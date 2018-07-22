@@ -1,0 +1,146 @@
+{
+    "menus" : [],
+
+    "toolbars" : 
+    [
+    	{
+    		"name"  : "compas_tna",
+    		"items" : 
+    		[
+                { "text" : "init", "left" : "tna.init" },
+                { "text" : "settings", "left" : "tna.update_settings" }
+    		]	
+    	},
+        {
+            "name"  : "Pattern",
+            "items" : 
+            []
+        },
+    	{
+    		"name"  : "Form",
+    		"items" : 
+    		[
+                { "text" : "json",    "left" : "tna.form_from_json" },
+                { "text" : "obj",     "left" : "tna.form_from_obj" },
+                { "text" : "lines",   "left" : "tna.form_from_lines" },
+                { "text" : "mesh",    "left" : "tna.form_from_mesh" },
+                { "text" : "surface", "left" : "tna.form_from_surface" },
+
+                { "type" : "separator" },
+
+                { "text" : "sel_parallel",   "left" : "tna.form_select_parallel_edges" },
+                { "text" : "sel_continuous", "left" : "tna.form_select_continuous_edges" },
+                { "text" : "sel_bedges",     "left" : "tna.form_select_boundary_edges" },
+                { "text" : "sel_bvertices",  "left" : "tna.form_select_boundary_vertices" },
+
+                { "type" : "separator" },
+
+                { "text" : "attr",   "left" : "tna.form_update_attributes" },
+                { "text" : "v_attr", "left" : "tna.form_update_vertex_attributes" },
+                { "text" : "e_attr", "left" : "tna.form_update_edge_attributes" },
+                { "text" : "f_attr", "left" : "tna.form_update_face_attributes" },
+
+                { "type" : "separator" },
+
+                { "text" : "relax",             "left" : "tna.form_relax" },
+                { "text" : "update boundaries", "left" : "tna.form_update_boundaries" },
+                { "text" : "flip",              "left" : "tna.form_flip" }
+    		]	
+    	},
+    	{
+    		"name"  : "Force",
+    		"items" : 
+    		[
+                { "text" : "from_form", "left" : "tna.force_from_form" },
+
+                { "type" : "separator" },
+
+                { "text" : "sel_parallel",   "left" : "tna.force_select_parallel_edges" },
+                { "text" : "sel_continuous", "left" : "tna.force_select_continuous_edges" },
+                { "text" : "sel_bedges",     "left" : "tna.force_select_boundary_edges" },
+                { "text" : "sel_bvertices",  "left" : "tna.force_select_boundary_vertices" },
+
+                { "type" : "separator" },
+
+                { "text" : "attr",   "left" : "tna.force_update_attributes" },
+                { "text" : "v_attr", "left" : "tna.force_update_vertex_attributes" },
+                { "text" : "e_attr", "left" : "tna.force_update_edge_attributes" },
+
+                { "type" : "separator" },
+
+                { "text" : "move",          "left" : "tna.force_move" },
+                { "text" : "move vertices", "left" : "tna.force_move_vertices" }
+    		]	
+    	},
+    	{
+    		"name"  : "Equilibrium",
+    		"items" : 
+    		[
+                { "text" : "count_qind",    "left" : "tna.count_qind" },
+                { "text" : "identify_qind", "left" : "tna.identify_qind" },
+
+                { "type" : "separator" },
+
+                { "text" : "q_from_qind",   "left" : "tna.update_q_from_qind" },
+
+                { "type" : "separator" },
+
+                { "text" : "parallelise",       "left" : "tna.parallelise_formforce" },
+                { "text" : "parallelise_nodal", "left" : "tna.parallelise_formforce_nodal" },
+
+                { "type" : "separator" },
+
+                { "text" : "scale_from_zmax",   "left" : "tna.compute_scale_from_zmax" },
+                { "text" : "scale_from_target", "left" : "tna.compute_scale_from_target" },
+                { "text" : "scale_from_bbox",   "left" : "tna.compute_scale_from_bbox" },
+
+                { "type" : "separator" },
+
+                { "text" : "vertical_from_q", "left" : "tna.update_vertical_from_q" }
+    		]	
+    	},
+        {
+            "name"  : "Form.viz",
+            "items" : 
+            [
+                { "text" : "settings", "left" : "tna.form_settings" },
+                { "text" : "redraw",   "left" : "tna.form_redraw" },
+
+                { "type" : "separator" },
+
+                { "text" : "normals", "left" : "tna.form_show_normals", "right" : "tna.form_hide_normals" },
+                { "text" : "areas",   "left" : "tna.form_show_areas",   "right" : "tna.form_hide_areas" },
+
+                { "type" : "separator" },
+
+                { "text" : "reactions",  "left" : "tna.form_show_reactions",  "right" : "tna.form_hide_reactions" },
+                { "text" : "loads",      "left" : "tna.form_show_loads",      "right" : "tna.form_hide_loads" },
+                { "text" : "selfweight", "left" : "tna.form_show_selfweight", "right" : "tna.form_hide_selfweight" },
+                { "text" : "residuals",  "left" : "tna.form_show_residuals",  "right" : "tna.form_hide_residuals" },
+                { "text" : "forces",     "left" : "tna.form_show_forces",     "right" : "tna.form_hide_forces" }
+            ]
+        },
+        {
+            "name"  : "Force.viz",
+            "items" : 
+            []
+        }
+    ],
+
+    "toolbargroups": 
+    [
+    	{
+            "name"     : "compas_tna",
+            "toolbars" : 
+            [
+            	"compas_tna",
+                "Pattern",
+            	"Form",
+            	"Force",
+            	"Equilibrium",
+                "Form.viz",
+                "Force.viz"
+            ]
+        }
+    ]
+}

@@ -173,19 +173,6 @@ class FormActions(object):
         self.form.update_exterior(exterior, feet=self.form.attributes['feet.mode'])
         self.form.update_interior(interior)
 
-    # ==========================================================================
-    # visualisation
-    # ==========================================================================
-
-    def form_redraw(self):
-        self.form.draw()
-
-    def form_show_normals(self):
-        pass
-
-    def form_hide_normals(self):
-        pass
-
 
 # ==============================================================================
 # Main

@@ -30,9 +30,33 @@ __all__ = []
 
 class ForceActions(object):
 
+    # ==========================================================================
+    # construct
+    # ==========================================================================
+
     def force_from_form(self):
         self.force = RhinoForce.from_formdiagram(self.form)
         self.force.draw()
+
+    # ==========================================================================
+    # select
+    # ==========================================================================
+
+    def force_select_parallel_edges(self):
+        pass
+
+    def force_select_continuous_edges(self):
+        pass
+
+    def force_select_boundary_vertices(self):
+        pass
+
+    def force_select_boundary_edges(self):
+        pass
+
+    # ==========================================================================
+    # update
+    # ==========================================================================
 
     def force_update_attributes(self):
         compas_rhino.update_settings(self.force.attributes)
@@ -44,6 +68,10 @@ class ForceActions(object):
     def force_update_edge_attributes(self):
         keys = self.force.select_edges() or list(self.force.edges())
         self.force.update_edge_attributes(keys)
+
+    # ==========================================================================
+    # modify
+    # ==========================================================================
 
     def force_move(self):
         color  = Rhino.ApplicationSettings.AppearanceSettings.FeedbackColor

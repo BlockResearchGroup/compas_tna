@@ -7,6 +7,7 @@ import compas_rhino
 import compas_tna
 
 from compas_tna.rhino import FormArtist
+from compas_tna.rhino import ForceArtist
 
 
 __author__    = ['Tom Van Mele', ]
@@ -20,8 +21,34 @@ __all__ = []
 
 class VizActions(object):
 
+    def form_settings(self):
+        pass
+
+    def form_redraw(self):
+        self.form.draw()
+
     # ==========================================================================
-    # visualise
+    # geometry
+    # ==========================================================================
+
+    def form_show_normals(self):
+        pass
+
+    def form_hide_normals(self):
+        pass
+
+    def form_show_areas(self):
+        pass
+
+    def form_hide_areas(self):
+        pass    
+
+    # ==========================================================================
+    # topology
+    # ==========================================================================
+
+    # ==========================================================================
+    # structure
     # ==========================================================================
 
     def form_show_reactions(self):

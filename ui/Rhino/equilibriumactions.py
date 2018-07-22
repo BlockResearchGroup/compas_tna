@@ -32,36 +32,36 @@ __all__ = []
 # use only the low-level functions that deal with mathematical abstractions
 # or the wrappers for diagrams available in TNA
 
-count_dof_ = XFunc('compas_ags.ags.graphstatics.count_dof_xfunc')
-identify_dof_ = XFunc('compas_ags.ags.graphstatics.identify_dof_xfunc')
-update_q_from_qind_ = XFunc('compas_ags.ags.graphstatics.update_forcedensity_xfunc')
-update_forcediagram_from_q_ = XFunc('compas_ags.ags.graphstatics.update_forcediagram_xfunc')
+form_count_dof_ = XFunc('compas_ags.ags.form_count_dof_xfunc')
+form_identify_dof_ = XFunc('compas_ags.ags.form_identify_dof_xfunc')
+form_update_q_from_qind_ = XFunc('compas_ags.ags.form_update_q_from_qind_xfunc')
+force_update_from_form_ = XFunc('compas_ags.ags.force_update_from_form_xfunc')
 
 
-def count_dof(form):
-    return count_dof_(form.to_data())
+def form_count_dof(form):
+    return form_count_dof_(form.to_data())
 
 
-def identify_dof(form):
-    return identify_dof_(form.to_data())
+def form_identify_dof(form):
+    return form_identify_dof_(form.to_data())
 
 
-def update_q_from_qind(form):
-    form.data = update_q_from_qind_(form.to_data())
+def form_update_q_from_qind(form):
+    form.data = form_update_q_from_qind_(form.to_data())
 
 
-def update_forcediagram_from_q(force, form):
-    force.data = update_forcediagram_from_q_(force.to_data(), form.to_data())
+def force_update_from_form(force, form):
+    force.data = force_update_from_form_(force.to_data(), form.to_data())
 
 
 class EquilibriumActions(object):
 
     def count_qind(self):
-        k, m = count_dof(self.form)
+        k, m = form_count_dof(self.form)
         print(k, m)
 
     def identify_qind(self):
-        k, m, ind = identify_dof(self.form)
+        k, m, ind = form_identify_dof(self.form)
         print(k, m, len(ind))
         self.form.set_edges_attribute('is_ind', False)
         self.form.set_edges_attribute('is_ind', True, keys=map(tuple, ind))
@@ -76,8 +76,8 @@ class EquilibriumActions(object):
     # ==========================================================================
 
     def update_q_from_qind(self):
-        update_q_from_qind(self.form)
-        update_forcediagram_from_q(self.force, self.form)
+        form_update_q_from_qind(self.form)
+        force_update_from_form(self.force, self.form)
         self.form.draw()
         self.force.draw()
 
