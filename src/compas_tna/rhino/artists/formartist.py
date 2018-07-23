@@ -27,11 +27,19 @@ class FormArtist(MeshArtist):
 
     def clear(self):
         super(FormArtist, self).clear()
+        self.clear_normals()
+        self.clear_areas()
         self.clear_loads()
         self.clear_selfweight()
         self.clear_reactions()
         self.clear_forces()
         self.clear_residuals()
+
+    def clear_normals(self):
+        compas_rhino.delete_objects_by_name(name='{}.normal.*'.format(self.form.name))
+
+    def clear_areas(self):
+        compas_rhino.delete_objects_by_name(name='{}.area.*'.format(self.form.name))
 
     def clear_loads(self):
         compas_rhino.delete_objects_by_name(name='{}.load.*'.format(self.form.name))
@@ -47,6 +55,36 @@ class FormArtist(MeshArtist):
 
     def clear_residuals(self):
         compas_rhino.delete_objects_by_name(name='{}.residual.*'.format(self.form.name))
+
+    def draw_normals(self, scale=None, color=None):
+        self.clear_normals()
+
+        lines = []
+        color = color or self.form.attributes['color.load']
+        scale = scale or self.form.attributes['scale.load']
+        tol   = self.form.attributes['tol.load']
+        tol2  = tol ** 2
+
+        for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
+            px = scale * attr['px']
+            py = scale * attr['py']
+            pz = scale * attr['pz']
+
+            if px ** 2 + py ** 2 + pz ** 2 < tol2:
+                continue
+
+            sp = self.form.vertex_coordinates(key)
+            ep = sp[0] + px, sp[1] + py, sp[2] + pz
+
+            lines.append({
+                'start' : sp,
+                'end'   : ep,
+                'color' : color,
+                'arrow' : 'end',
+                'name'  : "{}.load.{}".format(self.form.name, key)
+            })
+
+        compas_rhino.xdraw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
     def draw_loads(self, scale=None, color=None):
         self.clear_loads()

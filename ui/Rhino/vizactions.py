@@ -32,16 +32,24 @@ class VizActions(object):
     # ==========================================================================
 
     def form_show_normals(self):
-        pass
+        artist = FormArtist(self.form, layer=self.form.attributes['layer'])
+        artist.draw_normals()
+        artist.redraw()
 
     def form_hide_normals(self):
-        pass
+        artist = FormArtist(self.form, layer=self.form.attributes['layer'])
+        artist.clear_normals()
+        artist.redraw()
 
     def form_show_areas(self):
-        pass
+        artist = FormArtist(self.form, layer=self.form.attributes['layer'])
+        artist.draw_areas()
+        artist.redraw()
 
     def form_hide_areas(self):
-        pass    
+        artist = FormArtist(self.form, layer=self.form.attributes['layer'])
+        artist.clear_areas()
+        artist.redraw()
 
     # ==========================================================================
     # topology
