@@ -116,6 +116,55 @@ class FormDiagram(Mesh):
             'AGS.m'                      : None,
         })
 
+    @classmethod
+    def from_lines(cls, lines, precision='3f'):
+        """Construct a mesh object from a list of lines described by start and end point coordinates.
+
+        Parameters
+        ----------
+        lines : list
+            A list of pairs of point coordinates.
+        delete_boundary_face : bool, optional
+            The algorithm that finds the faces formed by the connected lines
+            first finds the face *on the outside*. In most cases this face is not expected
+            to be there. Therefore, there is the option to have it automatically deleted.
+        precision: str, optional
+            The precision of the geometric map that is used to connect the lines.
+
+        Returns
+        -------
+        Mesh :
+            A mesh object.
+
+        See Also
+        --------
+        * :func:`compas.datastructures.network_find_faces`
+        * :func:`compas.datastructures.FaceNetwork`
+        * :meth:`from_vertices_and_faces`
+
+        Examples
+        --------
+        >>> import compas
+        >>> from compas.datastructures import Mesh
+        >>> mesh = Mesh.from_obj(compas.get('bunny.ply'))
+
+        """
+        from compas.topology import network_find_faces
+        from compas.datastructures import Network
+
+        network = Network.from_lines(lines, precision=precision)
+
+        mesh = cls()
+
+        for key, attr in network.vertices(True):
+            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0)
+
+        mesh.halfedge = network.halfedge
+
+        network_find_faces(mesh, breakpoints=mesh.leaves())
+
+        return mesh
+
     def __str__(self):
         """Compile a summary of the mesh."""
         numv = self.number_of_vertices()
