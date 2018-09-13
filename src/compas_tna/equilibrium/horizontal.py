@@ -241,7 +241,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     # --------------------------------------------------------------------------
     k_i    = form.key_index()
     uv_i   = form.uv_index()
-    i_nbrs = {k_i[key]: [k_i[nbr] for nbr in form.vertex_neighbours(key)] for key in form.vertices()}
+    i_nbrs = {k_i[key]: [k_i[nbr] for nbr in form.vertex_neighbors(key)] for key in form.vertices()}
     ij_e   = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
     fixed  = set(form.anchors() + form.fixed())
     fixed  = [k_i[key] for key in fixed]
@@ -257,7 +257,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     # --------------------------------------------------------------------------
     _k_i    = force.key_index()
     _uv_i   = force.uv_index(form=form)
-    _i_nbrs = {_k_i[key]: [_k_i[nbr] for nbr in force.vertex_neighbours(key)] for key in force.vertices()}
+    _i_nbrs = {_k_i[key]: [_k_i[nbr] for nbr in force.vertex_neighbors(key)] for key in force.vertices()}
     _ij_e   = {(_k_i[u], _k_i[v]): index for (u, v), index in iter(_uv_i.items())}
     _fixed  = force.fixed()
     _fixed  = [_k_i[key] for key in _fixed]

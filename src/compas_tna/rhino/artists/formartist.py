@@ -7,7 +7,7 @@ import compas_rhino
 
 from compas.geometry import scale_vector
 
-from compas_rhino import MeshArtist
+from compas_rhino.artists import MeshArtist
 
 
 __author__    = ['Tom Van Mele', ]
@@ -161,7 +161,7 @@ class FormArtist(MeshArtist):
             ry = attr['ry']
             rz = attr['rz']
 
-            for nbr in self.form.vertex_neighbours(key):
+            for nbr in self.form.vertex_neighbors(key):
                 is_external = self.form.get_edge_attribute((key, nbr), 'is_external', False)
 
                 if is_external:

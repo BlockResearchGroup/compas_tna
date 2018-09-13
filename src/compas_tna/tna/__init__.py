@@ -3,7 +3,7 @@
 compas_tna.tna
 ********************************************************************************
 
-.. module:: compas_tna.tna
+.. currentmodule:: compas_tna.tna
 
 """
 

@@ -52,11 +52,8 @@ setup(
 
     packages=find_packages('src'),
     package_dir={'': 'src'},
-    package_data={
-        '': ['__data/*.obj']
-    },
-    data_files=[
-    ],
+    package_data={},
+    data_files=[],
     include_package_data=True,
 
     zip_safe=False,

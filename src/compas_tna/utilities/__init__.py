@@ -3,7 +3,7 @@
 compas_tna.utilities
 ********************************************************************************
 
-.. module:: compas_tna.utilities
+.. currentmodule:: compas_tna.utilities
 
 
 """

@@ -107,9 +107,6 @@ ENV/
 *.rhl
 *.rui_bak
 
-__temp/**
-!__temp/PLACEHOLDER
-
 temp/**
 !temp/PLACEHOLDER
 

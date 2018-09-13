@@ -3,7 +3,7 @@
 compas_tna.diagrams
 ********************************************************************************
 
-.. module:: compas_tna.diagrams
+.. currentmodule:: compas_tna.diagrams
 
 FormDiagram
 ===========

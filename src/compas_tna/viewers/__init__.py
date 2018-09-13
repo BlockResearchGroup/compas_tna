@@ -3,7 +3,7 @@
 compas_tna.viewers
 ********************************************************************************
 
-.. module:: compas_tna.viewers
+.. currentmodule:: compas_tna.viewers
 
 
 Diagram viewers

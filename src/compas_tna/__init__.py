@@ -3,7 +3,7 @@
 compas_tna
 ********************************************************************************
 
-.. module:: compas_tna
+.. currentmodule:: compas_tna
 
 
 .. toctree::

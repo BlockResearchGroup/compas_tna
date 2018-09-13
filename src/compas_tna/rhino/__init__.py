@@ -3,25 +3,17 @@
 compas_tna.rhino
 ********************************************************************************
 
-.. module:: compas_tna.rhino
+.. currentmodule:: compas_tna.rhino
 
-RhinoFormDiagram
+Artists
 ================
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
-    RhinoFormDiagram
-
-RhinoForceDiagram
-=================
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    RhinoForceDiagram
+    FormArtist
+    ForceArtist
 
 """
 from __future__ import absolute_import

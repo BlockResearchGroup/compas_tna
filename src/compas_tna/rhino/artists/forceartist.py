@@ -7,7 +7,7 @@ import compas_rhino
 
 from compas.geometry import scale_vector
 
-from compas_rhino import MeshArtist
+from compas_rhino.artists import MeshArtist
 
 
 __author__    = ['Tom Van Mele', ]

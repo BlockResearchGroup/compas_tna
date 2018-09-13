@@ -34,7 +34,7 @@ class FormViewer(MeshPlotter):
         lines = []
 
         for key, attr in self.form.vertices_where({'is_anchor': True}, True):
-            nbrs = self.form.vertex_neighbours(key)
+            nbrs = self.form.vertex_neighbors(key)
 
             rx = attr['rx']
             ry = attr['ry']

@@ -2,15 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
+import compas
 
 try:
     from numpy import array
     from numpy import zeros
 
 except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    compas.raise_if_not_ironpython()
 
 from compas.geometry import centroid_points
 from compas.geometry import length_vector

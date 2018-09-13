@@ -25,9 +25,10 @@ from compas.geometry import cross_vectors
 
 if 'ironpython' in sys.version.lower():
     from compas.utilities import XFunc
-    fd_numpy = XFunc('compas.numerical.fd_numpy', tmpdir=compas_tna.TEMP)
+    fd_numpy = XFunc('compas.numerical.fd.fd_numpy.fd_numpy', tmpdir=compas_tna.TEMP)
+
 else:
-    from compas.numerical import fd_numpy
+    from compas.numerical.fd.fd_numpy import fd_numpy
 
 
 __author__    = ['Tom Van Mele', ]
