@@ -89,7 +89,7 @@ intersphinx_mapping = {'python': ('https://docs.python.org/', None)}
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = 'compaspkg'
-html_theme_path = ['../../../../compas-dev/sphinx_compas_theme']
+html_theme_path = ['../../../compas-dev/sphinx_compas_theme']
 html_theme_options = {
     "package_name"    : "compas_tna",
     "package_title"   : project,

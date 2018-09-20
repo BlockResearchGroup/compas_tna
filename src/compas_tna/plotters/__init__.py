@@ -28,10 +28,10 @@ TNA viewers
 """
 from __future__ import absolute_import
 
-from . import formviewer
-from .formviewer import *
+from . import formplotter
+from .formplotter import *
 
-from . import viewer2
-from .viewer2 import *
+from . import formforceplotter
+from .formforceplotter import *
 
-__all__ = formviewer.__all__ + viewer2.__all__
+__all__ = formplotter.__all__ + formforceplotter.__all__

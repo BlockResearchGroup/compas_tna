@@ -124,7 +124,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     # --------------------------------------------------------------------------
     k_i   = form.key_index()
     uv_i  = form.uv_index()
-    fixed = set(form.anchors() + form.fixed())
+    fixed = set(list(form.anchors()) + list(form.fixed()))
     fixed = [k_i[key] for key in fixed]
     edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
     xy    = array(form.get_vertices_attributes('xy'), dtype=float64)
@@ -139,7 +139,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     # force diagram
     # --------------------------------------------------------------------------
     _k_i   = force.key_index()
-    _fixed = force.fixed()
+    _fixed = list(force.fixed())
     _fixed = [_k_i[key] for key in _fixed]
     _fixed = _fixed or [0]
     _edges = force.ordered_edges(form)
@@ -243,7 +243,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     uv_i   = form.uv_index()
     i_nbrs = {k_i[key]: [k_i[nbr] for nbr in form.vertex_neighbors(key)] for key in form.vertices()}
     ij_e   = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
-    fixed  = set(form.anchors() + form.fixed())
+    fixed  = set(list(form.anchors()) + list(form.fixed()))
     fixed  = [k_i[key] for key in fixed]
     edges  = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
     lmin   = array([attr.get('lmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
@@ -259,7 +259,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     _uv_i   = force.uv_index(form=form)
     _i_nbrs = {_k_i[key]: [_k_i[nbr] for nbr in force.vertex_neighbors(key)] for key in force.vertices()}
     _ij_e   = {(_k_i[u], _k_i[v]): index for (u, v), index in iter(_uv_i.items())}
-    _fixed  = force.fixed()
+    _fixed  = list(force.fixed())
     _fixed  = [_k_i[key] for key in _fixed]
     _fixed  = _fixed or [0]
     _edges  = force.ordered_edges(form)

@@ -23,7 +23,7 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = ['Viewer2', ]
+__all__ = ['FormForcePlotter']
 
 
 # the viewer should hold two instances of the plotter
@@ -31,11 +31,9 @@ __all__ = ['Viewer2', ]
 # => everything you can do with a plotter, you can do for both form and force
 
 
-class Viewer2(object):
+class FormForcePlotter(object):
     
     def __init__(self, form, force):
-        self.form = form
-        self.force = force
         self.default = {
             'facecolor'          : '#ffffff',
             'edgecolor'          : '#000000',
@@ -54,6 +52,9 @@ class Viewer2(object):
             'linecolor'          : '#000000',
             'linestyle'          : '-',
         }
+        self.form = form
+        self.force = force
+        self.setup()
 
     def show(self):
         plt.show()
@@ -175,48 +176,6 @@ class Viewer2(object):
             if lines:
                 draw_xlines_xy(lines, self.ax1, alpha=0.5)
 
-        # reactions
-
-        # arrows = []
-
-        # for key, attr in self.form.vertices(True):
-        #     if not attr['is_anchor']:
-        #         continue
-
-        #     rx, ry = attr['rx'], attr['ry']
-        #     x, y = attr['x'], attr['y']
-
-        #     l = (rx ** 2 + ry ** 2) ** 0.5
-
-        #     arrows.append({
-        #         'start' : (scale * (x + dx + rx / l), scale * (y + dy + ry / l)),
-        #         'end'   : (scale * (x + dx), scale * (y + dy)),
-        #         'color' : '#00ff00',
-        #         'width' : 2.0,
-        #     })
-
-        # draw_xarrows_xy(arrows, self.ax1)
-
-        # labels
-
-        # labels = []
-
-        # for fkey in self.form.faces():
-        #     x, y, z = self.form.face_centroid(fkey)
-
-        #     labels.append({
-        #         'pos'       : [x, y],
-        #         'radius'    : self.default['vertexsize'] * 2.0,
-        #         'facecolor' : '#cccccc',
-        #         'edgecolor' : '#000000',
-        #         'linewidth' : self.default['edgewidth'] * 0.25,
-        #         'text'      : fkey,
-        #         'textcolor' : '#000000' if is_color_light(bgcolor) else '#ffffff',
-        #         'fontsize'  : self.default['fontsize'],
-        #     })
-
-        # draw_xpoints_xy(labels, self.ax1)
-
     def draw_force(self,
                    vertices_on=True,
                    edges_on=True,
@@ -289,29 +248,6 @@ class Viewer2(object):
             else:
                 draw_xlines_xy(arrows, self.ax2)
 
-        # labels
-
-        # labels = []
-
-        # for fkey in self.force.faces():
-        #     x, y, z = self.force.face_centroid(fkey)
-
-        #     text = fkey
-
-        #     labels.append({
-        #         'pos'       : [scale * (x + dx), scale * (y + dy)],
-        #         'radius'    : self.default['vertexsize'] * 2.0,
-        #         'facecolor' : '#cccccc',
-        #         'edgecolor' : '#000000',
-        #         'linewidth' : self.default['edgewidth'] * 0.25,
-        #         'text'      : text,
-        #         'textcolor' : '#000000' if is_color_light(bgcolor) else '#ffffff',
-        #         'fontsize'  : self.default['fontsize'],
-        #     })
-
-        # draw_xpoints_xy(labels, self.ax2)
-
-
 
 # ==============================================================================
 # Main
@@ -319,6 +255,5 @@ class Viewer2(object):
 
 if __name__ == "__main__":
 
-    viewer = Viewer2(None, None)
-    viewer.setup()
-    viewer.show()
+    plotter = FormForcePlotter(None, None)
+    plotter.show()

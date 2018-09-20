@@ -18,13 +18,13 @@ __license__   = 'MIT License'
 __email__     = 'vanmelet@ethz.ch'
 
 
-__all__ = ['FormViewer', ]
+__all__ = ['FormPlotter', ]
 
 
-class FormViewer(MeshPlotter):
+class FormPlotter(MeshPlotter):
 
     def __init__(self, form, *args, **kwargs):
-        super(FormViewer, self).__init__(form, *args, **kwargs)
+        super(FormPlotter, self).__init__(form, *args, **kwargs)
 
     @property
     def form(self):

@@ -21,4 +21,7 @@ from __future__ import absolute_import
 from .artists import *
 from . import artists
 
-__all__ = artists.__all__
+from .helpers import *
+from . import helpers
+
+__all__ = artists.__all__ + helpers.__all__

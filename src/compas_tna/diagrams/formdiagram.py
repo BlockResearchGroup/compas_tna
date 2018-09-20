@@ -22,13 +22,7 @@ from compas.geometry import subtract_vectors_xy
 from compas.geometry import add_vectors_xy
 from compas.geometry import normalize_vector_xy
 from compas.geometry import cross_vectors
-
-if 'ironpython' in sys.version.lower():
-    from compas.utilities import XFunc
-    fd_numpy = XFunc('compas.numerical.fd.fd_numpy.fd_numpy', tmpdir=compas_tna.TEMP)
-
-else:
-    from compas.numerical.fd.fd_numpy import fd_numpy
+from compas.geometry import mesh_smooth_area
 
 
 __author__    = ['Tom Van Mele', ]
@@ -105,65 +99,74 @@ class FormDiagram(Mesh):
             'tol.load'                   : 1e-3,
             'tol.force'                  : 1e-3,
             'tol.selfweight'             : 1e-3,
-
             'density'                    : 1.0,
-
             'feet.scale'                 : 0.1,
             'feet.alpha'                 : 45,
             'feet.tol'                   : 0.1,
             'feet.mode'                  : 1,
-
-            'AGS.k'                      : None,
-            'AGS.m'                      : None,
         })
 
     @classmethod
-    def from_lines(cls, lines, precision='3f'):
-        """Construct a mesh object from a list of lines described by start and end point coordinates.
+    def from_rhinomesh(cls, guid):
+        """Construct a FormDiagram from a Rhino mesh represented by a guid.
+
+        Parameters
+        ----------
+        guid : str
+            A globally unique identifier.
+
+        Returns
+        -------
+        FormDiagram
+            A Formdiagram object.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            import compas_rhino
+            from compas_tna.diagrams import FormDiagram
+
+            guid = compas_rhino.select_mesh()
+            form = FormDiagram.from_rhinomesh(guid)
+
+        """
+        from compas_rhino.helpers import mesh_from_guid
+        return mesh_from_guid(cls, guid)
+
+    @classmethod
+    def from_lines(cls, lines, precision=None):
+        """Construct a FormDiagram from a list of lines described by start and end point coordinates.
 
         Parameters
         ----------
         lines : list
             A list of pairs of point coordinates.
-        delete_boundary_face : bool, optional
-            The algorithm that finds the faces formed by the connected lines
-            first finds the face *on the outside*. In most cases this face is not expected
-            to be there. Therefore, there is the option to have it automatically deleted.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
 
         Returns
         -------
-        Mesh :
-            A mesh object.
-
-        See Also
-        --------
-        * :func:`compas.datastructures.network_find_faces`
-        * :func:`compas.datastructures.FaceNetwork`
-        * :meth:`from_vertices_and_faces`
+        FormDiagram
+            A Formdiagram object.
 
         Examples
         --------
-        >>> import compas
-        >>> from compas.datastructures import Mesh
-        >>> mesh = Mesh.from_obj(compas.get('bunny.ply'))
+        .. code-block:: python
+
+            from compas_tna.diagrams import FormDiagram
+
+            form = FormDiagram.from_lines(lines)
 
         """
         from compas.topology import network_find_faces
         from compas.datastructures import Network
-
         network = Network.from_lines(lines, precision=precision)
-
         mesh = cls()
-
         for key, attr in network.vertices(True):
-            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0)
-
+            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0.0)
         mesh.halfedge = network.halfedge
-
-        network_find_faces(mesh, breakpoints=mesh.leaves())
-
+        network_find_faces(mesh, breakpoints=list(mesh.leaves()))
         return mesh
 
     def __str__(self):
@@ -171,12 +174,10 @@ class FormDiagram(Mesh):
         numv = self.number_of_vertices()
         nume = len(list(self.edges_where({'is_edge': True})))
         numf = self.number_of_faces()
-
         vmin = self.vertex_min_degree()
         vmax = self.vertex_max_degree()
         fmin = self.face_min_degree()
         fmax = self.face_max_degree()
-
         return TPL.format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
 
     def uv_index(self):
@@ -187,10 +188,6 @@ class FormDiagram(Mesh):
         -------
         dict
             A dictionary of uv-index pairs.
-
-        See Also
-        --------
-        * :meth:`index_uv`
 
         """
         return {(u, v): index for index, (u, v) in enumerate(self.edges_where({'is_edge': True}))}
@@ -204,10 +201,6 @@ class FormDiagram(Mesh):
         dict
             A dictionary of index-uv pairs.
 
-        See Also
-        --------
-        * :meth:`uv_index`
-
         """
         return dict(enumerate(self.edges_where({'is_edge': True})))
 
@@ -216,7 +209,19 @@ class FormDiagram(Mesh):
     # --------------------------------------------------------------------------
 
     def dual(self, cls):
-        # be more explicit with the boundary functions
+        """Construct the dual of the FormDiagram.
+
+        Parameters
+        ----------
+        cls : Mesh
+            The type of the dual.
+
+        Returns
+        -------
+        Mesh
+            The dual as an instance of type ``cls``.
+
+        """
         dual = cls()
         fkey_centroid = {fkey: self.face_centroid(fkey) for fkey in self.faces()}
         outer = self.vertices_on_boundary()
@@ -235,54 +240,37 @@ class FormDiagram(Mesh):
             dual.add_face(vertices, fkey=fkey)
         return dual
 
-    def find_faces(self):
-        # add planarity check
-        # rename finding faces function
-        # add a mesh from lines function
-        # add mesh from network
-        # mesh from mesh
-        # network from mesh
-        # network from network
-        from compas.topology import network_find_faces
-        from compas.datastructures import Network
-        network = Network.from_lines(lines, precision=precision)
-        mesh = cls()
-        for key, attr in network.vertices(True):
-            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0)
-        mesh.halfedge = network.halfedge
-        network_find_faces(mesh, breakpoints=mesh.leaves())
-
     # --------------------------------------------------------------------------
     # vertices
     # --------------------------------------------------------------------------
 
     def leaves(self):
-        # consistent use of iterators and generators v lists
+        """Yields vertices with degree 1.
+        
+        Returns
+        -------
+        iterator
+            An iterator of vertex keys.
+
+        """
         return self.vertices_where({'vertex_degree': 1})
 
     def corners(self):
-        # consistent use of iterators and generators v lists
+        """Yields vertices with degree 2.
+        
+        Returns
+        -------
+        iterator
+            An iterator of vertex keys.
+
+        """
         return self.vertices_where({'vertex_degree': 2})
 
-    # --------------------------------------------------------------------------
-    # edges
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # faces
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-    # helpers
-    # --------------------------------------------------------------------------
-
     def anchors(self):
-        # consistent use of iterators and generators v lists
-        return [key for key, attr in self.vertices(True) if attr['is_anchor']]
+        return self.vertices_where({'is_anchor': True})
 
     def fixed(self):
-        # consistent use of iterators and generators v lists
-        return [key for key, attr in self.vertices(True) if attr['is_fixed']]
+        return self.vertices_where({'is_fixed': True})
 
     def residual(self):
         # there is a discrepancy between the norm of residuals calculated by the equilibrium functions`
@@ -293,74 +281,13 @@ class FormDiagram(Mesh):
             R += sqrt(rx ** 2 + ry ** 2 + rz ** 2)
         return R
 
+    # --------------------------------------------------------------------------
+    # helpers
+    # --------------------------------------------------------------------------
+
     def bbox(self):
         x, y, z = zip(* self.get_vertices_attributes('xyz'))
         return (min(x), min(y), min(z)), (max(x), max(y), max(z))
-
-    # --------------------------------------------------------------------------
-    # boundary
-    # --------------------------------------------------------------------------
-
-    def vertices_on_boundaries(self):
-        """Find the vertices on the boundary.
-
-        Parameters
-        ----------
-        ordered : bool, optional
-            If ``True``, Return the vertices in the same order as they are found on the boundary.
-            Default is ``False``.
-
-        Returns
-        -------
-        list
-            The vertices of the boundary.
-
-        Warning
-        -------
-        If the vertices are requested in order, and the mesh has multiple borders,
-        currently only the vertices of one of the borders will be returned.
-
-        Examples
-        --------
-        >>>
-
-        """
-        vertices_set = set()
-        for key, nbrs in iter(self.halfedge.items()):
-            for nbr, face in iter(nbrs.items()):
-                if face is None:
-                    vertices_set.add(key)
-                    vertices_set.add(nbr)
-        vertices_all = list(vertices_set)
-
-        boundaries = []
-        key = sorted([(key, self.vertex_coordinates(key)) for key in vertices_all], key=lambda x: (x[1][1], x[1][0]))[0][0]
-
-        while vertices_all:
-            vertices = []
-            start = key
-
-            while 1:
-                for nbr, fkey in iter(self.halfedge[key].items()):
-                    if fkey is None:
-                        vertices.append(nbr)
-                        key = nbr
-                        break
-
-                if key == start:
-                    boundaries.append(vertices)
-                    vertices_all = [x for x in vertices_all if x not in vertices]
-                    break
-
-            if vertices_all:
-                key = vertices_all[0]            
-
-        return boundaries
-
-    def is_boundary_convex(self, boundary):
-        # return dict with key => True/False
-        # return dict with key => cross_z
-        pass
 
     # --------------------------------------------------------------------------
     # postprocess
@@ -374,43 +301,12 @@ class FormDiagram(Mesh):
                 if l < tol:
                     self.collapse_edge(v, u, t=0.5, allow_boundary=True)
 
-    def relax(self, fixed):
-        key_index = self.key_index()
-        vertices = self.get_vertices_attributes('xyz')
-        edges = list(self.edges_where({'is_edge': True}))
-        edges = [(key_index[u], key_index[v]) for u, v in edges]
-        fixed = list(fixed)
-        fixed = [key_index[key] for key in fixed]
-        qs = [self.get_edge_attribute(uv, 'q') for uv in edges]
-        loads = self.get_vertices_attributes(('px', 'py', 'pz'), (0, 0, 0))
-        xyz, q, f, l, r = fd_numpy(vertices, edges, fixed, qs, loads)
-        for key, attr in self.vertices(True):
-            index = key_index[key]
-            attr['x'] = xyz[index][0]
-            attr['y'] = xyz[index][1]
-            attr['z'] = xyz[index][2]
-
-    def smooth_interior(self):
-        pass
+    def smooth(self, fixed, kmax=10):
+        mesh_smooth_area(self, fixed=fixed, kmax=kmax)
 
     # --------------------------------------------------------------------------
     # boundary conditions
     # --------------------------------------------------------------------------
-
-    def set_anchors(self, points=None, degree=0, keys=None):
-        if points:
-            xyz_key = self.key_xyz()
-            for xyz in points:
-                gkey = geometric_key(xyz)
-                if gkey in xyz_key:
-                    key = xyz_key[gkey]
-                    self.set_vertex_attribute(key, 'is_anchor', True)
-        if degree:
-            for key in self.vertices():
-                if self.vertex_degree(key) <= degree:
-                    self.set_vertex_attribute(key, 'is_anchor', True)
-        if keys:
-            self.set_vertices_attribute('is_anchor', True, keys=keys)
 
     def update_boundaries(self, feet=1):
         boundaries = self.vertices_on_boundaries()
@@ -537,6 +433,111 @@ class FormDiagram(Mesh):
             else:
                 pass
 
+    # --------------------------------------------------------------------------
+    # selections
+    # --------------------------------------------------------------------------
+
+    def get_continuous_edges(self, uv, stop=None):
+            edges = [uv]
+
+            a, b = uv
+            end = b
+            while True:
+                if self.vertex_degree(a) != 4:
+                    break
+                if a == end:
+                    break
+                if stop is not None and a == stop:
+                    break 
+                if self.get_vertex_attribute(a, 'is_anchor', False):
+                    break
+                nbrs = self.vertex_neighbors(a, ordered=True)
+                i = nbrs.index(b)
+                b = nbrs[i - 2]
+                edges.append((a, b))
+                a, b = b, a
+
+            b, a = uv
+            end = b
+            while True:
+                if self.vertex_degree(a) != 4:
+                    break
+                if a == end:
+                    break
+                if stop is not None and a == stop:
+                    break 
+                if self.get_vertex_attribute(a, 'is_anchor', False):
+                    break
+                nbrs = self.vertex_neighbors(a, ordered=True)
+                i = nbrs.index(b)
+                b = nbrs[i - 2]
+                edges.append((a, b))
+                a, b = b, a
+
+            edgeset = set(list(self.edges()))
+            return [(u, v) if (u, v) in edgeset else (v, u) for u, v in edges]
+
+
+    def get_parallel_edges(self, uv):
+        edges = [uv]
+
+        a, b = a0, b0 = uv
+        while True:
+            f = self.halfedge[a][b]
+            if f is None:
+                break
+            vertices = self.face_vertices(f)
+            if len(vertices) != 4:
+                break
+            i = vertices.index(a)
+            a = vertices[i - 1]
+            b = vertices[i - 2]
+            if a in (a0, b0) and b in (a0, b0):
+                break
+            edges.append((a, b))
+
+        edges[:] = edges[::-1]
+
+        b, a = b0, a0 = uv
+        while True:
+            f = self.halfedge[a][b]
+            if f is None:
+                break
+            vertices = self.face_vertices(f)
+            if len(vertices) != 4:
+                break
+            i = vertices.index(a)
+            a = vertices[i - 1]
+            b = vertices[i - 2]
+            if a in (a0, b0) and b in (a0, b0):
+                break
+            edges.append((a, b))
+
+        edgeset = set(list(self.edges()))
+        return [(u, v) if (u, v) in edgeset else (v, u) for u, v in edges]
+
+    # --------------------------------------------------------------------------
+    # visualisation
+    # --------------------------------------------------------------------------
+
+    def plot(self):
+        from compas.plotters import MeshPlotter
+        plotter = MeshPlotter(self)
+        plotter.draw_vertices()
+        plotter.draw_edges()
+        plotter.draw_faces()
+        plotter.show()
+
+    def draw(self, layer=None, clear_layer=True):
+        from compas_tna.rhino import FormArtist
+        artist = FormArtist(self, layer=layer)
+        if clear_layer:
+            artist.clear_layer()
+        artist.draw_vertices()
+        artist.draw_edges()
+        artist.draw_faces()
+        artist.redraw()
+
 
 # ==============================================================================
 # Main
@@ -544,4 +545,16 @@ class FormDiagram(Mesh):
 
 if __name__ == '__main__':
 
-    pass
+    import compas
+    from compas.files import OBJ
+
+    filepath = compas.get('lines.obj')
+
+    obj      = OBJ(filepath)
+    vertices = obj.parser.vertices
+    edges    = obj.parser.lines
+    lines    = [(vertices[u], vertices[v], 0) for u, v in edges]
+
+    form = FormDiagram.from_lines(lines)
+
+    form.plot()

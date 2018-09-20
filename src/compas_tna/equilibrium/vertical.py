@@ -19,18 +19,6 @@ try:
     from scipy.sparse import diags
     from scipy.sparse.linalg import spsolve
 
-    # from scipy.optimize import minimize_scalar
-    # def objective(scale):
-    #     h    = scale * _l
-    #     q    = h / l
-    #     Q    = diags([q.ravel()], [0])
-    #     update_z(xyz, Q, C, p, free, fixed, update_loads, tol=tol, kmax=kmax, display=display)
-    #     z    = max(xyz[free, 2])
-    #     return ((z - zmax) ** 2) ** 0.5
-
-    # res = minimize_scalar(objective, bounds=(1.0, 100.0), method='Bounded')
-    # scale = res.x
-
 except ImportError:
     if 'ironpython' not in sys.version.lower():
         raise
@@ -203,8 +191,8 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
     k_i     = form.key_index()
     uv_i    = form.uv_index()
     vcount  = len(form.vertex)
-    anchors = form.anchors()
-    fixed   = form.fixed()
+    anchors = list(form.anchors())
+    fixed   = list(form.fixed())
     fixed   = set(anchors + fixed)
     fixed   = [k_i[key] for key in fixed]
     free    = list(set(range(vcount)) - set(fixed))
@@ -288,8 +276,8 @@ def vertical_from_target(form, density=1.0):
     k_i     = form.key_index()
     uv_i    = form.uv_index()
     vcount  = len(form.vertex)
-    anchors = form.anchors()
-    fixed   = form.fixed()
+    anchors = list(form.anchors())
+    fixed   = list(form.fixed())
     fixed   = set(anchors + fixed)
     fixed   = [k_i[key] for key in fixed]
     free    = list(set(range(vcount)) - set(fixed))
@@ -380,8 +368,8 @@ def vertical_from_bbox(form, factor, kmax=100, tol=1e-3, density=1.0, display=Tr
     k_i     = form.key_index()
     uv_i    = form.uv_index()
     vcount  = len(form.vertex)
-    anchors = form.anchors()
-    fixed   = form.fixed()
+    anchors = list(form.anchors())
+    fixed   = list(form.fixed())
     fixed   = set(anchors + fixed)
     fixed   = [k_i[key] for key in fixed]
     free    = list(set(range(vcount)) - set(fixed))
@@ -446,8 +434,8 @@ def vertical_from_qind(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display
     k_i     = form.key_index()
     uv_i    = form.uv_index()
     vcount  = form.number_of_vertices()
-    anchors = form.anchors()
-    fixed   = form.fixed()
+    anchors = list(form.anchors())
+    fixed   = list(form.fixed())
     fixed   = set(anchors + fixed)
     fixed   = [k_i[key] for key in fixed]
     edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
@@ -508,34 +496,33 @@ def vertical_from_qind(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display
 def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=True):
     """Compute vertical equilibrium from the force densities of the independent edges.
 
-    Parameters:
-        form (compas_tna.diagrams.formdiagram.FormDiagram):
-            The form diagram
-        ind (int):
-            The indices of the independent form edges. Should be identified
-            using ForceDiagram.dof
-        density (float):
-            The density for computation of the self-weight of the thrust network
-            (the default is 1.0). Set this to 0.0 to ignore self-weight and only
-            consider specified point loads.
-        kmax (int):
-            The maximum number of iterations for computing vertical equilibrium
-            (the default is 100).
-        tol (float):
-            The stopping criterion.
-        display (bool):
-            If True, information about the current iteration will be displayed.
-
-    References:
-        Pellegrino and Calladine, Matrix Analysis of statically and kinematically
-        indeterminate frameworks. International Journal of Solids Structures 1986:22(4):409-28.
+    Parameters
+    ----------
+    form (compas_tna.diagrams.formdiagram.FormDiagram):
+        The form diagram
+    scale : float
+        The scale of the horizontal forces.
+        Default is ``1.0``.
+    density : float, optional
+        The density for computation of the self-weight of the thrust network.
+        Set this to 0.0 to ignore self-weight and only consider specified point loads.
+        Default is ``1.0``.
+    kmax : int, optional
+        The maximum number of iterations for computing vertical equilibrium.
+        Default is ``100``.
+    tol : float
+        The stopping criterion.
+        Default is ``0.001``.
+    display : bool
+        Display information about the current iteration.
+        Default is ``True``.
 
     """
     k_i     = form.key_index()
     uv_i    = form.uv_index()
     vcount  = form.number_of_vertices()
-    anchors = form.anchors()
-    fixed   = form.fixed()
+    anchors = list(form.anchors())
+    fixed   = list(form.fixed())
     fixed   = set(anchors + fixed)
     fixed   = [k_i[key] for key in fixed]
     edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
