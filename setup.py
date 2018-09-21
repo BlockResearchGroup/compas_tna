@@ -50,7 +50,6 @@ setup(
     keywords=['architecture', 'engineering'],
     project_urls={
         "Documentation": "http://blockresearchgroup.github.io/compas_tna",
-        "Forum": "https://forum.compas-framework.org/c/compas-tna",
         "Repository": "https://github.com/BlockResearchGroup/compas_tna",
         "Issues": "https://github.com/BlockResearchGroup/compas_tna/issues",
     },
