@@ -110,7 +110,6 @@ def parallelise_sparse(A, B, X, known, k=1, key=None):
     return X
 
 
-# replace the for loops
 def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=None, lmax=None):
     fixed = fixed or []
     fixed = set(fixed)
@@ -151,7 +150,6 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=N
             xy[j] /= len(nbrs)
 
 
-# move to AGS?
 def rot90(xy, zdir=1.0):
     temp = empty_like(xy)
     temp[:, 0] = - zdir * xy[:, 1]
@@ -159,7 +157,6 @@ def rot90(xy, zdir=1.0):
     return temp
 
 
-# move to AGS?
 def apply_bounds(x, xmin, xmax):
     xsmall    = x < xmin
     xbig      = x > xmax

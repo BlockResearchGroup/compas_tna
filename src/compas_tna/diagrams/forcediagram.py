@@ -3,7 +3,6 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.datastructures import Mesh
-from compas.topology import mesh_dual
 
 
 __author__  = 'Tom Van Mele'
@@ -20,20 +19,21 @@ class ForceDiagram(Mesh):
         super(ForceDiagram, self).__init__()
         self.scale = 1.0
         self.default_vertex_attributes.update({
-            'x' : 0.0,
-            'y' : 0.0,
-            'z' : 0.0,
+            'x'        : 0.0,
+            'y'        : 0.0,
+            'z'        : 0.0,
             'is_fixed' : False,
         })
         self.default_edge_attributes.update({
-            'l'    : 0.0,
-            'lmin' : 1e-7,
-            'lmax' : 1e+7,
+            'l' : 0.0,
         })
         self.attributes.update({
-            'name'  : 'ForceDiagram',
-            'layer' : 'ForceDiagram',
-            'scale' : 1.0,
+            'name'         : 'ForceDiagram',
+            'scale'        : 1.0,
+
+            'color.vertex' : (255, 255, 255),
+            'color.edge'   : (0, 0, 0),
+            'color.face'   : (210, 210, 210),
         })
 
     # --------------------------------------------------------------------------
@@ -45,11 +45,11 @@ class ForceDiagram(Mesh):
         return formdiagram.dual(cls)
 
     # --------------------------------------------------------------------------
-    # Convenience functions for retrieving attributes of the force diagram.
+    # Vertices
     # --------------------------------------------------------------------------
 
     def fixed(self):
-        return [key for key, attr in self.vertices(True) if attr['is_fixed']]
+        return self.vertices_where({'is_fixed': True})
 
     # --------------------------------------------------------------------------
     # Helpers
@@ -62,8 +62,6 @@ class ForceDiagram(Mesh):
         for index, (u, v) in enumerate(form.edges_where({'is_edge': True})):
             f1 = form.halfedge[u][v]
             f2 = form.halfedge[v][u]
-            # if f1 is None or f2 is None:
-            #     continue
             uv_index[(f1, f2)] = index
         return uv_index
 

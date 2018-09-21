@@ -52,7 +52,6 @@ class FormDiagram(Mesh):
             'rx'          : 0.0,
             'ry'          : 0.0,
             'rz'          : 0.0,
-            'zT'          : 0.0
         })
         self.default_edge_attributes.update({
             'q'           : 1.0,
@@ -65,7 +64,6 @@ class FormDiagram(Mesh):
             'fmin'        : 1e-7,
             'fmax'        : 1e+7,
             'a'           : 0.0,
-            'is_ind'      : False,
             'is_edge'     : True,
             'is_external' : False
         })
@@ -73,35 +71,32 @@ class FormDiagram(Mesh):
             'is_loaded': True
         })
         self.attributes.update({
-            'name'                       : 'FormDiagram',
-            'layer'                      : 'FormDiagram',
-            'color.vertex'               : (255, 255, 255),
-            'color.edge'                 : (0, 0, 0),
-            'color.face'                 : (210, 210, 210),
-            'color.vertex:is_anchor'     : (255, 0, 0),
-            'color.vertex:is_fixed'      : (0, 0, 0),
-            'color.vertex:is_supported'  : (255, 0, 0),
-            'color.vertex:is_prescribed' : (0, 255, 0),
-            'color.reaction'             : (0, 255, 0),
-            'color.residual'             : (0, 255, 255),
-            'color.load'                 : (0, 255, 0),
-            'color.selfweight'           : (0, 0, 255),
-            'color.force'                : (0, 0, 255),
-            'scale.reaction'             : 1.0,
-            'scale.residual'             : 1.0,
-            'scale.load'                 : 1.0,
-            'scale.force'                : 1.0,
-            'scale.selfweight'           : 1.0,
-            'tol.reaction'               : 1e-3,
-            'tol.residual'               : 1e-3,
-            'tol.load'                   : 1e-3,
-            'tol.force'                  : 1e-3,
-            'tol.selfweight'             : 1e-3,
-            'density'                    : 1.0,
-            'feet.scale'                 : 0.1,
-            'feet.alpha'                 : 45,
-            'feet.tol'                   : 0.1,
-            'feet.mode'                  : 1,
+            'name'             : 'FormDiagram',
+
+            'color.vertex'     : (255, 255, 255),
+            'color.edge'       : (0, 0, 0),
+            'color.face'       : (210, 210, 210),
+            'color.reaction'   : (0, 255, 0),
+            'color.residual'   : (0, 255, 255),
+            'color.load'       : (0, 255, 0),
+            'color.selfweight' : (0, 0, 255),
+            'color.force'      : (0, 0, 255),
+
+            'scale.reaction'   : 1.0,
+            'scale.residual'   : 1.0,
+            'scale.load'       : 1.0,
+            'scale.force'      : 1.0,
+            'scale.selfweight' : 1.0,
+
+            'tol.reaction'     : 1e-3,
+            'tol.residual'     : 1e-3,
+            'tol.load'         : 1e-3,
+            'tol.force'        : 1e-3,
+            'tol.selfweight'   : 1e-3,
+
+            'feet.scale'       : 0.1,
+            'feet.alpha'       : 45,
+            'feet.tol'         : 0.1,
         })
 
     @classmethod

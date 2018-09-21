@@ -24,10 +24,8 @@ Vertical
     :nosignatures:
 
     vertical_from_zmax
-    vertical_from_target
     vertical_from_bbox
     vertical_from_q
-    vertical_from_qind
 
 """
 from __future__ import absolute_import
