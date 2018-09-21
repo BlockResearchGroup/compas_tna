@@ -24,6 +24,7 @@ from compas_rhino.selectors import FaceSelector
 try:
     import Rhino
     from Rhino.Geometry import Point3d
+    import rhinoscriptsyntax as rs
 
 except ImportError:
     compas.raise_if_ironpython()
@@ -72,12 +73,14 @@ class DiagramHelper(VertexSelector,
 
     @staticmethod
     def select_continuous_edges(diagram):
+        rs.UnselectAllObjects()
         keys = DiagramHelper.select_edges(diagram)
         if not keys:
             return
         keys = [diagram.get_continuous_edges(key) for key in keys]
         keys = list(set(list(flatten(keys))))
         select_edges(diagram, keys)
+        return keys
 
     @staticmethod
     def identify_vertices_on_points(diagram, guids):

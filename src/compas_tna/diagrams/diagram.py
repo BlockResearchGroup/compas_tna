@@ -19,45 +19,66 @@ class Diagram(Mesh):
     # selections
     # --------------------------------------------------------------------------
 
+    def get_edges_of_opening(self, key):
+        edges = []
+        for uv in self.face_halfedges(key):
+            is_edge, is_external = self.get_edge_attributes(uv, ('is_edge', 'is_external'))
+            if is_edge and not is_external:
+                edges.append(uv)
+        return edges
+
     def get_continuous_edges(self, uv, stop=None):
-            edges = [uv]
+        a, b = uv
 
-            a, b = uv
-            end = b
-            while True:
-                if self.vertex_degree(a) != 4:
-                    break
-                if a == end:
-                    break
-                if stop is not None and a == stop:
-                    break 
-                if self.get_vertex_attribute(a, 'is_anchor', False):
-                    break
-                nbrs = self.vertex_neighbors(a, ordered=True)
-                i = nbrs.index(b)
-                b = nbrs[i - 2]
-                edges.append((a, b))
-                a, b = b, a
+        ab = self.halfedge[a][b]
+        ba = self.halfedge[b][a]
 
-            b, a = uv
-            end = b
-            while True:
-                if self.vertex_degree(a) != 4:
-                    break
-                if a == end:
-                    break
-                if stop is not None and a == stop:
-                    break 
-                if self.get_vertex_attribute(a, 'is_anchor', False):
-                    break
-                nbrs = self.vertex_neighbors(a, ordered=True)
-                i = nbrs.index(b)
-                b = nbrs[i - 2]
-                edges.append((a, b))
-                a, b = b, a
+        if ab is None or ba is None:
+            return []
 
-            edgeset = set(list(self.edges()))
-            return [(u, v) if (u, v) in edgeset else (v, u) for u, v in edges]
+        if not self.facedata[ab]['is_loaded']:
+            return self.get_edges_of_opening(ab)
+
+        if not self.facedata[ba]['is_loaded']:
+            return self.get_edges_of_opening(ba)
+
+        edges = [uv]
+
+        end = b
+        while True:
+            if self.vertex_degree(a) != 4:
+                break
+            if a == end:
+                break
+            if stop is not None and a == stop:
+                break 
+            if self.get_vertex_attribute(a, 'is_anchor', False):
+                break
+            nbrs = self.vertex_neighbors(a, ordered=True)
+            i = nbrs.index(b)
+            b = nbrs[i - 2]
+            edges.append((a, b))
+            a, b = b, a
+
+        b, a = uv
+        end = b
+        while True:
+            if self.vertex_degree(a) != 4:
+                break
+            if a == end:
+                break
+            if stop is not None and a == stop:
+                break 
+            if self.get_vertex_attribute(a, 'is_anchor', False):
+                break
+            nbrs = self.vertex_neighbors(a, ordered=True)
+            i = nbrs.index(b)
+            b = nbrs[i - 2]
+            edges.append((a, b))
+            a, b = b, a
+
+        edgeset = set(list(self.edges()))
+        return [(u, v) if (u, v) in edgeset else (v, u) for u, v in edges]
 
 
     def get_parallel_edges(self, uv):
