@@ -2,7 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.datastructures import Mesh
+from compas_tna.diagrams import Diagram
 
 
 __author__  = 'Tom Van Mele'
@@ -12,7 +12,7 @@ __email__   = 'vanmelet@ethz.ch'
 __all__ = ['ForceDiagram']
 
 
-class ForceDiagram(Mesh):
+class ForceDiagram(Diagram):
     """"""
 
     def __init__(self):
@@ -71,6 +71,28 @@ class ForceDiagram(Mesh):
         index_uv  = {index: uv for uv, index in iter(uv_index.items())}
         edges     = [index_uv[index] for index in range(self.number_of_edges())]
         return [[key_index[u], key_index[v]] for u, v in edges]
+
+    # --------------------------------------------------------------------------
+    # visualisation
+    # --------------------------------------------------------------------------
+
+    def plot(self):
+        from compas.plotters import MeshPlotter
+        plotter = MeshPlotter(self)
+        plotter.draw_vertices()
+        plotter.draw_edges()
+        plotter.show()
+
+    def draw(self, layer=None, clear_layer=True):
+        from compas_tna.rhino import ForceArtist
+        artist = ForceArtist(self, layer=layer)
+        if clear_layer:
+            artist.clear_layer()
+        vertexcolor = {}
+        vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
+        artist.draw_vertices(color=vertexcolor)
+        artist.draw_edges()
+        artist.redraw()
 
 
 # ==============================================================================

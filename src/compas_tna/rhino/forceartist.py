@@ -5,8 +5,6 @@ from __future__ import division
 import compas
 import compas_rhino
 
-from compas.geometry import scale_vector
-
 from compas_rhino.artists import MeshArtist
 
 
@@ -22,9 +20,6 @@ class ForceArtist(MeshArtist):
     @property
     def force(self):
         return self.datastructure
-
-    def clear(self):
-        super(ForceArtist, self).clear()
 
 
 # ==============================================================================

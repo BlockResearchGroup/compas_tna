@@ -15,6 +15,8 @@ compas_tna.diagrams
 """
 from __future__ import absolute_import
 
+from .diagram import *
+
 from .formdiagram import *
 from .forcediagram import *
 
