@@ -9,7 +9,6 @@ compas_tna
    intro
    gettingstarted
    examples
-   tutorial
    api
    contributions
    devguide

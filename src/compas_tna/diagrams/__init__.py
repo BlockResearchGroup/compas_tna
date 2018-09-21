@@ -5,22 +5,11 @@ compas_tna.diagrams
 
 .. currentmodule:: compas_tna.diagrams
 
-FormDiagram
-===========
-
 .. autosummary::
     :toctree: generated/
     :nosignatures:
 
     FormDiagram
-
-ForceDiagram
-============
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
     ForceDiagram
 
 """

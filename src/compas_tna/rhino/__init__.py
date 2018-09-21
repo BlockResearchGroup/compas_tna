@@ -6,7 +6,7 @@ compas_tna.rhino
 .. currentmodule:: compas_tna.rhino
 
 Artists
-================
+=======
 
 .. autosummary::
     :toctree: generated/
@@ -15,13 +15,27 @@ Artists
     FormArtist
     ForceArtist
 
+Helpers
+=======
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    FormHelper
+
+
 """
 from __future__ import absolute_import
 
-from .artists import *
-from . import artists
+from .formartist import *
+from . import formartist
 
-from .helpers import *
-from . import helpers
+from .formhelper import *
+from . import formhelper
 
-__all__ = artists.__all__ + helpers.__all__
+from .forceartist import *
+from . import forceartist
+
+
+__all__ = formartist.__all__ + formhelper.__all__ + forceartist.__all__

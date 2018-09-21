@@ -32,6 +32,7 @@ compas\_tna.diagrams.FormDiagram
       ~FormDiagram.cull_vertices
       ~FormDiagram.delete_face
       ~FormDiagram.delete_vertex
+      ~FormDiagram.draw
       ~FormDiagram.dual
       ~FormDiagram.dump
       ~FormDiagram.dumps
@@ -68,7 +69,6 @@ compas\_tna.diagrams.FormDiagram
       ~FormDiagram.faces
       ~FormDiagram.faces_on_boundary
       ~FormDiagram.faces_where
-      ~FormDiagram.find_faces
       ~FormDiagram.fixed
       ~FormDiagram.from_data
       ~FormDiagram.from_json
@@ -79,6 +79,7 @@ compas\_tna.diagrams.FormDiagram
       ~FormDiagram.from_points
       ~FormDiagram.from_polygons
       ~FormDiagram.from_polyhedron
+      ~FormDiagram.from_rhinomesh
       ~FormDiagram.from_stl
       ~FormDiagram.from_vertices_and_faces
       ~FormDiagram.get_any_edge
@@ -86,6 +87,7 @@ compas\_tna.diagrams.FormDiagram
       ~FormDiagram.get_any_face_vertex
       ~FormDiagram.get_any_vertex
       ~FormDiagram.get_any_vertices
+      ~FormDiagram.get_continuous_edges
       ~FormDiagram.get_edge_attribute
       ~FormDiagram.get_edge_attributes
       ~FormDiagram.get_edges_attribute
@@ -94,6 +96,7 @@ compas\_tna.diagrams.FormDiagram
       ~FormDiagram.get_face_attributes
       ~FormDiagram.get_faces_attribute
       ~FormDiagram.get_faces_attributes
+      ~FormDiagram.get_parallel_edges
       ~FormDiagram.get_vertex_attribute
       ~FormDiagram.get_vertex_attributes
       ~FormDiagram.get_vertices_attribute
@@ -104,7 +107,6 @@ compas\_tna.diagrams.FormDiagram
       ~FormDiagram.index_key
       ~FormDiagram.index_uv
       ~FormDiagram.insert_vertex
-      ~FormDiagram.is_boundary_convex
       ~FormDiagram.is_edge_on_boundary
       ~FormDiagram.is_manifold
       ~FormDiagram.is_orientable
@@ -123,9 +125,7 @@ compas\_tna.diagrams.FormDiagram
       ~FormDiagram.number_of_faces
       ~FormDiagram.number_of_vertices
       ~FormDiagram.plot
-      ~FormDiagram.relax
       ~FormDiagram.residual
-      ~FormDiagram.set_anchors
       ~FormDiagram.set_edge_attribute
       ~FormDiagram.set_edge_attributes
       ~FormDiagram.set_edges_attribute
@@ -138,7 +138,7 @@ compas\_tna.diagrams.FormDiagram
       ~FormDiagram.set_vertex_attributes
       ~FormDiagram.set_vertices_attribute
       ~FormDiagram.set_vertices_attributes
-      ~FormDiagram.smooth_interior
+      ~FormDiagram.smooth
       ~FormDiagram.split_boundary
       ~FormDiagram.split_edge
       ~FormDiagram.split_edge_tri

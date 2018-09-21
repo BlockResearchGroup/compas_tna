@@ -2,14 +2,15 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
+import sys
 
 try:
     from numpy import array
     from numpy import zeros
 
 except ImportError:
-    compas.raise_if_not_ironpython()
+    if 'ironpython' not in sys.version.lower():
+        raise
 
 from compas.geometry import centroid_points
 from compas.geometry import length_vector
@@ -18,13 +19,11 @@ from compas.geometry import cross_vectors
 from compas.numerical import face_matrix
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+__author__  = 'Tom Van Mele'
+__email__   = 'vanmelet@ethz.ch'
 
 
-__all__ = ['LoadUpdater', ]
+__all__ = ['LoadUpdater']
 
 
 class LoadUpdater(object):

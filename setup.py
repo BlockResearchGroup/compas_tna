@@ -48,9 +48,14 @@ setup(
         'Programming Language :: Python :: Implementation :: CPython',
     ],
     keywords=['architecture', 'engineering'],
-    project_urls={},
+    project_urls={
+        "Documentation": "http://blockresearchgroup.github.io/compas_tna",
+        "Forum": "https://forum.compas-framework.org/c/compas-tna",
+        "Repository": "https://github.com/BlockResearchGroup/compas_tna",
+        "Issues": "https://github.com/BlockResearchGroup/compas_tna/issues",
+    },
 
-    packages=find_packages('src'),
+    packages=['compas_tna', ],
     package_dir={'': 'src'},
     package_data={},
     data_files=[],

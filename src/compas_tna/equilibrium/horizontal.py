@@ -28,10 +28,8 @@ from compas_tna.utilities import parallelise_sparse
 from compas_tna.utilities import parallelise_nodal
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+__author__  = 'Tom Van Mele'
+__email__   = 'vanmelet@ethz.ch'
 
 
 __all__ = [

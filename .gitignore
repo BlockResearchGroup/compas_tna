@@ -110,5 +110,5 @@ ENV/
 temp/**
 !temp/PLACEHOLDER
 
-
+docsource/api/generated
 

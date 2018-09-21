@@ -32,16 +32,13 @@ from compas.numerical import connectivity_matrix
 from compas.numerical import equilibrium_matrix
 from compas.numerical import normrow
 
-from compas_ags.ags import update_q_from_qind
-
 from compas_tna.utilities import LoadUpdater
 from compas_tna.utilities import update_z
+from compas_tna.utilities import update_q_from_qind
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+__author__  = 'Tom Van Mele'
+__email__   = 'vanmelet@ethz.ch'
 
 
 __all__ = [

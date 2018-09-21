@@ -19,10 +19,10 @@ __license__    = 'MIT License'
 __email__      = 'vanmelet@ethz.ch'
 
 
-__all__ = ['distribute', ]
+__all__ = ['distribute_thickness']
 
 
-def distribute(formdiagram, config=None):
+def distribute_thickness(formdiagram, config=None):
     points = []
     values = []
     xi = []

@@ -34,10 +34,8 @@ from compas.numerical import nonpivots
 from compas.numerical import equilibrium_matrix
 
 
-__author__     = ['Tom Van Mele', ]
-__copyright__  = 'Copyright 2014, BLOCK Research Group - ETH Zurich'
-__license__    = 'MIT License'
-__email__      = 'vanmelet@ethz.ch'
+__author__  = 'Tom Van Mele'
+__email__   = 'vanmelet@ethz.ch'
 
 
 __all__ = [
@@ -49,6 +47,7 @@ __all__ = [
     'rot90',
     'apply_bounds',
     'update_z',
+    'update_q_from_qind',
 ]
 
 
@@ -195,6 +194,51 @@ def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-3, kmax=100, display
             break
 
     return res
+
+
+def update_q_from_qind(E, q, dep, ind):
+    """Update the full set of force densities using the values of the independent edges.
+
+    Parameters
+    ----------
+    E : sparse csr matrix
+        The equilibrium matrix.
+    q : array
+        The force densities of the edges.
+    dep : list
+        The indices of the dependent edges.
+    ind : list
+        The indices of the independent edges.
+
+    Returns
+    -------
+    None
+        The force densities are modified in-place.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        #
+
+    """
+    m  = E.shape[0] - len(dep)
+    qi = q[ind]
+    Ei = E[:, ind]
+    Ed = E[:, dep]
+    if m > 0:
+        Edt = Ed.transpose()
+        A = Edt.dot(Ed).toarray()
+        b = Edt.dot(Ei).dot(qi)
+    else:
+        A = Ed.toarray()
+        b = Ei.dot(qi)
+    if cond(A) > EPS:
+        res = lstsq(-A, b)
+        qd = res[0]
+    else:
+        qd = solve(-A, b)
+    q[dep] = qd
 
 
 # ==============================================================================

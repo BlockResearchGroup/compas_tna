@@ -25,13 +25,11 @@ from compas.geometry import cross_vectors
 from compas.geometry import mesh_smooth_area
 
 
-__author__    = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2014 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+__author__  = 'Tom Van Mele'
+__email__   = 'vanmelet@ethz.ch'
 
 
-__all__ = ['FormDiagram', ]
+__all__ = ['FormDiagram']
 
 
 class FormDiagram(Mesh):
@@ -135,7 +133,7 @@ class FormDiagram(Mesh):
         return mesh_from_guid(cls, guid)
 
     @classmethod
-    def from_lines(cls, lines, precision=None):
+    def from_lines(cls, lines, delete_boundary_face=True, precision=None):
         """Construct a FormDiagram from a list of lines described by start and end point coordinates.
 
         Parameters
@@ -166,7 +164,9 @@ class FormDiagram(Mesh):
         for key, attr in network.vertices(True):
             mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0.0)
         mesh.halfedge = network.halfedge
-        network_find_faces(mesh, breakpoints=list(mesh.leaves()))
+        network_find_faces(mesh)
+        if delete_boundary_face:
+            mesh.delete_face(0)
         return mesh
 
     def __str__(self):
@@ -308,7 +308,7 @@ class FormDiagram(Mesh):
     # boundary conditions
     # --------------------------------------------------------------------------
 
-    def update_boundaries(self, feet=1):
+    def update_boundaries(self, feet=2):
         boundaries = self.vertices_on_boundaries()
         exterior = boundaries[0]
         interior = boundaries[1:]
@@ -533,9 +533,13 @@ class FormDiagram(Mesh):
         artist = FormArtist(self, layer=layer)
         if clear_layer:
             artist.clear_layer()
-        artist.draw_vertices()
-        artist.draw_edges()
-        artist.draw_faces()
+        vertexcolor = {}
+        vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
+        vertexcolor.update({key: '#0000ff' for key in self.vertices_where({'is_external': True})})
+        vertexcolor.update({key: '#ff0000' for key in self.vertices_where({'is_anchor': True})})
+        artist.draw_vertices(color=vertexcolor)
+        artist.draw_edges(keys=list(self.edges_where({'is_edge': True})))
+        artist.draw_faces(keys=list(self.faces_where({'is_loaded': True})))
         artist.redraw()
 
 

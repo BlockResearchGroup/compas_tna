@@ -18,11 +18,11 @@
         <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="Contributions" href="../contributions.html" />
+            <link rel="next" title="compas_tna.utilities.count_dof" href="generated/compas_tna.utilities.count_dof.html" />
         
         
         
-            <link rel="prev" title="compas_tna.rhino.ForceArtist" href="generated/compas_tna.rhino.ForceArtist.html" />
+            <link rel="prev" title="compas_tna.rhino.FormHelper" href="generated/compas_tna.rhino.FormHelper.html" />
         
 
         <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -59,6 +59,44 @@
 
                         <span class="target" id="module-compas_tna.utilities"></span><div class="section" id="compas-tna-utilities">
 <h1>compas_tna.utilities</h1>
+<table class="longtable docutils">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_tna.utilities.count_dof.html#compas_tna.utilities.count_dof" title="compas_tna.utilities.count_dof"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_dof</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_tna.utilities.identify_dof.html#compas_tna.utilities.identify_dof" title="compas_tna.utilities.identify_dof"><code class="xref py py-obj docutils literal notranslate"><span class="pre">identify_dof</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_tna.utilities.parallelise.html#compas_tna.utilities.parallelise" title="compas_tna.utilities.parallelise"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parallelise</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_tna.utilities.parallelise_sparse.html#compas_tna.utilities.parallelise_sparse" title="compas_tna.utilities.parallelise_sparse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parallelise_sparse</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_tna.utilities.parallelise_nodal.html#compas_tna.utilities.parallelise_nodal" title="compas_tna.utilities.parallelise_nodal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parallelise_nodal</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_tna.utilities.rot90.html#compas_tna.utilities.rot90" title="compas_tna.utilities.rot90"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rot90</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_tna.utilities.apply_bounds.html#compas_tna.utilities.apply_bounds" title="compas_tna.utilities.apply_bounds"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_bounds</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_tna.utilities.update_z.html#compas_tna.utilities.update_z" title="compas_tna.utilities.update_z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_z</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_tna.utilities.update_q_from_qind.html#compas_tna.utilities.update_q_from_qind" title="compas_tna.utilities.update_q_from_qind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_q_from_qind</span></code></a></p></td>
+<td><p>Update the full set of force densities using the values of the independent edges.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_tna.utilities.distribute_thickness.html#compas_tna.utilities.distribute_thickness" title="compas_tna.utilities.distribute_thickness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">distribute_thickness</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 
                         
@@ -91,7 +129,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../intro.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../examples.html">Examples</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../api.html">API Reference</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="compas_tna.html">compas_tna</a><ul class="nav active">
 <li class="nav-item"><a class="nav-link reference internal" href="compas_tna.diagrams.html">compas_tna.diagrams</a></li>
@@ -135,13 +172,7 @@
 
         <footer class="compas-footer">
             
-                
-                    &#169; Copyright 2017, Block Research Group - ETH Zurich.
-                
-            
-
-            
-                Last updated on Sep 13, 2018.
+                Last updated on Sep 21, 2018.
             
 
             
