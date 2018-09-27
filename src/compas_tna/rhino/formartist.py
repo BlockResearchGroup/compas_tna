@@ -19,6 +19,29 @@ __all__ = ['FormArtist']
 
 class FormArtist(MeshArtist):
 
+    def __init__(self, form, layer=None):
+        super(FormArtist, self).__init__(form, layer=layer)
+        self.defaults.update({
+            'color.vertex'     : (255, 255, 255),
+            'color.edge'       : (0, 0, 0),
+            'color.face'       : (210, 210, 210),
+            'color.reaction'   : (0, 255, 0),
+            'color.residual'   : (0, 255, 255),
+            'color.load'       : (0, 255, 0),
+            'color.selfweight' : (0, 0, 255),
+            'color.force'      : (0, 0, 255),
+            'scale.reaction'   : 1.0,
+            'scale.residual'   : 1.0,
+            'scale.load'       : 1.0,
+            'scale.force'      : 1.0,
+            'scale.selfweight' : 1.0,
+            'tol.reaction'     : 1e-3,
+            'tol.residual'     : 1e-3,
+            'tol.load'         : 1e-3,
+            'tol.force'        : 1e-3,
+            'tol.selfweight'   : 1e-3,
+        })
+
     @property
     def form(self):
         return self.datastructure
@@ -58,9 +81,9 @@ class FormArtist(MeshArtist):
         self.clear_normals()
 
         lines = []
-        color = color or self.form.attributes['color.load']
-        scale = scale or self.form.attributes['scale.load']
-        tol   = self.form.attributes['tol.load']
+        color = color or self.defaults['color.load']
+        scale = scale or self.defaults['scale.load']
+        tol   = self.defaults['tol.load']
         tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
@@ -88,9 +111,9 @@ class FormArtist(MeshArtist):
         self.clear_loads()
 
         lines = []
-        color = color or self.form.attributes['color.load']
-        scale = scale or self.form.attributes['scale.load']
-        tol   = self.form.attributes['tol.load']
+        color = color or self.defaults['color.load']
+        scale = scale or self.defaults['scale.load']
+        tol   = self.defaults['tol.load']
         tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
@@ -118,9 +141,9 @@ class FormArtist(MeshArtist):
         self.clear_selfweight()
 
         lines = []
-        color = color or self.form.attributes['color.selfweight']
-        scale = scale or self.form.attributes['scale.selfweight']
-        tol   = self.form.attributes['tol.selfweight']
+        color = color or self.defaults['color.selfweight']
+        scale = scale or self.defaults['scale.selfweight']
+        tol   = self.defaults['tol.selfweight']
         tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
@@ -149,9 +172,9 @@ class FormArtist(MeshArtist):
         self.clear_reactions()
 
         lines = []
-        color = color or self.form.attributes['color.reaction']
-        scale = scale or self.form.attributes['scale.reaction']
-        tol   = self.form.attributes['tol.reaction']
+        color = color or self.defaults['color.reaction']
+        scale = scale or self.defaults['scale.reaction']
+        tol   = self.defaults['tol.reaction']
         tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': True}, True):
@@ -203,9 +226,9 @@ class FormArtist(MeshArtist):
         self.clear_forces()
 
         lines = []
-        color = color or self.form.attributes['color.force']
-        scale = scale or self.form.attributes['scale.force']
-        tol   = self.form.attributes['tol.force']
+        color = color or self.defaults['color.force']
+        scale = scale or self.defaults['scale.force']
+        tol   = self.defaults['tol.force']
         tol2  = tol ** 2
 
         for u, v, attr in self.form.edges_where({'is_edge': True, 'is_external': False}, True):
@@ -229,9 +252,9 @@ class FormArtist(MeshArtist):
         self.clear_residuals()
 
         lines = []
-        color = color or self.form.attributes['color.residual']
-        scale = scale or self.form.attributes['scale.residual']
-        tol   = self.form.attributes['tol.residual']
+        color = color or self.defaults['color.residual']
+        scale = scale or self.defaults['scale.residual']
+        tol   = self.defaults['tol.residual']
         tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):

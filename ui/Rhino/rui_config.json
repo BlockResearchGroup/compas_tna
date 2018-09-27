@@ -1,0 +1,109 @@
+{
+    "menus" : [],
+
+    "toolbars" : [
+        {
+            "name"  : "TNA", 
+            "items" : [
+                { "text" : "init", "left" : "tna.init" },
+
+                { "type" : "separator" },
+
+                { "text" : "save", "left" : "tna.save" },
+                { "text" : "load", "left" : "tna.load" },
+
+                { "type" : "separator" },
+                { "type" : "separator" },
+
+                { "text" : "settings", "left" : "tna.update_settings" }
+            ]
+        },
+        {
+            "name"  : "TNA.form", 
+            "items" : [
+                { "text" : "obj",   "left" : "tna.form_from_obj",   "right" : "tna.form_to_obj" },
+                { "text" : "mesh",  "left" : "tna.form_from_mesh",  "right" : "tna.form_to_mesh" },
+
+                { "type" : "separator" },
+
+                { "text" : "V_attr", "left" : "tna.form_update_vertex_attr", "right" : "" },
+                { "text" : "E_attr", "left" : "tna.form_update_edge_attr",   "right" : "" },
+                { "text" : "F_attr", "left" : "tna.form_update_face_attr",   "right" : "" },
+
+                { "type" : "separator" },
+
+                { "text" : "V_select", "left" : "tna.form_select_vertices" },
+                { "text" : "E_select", "left" : "tna.form_select_edges" },
+                { "text" : "F_select", "left" : "tna.form_select_faces" },
+
+                { "type" : "separator" },
+
+                { "text" : "move",          "left" : "tna.form_move" },
+                { "text" : "move_vertex",   "left" : "tna.form_move_vertex" },
+                { "text" : "move_vertices", "left" : "tna.form_move_vertices" },
+
+                { "type" : "separator" },
+
+                { "text" : "smooth_area",     "left" : "tna.form_smooth_area" },
+                { "text" : "smooth_centroid", "left" : "tna.form_smooth_centroid" },
+
+                { "type" : "separator" },
+
+                { "text" : "boundaries",    "left" : "tna.form_update_boundaries" },
+
+                { "type" : "separator" },
+                { "type" : "separator" },
+
+                { "text" : "settings", "left" : "tna.form_update_attributes" }
+            ]
+        },
+        {
+            "name"  : "TNA.force", 
+            "items" : [
+                { "text" : "from_form", "left" : "tna.force_from_form" },
+
+                { "type" : "separator" },
+
+                { "text" : "V_attr", "left" : "tna.force_update_vertex_attr", "right" : "" },
+                { "text" : "E_attr", "left" : "tna.force_update_edge_attr",   "right" : "" },
+
+                { "type" : "separator" },
+
+                { "text" : "move", "left" : "tna.force_move" },
+
+                { "type" : "separator" },
+                { "type" : "separator" },
+
+                { "text" : "settings", "left" : "tna.force_update_attributes" }
+            ]
+        },
+        {
+            "name"  : "TNA.equilibrium", 
+            "items" : [
+                { "text" : "horizontal", "left" : "tna.update_horizontal" },
+                { "text" : "vertical",   "left" : "tna.update_vertical" }
+            ]
+        },
+        {
+            "name"  : "TNA.visualisation", 
+            "items" : [
+                { "text" : "angles",    "left" : "tna.show_angles",    "right" : "tna.hide_angles" },
+                { "text" : "forces",    "left" : "tna.show_forces",    "right" : "tna.hide_forces" },
+                { "text" : "reactions", "left" : "tna.show_reactions", "right" : "tna.hide_reactions" }
+            ]
+        }
+    ],
+
+    "toolbargroups" : [
+        {
+            "name"     : "TNA",
+            "toolbars" : [
+                "TNA",
+                "TNA.form",
+                "TNA.force",
+                "TNA.equilibrium",
+                "TNA.visualisation"
+            ]
+        }
+    ]
+}

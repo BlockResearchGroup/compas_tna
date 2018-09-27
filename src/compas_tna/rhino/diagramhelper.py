@@ -37,8 +37,8 @@ __email__   = 'vanmelet@ethz.ch'
 __all__ = ['DiagramHelper']
 
 
-def match_edges(mesh, keys):
-    temp = compas_rhino.get_objects(name="{}.edge.*".format(mesh.name))
+def match_edges(diagram, keys):
+    temp = compas_rhino.get_objects(name="{}.edge.*".format(diagram.name))
     names = compas_rhino.get_object_names(temp)
     guids = []
     for guid, name in zip(temp, names):
@@ -50,15 +50,41 @@ def match_edges(mesh, keys):
     return guids
 
 
-def select_edges(mesh, keys):
-    guids = match_edges(mesh, keys)
+def match_vertices(diagram, keys):
+    temp = compas_rhino.get_objects(name="{}.vertex.*".format(diagram.name))
+    names = compas_rhino.get_object_names(temp)
+    guids = []
+    for guid, name in zip(temp, names):
+        parts = name.split('.')
+        key = literal_eval(parts[2])
+        if key in keys:
+            guids.append(guid)
+    return guids
+
+
+def select_edges(diagram, keys):
+    guids = match_edges(diagram, keys)
     rs.EnableRedraw(False)
     rs.SelectObjects(guids)
     rs.EnableRedraw(True)
 
 
-def unselect_edges(mesh, keys):
-    guids = match_edges(mesh, keys)
+def unselect_edges(diagram, keys):
+    guids = match_edges(diagram, keys)
+    rs.EnableRedraw(False)
+    rs.UnselectObjects(guids)
+    rs.EnableRedraw(True)
+
+
+def select_vertices(diagram, keys):
+    guids = match_vertices(diagram, keys)
+    rs.EnableRedraw(False)
+    rs.SelectObjects(guids)
+    rs.EnableRedraw(True)
+
+
+def unselect_vertices(diagram, keys):
+    guids = match_vertices(diagram, keys)
     rs.EnableRedraw(False)
     rs.UnselectObjects(guids)
     rs.EnableRedraw(True)
@@ -72,12 +98,56 @@ class DiagramHelper(VertexSelector,
                     FaceModifier):
 
     @staticmethod
+    def select_vertices_where(diagram, keys):
+        rs.UnselectAllObjects()
+        select_vertices(diagram, keys)
+
+    @staticmethod
+    def select_vertices_on_boundary(diagram):
+        rs.UnselectAllObjects()
+        key = DiagramHelper.select_vertex(diagram)
+        if key is None:
+            return
+        boundaries = diagram.vertices_on_boundaries()
+        for boundary in boundaries:
+            if key in boundary:
+                select_vertices(diagram, boundary)
+                return boundary
+
+    @staticmethod
+    def select_vertices_on_curve(diagram):
+        rs.UnselectAllObjects()
+        guid = compas_rhino.select_curve()
+        keys = DiagramHelper.identify_vertices_on_curve(diagram, guid)
+        select_vertices(diagram, keys)
+        return keys
+
+    @staticmethod
+    def select_vertices_on_curves(diagram):
+        rs.UnselectAllObjects()
+        guids = compas_rhino.select_curves()
+        keys = DiagramHelper.identify_vertices_on_curves(diagram, guids)
+        select_vertices(diagram, keys)
+        return keys
+
+    @staticmethod
     def select_continuous_edges(diagram):
         rs.UnselectAllObjects()
         keys = DiagramHelper.select_edges(diagram)
         if not keys:
             return
         keys = [diagram.get_continuous_edges(key) for key in keys]
+        keys = list(set(list(flatten(keys))))
+        select_edges(diagram, keys)
+        return keys
+
+    @staticmethod
+    def select_parallel_edges(diagram):
+        rs.UnselectAllObjects()
+        keys = DiagramHelper.select_edges(diagram)
+        if not keys:
+            return
+        keys = [diagram.get_parallel_edges(key) for key in keys]
         keys = list(set(list(flatten(keys))))
         select_edges(diagram, keys)
         return keys
@@ -92,6 +162,20 @@ class DiagramHelper(VertexSelector,
             if gkey in gkey_key:
                 key = gkey_key[gkey]
                 keys.append(key)
+        return keys
+
+    @staticmethod
+    def identify_vertices_on_curve(diagram, guid):
+        gkey_key = diagram.gkey_key()
+        keys = []
+        curve = RhinoCurve(guid)
+        for key in diagram.vertices():
+            xyz = diagram.vertex_coordinates(key)
+            closest = curve.closest_point(xyz)
+            gkey = geometric_key(closest)
+            if gkey in gkey_key:
+                if key == gkey_key[gkey]:
+                    keys.append(key)
         return keys
 
     @staticmethod
@@ -151,3 +235,4 @@ class DiagramHelper(VertexSelector,
 
             return True
         return False
+

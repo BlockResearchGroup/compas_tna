@@ -71,32 +71,10 @@ class FormDiagram(Diagram):
             'is_loaded': True
         })
         self.attributes.update({
-            'name'             : 'FormDiagram',
-
-            'color.vertex'     : (255, 255, 255),
-            'color.edge'       : (0, 0, 0),
-            'color.face'       : (210, 210, 210),
-            'color.reaction'   : (0, 255, 0),
-            'color.residual'   : (0, 255, 255),
-            'color.load'       : (0, 255, 0),
-            'color.selfweight' : (0, 0, 255),
-            'color.force'      : (0, 0, 255),
-
-            'scale.reaction'   : 1.0,
-            'scale.residual'   : 1.0,
-            'scale.load'       : 1.0,
-            'scale.force'      : 1.0,
-            'scale.selfweight' : 1.0,
-
-            'tol.reaction'     : 1e-3,
-            'tol.residual'     : 1e-3,
-            'tol.load'         : 1e-3,
-            'tol.force'        : 1e-3,
-            'tol.selfweight'   : 1e-3,
-
-            'feet.scale'       : 0.1,
-            'feet.alpha'       : 45,
-            'feet.tol'         : 0.1,
+            'name'       : 'FormDiagram',
+            'feet.scale' : 0.1,
+            'feet.alpha' : 45,
+            'feet.tol'   : 0.1,
         })
 
     @classmethod
@@ -359,16 +337,16 @@ class FormDiagram(Diagram):
         tol   = self.attributes['feet.tol']
 
         key_foot = {}
-        key_xy = {key: self.vertex_coordinates(key, 'xy') for key in self.vertices()}
+        key_xyz = {key: self.vertex_coordinates(key, 'xyz') for key in self.vertices()}
 
         for i, vertices in enumerate(segments):
             key = vertices[0]
             after = vertices[1]
             before = segments[i - 1][-2]
 
-            b = key_xy[before]
-            o = key_xy[key]
-            a = key_xy[after]
+            b = key_xyz[before]
+            o = key_xyz[key]
+            a = key_xyz[after]
 
             ob = normalize_vector_xy(subtract_vectors_xy(b, o))
             oa = normalize_vector_xy(subtract_vectors_xy(a, o))
@@ -390,14 +368,14 @@ class FormDiagram(Diagram):
 
             if feet == 1:
                 x, y, z = add_vectors_xy(o, r)
-                m = self.add_vertex(x=x, y=y, z=0, is_fixed=True, is_external=True)
+                m = self.add_vertex(x=x, y=y, z=o[2], is_fixed=True, is_external=True)
                 key_foot[key] = m
 
             elif feet == 2:
                 lx, ly, lz = add_vectors_xy(o, rotate(r, +alpha))
                 rx, ry, rz = add_vectors_xy(o, rotate(r, -alpha))
-                l = self.add_vertex(x=lx, y=ly, z=0, is_fixed=True, is_external=True)
-                r = self.add_vertex(x=rx, y=ry, z=0, is_fixed=True, is_external=True)
+                l = self.add_vertex(x=lx, y=ly, z=o[2], is_fixed=True, is_external=True)
+                r = self.add_vertex(x=rx, y=ry, z=o[2], is_fixed=True, is_external=True)
                 key_foot[key] = l, r
 
             else:
