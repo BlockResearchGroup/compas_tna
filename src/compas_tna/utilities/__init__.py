@@ -24,12 +24,9 @@ compas_tna.utilities
 """
 from __future__ import absolute_import
 
-from . import diagrams
-from . import loads
-from . import thickness
-
-__all__ = diagrams.__all__ + loads.__all__ + thickness.__all__
-
 from .diagrams import *
 from .loads import *
+from .pattern import *
 from .thickness import *
+
+__all__ = [name for name in dir() if not name.startswith('_')]

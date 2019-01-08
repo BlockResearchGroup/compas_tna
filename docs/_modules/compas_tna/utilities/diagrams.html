@@ -90,10 +90,6 @@
 <span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">equilibrium_matrix</span>
 
 
-<span class="n">__author__</span>  <span class="o">=</span> <span class="s1">&#39;Tom Van Mele&#39;</span>
-<span class="n">__email__</span>   <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
-
-
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;count_dof&#39;</span><span class="p">,</span>
     <span class="s1">&#39;identify_dof&#39;</span><span class="p">,</span>
@@ -166,7 +162,6 @@
     <span class="k">return</span> <span class="n">X</span></div>
 
 
-<span class="c1"># replace the for loops</span>
 <div class="viewcode-block" id="parallelise_nodal"><a class="viewcode-back" href="../../../api/generated/compas_tna.utilities.parallelise_nodal.html#compas_tna.utilities.parallelise_nodal">[docs]</a><span class="k">def</span> <span class="nf">parallelise_nodal</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">i_nbrs</span><span class="p">,</span> <span class="n">ij_e</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">lmin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">fixed</span> <span class="o">=</span> <span class="n">fixed</span> <span class="ow">or</span> <span class="p">[]</span>
     <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">)</span>
@@ -207,7 +202,6 @@
             <span class="n">xy</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nbrs</span><span class="p">)</span></div>
 
 
-<span class="c1"># move to AGS?</span>
 <div class="viewcode-block" id="rot90"><a class="viewcode-back" href="../../../api/generated/compas_tna.utilities.rot90.html#compas_tna.utilities.rot90">[docs]</a><span class="k">def</span> <span class="nf">rot90</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">zdir</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
     <span class="n">temp</span> <span class="o">=</span> <span class="n">empty_like</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
     <span class="n">temp</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span> <span class="n">zdir</span> <span class="o">*</span> <span class="n">xy</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
@@ -215,7 +209,6 @@
     <span class="k">return</span> <span class="n">temp</span></div>
 
 
-<span class="c1"># move to AGS?</span>
 <div class="viewcode-block" id="apply_bounds"><a class="viewcode-back" href="../../../api/generated/compas_tna.utilities.apply_bounds.html#compas_tna.utilities.apply_bounds">[docs]</a><span class="k">def</span> <span class="nf">apply_bounds</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">):</span>
     <span class="n">xsmall</span>    <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">xmin</span>
     <span class="n">xbig</span>      <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">xmax</span>
@@ -335,8 +328,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../api.html">API Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../contributions.html">Contributions</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
 </ul>
@@ -365,11 +356,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Sep 21, 2018.
+                Last updated on Jan 08, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.7.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
             
         </footer>
 

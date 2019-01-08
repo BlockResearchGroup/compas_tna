@@ -34,10 +34,6 @@ from compas.numerical import nonpivots
 from compas.numerical import equilibrium_matrix
 
 
-__author__  = 'Tom Van Mele'
-__email__   = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'count_dof',
     'identify_dof',

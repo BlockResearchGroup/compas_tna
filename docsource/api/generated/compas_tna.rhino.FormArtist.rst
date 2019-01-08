@@ -19,6 +19,7 @@ compas\_tna.rhino.FormArtist
       ~FormArtist.clear_edgelabels
       ~FormArtist.clear_edges
       ~FormArtist.clear_facelabels
+      ~FormArtist.clear_facenormals
       ~FormArtist.clear_faces
       ~FormArtist.clear_forces
       ~FormArtist.clear_layer
@@ -33,16 +34,21 @@ compas\_tna.rhino.FormArtist
       ~FormArtist.draw_edgelabels
       ~FormArtist.draw_edges
       ~FormArtist.draw_facelabels
+      ~FormArtist.draw_facenormals
       ~FormArtist.draw_faces
       ~FormArtist.draw_forces
+      ~FormArtist.draw_lines
       ~FormArtist.draw_loads
       ~FormArtist.draw_normals
+      ~FormArtist.draw_points
+      ~FormArtist.draw_polygons
       ~FormArtist.draw_reactions
       ~FormArtist.draw_residuals
       ~FormArtist.draw_selfweight
       ~FormArtist.draw_vertexlabels
       ~FormArtist.draw_vertices
       ~FormArtist.redraw
+      ~FormArtist.save
    
    
 

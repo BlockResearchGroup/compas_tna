@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="compas_tna.rhino.FormHelper" href="compas_tna.rhino.FormHelper.html" />
+            <link rel="next" title="compas_tna.utilities" href="../compas_tna.utilities.html" />
         
         
         
@@ -62,7 +62,7 @@
 <dl class="class">
 <dt id="compas_tna.rhino.ForceArtist">
 <em class="property">class </em><code class="descclassname">compas_tna.rhino.</code><code class="descname">ForceArtist</code><span class="sig-paren">(</span><em>mesh</em>, <em>layer=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_tna/rhino/forceartist.html#ForceArtist"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.meshartist.MeshArtist</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist</span></code></p>
 <dl class="method">
 <dt id="compas_tna.rhino.ForceArtist.__init__">
 <code class="descname">__init__</code><span class="sig-paren">(</span><em>mesh</em>, <em>layer=None</em><span class="sig-paren">)</span></dt>
@@ -91,41 +91,59 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facelabels</span></code>([keys])</p></td>
 <td><p>Clear all face labels previously drawn by the <code class="docutils literal notranslate"><span class="pre">FaceArtist</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code>([keys])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facenormals</span></code>([keys])</p></td>
+<td><p>Clear the normals of all faces previously drawn by the <code class="docutils literal notranslate"><span class="pre">FaceArtist</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code>([keys])</p></td>
 <td><p>Clear all faces previously drawn by the <code class="docutils literal notranslate"><span class="pre">FaceArtist</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code>()</p></td>
 <td><p>Clear the main layer of the artist.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexlabels</span></code>([keys])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexlabels</span></code>([keys])</p></td>
 <td><p>Clear all vertex labels previously drawn by the <code class="docutils literal notranslate"><span class="pre">VertexArtist</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code>([keys])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code>([keys])</p></td>
 <td><p>Clear all vertices previously drawn by the <code class="docutils literal notranslate"><span class="pre">VertexArtist</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code>()</p></td>
+<td><p>Draw the mesh as a consolidated RhinoMesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code>([text, color])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code>([text, color])</p></td>
 <td><p>Draw labels for a selection of edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code>([keys, color])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code>([keys, color])</p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code>([text, color])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code>([text, color])</p></td>
 <td><p>Draw labels for a selection of faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facenormals</span></code>([color])</p></td>
+<td><p>Draw the normals of the faces.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code>([keys, color, join_faces])</p></td>
 <td><p>Draw a selection of faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code>([text, color])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_lines</span></code>(lines[, layer, clear_layer, redraw])</p></td>
+<td><p>Draw a collection of lines.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_points</span></code>(points[, layer, clear_layer, redraw])</p></td>
+<td><p>Draw a collection of points.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polygons</span></code>(polygons[, layer, …])</p></td>
+<td><p>Draw a collection of polygons.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code>([text, color])</p></td>
 <td><p>Draw labels for a selection vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code>([keys, color])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code>([keys, color])</p></td>
 <td><p>Draw a selection of vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code>([timeout])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code>([timeout])</p></td>
 <td><p>Redraw the Rhino view.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code>(path[, width, height, scale, …])</p></td>
+<td><p>Save the current screen view.</p></td>
 </tr>
 </tbody>
 </table>
@@ -140,10 +158,10 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">layer</span></code></p></td>
-<td><p><em>str</em> – The layer that contains the mesh.</p></td>
+<td><p>The layer that contains the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh</span></code></p></td>
-<td><p><em>compas.datastructures.Mesh</em> – The mesh that should be painted.</p></td>
+<td><p>The mesh that should be painted.</p></td>
 </tr>
 </tbody>
 </table>
@@ -191,8 +209,6 @@
 </li>
 </ul>
 </li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../contributions.html">Contributions</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
 </ul>
@@ -224,11 +240,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Sep 21, 2018.
+                Last updated on Jan 08, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.7.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
             
         </footer>
 

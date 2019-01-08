@@ -10,10 +10,6 @@ from compas.geometry import scale_vector
 from compas_rhino.artists import MeshArtist
 
 
-__author__  = 'Tom Van Mele'
-__email__   = 'vanmelet@ethz.ch'
-
-
 __all__ = ['FormArtist']
 
 

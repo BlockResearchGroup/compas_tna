@@ -6,10 +6,6 @@ from compas.datastructures import Mesh
 from compas.utilities import geometric_key
 
 
-__author__  = 'Tom Van Mele'
-__email__   = 'vanmelet@ethz.ch'
-
-
 __all__ = ['Diagram']
 
 

@@ -37,10 +37,6 @@ from compas_tna.utilities import update_z
 from compas_tna.utilities import update_q_from_qind
 
 
-__author__  = 'Tom Van Mele'
-__email__   = 'vanmelet@ethz.ch'
-
-
 __all__ = [
     'vertical_from_zmax',
     'vertical_from_bbox',

@@ -19,10 +19,6 @@ from compas.geometry import cross_vectors
 from compas.numerical import face_matrix
 
 
-__author__  = 'Tom Van Mele'
-__email__   = 'vanmelet@ethz.ch'
-
-
 __all__ = ['LoadUpdater']
 
 

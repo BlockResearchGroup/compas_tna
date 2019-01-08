@@ -7,13 +7,16 @@
 import sys
 import os
 
+import sphinx_compas_theme
+
 # -- General configuration ------------------------------------------------
 
-project          = 'COMPAS TNA'
-copyright        = '2017, Block Research Group - ETH Zurich'
-author           = 'Tom Van Mele'
-release          = '0.1.0'
-version          = '.'.join(release.split('.')[0:2])
+project   = 'COMPAS TNA'
+copyright = '2017, Block Research Group - ETH Zurich'
+author    = 'Tom Van Mele'
+
+release = '0.1.0'
+version = '.'.join(release.split('.')[0:2])
 
 master_doc       = 'index'
 source_suffix    = ['.rst', ]
@@ -89,7 +92,7 @@ intersphinx_mapping = {'python': ('https://docs.python.org/', None)}
 # -- Options for HTML output ----------------------------------------------
 
 html_theme = 'compaspkg'
-html_theme_path = ['../../../compas-dev/sphinx_compas_theme']
+html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
     "package_name"    : "compas_tna",
     "package_title"   : project,

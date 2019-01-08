@@ -5,10 +5,6 @@ from __future__ import division
 from compas_tna.diagrams import Diagram
 
 
-__author__  = 'Tom Van Mele'
-__email__   = 'vanmelet@ethz.ch'
-
-
 __all__ = ['ForceDiagram']
 
 
@@ -72,14 +68,21 @@ class ForceDiagram(Diagram):
         edges     = [index_uv[index] for index in range(self.number_of_edges())]
         return [[key_index[u], key_index[v]] for u, v in edges]
 
+    def get_form_edge_attribute(self, form, key, name, value=None):
+        f1, f2 = key
+        for u, v in form.face_halfedges(f1):
+            if form.halfedge[v][u] == f2:
+                break
+        return form.get_edge_attribute((u, v), name, value=value)
+
     # --------------------------------------------------------------------------
     # visualisation
     # --------------------------------------------------------------------------
 
     def plot(self):
         from compas.plotters import MeshPlotter
-        plotter = MeshPlotter(self)
-        plotter.draw_vertices()
+        plotter = MeshPlotter(self, figsize=(12, 8), tight=True)
+        plotter.draw_vertices(radius=0.05)
         plotter.draw_edges()
         plotter.show()
 

@@ -25,10 +25,6 @@ from compas.geometry import mesh_smooth_area
 from compas_tna.diagrams import Diagram
 
 
-__author__  = 'Tom Van Mele'
-__email__   = 'vanmelet@ethz.ch'
-
-
 __all__ = ['FormDiagram']
 
 
@@ -78,54 +74,37 @@ class FormDiagram(Diagram):
         })
 
     @classmethod
-    def from_rhinomesh(cls, guid):
-        """Construct a FormDiagram from a Rhino mesh represented by a guid.
-
-        Parameters
-        ----------
-        guid : str
-            A globally unique identifier.
-
-        Returns
-        -------
-        FormDiagram
-            A Formdiagram object.
-
-        Examples
-        --------
-        .. code-block:: python
-
-            import compas_rhino
-            from compas_tna.diagrams import FormDiagram
-
-            guid = compas_rhino.select_mesh()
-            form = FormDiagram.from_rhinomesh(guid)
-
-        """
-        from compas_rhino.helpers import mesh_from_guid
-        return mesh_from_guid(cls, guid)
-
-    @classmethod
-    def from_lines(cls, lines, delete_boundary_face=True, precision=None):
+    def from_lines(cls, lines, delete_boundary_face=True, precision=None, **kwargs):
         """Construct a FormDiagram from a list of lines described by start and end point coordinates.
 
         Parameters
         ----------
         lines : list
             A list of pairs of point coordinates.
+        delete_boundary_face : bool, optional
+            Set ``True`` to delete the face on the outside of the boundary, ``False`` to keep it.
+            Default is ``True``.
         precision: str, optional
             The precision of the geometric map that is used to connect the lines.
+            If not specified, the global precision stored in ``compas.PRECISION`` will be used.
 
         Returns
         -------
         FormDiagram
-            A Formdiagram object.
+            A FormDiagram object.
 
         Examples
         --------
         .. code-block:: python
 
+            import compas
+            from compas.files import OBJ
             from compas_tna.diagrams import FormDiagram
+    
+            obj = OBJ(compas.get('lines.obj'))
+            vertices = obj.parser.vertices
+            edges = obj.parser.lines
+            lines = [(vertices[u], vertices[v]) for u, v in edges]
 
             form = FormDiagram.from_lines(lines)
 
@@ -140,6 +119,106 @@ class FormDiagram(Diagram):
         network_find_faces(mesh)
         if delete_boundary_face:
             mesh.delete_face(0)
+        if 'name' in kwargs:
+            mesh.name = kwargs['name']
+        return mesh
+
+    @classmethod
+    def from_rhinomesh(cls, guid, **kwargs):
+        """Construct a FormDiagram from a Rhino mesh represented by a guid.
+
+        Parameters
+        ----------
+        guid : str
+            A globally unique identifier.
+
+        Returns
+        -------
+        FormDiagram
+            A FormDiagram object.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            import compas_rhino
+            from compas_tna.diagrams import FormDiagram
+
+            guid = compas_rhino.select_mesh()
+            form = FormDiagram.from_rhinomesh(guid)
+
+        """
+        from compas_rhino.helpers import mesh_from_guid
+        mesh = mesh_from_guid(cls, guid)
+        if 'name' in kwargs:
+            mesh.name = kwargs['name']
+        return mesh
+
+    @classmethod
+    def from_rhinosurface(cls, guid, **kwargs):
+        """Construct a FormDiagram from a Rhino surface represented by its GUID.
+
+        Parameters
+        ----------
+        guid : str
+            A globally unique identifier.
+
+        Returns
+        -------
+        FormDiagram
+            A FormDiagram object.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            import compas_rhino
+            from compas_tna.diagrams import FormDiagram
+
+            guid = compas_rhino.select_surface()
+            form = FormDiagram.from_rhinosurface(guid)
+
+        """
+        from compas_rhino.helpers import mesh_from_surface_uv
+        mesh = mesh_from_surface_uv(cls, guid)
+        if 'name' in kwargs:
+            mesh.name = kwargs['name']
+        return mesh
+
+    @classmethod
+    def from_rhinolines(cls, guids, delete_boundary_face=True, precision=None, **kwargs):
+        """Construct a FormDiagram from a set of Rhino lines represented by their GUIDs.
+
+        Parameters
+        ----------
+        guids : list
+            A list of GUIDs.
+        delete_boundary_face : bool, optional
+            Set ``True`` to delete the face on the outside of the boundary, ``False`` to keep it.
+            Default is ``True``.
+        precision: str, optional
+            The precision of the geometric map that is used to connect the lines.
+            If not specified, the global precision stored in ``compas.PRECISION`` will be used.
+
+        Returns
+        -------
+        FormDiagram
+            A FormDiagram object.
+
+        Examples
+        --------
+        .. code-block:: python
+
+            import compas_rhino
+            from compas_tna.diagrams import FormDiagram
+
+            guids = compas_rhino.select_lines()
+            form = FormDiagram.from_rhinolines(guids)
+
+        """
+        import compas_rhino
+        lines = compas_rhino.get_line_coordinates(guids)
+        mesh = FormDiagram.from_lines(lines, delete_boundary_face=delete_boundary_face, precision=precision, **kwargs)
         return mesh
 
     def __str__(self):
@@ -258,9 +337,9 @@ class FormDiagram(Diagram):
     # helpers
     # --------------------------------------------------------------------------
 
-    def bbox(self):
-        x, y, z = zip(* self.get_vertices_attributes('xyz'))
-        return (min(x), min(y), min(z)), (max(x), max(y), max(z))
+    # def bbox(self):
+    #     x, y, z = zip(* self.get_vertices_attributes('xyz'))
+    #     return (min(x), min(y), min(z)), (max(x), max(y), max(z))
 
     # --------------------------------------------------------------------------
     # postprocess
@@ -274,8 +353,8 @@ class FormDiagram(Diagram):
                 if l < tol:
                     self.collapse_edge(v, u, t=0.5, allow_boundary=True)
 
-    def smooth(self, fixed, kmax=10):
-        mesh_smooth_area(self, fixed=fixed, kmax=kmax)
+    # def smooth(self, fixed, kmax=10):
+    #     mesh_smooth_area(self, fixed=fixed, kmax=kmax)
 
     # --------------------------------------------------------------------------
     # boundary conditions
@@ -412,10 +491,14 @@ class FormDiagram(Diagram):
 
     def plot(self):
         from compas.plotters import MeshPlotter
-        plotter = MeshPlotter(self)
-        plotter.draw_vertices()
-        plotter.draw_edges()
-        plotter.draw_faces()
+        plotter = MeshPlotter(self, figsize=(12, 8), tight=True)
+        vertexcolor = {}
+        vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
+        vertexcolor.update({key: '#0000ff' for key in self.vertices_where({'is_external': True})})
+        vertexcolor.update({key: '#ff0000' for key in self.vertices_where({'is_anchor': True})})
+        plotter.draw_vertices(facecolor=vertexcolor)
+        plotter.draw_edges(keys=list(self.edges_where({'is_edge': True})))
+        plotter.draw_faces(keys=list(self.faces_where({'is_loaded': True})))
         plotter.show()
 
     def draw(self, layer=None, clear_layer=True):

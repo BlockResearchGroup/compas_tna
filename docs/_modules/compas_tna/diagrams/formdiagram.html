@@ -68,8 +68,6 @@
 <span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">import</span> <span class="nn">compas_tna</span>
 
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">geometric_key</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">pairwise</span>
 
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.mesh</span> <span class="k">import</span> <span class="n">TPL</span>
@@ -80,15 +78,13 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">cross_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">mesh_smooth_area</span>
 
-
-<span class="n">__author__</span>  <span class="o">=</span> <span class="s1">&#39;Tom Van Mele&#39;</span>
-<span class="n">__email__</span>   <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
+<span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="k">import</span> <span class="n">Diagram</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;FormDiagram&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="FormDiagram"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.html#compas_tna.diagrams.FormDiagram">[docs]</a><span class="k">class</span> <span class="nc">FormDiagram</span><span class="p">(</span><span class="n">Mesh</span><span class="p">):</span>
+<div class="viewcode-block" id="FormDiagram"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.html#compas_tna.diagrams.FormDiagram">[docs]</a><span class="k">class</span> <span class="nc">FormDiagram</span><span class="p">(</span><span class="n">Diagram</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="FormDiagram.__init__"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.html#compas_tna.diagrams.FormDiagram.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -108,7 +104,6 @@
             <span class="s1">&#39;rx&#39;</span>          <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;ry&#39;</span>          <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;rz&#39;</span>          <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="s1">&#39;zT&#39;</span>          <span class="p">:</span> <span class="mf">0.0</span>
         <span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
             <span class="s1">&#39;q&#39;</span>           <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
@@ -121,7 +116,6 @@
             <span class="s1">&#39;fmin&#39;</span>        <span class="p">:</span> <span class="mf">1e-7</span><span class="p">,</span>
             <span class="s1">&#39;fmax&#39;</span>        <span class="p">:</span> <span class="mf">1e+7</span><span class="p">,</span>
             <span class="s1">&#39;a&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
-            <span class="s1">&#39;is_ind&#39;</span>      <span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
             <span class="s1">&#39;is_edge&#39;</span>     <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
             <span class="s1">&#39;is_external&#39;</span> <span class="p">:</span> <span class="kc">False</span>
         <span class="p">})</span>
@@ -129,86 +123,44 @@
             <span class="s1">&#39;is_loaded&#39;</span><span class="p">:</span> <span class="kc">True</span>
         <span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-            <span class="s1">&#39;name&#39;</span>                       <span class="p">:</span> <span class="s1">&#39;FormDiagram&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;layer&#39;</span>                      <span class="p">:</span> <span class="s1">&#39;FormDiagram&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;color.vertex&#39;</span>               <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-            <span class="s1">&#39;color.edge&#39;</span>                 <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.face&#39;</span>                 <span class="p">:</span> <span class="p">(</span><span class="mi">210</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="mi">210</span><span class="p">),</span>
-            <span class="s1">&#39;color.vertex:is_anchor&#39;</span>     <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.vertex:is_fixed&#39;</span>      <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.vertex:is_supported&#39;</span>  <span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.vertex:is_prescribed&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.reaction&#39;</span>             <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.residual&#39;</span>             <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-            <span class="s1">&#39;color.load&#39;</span>                 <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-            <span class="s1">&#39;color.selfweight&#39;</span>           <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-            <span class="s1">&#39;color.force&#39;</span>                <span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
-            <span class="s1">&#39;scale.reaction&#39;</span>             <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-            <span class="s1">&#39;scale.residual&#39;</span>             <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-            <span class="s1">&#39;scale.load&#39;</span>                 <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-            <span class="s1">&#39;scale.force&#39;</span>                <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-            <span class="s1">&#39;scale.selfweight&#39;</span>           <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-            <span class="s1">&#39;tol.reaction&#39;</span>               <span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
-            <span class="s1">&#39;tol.residual&#39;</span>               <span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
-            <span class="s1">&#39;tol.load&#39;</span>                   <span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
-            <span class="s1">&#39;tol.force&#39;</span>                  <span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
-            <span class="s1">&#39;tol.selfweight&#39;</span>             <span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
-            <span class="s1">&#39;density&#39;</span>                    <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-            <span class="s1">&#39;feet.scale&#39;</span>                 <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-            <span class="s1">&#39;feet.alpha&#39;</span>                 <span class="p">:</span> <span class="mi">45</span><span class="p">,</span>
-            <span class="s1">&#39;feet.tol&#39;</span>                   <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-            <span class="s1">&#39;feet.mode&#39;</span>                  <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span>       <span class="p">:</span> <span class="s1">&#39;FormDiagram&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;feet.scale&#39;</span> <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+            <span class="s1">&#39;feet.alpha&#39;</span> <span class="p">:</span> <span class="mi">45</span><span class="p">,</span>
+            <span class="s1">&#39;feet.tol&#39;</span>   <span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
         <span class="p">})</span></div>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_rhinomesh</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">guid</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Construct a FormDiagram from a Rhino mesh represented by a guid.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        guid : str</span>
-<span class="sd">            A globally unique identifier.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        FormDiagram</span>
-<span class="sd">            A Formdiagram object.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            import compas_rhino</span>
-<span class="sd">            from compas_tna.diagrams import FormDiagram</span>
-
-<span class="sd">            guid = compas_rhino.select_mesh()</span>
-<span class="sd">            form = FormDiagram.from_rhinomesh(guid)</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="k">import</span> <span class="n">mesh_from_guid</span>
-        <span class="k">return</span> <span class="n">mesh_from_guid</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">guid</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_lines</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">delete_boundary_face</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">from_lines</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">delete_boundary_face</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Construct a FormDiagram from a list of lines described by start and end point coordinates.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        lines : list</span>
 <span class="sd">            A list of pairs of point coordinates.</span>
+<span class="sd">        delete_boundary_face : bool, optional</span>
+<span class="sd">            Set ``True`` to delete the face on the outside of the boundary, ``False`` to keep it.</span>
+<span class="sd">            Default is ``True``.</span>
 <span class="sd">        precision: str, optional</span>
 <span class="sd">            The precision of the geometric map that is used to connect the lines.</span>
+<span class="sd">            If not specified, the global precision stored in ``compas.PRECISION`` will be used.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        FormDiagram</span>
-<span class="sd">            A Formdiagram object.</span>
+<span class="sd">            A FormDiagram object.</span>
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        .. code-block:: python</span>
 
+<span class="sd">            import compas</span>
+<span class="sd">            from compas.files import OBJ</span>
 <span class="sd">            from compas_tna.diagrams import FormDiagram</span>
+<span class="sd">    </span>
+<span class="sd">            obj = OBJ(compas.get(&#39;lines.obj&#39;))</span>
+<span class="sd">            vertices = obj.parser.vertices</span>
+<span class="sd">            edges = obj.parser.lines</span>
+<span class="sd">            lines = [(vertices[u], vertices[v]) for u, v in edges]</span>
 
 <span class="sd">            form = FormDiagram.from_lines(lines)</span>
 
@@ -223,6 +175,106 @@
         <span class="n">network_find_faces</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">delete_boundary_face</span><span class="p">:</span>
             <span class="n">mesh</span><span class="o">.</span><span class="n">delete_face</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">mesh</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_rhinomesh</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">guid</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a FormDiagram from a Rhino mesh represented by a guid.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        guid : str</span>
+<span class="sd">            A globally unique identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        FormDiagram</span>
+<span class="sd">            A FormDiagram object.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import compas_rhino</span>
+<span class="sd">            from compas_tna.diagrams import FormDiagram</span>
+
+<span class="sd">            guid = compas_rhino.select_mesh()</span>
+<span class="sd">            form = FormDiagram.from_rhinomesh(guid)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="k">import</span> <span class="n">mesh_from_guid</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh_from_guid</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">guid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">mesh</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_rhinosurface</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">guid</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a FormDiagram from a Rhino surface represented by its GUID.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        guid : str</span>
+<span class="sd">            A globally unique identifier.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        FormDiagram</span>
+<span class="sd">            A FormDiagram object.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import compas_rhino</span>
+<span class="sd">            from compas_tna.diagrams import FormDiagram</span>
+
+<span class="sd">            guid = compas_rhino.select_surface()</span>
+<span class="sd">            form = FormDiagram.from_rhinosurface(guid)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">compas_rhino.helpers</span> <span class="k">import</span> <span class="n">mesh_from_surface_uv</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh_from_surface_uv</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">guid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;name&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">mesh</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">mesh</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_rhinolines</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">guids</span><span class="p">,</span> <span class="n">delete_boundary_face</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct a FormDiagram from a set of Rhino lines represented by their GUIDs.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        guids : list</span>
+<span class="sd">            A list of GUIDs.</span>
+<span class="sd">        delete_boundary_face : bool, optional</span>
+<span class="sd">            Set ``True`` to delete the face on the outside of the boundary, ``False`` to keep it.</span>
+<span class="sd">            Default is ``True``.</span>
+<span class="sd">        precision: str, optional</span>
+<span class="sd">            The precision of the geometric map that is used to connect the lines.</span>
+<span class="sd">            If not specified, the global precision stored in ``compas.PRECISION`` will be used.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        FormDiagram</span>
+<span class="sd">            A FormDiagram object.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            import compas_rhino</span>
+<span class="sd">            from compas_tna.diagrams import FormDiagram</span>
+
+<span class="sd">            guids = compas_rhino.select_lines()</span>
+<span class="sd">            form = FormDiagram.from_rhinolines(guids)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">compas_rhino</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_line_coordinates</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">delete_boundary_face</span><span class="o">=</span><span class="n">delete_boundary_face</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mesh</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -341,9 +393,9 @@
     <span class="c1"># helpers</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-    <span class="k">def</span> <span class="nf">bbox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">(</span><span class="s1">&#39;xyz&#39;</span><span class="p">))</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">z</span><span class="p">)),</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">z</span><span class="p">))</span>
+    <span class="c1"># def bbox(self):</span>
+    <span class="c1">#     x, y, z = zip(* self.get_vertices_attributes(&#39;xyz&#39;))</span>
+    <span class="c1">#     return (min(x), min(y), min(z)), (max(x), max(y), max(z))</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># postprocess</span>
@@ -357,8 +409,8 @@
                 <span class="k">if</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">collapse_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">smooth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
-        <span class="n">mesh_smooth_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="n">kmax</span><span class="p">)</span>
+    <span class="c1"># def smooth(self, fixed, kmax=10):</span>
+    <span class="c1">#     mesh_smooth_area(self, fixed=fixed, kmax=kmax)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># boundary conditions</span>
@@ -420,16 +472,16 @@
         <span class="n">tol</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;feet.tol&#39;</span><span class="p">]</span>
 
         <span class="n">key_foot</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">key_xy</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;xy&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+        <span class="n">key_xyz</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">segments</span><span class="p">):</span>
             <span class="n">key</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">after</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="n">before</span> <span class="o">=</span> <span class="n">segments</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
 
-            <span class="n">b</span> <span class="o">=</span> <span class="n">key_xy</span><span class="p">[</span><span class="n">before</span><span class="p">]</span>
-            <span class="n">o</span> <span class="o">=</span> <span class="n">key_xy</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">key_xy</span><span class="p">[</span><span class="n">after</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">before</span><span class="p">]</span>
+            <span class="n">o</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">key_xyz</span><span class="p">[</span><span class="n">after</span><span class="p">]</span>
 
             <span class="n">ob</span> <span class="o">=</span> <span class="n">normalize_vector_xy</span><span class="p">(</span><span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">o</span><span class="p">))</span>
             <span class="n">oa</span> <span class="o">=</span> <span class="n">normalize_vector_xy</span><span class="p">(</span><span class="n">subtract_vectors_xy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">o</span><span class="p">))</span>
@@ -451,14 +503,14 @@
 
             <span class="k">if</span> <span class="n">feet</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">add_vectors_xy</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
-                <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">is_fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">is_fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="n">key_foot</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span>
 
             <span class="k">elif</span> <span class="n">feet</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">,</span> <span class="n">lz</span> <span class="o">=</span> <span class="n">add_vectors_xy</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">rotate</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="o">+</span><span class="n">alpha</span><span class="p">))</span>
                 <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span><span class="p">,</span> <span class="n">rz</span> <span class="o">=</span> <span class="n">add_vectors_xy</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">rotate</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="o">-</span><span class="n">alpha</span><span class="p">))</span>
-                <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">lx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ly</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">is_fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">rx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ry</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">is_fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">lx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ly</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">is_fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">rx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">ry</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">is_fixed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">is_external</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
                 <span class="n">key_foot</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span>
 
             <span class="k">else</span><span class="p">:</span>
@@ -490,98 +542,19 @@
                 <span class="k">pass</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="c1"># selections</span>
-    <span class="c1"># --------------------------------------------------------------------------</span>
-
-    <span class="k">def</span> <span class="nf">get_continuous_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uv</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-            <span class="n">edges</span> <span class="o">=</span> <span class="p">[</span><span class="n">uv</span><span class="p">]</span>
-
-            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">uv</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="n">b</span>
-            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-                    <span class="k">break</span>
-                <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="n">end</span><span class="p">:</span>
-                    <span class="k">break</span>
-                <span class="k">if</span> <span class="n">stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">a</span> <span class="o">==</span> <span class="n">stop</span><span class="p">:</span>
-                    <span class="k">break</span> 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vertex_attribute</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;is_anchor&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-                    <span class="k">break</span>
-                <span class="n">nbrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">i</span> <span class="o">=</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-                <span class="n">b</span> <span class="o">=</span> <span class="n">nbrs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
-                <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
-                <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span>
-
-            <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">uv</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="n">b</span>
-            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-                    <span class="k">break</span>
-                <span class="k">if</span> <span class="n">a</span> <span class="o">==</span> <span class="n">end</span><span class="p">:</span>
-                    <span class="k">break</span>
-                <span class="k">if</span> <span class="n">stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">a</span> <span class="o">==</span> <span class="n">stop</span><span class="p">:</span>
-                    <span class="k">break</span> 
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_vertex_attribute</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;is_anchor&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-                    <span class="k">break</span>
-                <span class="n">nbrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">i</span> <span class="o">=</span> <span class="n">nbrs</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-                <span class="n">b</span> <span class="o">=</span> <span class="n">nbrs</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
-                <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
-                <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span>
-
-            <span class="n">edgeset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()))</span>
-            <span class="k">return</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">edgeset</span> <span class="k">else</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span>
-
-
-    <span class="k">def</span> <span class="nf">get_parallel_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uv</span><span class="p">):</span>
-        <span class="n">edges</span> <span class="o">=</span> <span class="p">[</span><span class="n">uv</span><span class="p">]</span>
-
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a0</span><span class="p">,</span> <span class="n">b0</span> <span class="o">=</span> <span class="n">uv</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">b</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">break</span>
-            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-                <span class="k">break</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">b</span> <span class="ow">in</span> <span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">):</span>
-                <span class="k">break</span>
-            <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
-
-        <span class="n">edges</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-        <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">b0</span><span class="p">,</span> <span class="n">a0</span> <span class="o">=</span> <span class="n">uv</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">a</span><span class="p">][</span><span class="n">b</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">break</span>
-            <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">:</span>
-                <span class="k">break</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="n">vertices</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="n">vertices</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">)</span> <span class="ow">and</span> <span class="n">b</span> <span class="ow">in</span> <span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">b0</span><span class="p">):</span>
-                <span class="k">break</span>
-            <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">))</span>
-
-        <span class="n">edgeset</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()))</span>
-        <span class="k">return</span> <span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="n">edgeset</span> <span class="k">else</span> <span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span>
-
-    <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># visualisation</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
     <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">compas.plotters</span> <span class="k">import</span> <span class="n">MeshPlotter</span>
-        <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
-        <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-        <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
+        <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">tight</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">vertexcolor</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">vertexcolor</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#00ff00&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
+        <span class="n">vertexcolor</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#0000ff&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_external&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
+        <span class="n">vertexcolor</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">vertexcolor</span><span class="p">)</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})))</span>
+        <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces_where</span><span class="p">({</span><span class="s1">&#39;is_loaded&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})))</span>
         <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -650,8 +623,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../api.html">API Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../contributions.html">Contributions</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
 </ul>
@@ -680,11 +651,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Sep 21, 2018.
+                Last updated on Jan 08, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.7.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
             
         </footer>
 

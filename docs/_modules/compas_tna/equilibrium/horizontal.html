@@ -84,10 +84,6 @@
 <span class="kn">from</span> <span class="nn">compas_tna.utilities</span> <span class="k">import</span> <span class="n">parallelise_nodal</span>
 
 
-<span class="n">__author__</span>  <span class="o">=</span> <span class="s1">&#39;Tom Van Mele&#39;</span>
-<span class="n">__email__</span>   <span class="o">=</span> <span class="s1">&#39;vanmelet@ethz.ch&#39;</span>
-
-
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;horizontal&#39;</span><span class="p">,</span>
     <span class="s1">&#39;horizontal_xfunc&#39;</span><span class="p">,</span>
@@ -250,7 +246,7 @@
     <span class="c1"># angle deviations</span>
     <span class="c1"># note that this does not account for flipped edges!</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">angle_vectors_xy</span><span class="p">(</span><span class="n">uv</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_uv</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">angle_vectors_xy</span><span class="p">(</span><span class="n">uv</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_uv</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))]</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># update form</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -365,7 +361,7 @@
     <span class="c1"># angle deviations</span>
     <span class="c1"># note that this does not account for flipped edges!</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
-    <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">angle_vectors_xy</span><span class="p">(</span><span class="n">uv</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_uv</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))]</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">angle_vectors_xy</span><span class="p">(</span><span class="n">uv</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_uv</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))]</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># update form</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -427,8 +423,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../api.html">API Reference</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../contributions.html">Contributions</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../../devguide.html">Developer Guide</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
 </ul>
@@ -457,11 +451,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Sep 21, 2018.
+                Last updated on Jan 08, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.7.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
             
         </footer>
 

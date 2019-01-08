@@ -10,7 +10,5 @@ compas_tna
    gettingstarted
    examples
    api
-   contributions
-   devguide
    license
    citing

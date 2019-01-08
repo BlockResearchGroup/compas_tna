@@ -16,6 +16,9 @@ compas\_tna.diagrams.ForceDiagram
       ~ForceDiagram.__init__
       ~ForceDiagram.add_face
       ~ForceDiagram.add_vertex
+      ~ForceDiagram.area
+      ~ForceDiagram.boundaries
+      ~ForceDiagram.centroid
       ~ForceDiagram.clear
       ~ForceDiagram.clear_facedict
       ~ForceDiagram.clear_halfedgedict
@@ -27,6 +30,7 @@ compas\_tna.diagrams.ForceDiagram
       ~ForceDiagram.cull_vertices
       ~ForceDiagram.delete_face
       ~ForceDiagram.delete_vertex
+      ~ForceDiagram.draw
       ~ForceDiagram.dump
       ~ForceDiagram.dumps
       ~ForceDiagram.edge_coordinates
@@ -41,6 +45,7 @@ compas\_tna.diagrams.ForceDiagram
       ~ForceDiagram.edges
       ~ForceDiagram.edges_on_boundary
       ~ForceDiagram.edges_where
+      ~ForceDiagram.euler
       ~ForceDiagram.face_adjacency_halfedge
       ~ForceDiagram.face_area
       ~ForceDiagram.face_center
@@ -68,6 +73,7 @@ compas\_tna.diagrams.ForceDiagram
       ~ForceDiagram.from_json
       ~ForceDiagram.from_lines
       ~ForceDiagram.from_obj
+      ~ForceDiagram.from_off
       ~ForceDiagram.from_pickle
       ~ForceDiagram.from_ply
       ~ForceDiagram.from_points
@@ -75,19 +81,24 @@ compas\_tna.diagrams.ForceDiagram
       ~ForceDiagram.from_polyhedron
       ~ForceDiagram.from_stl
       ~ForceDiagram.from_vertices_and_faces
+      ~ForceDiagram.genus
       ~ForceDiagram.get_any_edge
       ~ForceDiagram.get_any_face
       ~ForceDiagram.get_any_face_vertex
       ~ForceDiagram.get_any_vertex
       ~ForceDiagram.get_any_vertices
+      ~ForceDiagram.get_continuous_edges
       ~ForceDiagram.get_edge_attribute
       ~ForceDiagram.get_edge_attributes
       ~ForceDiagram.get_edges_attribute
       ~ForceDiagram.get_edges_attributes
+      ~ForceDiagram.get_edges_of_opening
       ~ForceDiagram.get_face_attribute
       ~ForceDiagram.get_face_attributes
       ~ForceDiagram.get_faces_attribute
       ~ForceDiagram.get_faces_attributes
+      ~ForceDiagram.get_form_edge_attribute
+      ~ForceDiagram.get_parallel_edges
       ~ForceDiagram.get_vertex_attribute
       ~ForceDiagram.get_vertex_attributes
       ~ForceDiagram.get_vertices_attribute
@@ -99,6 +110,8 @@ compas\_tna.diagrams.ForceDiagram
       ~ForceDiagram.index_uv
       ~ForceDiagram.insert_vertex
       ~ForceDiagram.is_edge_on_boundary
+      ~ForceDiagram.is_empty
+      ~ForceDiagram.is_face_on_boundary
       ~ForceDiagram.is_manifold
       ~ForceDiagram.is_orientable
       ~ForceDiagram.is_quadmesh
@@ -112,6 +125,7 @@ compas\_tna.diagrams.ForceDiagram
       ~ForceDiagram.leaves
       ~ForceDiagram.load
       ~ForceDiagram.loads
+      ~ForceDiagram.normal
       ~ForceDiagram.number_of_edges
       ~ForceDiagram.number_of_faces
       ~ForceDiagram.number_of_vertices

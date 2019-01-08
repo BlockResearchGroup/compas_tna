@@ -18,6 +18,7 @@ compas\_tna.rhino.ForceArtist
       ~ForceArtist.clear_edgelabels
       ~ForceArtist.clear_edges
       ~ForceArtist.clear_facelabels
+      ~ForceArtist.clear_facenormals
       ~ForceArtist.clear_faces
       ~ForceArtist.clear_layer
       ~ForceArtist.clear_vertexlabels
@@ -26,10 +27,15 @@ compas\_tna.rhino.ForceArtist
       ~ForceArtist.draw_edgelabels
       ~ForceArtist.draw_edges
       ~ForceArtist.draw_facelabels
+      ~ForceArtist.draw_facenormals
       ~ForceArtist.draw_faces
+      ~ForceArtist.draw_lines
+      ~ForceArtist.draw_points
+      ~ForceArtist.draw_polygons
       ~ForceArtist.draw_vertexlabels
       ~ForceArtist.draw_vertices
       ~ForceArtist.redraw
+      ~ForceArtist.save
    
    
 

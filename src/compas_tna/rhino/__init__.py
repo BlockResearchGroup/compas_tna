@@ -29,14 +29,7 @@ Artists
 from __future__ import absolute_import
 
 from .diagramhelper import *
-from . import diagramhelper
-
 from .formartist import *
-from . import formartist
-
 from .forceartist import *
-from . import forceartist
 
-
-__all__  = diagramhelper.__all__
-__all__ += formartist.__all__ + forceartist.__all__
+__all__ = [name for name in dir() if not name.startswith('_')]
