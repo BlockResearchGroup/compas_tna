@@ -68,7 +68,7 @@ class FormDiagram(Diagram):
         })
         self.attributes.update({
             'name'       : 'FormDiagram',
-            'feet.scale' : 0.1,
+            'feet.scale' : 1.0,
             'feet.alpha' : 45,
             'feet.tol'   : 0.1,
         })
@@ -298,7 +298,7 @@ class FormDiagram(Diagram):
 
     def leaves(self):
         """Yields vertices with degree 1.
-        
+
         Returns
         -------
         iterator
@@ -309,7 +309,7 @@ class FormDiagram(Diagram):
 
     def corners(self):
         """Yields vertices with degree 2.
-        
+
         Returns
         -------
         iterator

@@ -82,7 +82,8 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
     folders = []
 
     if docs:
-        folders.append('docs/api/generated')
+        folders.append('docs/')
+        folders.append('docsource/api/generated')
 
     folders.append('dist/')
 
@@ -108,11 +109,11 @@ def docs(ctx, doctest=False, rebuild=True, check_links=False):
         clean(ctx)
 
     if doctest:
-        ctx.run('sphinx-build -b doctest docsource dist/docs')
+        ctx.run('sphinx-build -b doctest docsource docs')
 
-    ctx.run('sphinx-build -b html docsource dist/docs')
+    ctx.run('sphinx-build -b html docsource docs')
     if check_links:
-        ctx.run('sphinx-build -b linkcheck docsource dist/docs')
+        ctx.run('sphinx-build -b linkcheck docsource docs')
 
 
 @task()
