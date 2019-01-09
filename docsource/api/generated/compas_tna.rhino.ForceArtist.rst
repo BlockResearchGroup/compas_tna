@@ -1,17 +1,19 @@
-compas\_tna.rhino.ForceArtist
-=============================
+.. rst-class:: detail
+
+ForceArtist
+============================
 
 .. currentmodule:: compas_tna.rhino
 
 .. autoclass:: ForceArtist
 
    
-   .. automethod:: __init__
-
    
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree:
+
    
       ~ForceArtist.__init__
       ~ForceArtist.clear

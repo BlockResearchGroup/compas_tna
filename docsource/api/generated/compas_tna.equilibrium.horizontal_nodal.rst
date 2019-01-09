@@ -1,5 +1,7 @@
-compas\_tna.equilibrium.horizontal\_nodal
-=========================================
+.. rst-class:: detail
+
+horizontal_nodal
+=======================================
 
 .. currentmodule:: compas_tna.equilibrium
 

@@ -31,6 +31,8 @@ __all__ = ['FormDiagram']
 class FormDiagram(Diagram):
     """"""
 
+    __module__ = 'compas_tna.diagrams'
+
     def __init__(self):
         super(FormDiagram, self).__init__()
         self.default_vertex_attributes.update({

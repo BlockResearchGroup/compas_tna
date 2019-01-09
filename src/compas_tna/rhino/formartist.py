@@ -15,6 +15,9 @@ __all__ = ['FormArtist']
 
 class FormArtist(MeshArtist):
 
+    __module__ = 'compas_tna.rhino'
+
+
     def __init__(self, form, layer=None):
         super(FormArtist, self).__init__(form, layer=layer)
         self.defaults.update({

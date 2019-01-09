@@ -1,17 +1,19 @@
-compas\_tna.rhino.FormArtist
-============================
+.. rst-class:: detail
+
+FormArtist
+===========================
 
 .. currentmodule:: compas_tna.rhino
 
 .. autoclass:: FormArtist
 
    
-   .. automethod:: __init__
-
    
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree:
+
    
       ~FormArtist.__init__
       ~FormArtist.clear

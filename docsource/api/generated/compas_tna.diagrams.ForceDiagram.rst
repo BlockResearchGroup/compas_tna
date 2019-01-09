@@ -1,17 +1,19 @@
-compas\_tna.diagrams.ForceDiagram
-=================================
+.. rst-class:: detail
+
+ForceDiagram
+================================
 
 .. currentmodule:: compas_tna.diagrams
 
 .. autoclass:: ForceDiagram
 
    
-   .. automethod:: __init__
-
    
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree:
+
    
       ~ForceDiagram.__init__
       ~ForceDiagram.add_face

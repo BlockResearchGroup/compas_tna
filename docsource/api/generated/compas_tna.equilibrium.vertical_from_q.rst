@@ -1,5 +1,7 @@
-compas\_tna.equilibrium.vertical\_from\_q
-=========================================
+.. rst-class:: detail
+
+vertical_from_q
+======================================
 
 .. currentmodule:: compas_tna.equilibrium
 

@@ -13,6 +13,8 @@ __all__ = ['ForceArtist']
 
 class ForceArtist(MeshArtist):
 
+    __module__ = 'compas_tna.rhino'
+
     @property
     def force(self):
         return self.datastructure

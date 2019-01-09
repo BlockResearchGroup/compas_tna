@@ -1,5 +1,7 @@
-compas\_tna.equilibrium.vertical\_from\_zmax
-============================================
+.. rst-class:: detail
+
+vertical_from_zmax
+=========================================
 
 .. currentmodule:: compas_tna.equilibrium
 

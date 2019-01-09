@@ -1,17 +1,19 @@
-compas\_tna.diagrams.FormDiagram
-================================
+.. rst-class:: detail
+
+FormDiagram
+===============================
 
 .. currentmodule:: compas_tna.diagrams
 
 .. autoclass:: FormDiagram
 
    
-   .. automethod:: __init__
-
    
    .. rubric:: Methods
 
    .. autosummary::
+      :toctree:
+
    
       ~FormDiagram.__init__
       ~FormDiagram.add_face

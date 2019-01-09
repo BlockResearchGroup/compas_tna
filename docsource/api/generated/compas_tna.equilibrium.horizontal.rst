@@ -1,5 +1,7 @@
-compas\_tna.equilibrium.horizontal
-==================================
+.. rst-class:: detail
+
+horizontal
+=================================
 
 .. currentmodule:: compas_tna.equilibrium
 

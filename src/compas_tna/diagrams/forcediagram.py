@@ -11,6 +11,8 @@ __all__ = ['ForceDiagram']
 class ForceDiagram(Diagram):
     """"""
 
+    __module__ = 'compas_tna.diagrams'
+
     def __init__(self):
         super(ForceDiagram, self).__init__()
         self.scale = 1.0
