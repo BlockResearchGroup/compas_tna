@@ -59,7 +59,100 @@
 
                         <div class="section" id="vertical-equilibrium">
 <h1>Vertical equilibrium</h1>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span>
+<div class="figure">
+<img alt="../_images/equilibrium_vertical.png" src="../_images/equilibrium_vertical.png" />
+</div>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Compute vertical equilibrium of a three-dimensional force network.</span>
+
+<span class="sd">There are no external loads.</span>
+<span class="sd">Only selfweight is taken into account.</span>
+
+<span class="sd">1. Load the form diagram from a json file.</span>
+
+<span class="sd">    Here we use a json file representing a form diagram that has already been</span>
+<span class="sd">    pre-processed.</span>
+
+<span class="sd">2. Initialise the force diagram.</span>
+
+<span class="sd">    The force diagram is initialised as the dual of the form diagram.</span>
+
+<span class="sd">3. Compute horizontal equilibrium.</span>
+
+<span class="sd">    This is achieved by parallelising the form and force diagrams.</span>
+<span class="sd">    In this example, we keep the geometry of the form diagram fixed (alpha 100).</span>
+<span class="sd">    After this, the form and force diagram are not just dual but also reciprocal.</span>
+
+<span class="sd">4. Compute vertical equilibrium.</span>
+
+<span class="sd">    The equilibrium shape of the force network depends on the distribution of</span>
+<span class="sd">    horizontal forces in the form diagram, and on their magnitude in relation to</span>
+<span class="sd">    the loads.</span>
+
+<span class="sd">    Once the distribution of horizontal forces is fixed, the magnitude can be</span>
+<span class="sd">    determined by simply choosing a scale factor.</span>
+
+<span class="sd">    However, it is difficult to predict which scale factor will result in a</span>
+<span class="sd">    well-proportioned equilibrium shape.</span>
+
+<span class="sd">    Instead, the scale factor can be conveniently determined from the desired maximum</span>
+<span class="sd">    height of the force network using ``vertical_from_zmax``.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">compas_tna</span>
+
+<span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="kn">import</span> <span class="n">FormDiagram</span>
+<span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="kn">import</span> <span class="n">ForceDiagram</span>
+
+<span class="kn">from</span> <span class="nn">compas_tna.equilibrium</span> <span class="kn">import</span> <span class="n">horizontal</span>
+<span class="kn">from</span> <span class="nn">compas_tna.equilibrium</span> <span class="kn">import</span> <span class="n">vertical_from_zmax</span>
+
+<span class="kn">from</span> <span class="nn">compas.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">i_to_black</span>
+
+
+<span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">compas_tna</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;form_boundaryconditions.json&#39;</span><span class="p">))</span>
+
+<span class="n">force</span> <span class="o">=</span> <span class="n">ForceDiagram</span><span class="o">.</span><span class="n">from_formdiagram</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+
+<span class="n">horizontal</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">scale</span> <span class="o">=</span> <span class="n">vertical_from_zmax</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># visualise</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="n">z</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">get_vertices_attribute</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="n">zmin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="n">zmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="n">zrng</span> <span class="o">=</span> <span class="n">zmax</span> <span class="o">-</span> <span class="n">zmin</span>
+
+<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">tight</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span>
+    <span class="n">keys</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_external&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">})),</span>
+    <span class="n">facecolor</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">i_to_black</span><span class="p">((</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">zmin</span><span class="p">)</span> <span class="o">/</span> <span class="n">zrng</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_external&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">},</span> <span class="bp">True</span><span class="p">)},</span>
+    <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span>
+<span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span>
+    <span class="n">keys</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})),</span>
+    <span class="n">color</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#00ff00&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_external&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})},</span>
+    <span class="n">width</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="mf">2.0</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_external&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">})}</span>
+<span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span>
+    <span class="n">keys</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">faces_where</span><span class="p">({</span><span class="s1">&#39;is_loaded&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">}))</span>
+<span class="p">)</span>
+
+<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
 </div>
 </div>
@@ -135,7 +228,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 08, 2019.
+                Last updated on Jan 09, 2019.
             
 
             

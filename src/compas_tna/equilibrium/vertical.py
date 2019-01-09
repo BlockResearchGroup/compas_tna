@@ -7,15 +7,7 @@ import sys
 try:
     from numpy import array
     from numpy import float64
-    from numpy import zeros
-    from numpy import diagflat
-    from numpy import absolute
-    from numpy import reciprocal
-    from numpy import vstack
-    from numpy import hstack
 
-    from scipy.linalg import norm
-    from scipy.linalg import solve
     from scipy.sparse import diags
     from scipy.sparse.linalg import spsolve
 
@@ -23,18 +15,14 @@ except ImportError:
     if 'ironpython' not in sys.version.lower():
         raise
 
-import compas
 import compas_tna
 
 from compas.utilities import XFunc
-
 from compas.numerical import connectivity_matrix
-from compas.numerical import equilibrium_matrix
 from compas.numerical import normrow
 
 from compas_tna.utilities import LoadUpdater
 from compas_tna.utilities import update_z
-from compas_tna.utilities import update_q_from_qind
 
 
 __all__ = [
@@ -140,6 +128,11 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
         consider specified point loads.
     display : bool
         If True, information about the current iteration will be displayed.
+
+    Returns
+    -------
+    float
+        The scale of the forcedensities.
 
     """
     xtol2 = xtol ** 2

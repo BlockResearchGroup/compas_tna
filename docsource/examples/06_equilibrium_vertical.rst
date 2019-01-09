@@ -3,7 +3,7 @@ Vertical equilibrium
 ********************************************************************************
 
 
-.. .. plot:: ../examples/equilibrium_vertical.py
+.. plot:: ../examples/equilibrium_vertical.py
 
 
 .. literalinclude:: /../examples/equilibrium_vertical.py
