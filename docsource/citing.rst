@@ -2,7 +2,7 @@
 Citing
 ********************************************************************************
 
-.. parsed-literal::
+.. code-block:: none
 
     @article{Block2016,
         author  = "Block, P. and Van Mele, T. and Rippmann, M.",
@@ -17,7 +17,7 @@ Citing
         note    = "Special issue S. Peters and A. Trummer (Eds.) - 'Structural Affairs'",
     }
 
-.. parsed-literal::
+.. code-block:: none
 
     @inproceedings{Rippmann2013,
         author    = "Rippmann, M. and Block, P.",
@@ -35,7 +35,7 @@ Citing
         note      = "",
     }
 
-.. parsed-literal::
+.. code-block:: none
 
     @article{Rippmann2012,
         author  = "Rippmann, M. and Lachauer, L. and Block, P.",
@@ -50,7 +50,7 @@ Citing
         note    = "",
     }
 
-.. parsed-literal::
+.. code-block:: none
 
     @article{VanMele2012,
         author  = "Van Mele, T. and Lachauer, L. and Rippmann, M. and Block, P.",

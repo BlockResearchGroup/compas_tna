@@ -14,13 +14,14 @@ import compas_tna
 
 from compas.utilities import pairwise
 
-from compas.datastructures.mesh.mesh import TPL
+from compas.datastructures.mesh._mesh import TPL
 
 from compas.geometry import subtract_vectors_xy
 from compas.geometry import add_vectors_xy
 from compas.geometry import normalize_vector_xy
 from compas.geometry import cross_vectors
-from compas.geometry import mesh_smooth_area
+
+from compas.datastructures import mesh_smooth_area
 
 from compas_tna.diagrams import Diagram
 
@@ -102,7 +103,7 @@ class FormDiagram(Diagram):
             import compas
             from compas.files import OBJ
             from compas_tna.diagrams import FormDiagram
-    
+
             obj = OBJ(compas.get('lines.obj'))
             vertices = obj.parser.vertices
             edges = obj.parser.lines
@@ -111,7 +112,7 @@ class FormDiagram(Diagram):
             form = FormDiagram.from_lines(lines)
 
         """
-        from compas.topology import network_find_faces
+        from compas.datastructures import network_find_faces
         from compas.datastructures import Network
         network = Network.from_lines(lines, precision=precision)
         mesh = cls()
@@ -483,7 +484,7 @@ class FormDiagram(Diagram):
                 self.set_edge_attribute((l, la), 'is_external', True)
                 self.set_edge_attribute((lb, la), 'is_edge', False)
                 self.set_edge_attribute((la, rb), 'is_edge', False)
-            
+
             else:
                 pass
 
@@ -534,6 +535,6 @@ if __name__ == '__main__':
     edges    = obj.parser.lines
     lines    = [(vertices[u], vertices[v], 0) for u, v in edges]
 
-    form = FormDiagram.from_lines(lines)
+    form = FormDiagram.from_lines(lines, delete_boundary_face=False)
 
     form.plot()

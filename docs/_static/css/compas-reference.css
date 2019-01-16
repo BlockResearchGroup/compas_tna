@@ -166,7 +166,7 @@ table {
 .field-list dd {
   padding: 0 2rem; }
 
-.field-list dd ul {
+.field-list dd > ul {
   padding-left: 0; }
 
 .footnote dt,

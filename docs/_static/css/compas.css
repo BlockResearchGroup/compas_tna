@@ -378,6 +378,10 @@ table {
 	padding: 2rem;
 }
 
+.nohighlight pre {
+	background-color: #eee;
+}
+
 .language-none pre {
 	background-color: #eee;
 }

@@ -7,48 +7,49 @@ ForceArtist
 
 .. autoclass:: ForceArtist
 
-   
-   
-   .. rubric:: Methods
+    
+    
 
-   .. autosummary::
-      :toctree:
+    .. rubric:: Methods
 
-   
-      ~ForceArtist.__init__
-      ~ForceArtist.clear
-      ~ForceArtist.clear_edgelabels
-      ~ForceArtist.clear_edges
-      ~ForceArtist.clear_facelabels
-      ~ForceArtist.clear_facenormals
-      ~ForceArtist.clear_faces
-      ~ForceArtist.clear_layer
-      ~ForceArtist.clear_vertexlabels
-      ~ForceArtist.clear_vertices
-      ~ForceArtist.draw
-      ~ForceArtist.draw_edgelabels
-      ~ForceArtist.draw_edges
-      ~ForceArtist.draw_facelabels
-      ~ForceArtist.draw_facenormals
-      ~ForceArtist.draw_faces
-      ~ForceArtist.draw_lines
-      ~ForceArtist.draw_points
-      ~ForceArtist.draw_polygons
-      ~ForceArtist.draw_vertexlabels
-      ~ForceArtist.draw_vertices
-      ~ForceArtist.redraw
-      ~ForceArtist.save
-   
-   
+    .. autosummary::
+        :toctree:
 
-   
-   
-   .. rubric:: Attributes
+    
 
-   .. autosummary::
-   
-      ~ForceArtist.force
-      ~ForceArtist.layer
-      ~ForceArtist.mesh
-   
-   
+    .. rubric:: Inherited Methods
+
+    .. autosummary::
+        :toctree:
+
+    
+        ~ForceArtist.__init__
+        ~ForceArtist.clear
+        ~ForceArtist.clear_edgelabels
+        ~ForceArtist.clear_edges
+        ~ForceArtist.clear_facelabels
+        ~ForceArtist.clear_facenormals
+        ~ForceArtist.clear_faces
+        ~ForceArtist.clear_layer
+        ~ForceArtist.clear_vertexlabels
+        ~ForceArtist.clear_vertices
+        ~ForceArtist.draw
+        ~ForceArtist.draw_edgelabels
+        ~ForceArtist.draw_edges
+        ~ForceArtist.draw_facelabels
+        ~ForceArtist.draw_facenormals
+        ~ForceArtist.draw_faces
+        ~ForceArtist.draw_lines
+        ~ForceArtist.draw_points
+        ~ForceArtist.draw_polygons
+        ~ForceArtist.draw_vertexlabels
+        ~ForceArtist.draw_vertices
+        ~ForceArtist.redraw
+        ~ForceArtist.save
+
+    
+    
+
+    
+    
+    
