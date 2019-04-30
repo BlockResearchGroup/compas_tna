@@ -21,7 +21,7 @@ def RunCommand(is_interactive):
     TNA = sc.sticky['TNA']
 
     options = ['obj', 'json', 'lines', 'mesh']
-    option = rs.GetString("Initialise FormDiagram from", options, options[0])
+    option = rs.GetString("Initialise FormDiagram from", options[0], options)
 
     if not option:
         return
@@ -54,7 +54,7 @@ def RunCommand(is_interactive):
     else:
         raise NotImplementedError
 
-    form.draw()
+    form.draw(layer=TNA['settings']['layer.form'], clear_layer=True, settings=TNA['settings'])
 
     TNA['form'] = form
     TNA['force'] = None

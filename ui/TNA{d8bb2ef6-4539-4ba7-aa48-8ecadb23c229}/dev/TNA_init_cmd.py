@@ -4,12 +4,14 @@ from __future__ import division
 
 import scriptcontext as sc
 
+from compas.rpc import Proxy
 
 __commandname__ = "TNA_init"
 
 
 def RunCommand(is_interactive):
     sc.sticky["TNA"] = {
+        'proxy' : Proxy(),
         'form'  : None,
         'force' : None,
         'settings' : {

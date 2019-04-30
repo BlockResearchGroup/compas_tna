@@ -88,11 +88,13 @@ class ForceDiagram(Diagram):
         plotter.draw_edges()
         plotter.show()
 
-    def draw(self, layer=None, clear_layer=True):
+    def draw(self, layer=None, clear_layer=True, settings=None):
         from compas_tna.rhino import ForceArtist
         artist = ForceArtist(self, layer=layer)
         if clear_layer:
             artist.clear_layer()
+        if not settings:
+            settings = {}
         vertexcolor = {}
         vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
         artist.draw_vertices(color=vertexcolor)
