@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="ForceDiagram.euler" href="compas_tna.diagrams.ForceDiagram.euler.html" />
+            <link rel="next" title="ForceDiagram.edges_where_predicate" href="compas_tna.diagrams.ForceDiagram.edges_where_predicate.html" />
         
         
         
@@ -65,12 +65,19 @@
 <dd><p>Get edges for which a certain condition or set of conditions is true.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>conditions</strong> (<em>dict</em>) – A set of conditions in the form of key-value pairs.
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conditions</strong> (<em>dict</em>) – A set of conditions in the form of key-value pairs.
 The keys should be attribute names. The values can be attribute
-values or ranges of attribute values in the form of min/max pairs.</p>
+values or ranges of attribute values in the form of min/max pairs.</p></li>
+<li><p><strong>data</strong> (<em>bool, optional</em>) – Yield the edges and their data attributes.
+Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – A list of edge keys that satisfy the condition(s).</p>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><em>2-tuple</em> – The next edge as a (u, v) tuple, if <code class="docutils literal notranslate"><span class="pre">data=False</span></code>.</p></li>
+<li><p><em>3-tuple</em> – The next edge as a (u, v, data) tuple, if <code class="docutils literal notranslate"><span class="pre">data=True</span></code>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -148,11 +155,11 @@ values or ranges of attribute values in the form of min/max pairs.</p>
 
         <footer class="compas-footer">
             
-                Last updated on Jan 14, 2019.
+                Last updated on Apr 30, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
             
         </footer>
 

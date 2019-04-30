@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="FormDiagram.from_data" href="compas_tna.diagrams.FormDiagram.from_data.html" />
+            <link rel="next" title="FormDiagram.faces_where_predicate" href="compas_tna.diagrams.FormDiagram.faces_where_predicate.html" />
         
         
         
@@ -62,7 +62,25 @@
 <dl class="method">
 <dt id="compas_tna.diagrams.FormDiagram.faces_where">
 <code class="descclassname">FormDiagram.</code><code class="descname">faces_where</code><span class="sig-paren">(</span><em>conditions</em>, <em>data=False</em><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
+<dd><p>Get faces for which a certain condition or set of conditions is true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>conditions</strong> (<em>dict</em>) – A set of conditions in the form of key-value pairs.
+The keys should be attribute names. The values can be attribute
+values or ranges of attribute values in the form of min/max pairs.</p></li>
+<li><p><strong>data</strong> (<em>bool, optional</em>) – Yield the faces and their data attributes.
+Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>key</strong> (<em>hashable</em>) – The next face that matches the condition.</p></li>
+<li><p><em>2-tuple</em> – The next face and its attributes, if <code class="docutils literal notranslate"><span class="pre">data=True</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </div>
 
@@ -137,11 +155,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 14, 2019.
+                Last updated on Apr 30, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
             
         </footer>
 

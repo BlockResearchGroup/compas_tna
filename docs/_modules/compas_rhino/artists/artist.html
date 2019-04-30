@@ -74,24 +74,29 @@
 
 
 <span class="k">class</span> <span class="nc">Artist</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A mesh artist defines functionality for visualising COMPAS meshes in Rhino.</span>
+    <span class="sd">&quot;&quot;&quot;The base ``Artist`` defines functionality for drawing geometric primitives in Rhino.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    mesh : compas.datastructures.Mesh</span>
-<span class="sd">        A COMPAS mesh.</span>
 <span class="sd">    layer : str, optional</span>
 <span class="sd">        The name of the layer that will contain the mesh.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
+<span class="sd">    layer : str</span>
+<span class="sd">        The layer that will contain the drawing results.</span>
 <span class="sd">    defaults : dict</span>
-<span class="sd">        Default settings for color, scale, tolerance, ...</span>
+<span class="sd">        Default values for the representation of primitives.</span>
+<span class="sd">        The following defaults are built in.</span>
+
+<span class="sd">        * ``&#39;color.point&#39;`` : (255, 255, 255)</span>
+<span class="sd">        * ``&#39;color.line&#39;`` : (0, 0, 0)</span>
+<span class="sd">        * ``&#39;color.polygon&#39;`` : (210, 210, 210)</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
 <span class="sd">    .. code-block:: python</span>
-<span class="sd">        </span>
+
 <span class="sd">        import compas</span>
 <span class="sd">        from compas.datastructures import Mesh</span>
 <span class="sd">        from compas_rhino.artists import MeshArtist</span>
@@ -220,11 +225,11 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list of guid</span>
-<span class="sd">            The GUIDs of the points.</span>
+<span class="sd">            The GUIDs of the point objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span>
-        <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear_layer</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="n">redraw</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear_layer</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="n">redraw</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">draw_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw a collection of lines.</span>
@@ -246,19 +251,19 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list of guid</span>
-<span class="sd">            The GUIDs of the points.</span>
+<span class="sd">            The GUIDs of the line objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span>
-        <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear_layer</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="n">redraw</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear_layer</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="n">redraw</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">draw_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygons</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">draw_polylines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polylines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw a collection of polygons.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        points : list of dict</span>
-<span class="sd">            The points to draw.</span>
+<span class="sd">        polylines : list of dict</span>
+<span class="sd">            The polylines to draw.</span>
 <span class="sd">        layer : str, optional</span>
 <span class="sd">            The layer to draw the points in.</span>
 <span class="sd">            Default is ``None``.</span>
@@ -272,15 +277,37 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list of guid</span>
-<span class="sd">            The GUIDs of the points.</span>
+<span class="sd">            The GUIDs of the polyline objects.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span>
-        <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_polygons</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear_layer</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="n">redraw</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_polylines</span><span class="p">(</span><span class="n">polylines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear_layer</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="n">redraw</span><span class="p">)</span>
 
-    <span class="c1"># ==========================================================================</span>
-    <span class="c1"># dynamic drawing functions</span>
-    <span class="c1"># ==========================================================================</span>
+    <span class="k">def</span> <span class="nf">draw_polygons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polygons</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw a collection of polygons.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        polylines : list of dict</span>
+<span class="sd">            The polygons to draw.</span>
+<span class="sd">        layer : str, optional</span>
+<span class="sd">            The layer to draw the points in.</span>
+<span class="sd">            Default is ``None``.</span>
+<span class="sd">        clear_layer : bool, optional</span>
+<span class="sd">            Clear the specified layer.</span>
+<span class="sd">            Default is ``False``.</span>
+<span class="sd">        redraw : bool, optional</span>
+<span class="sd">            Redraw the Rhino view.</span>
+<span class="sd">            Default is ``False``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of guid</span>
+<span class="sd">            The GUIDs of the polygon objects.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span>
+        <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_polylines</span><span class="p">(</span><span class="n">polygons</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="n">clear_layer</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="n">redraw</span><span class="p">)</span>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -379,11 +406,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 14, 2019.
+                Last updated on Apr 30, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
             
         </footer>
 

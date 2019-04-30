@@ -86,76 +86,72 @@
     <span class="s1">&#39;vertical_from_bbox&#39;</span><span class="p">,</span>
     <span class="s1">&#39;vertical_from_q&#39;</span><span class="p">,</span>
 
-    <span class="s1">&#39;vertical_from_zmax_xfunc&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;vertical_from_bbox_xfunc&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;vertical_from_q_xfunc&#39;</span><span class="p">,</span>
-
-    <span class="s1">&#39;vertical_from_zmax_rhino&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;vertical_from_bbox_rhino&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;vertical_from_q_rhino&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;vertical_from_zmax_proxy&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;vertical_from_bbox_proxy&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;vertical_from_q_proxy&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="n">EPS</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">epsilon</span>
 
 
-<span class="k">def</span> <span class="nf">vertical_from_zmax_rhino</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">compas_rhino</span>
-    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">XFunc</span><span class="p">(</span><span class="s1">&#39;compas_tna.equilibrium.vertical_from_zmax_xfunc&#39;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">tmpdir</span> <span class="o">=</span> <span class="n">compas_tna</span><span class="o">.</span><span class="n">TEMP</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
-    <span class="n">formdata</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">(),</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">form</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">formdata</span>
-    <span class="k">return</span> <span class="n">scale</span>
+<span class="c1"># def vertical_from_zmax_rhino(form, *args, **kwargs):</span>
+<span class="c1">#     import compas_rhino</span>
+<span class="c1">#     def callback(line, args):</span>
+<span class="c1">#         print(line)</span>
+<span class="c1">#         compas_rhino.wait()</span>
+<span class="c1">#     f = XFunc(&#39;compas_tna.equilibrium.vertical_from_zmax_xfunc&#39;)</span>
+<span class="c1">#     f.tmpdir = compas_tna.TEMP</span>
+<span class="c1">#     f.callback = callback</span>
+<span class="c1">#     formdata, scale = f(form.to_data(), *args, **kwargs)</span>
+<span class="c1">#     form.data = formdata</span>
+<span class="c1">#     return scale</span>
 
 
-<span class="k">def</span> <span class="nf">vertical_from_bbox_rhino</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">compas_rhino</span>
-    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">XFunc</span><span class="p">(</span><span class="s1">&#39;compas_tna.equilibrium.vertical_from_bbox_xfunc&#39;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">tmpdir</span> <span class="o">=</span> <span class="n">compas_tna</span><span class="o">.</span><span class="n">TEMP</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
-    <span class="n">formdata</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">(),</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">form</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">formdata</span>
-    <span class="k">return</span> <span class="n">scale</span>
+<span class="c1"># def vertical_from_bbox_rhino(form, *args, **kwargs):</span>
+<span class="c1">#     import compas_rhino</span>
+<span class="c1">#     def callback(line, args):</span>
+<span class="c1">#         print(line)</span>
+<span class="c1">#         compas_rhino.wait()</span>
+<span class="c1">#     f = XFunc(&#39;compas_tna.equilibrium.vertical_from_bbox_xfunc&#39;)</span>
+<span class="c1">#     f.tmpdir = compas_tna.TEMP</span>
+<span class="c1">#     f.callback = callback</span>
+<span class="c1">#     formdata, scale = f(form.to_data(), *args, **kwargs)</span>
+<span class="c1">#     form.data = formdata</span>
+<span class="c1">#     return scale</span>
 
 
-<span class="k">def</span> <span class="nf">vertical_from_q_rhino</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="kn">import</span> <span class="nn">compas_rhino</span>
-    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">XFunc</span><span class="p">(</span><span class="s1">&#39;compas_tna.equilibrium.vertical_from_q_xfunc&#39;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">tmpdir</span> <span class="o">=</span> <span class="n">compas_tna</span><span class="o">.</span><span class="n">TEMP</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">callback</span> <span class="o">=</span> <span class="n">callback</span>
-    <span class="n">formdata</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">(),</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="n">form</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">formdata</span>
+<span class="c1"># def vertical_from_q_rhino(form, *args, **kwargs):</span>
+<span class="c1">#     import compas_rhino</span>
+<span class="c1">#     def callback(line, args):</span>
+<span class="c1">#         print(line)</span>
+<span class="c1">#         compas_rhino.wait()</span>
+<span class="c1">#     f = XFunc(&#39;compas_tna.equilibrium.vertical_from_q_xfunc&#39;)</span>
+<span class="c1">#     f.tmpdir = compas_tna.TEMP</span>
+<span class="c1">#     f.callback = callback</span>
+<span class="c1">#     formdata = f(form.to_data(), *args, **kwargs)</span>
+<span class="c1">#     form.data = formdata</span>
 
 
-<span class="k">def</span> <span class="nf">vertical_from_zmax_xfunc</span><span class="p">(</span><span class="n">formdata</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="vertical_from_zmax_proxy"><a class="viewcode-back" href="../../../api/generated/compas_tna.equilibrium.vertical_from_zmax_proxy.html#compas_tna.equilibrium.vertical_from_zmax_proxy">[docs]</a><span class="k">def</span> <span class="nf">vertical_from_zmax_proxy</span><span class="p">(</span><span class="n">formdata</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="k">import</span> <span class="n">FormDiagram</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">formdata</span><span class="p">)</span>
     <span class="n">scale</span> <span class="o">=</span> <span class="n">vertical_from_zmax</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">(),</span> <span class="n">scale</span>
+    <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">(),</span> <span class="n">scale</span></div>
 
 
-<span class="k">def</span> <span class="nf">vertical_from_bbox_xfunc</span><span class="p">(</span><span class="n">formdata</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="vertical_from_bbox_proxy"><a class="viewcode-back" href="../../../api/generated/compas_tna.equilibrium.vertical_from_bbox_proxy.html#compas_tna.equilibrium.vertical_from_bbox_proxy">[docs]</a><span class="k">def</span> <span class="nf">vertical_from_bbox_proxy</span><span class="p">(</span><span class="n">formdata</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="k">import</span> <span class="n">FormDiagram</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">formdata</span><span class="p">)</span>
     <span class="n">scale</span> <span class="o">=</span> <span class="n">vertical_from_bbox</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">(),</span> <span class="n">scale</span>
+    <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">(),</span> <span class="n">scale</span></div>
 
 
-<span class="k">def</span> <span class="nf">vertical_from_q_xfunc</span><span class="p">(</span><span class="n">formdata</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="vertical_from_q_proxy"><a class="viewcode-back" href="../../../api/generated/compas_tna.equilibrium.vertical_from_q_proxy.html#compas_tna.equilibrium.vertical_from_q_proxy">[docs]</a><span class="k">def</span> <span class="nf">vertical_from_q_proxy</span><span class="p">(</span><span class="n">formdata</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="k">import</span> <span class="n">FormDiagram</span>
     <span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">formdata</span><span class="p">)</span>
     <span class="n">vertical_from_q</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="vertical_from_zmax"><a class="viewcode-back" href="../../../api/generated/compas_tna.equilibrium.vertical_from_zmax.html#compas_tna.equilibrium.vertical_from_zmax">[docs]</a><span class="k">def</span> <span class="nf">vertical_from_zmax</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">zmax</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -495,11 +491,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 14, 2019.
+                Last updated on Apr 30, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
             
         </footer>
 

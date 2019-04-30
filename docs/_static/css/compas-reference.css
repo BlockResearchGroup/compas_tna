@@ -52,15 +52,15 @@
 
 .admonition.note,
 .admonition.notes {
-  color: #464a4e;
-  background-color: #e7e8ea;
-  border-color: #dddfe2; }
+  color: #0c5460;
+  background-color: #d1ecf1;
+  border-color: #bee5eb; }
   .admonition.note hr,
   .admonition.notes hr {
-    border-top-color: #cfd2d6; }
+    border-top-color: #abdde5; }
   .admonition.note .alert-link,
   .admonition.notes .alert-link {
-    color: #2e3133; }
+    color: #062c33; }
 
 .admonition.important {
   color: #721c24;

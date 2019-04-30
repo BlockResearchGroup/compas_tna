@@ -75,14 +75,13 @@ table {
 }
 
 .compas-container {
-	/*max-width: 1440px;*/
+	max-width: 1440px;
 }
 
 .compas-footer {
 	width: 100%;
 	min-height: 8rem;
 	background-color: #eee;
-	background-color: #fff;
 	border-top: 1px solid #ccc;
 	padding: 2rem;
 	color: #888;
@@ -226,7 +225,7 @@ table {
 
 .compas-searchbox {
 	padding: 1rem;
-	border-bottom: 1px solid #eee;
+	border-bottom: 0px solid #eee;
 	position: relative;
 }
 
@@ -239,13 +238,13 @@ table {
 }
 
 .compas-navigation {
-	padding-top: 1rem;
-	padding-bottom: 2rem;
+	padding-top: 0.5rem;
+	padding-bottom: 1rem;
 }
 
 .compas-navigation .nav {
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 }
 
 .compas-navigation .nav-item {
@@ -263,21 +262,6 @@ table {
 	margin-bottom: 1rem;
 }
 
-.compas-navigation .nav .nav .nav-link {
-	padding: 0.25rem 0.5rem 0.25rem 1rem;
-	color: #222;
-}
-
-.compas-navigation .nav .nav .nav .nav-link {
-	padding: 0.25rem 0.5rem 0.25rem 1.5rem;
-	color: #888;
-}
-
-.compas-navigation .nav .nav .nav .active .nav-link,
-.compas-navigation .nav .nav .nav .nav-link:hover {
-	color: #222;
-}
-
 .compas-navigation .nav-item .nav {
 	display: none;
 }
@@ -290,24 +274,27 @@ table {
 	font-size: 1rem;
 }
 
-.compas-navigation .nav-item .nav-item {
+.compas-navigation .nav-item .nav-item .nav-link {
 	font-size: 0.875rem;
+    color: #222;
 }
 
-.compas-navigation .nav-item .nav-item .nav-item {
+.compas-navigation .nav-item .nav-item.active > .nav-link {
+    color: #222;
+}
+
+.compas-navigation .nav-item .nav-item .nav-item .nav-link {
 	font-size: 0.75rem;
+    color: #ccc;
+}
+
+.compas-navigation .nav-item .nav-item .nav-item.active > .nav-link {
+    color: #222;
 }
 
 .compas-navigation .active > .nav-link {
 	font-weight: 600;
-}
-
-.compas-navigation .nav .nav .nav .active .nav-link {
-	font-weight: normal;
-}
-
-.compas-navigation > .nav > .nav-item.active:first-child {
-	margin-top: 0rem;
+    color: #222;
 }
 
 /* Content */
@@ -379,10 +366,6 @@ table {
 }
 
 .nohighlight pre {
-	background-color: #eee;
-}
-
-.language-none pre {
 	background-color: #eee;
 }
 

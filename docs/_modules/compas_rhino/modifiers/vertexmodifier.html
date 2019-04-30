@@ -70,8 +70,39 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">compas_rhino.etoforms</span> <span class="k">import</span> <span class="n">PropertyListForm</span>
+
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">Rhino.UI.Dialogs</span> <span class="k">import</span> <span class="n">ShowPropertyListBox</span>
+
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">clr</span>
+        <span class="n">clr</span><span class="o">.</span><span class="n">AddReference</span><span class="p">(</span><span class="s1">&#39;Rhino.UI&#39;</span><span class="p">)</span>
+        <span class="kn">import</span> <span class="nn">Rhino.UI</span>
+
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
+
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;VertexModifier&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">rhino_update_named_values</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Update named values&#39;</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">PropertyListForm</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">ShowPropertyListBox</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dialog</span><span class="o">.</span><span class="n">ShowModal</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">UI</span><span class="o">.</span><span class="n">RhinoEtoApp</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">values</span>
 
 
 <span class="k">class</span> <span class="nc">VertexModifier</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -92,10 +123,9 @@
         <span class="n">gp</span><span class="o">.</span><span class="n">DynamicDraw</span> <span class="o">+=</span> <span class="n">OnDynamicDraw</span>
 
         <span class="k">if</span> <span class="n">constraint</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">allow_off</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">gp</span><span class="o">.</span><span class="n">Constrain</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">allow_off</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">gp</span><span class="o">.</span><span class="n">Constrain</span><span class="p">(</span><span class="n">constraint</span><span class="p">)</span>
+            <span class="n">gp</span><span class="o">.</span><span class="n">Constrain</span><span class="p">(</span><span class="n">constraint</span><span class="p">,</span> <span class="n">allow_off</span><span class="p">)</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     gp.Constrain(constraint)</span>
 
         <span class="n">gp</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span>
 
@@ -171,6 +201,25 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">update_vertex_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the attributes of selected vertices of a given datastructure.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        self : compas.datastructures.Datastructure</span>
+<span class="sd">            The data structure.</span>
+<span class="sd">        keys : list</span>
+<span class="sd">            The keys of the vertices of which the attributes should be updated.</span>
+<span class="sd">        names : list, optional</span>
+<span class="sd">            The names of the attributes that should be updated.</span>
+<span class="sd">            Default is to update all available attributes.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if the attributes were successfully updated.</span>
+<span class="sd">            False otherwise.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">names</span><span class="p">:</span>
             <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
         <span class="n">names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
@@ -182,7 +231,7 @@
                         <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
                         <span class="k">break</span>
         <span class="n">values</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">update_named_values</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">rhino_update_named_values</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">values</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
@@ -281,11 +330,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 14, 2019.
+                Last updated on Apr 30, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
             
         </footer>
 

@@ -10,6 +10,25 @@ FormDiagram
     
     
 
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+
+    .. rubric:: Inherited Attributes
+
+    .. autosummary::
+    
+        ~FormDiagram.adjacency
+        ~FormDiagram.data
+        ~FormDiagram.name
+
+    
+    
+
+    
+    
+
     .. rubric:: Methods
 
     .. autosummary::
@@ -53,8 +72,6 @@ FormDiagram
         ~FormDiagram.clear_facedict
         ~FormDiagram.clear_halfedgedict
         ~FormDiagram.clear_vertexdict
-        ~FormDiagram.collapse_edge
-        ~FormDiagram.collapse_edge_tri
         ~FormDiagram.copy
         ~FormDiagram.cull_edges
         ~FormDiagram.cull_vertices
@@ -74,13 +91,17 @@ FormDiagram
         ~FormDiagram.edges
         ~FormDiagram.edges_on_boundary
         ~FormDiagram.edges_where
+        ~FormDiagram.edges_where_predicate
         ~FormDiagram.euler
         ~FormDiagram.face_adjacency_halfedge
+        ~FormDiagram.face_adjacency_vertices
         ~FormDiagram.face_area
+        ~FormDiagram.face_aspect_ratio
         ~FormDiagram.face_center
         ~FormDiagram.face_centroid
         ~FormDiagram.face_coordinates
         ~FormDiagram.face_corners
+        ~FormDiagram.face_curvature
         ~FormDiagram.face_degree
         ~FormDiagram.face_flatness
         ~FormDiagram.face_halfedges
@@ -90,12 +111,14 @@ FormDiagram
         ~FormDiagram.face_name
         ~FormDiagram.face_neighbors
         ~FormDiagram.face_normal
+        ~FormDiagram.face_skewness
         ~FormDiagram.face_vertex_ancestor
         ~FormDiagram.face_vertex_descendant
         ~FormDiagram.face_vertices
         ~FormDiagram.faces
         ~FormDiagram.faces_on_boundary
         ~FormDiagram.faces_where
+        ~FormDiagram.faces_where_predicate
         ~FormDiagram.from_data
         ~FormDiagram.from_json
         ~FormDiagram.from_obj
@@ -164,22 +187,18 @@ FormDiagram
         ~FormDiagram.set_vertex_attributes
         ~FormDiagram.set_vertices_attribute
         ~FormDiagram.set_vertices_attributes
-        ~FormDiagram.split_edge
-        ~FormDiagram.split_edge_tri
-        ~FormDiagram.split_face
         ~FormDiagram.summary
-        ~FormDiagram.swap_edge_tri
         ~FormDiagram.to_data
         ~FormDiagram.to_json
         ~FormDiagram.to_obj
         ~FormDiagram.to_pickle
         ~FormDiagram.to_vertices_and_faces
-        ~FormDiagram.unweld_vertices
         ~FormDiagram.update_default_edge_attributes
         ~FormDiagram.update_default_face_attributes
         ~FormDiagram.update_default_vertex_attributes
         ~FormDiagram.vertex_area
         ~FormDiagram.vertex_coordinates
+        ~FormDiagram.vertex_curvature
         ~FormDiagram.vertex_degree
         ~FormDiagram.vertex_faces
         ~FormDiagram.vertex_label_name
@@ -195,10 +214,7 @@ FormDiagram
         ~FormDiagram.vertices_on_boundaries
         ~FormDiagram.vertices_on_boundary
         ~FormDiagram.vertices_where
+        ~FormDiagram.vertices_where_predicate
 
-    
-    
-
-    
     
     

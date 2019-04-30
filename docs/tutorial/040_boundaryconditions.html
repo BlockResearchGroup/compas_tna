@@ -18,7 +18,7 @@
         <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="Serialisation" href="050_serialisation.html" />
+            <link rel="next" title="ForceDiagram" href="060_force_fromform.html" />
         
         
         
@@ -59,12 +59,10 @@
 
                         <div class="section" id="boundary-conditions">
 <h1>Boundary conditions</h1>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-
-<span class="kn">from</span> <span class="nn">compas.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
+<div class="figure">
+<img alt="../_images/040_boundaryconditions.png" class="figure-img img-fluid" src="../_images/040_boundaryconditions.png" />
+</div>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
 <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="kn">import</span> <span class="n">FormDiagram</span>
 <span class="kn">from</span> <span class="nn">compas_tna.utilities</span> <span class="kn">import</span> <span class="n">relax_boundary_openings</span>
@@ -81,11 +79,7 @@
 
 <span class="n">form</span><span class="o">.</span><span class="n">update_boundaries</span><span class="p">(</span><span class="n">feet</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-
-<span class="c1"># save for later</span>
-
 <span class="n">form</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="s1">&#39;data/boundaryconditions.json&#39;</span><span class="p">)</span>
-
 
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Visualisation</span>
@@ -118,9 +112,6 @@
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </code></pre></div>
-</div>
-<div class="figure">
-<img alt="../_images/040_boundaryconditions.png" class="figure-img img-fluid" src="../_images/040_boundaryconditions.png" />
 </div>
 </div>
 
@@ -158,7 +149,6 @@
 <li class="nav-item"><a class="nav-link reference internal" href="015_anchors.html">Anchors</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="030_unsupported.html">Unsupported boundaries</a></li>
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Boundary conditions</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="050_serialisation.html">Serialisation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="060_force_fromform.html">ForceDiagram</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="070_equilibrium_horizontal.html">Horizontal equilibrium</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="080_equilibrium_vertical.html">Vertical equilibrium</a></li>
@@ -196,11 +186,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 14, 2019.
+                Last updated on Apr 30, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
             
         </footer>
 

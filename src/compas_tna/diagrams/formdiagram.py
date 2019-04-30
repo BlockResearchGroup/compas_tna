@@ -504,18 +504,27 @@ class FormDiagram(Diagram):
         plotter.draw_faces(keys=list(self.faces_where({'is_loaded': True})))
         plotter.show()
 
-    def draw(self, layer=None, clear_layer=True):
+    def draw(self, layer=None, clear_layer=True, settings=None):
         from compas_tna.rhino import FormArtist
         artist = FormArtist(self, layer=layer)
         if clear_layer:
             artist.clear_layer()
-        vertexcolor = {}
-        vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
-        vertexcolor.update({key: '#0000ff' for key in self.vertices_where({'is_external': True})})
-        vertexcolor.update({key: '#ff0000' for key in self.vertices_where({'is_anchor': True})})
-        artist.draw_vertices(color=vertexcolor)
-        artist.draw_edges(keys=list(self.edges_where({'is_edge': True})))
-        artist.draw_faces(keys=list(self.faces_where({'is_loaded': True})))
+        if not settings:
+            settings = {}
+        if settings.get('show.vertices', True):
+            vertexcolor = {}
+            vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
+            vertexcolor.update({key: '#0000ff' for key in self.vertices_where({'is_external': True})})
+            vertexcolor.update({key: '#ff0000' for key in self.vertices_where({'is_anchor': True})})
+            artist.draw_vertices(color=vertexcolor)
+        if settings.get('show.edges', True):
+            artist.draw_edges(keys=list(self.edges_where({'is_edge': True})))
+        if settings.get('show.faces', True):
+            artist.draw_faces(keys=list(self.faces_where({'is_loaded': True})))
+        if settings.get('show.forces', False):
+            artist.draw_forces(scale=settings.get('scale.forces', 0.1))
+        if settings.get('show.reactions', False):
+            artist.draw_reactions(scale=settings.get('scale.reactions', 0.01))
         artist.redraw()
 
 

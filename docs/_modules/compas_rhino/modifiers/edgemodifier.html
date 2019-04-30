@@ -70,8 +70,39 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">compas_rhino.etoforms</span> <span class="k">import</span> <span class="n">PropertyListForm</span>
+
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">Rhino.UI.Dialogs</span> <span class="k">import</span> <span class="n">ShowPropertyListBox</span>
+
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">clr</span>
+        <span class="n">clr</span><span class="o">.</span><span class="n">AddReference</span><span class="p">(</span><span class="s1">&#39;Rhino.UI&#39;</span><span class="p">)</span>
+        <span class="kn">import</span> <span class="nn">Rhino.UI</span>
+
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
+
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;EdgeModifier&#39;</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">rhino_update_named_values</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Update named values&#39;</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dialog</span> <span class="o">=</span> <span class="n">PropertyListForm</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">ShowPropertyListBox</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dialog</span><span class="o">.</span><span class="n">ShowModal</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">UI</span><span class="o">.</span><span class="n">RhinoEtoApp</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">dialog</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">values</span>
 
 
 <span class="k">class</span> <span class="nc">EdgeModifier</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -95,10 +126,8 @@
                     <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_edge_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
                         <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;-&#39;</span>
                         <span class="k">break</span>
-
         <span class="n">values</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
-        <span class="n">values</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">update_named_values</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
-
+        <span class="n">values</span> <span class="o">=</span> <span class="n">rhino_update_named_values</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">values</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">value</span> <span class="o">!=</span> <span class="s1">&#39;-&#39;</span><span class="p">:</span>
@@ -199,11 +228,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 14, 2019.
+                Last updated on Apr 30, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
             
         </footer>
 

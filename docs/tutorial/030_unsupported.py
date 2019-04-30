@@ -1,11 +1,3 @@
-"""
-Preprocess the unsupported boundary openings of a FormDiagram.
-
-"""
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas_tna.diagrams import FormDiagram
 from compas_tna.utilities import relax_boundary_openings
 

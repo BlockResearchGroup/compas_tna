@@ -5,6 +5,10 @@ compas_tna.utilities
 
 .. currentmodule:: compas_tna.utilities
 
+
+Functions
+=========
+
 .. autosummary::
     :toctree: generated/
     :nosignatures:
@@ -19,6 +23,17 @@ compas_tna.utilities
     update_z
     update_q_from_qind
     distribute_thickness
+    relax_boundary_openings
+
+
+Proxies
+-------
+
+.. autosummary::
+    :toctree: generated/
+    :nosignatures:
+
+    relax_boundary_openings_proxy
 
 
 """

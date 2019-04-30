@@ -30,18 +30,16 @@ from compas_tna.utilities import parallelise_nodal
 
 __all__ = [
     'horizontal',
-    'horizontal_xfunc',
+    'horizontal_proxy',
     'horizontal_nodal',
-    'horizontal_nodal_xfunc',
-    'horizontal_rhino',
-    'horizontal_nodal_rhino',
+    'horizontal_nodal_proxy',
 ]
 
 
 EPS = 1 / sys.float_info.epsilon
 
 
-def horizontal_xfunc(formdata, forcedata, *args, **kwargs):
+def horizontal_proxy(formdata, forcedata, *args, **kwargs):
     from compas_tna.diagrams import FormDiagram
     from compas_tna.diagrams import ForceDiagram
     form = FormDiagram.from_data(formdata)
@@ -50,35 +48,13 @@ def horizontal_xfunc(formdata, forcedata, *args, **kwargs):
     return form.to_data(), force.to_data()
 
 
-def horizontal_nodal_xfunc(formdata, forcedata, *args, **kwargs):
+def horizontal_nodal_proxy(formdata, forcedata, *args, **kwargs):
     from compas_tna.diagrams import FormDiagram
     from compas_tna.diagrams import ForceDiagram
     form = FormDiagram.from_data(formdata)
     force = ForceDiagram.from_data(forcedata)
     horizontal_nodal(form, force, *args, **kwargs)
     return form.to_data(), force.to_data()
-
-
-def horizontal_rhino(form, force, *args, **kwargs):
-    import compas_rhino
-    def callback(line, args):
-        print(line)
-        compas_rhino.wait()
-    f = XFunc('compas_tna.equilibrium.horizontal_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
-    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
-    form.data = formdata
-    force.data = forcedata
-
-
-def horizontal_nodal_rhino(form, force, *args, **kwargs):
-    import compas_rhino
-    def callback(line, args):
-        print(line)
-        compas_rhino.wait()
-    f = XFunc('compas_tna.equilibrium.horizontal_nodal_xfunc', tmpdir=compas_tna.TEMP, callback=callback)
-    formdata, forcedata = f(form.to_data(), force.to_data(), *args, **kwargs)
-    form.data = formdata
-    force.data = forcedata
 
 
 def horizontal(form, force, alpha=100.0, kmax=100, display=True):

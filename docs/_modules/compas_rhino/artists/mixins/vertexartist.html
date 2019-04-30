@@ -148,7 +148,7 @@
                 <span class="s1">&#39;color&#39;</span> <span class="p">:</span> <span class="n">colordict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span>
                 <span class="s1">&#39;layer&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">datastructure</span><span class="o">.</span><span class="n">get_vertex_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;layer&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="p">})</span>
-        <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_points</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">draw_vertexlabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Draw labels for a selection vertices.</span>
@@ -197,7 +197,7 @@
                 <span class="s1">&#39;layer&#39;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">datastructure</span><span class="o">.</span><span class="n">get_vertex_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;layer&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="p">})</span>
 
-        <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">xdraw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -266,11 +266,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 14, 2019.
+                Last updated on Apr 30, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
             
         </footer>
 

@@ -1,8 +1,3 @@
-""""""
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 from compas.plotters import MeshPlotter
 
 from compas_tna.diagrams import FormDiagram
@@ -20,11 +15,7 @@ relax_boundary_openings(form)
 
 form.update_boundaries(feet=2)
 
-
-# save for later
-
 form.to_json('data/boundaryconditions.json')
-
 
 # ==============================================================================
 # Visualisation

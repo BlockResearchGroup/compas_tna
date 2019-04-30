@@ -30,72 +30,68 @@ __all__ = [
     'vertical_from_bbox',
     'vertical_from_q',
 
-    'vertical_from_zmax_xfunc',
-    'vertical_from_bbox_xfunc',
-    'vertical_from_q_xfunc',
-
-    'vertical_from_zmax_rhino',
-    'vertical_from_bbox_rhino',
-    'vertical_from_q_rhino',
+    'vertical_from_zmax_proxy',
+    'vertical_from_bbox_proxy',
+    'vertical_from_q_proxy',
 ]
 
 
 EPS = 1 / sys.float_info.epsilon
 
 
-def vertical_from_zmax_rhino(form, *args, **kwargs):
-    import compas_rhino
-    def callback(line, args):
-        print(line)
-        compas_rhino.wait()
-    f = XFunc('compas_tna.equilibrium.vertical_from_zmax_xfunc')
-    f.tmpdir = compas_tna.TEMP
-    f.callback = callback
-    formdata, scale = f(form.to_data(), *args, **kwargs)
-    form.data = formdata
-    return scale
+# def vertical_from_zmax_rhino(form, *args, **kwargs):
+#     import compas_rhino
+#     def callback(line, args):
+#         print(line)
+#         compas_rhino.wait()
+#     f = XFunc('compas_tna.equilibrium.vertical_from_zmax_xfunc')
+#     f.tmpdir = compas_tna.TEMP
+#     f.callback = callback
+#     formdata, scale = f(form.to_data(), *args, **kwargs)
+#     form.data = formdata
+#     return scale
 
 
-def vertical_from_bbox_rhino(form, *args, **kwargs):
-    import compas_rhino
-    def callback(line, args):
-        print(line)
-        compas_rhino.wait()
-    f = XFunc('compas_tna.equilibrium.vertical_from_bbox_xfunc')
-    f.tmpdir = compas_tna.TEMP
-    f.callback = callback
-    formdata, scale = f(form.to_data(), *args, **kwargs)
-    form.data = formdata
-    return scale
+# def vertical_from_bbox_rhino(form, *args, **kwargs):
+#     import compas_rhino
+#     def callback(line, args):
+#         print(line)
+#         compas_rhino.wait()
+#     f = XFunc('compas_tna.equilibrium.vertical_from_bbox_xfunc')
+#     f.tmpdir = compas_tna.TEMP
+#     f.callback = callback
+#     formdata, scale = f(form.to_data(), *args, **kwargs)
+#     form.data = formdata
+#     return scale
 
 
-def vertical_from_q_rhino(form, *args, **kwargs):
-    import compas_rhino
-    def callback(line, args):
-        print(line)
-        compas_rhino.wait()
-    f = XFunc('compas_tna.equilibrium.vertical_from_q_xfunc')
-    f.tmpdir = compas_tna.TEMP
-    f.callback = callback
-    formdata = f(form.to_data(), *args, **kwargs)
-    form.data = formdata
+# def vertical_from_q_rhino(form, *args, **kwargs):
+#     import compas_rhino
+#     def callback(line, args):
+#         print(line)
+#         compas_rhino.wait()
+#     f = XFunc('compas_tna.equilibrium.vertical_from_q_xfunc')
+#     f.tmpdir = compas_tna.TEMP
+#     f.callback = callback
+#     formdata = f(form.to_data(), *args, **kwargs)
+#     form.data = formdata
 
 
-def vertical_from_zmax_xfunc(formdata, *args, **kwargs):
+def vertical_from_zmax_proxy(formdata, *args, **kwargs):
     from compas_tna.diagrams import FormDiagram
     form = FormDiagram.from_data(formdata)
     scale = vertical_from_zmax(form, *args, **kwargs)
     return form.to_data(), scale
 
 
-def vertical_from_bbox_xfunc(formdata, *args, **kwargs):
+def vertical_from_bbox_proxy(formdata, *args, **kwargs):
     from compas_tna.diagrams import FormDiagram
     form = FormDiagram.from_data(formdata)
     scale = vertical_from_bbox(form, *args, **kwargs)
     return form.to_data(), scale
 
 
-def vertical_from_q_xfunc(formdata, *args, **kwargs):
+def vertical_from_q_proxy(formdata, *args, **kwargs):
     from compas_tna.diagrams import FormDiagram
     form = FormDiagram.from_data(formdata)
     vertical_from_q(form, *args, **kwargs)

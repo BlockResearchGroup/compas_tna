@@ -6,7 +6,17 @@ from __future__ import print_function
 from compas.numerical import fd_numpy
 
 
-__all__ = ['relax_boundary_openings']
+__all__ = [
+    'relax_boundary_openings',
+    'relax_boundary_openings_proxy',
+]
+
+
+def relax_boundary_openings_proxy(formdata):
+    from compas_tna.diagrams import FormDiagram
+    form = FormDiagram.from_data(formdata)
+    relax_boundary_openings(form)
+    return form.to_data()
 
 
 def relax_boundary_openings(form):

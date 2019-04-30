@@ -59,30 +59,19 @@
 
                         <div class="section" id="anchors">
 <h1>Anchors</h1>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Make a form diagram from the data contained in an OBJ file.</span>
-
-<span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-
-<span class="kn">import</span> <span class="nn">compas_tna</span>
-
-<span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="kn">import</span> <span class="n">FormDiagram</span>
+<div class="figure">
+<img alt="../_images/015_anchors.png" class="figure-img img-fluid" src="../_images/015_anchors.png" />
+</div>
+<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="kn">import</span> <span class="n">FormDiagram</span>
 
 
-<span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas_tna</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rhinomesh.obj&#39;</span><span class="p">))</span>
+<span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="s1">&#39;data/rhinomesh.obj&#39;</span><span class="p">)</span>
 
 <span class="n">corners</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;vertex_degree&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}))</span>
-
 <span class="n">form</span><span class="o">.</span><span class="n">set_vertices_attribute</span><span class="p">(</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">corners</span><span class="p">)</span>
 
 <span class="n">form</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </code></pre></div>
-</div>
-<div class="figure">
-<img alt="../_images/015_anchors.png" class="figure-img img-fluid" src="../_images/015_anchors.png" />
 </div>
 </div>
 
@@ -120,7 +109,6 @@
 <li class="nav-item active"><a class="nav-link active current reference internal" href="#">Anchors</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="030_unsupported.html">Unsupported boundaries</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="040_boundaryconditions.html">Boundary conditions</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="050_serialisation.html">Serialisation</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="060_force_fromform.html">ForceDiagram</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="070_equilibrium_horizontal.html">Horizontal equilibrium</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="080_equilibrium_vertical.html">Vertical equilibrium</a></li>
@@ -158,11 +146,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 14, 2019.
+                Last updated on Apr 30, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
             
         </footer>
 

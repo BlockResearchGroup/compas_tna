@@ -22,7 +22,7 @@
         
         
         
-            <link rel="prev" title="FormDiagram.vertices_where" href="compas_tna.diagrams.FormDiagram.vertices_where.html" />
+            <link rel="prev" title="FormDiagram.vertices_where_predicate" href="compas_tna.diagrams.FormDiagram.vertices_where_predicate.html" />
         
 
         <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -63,6 +63,33 @@
 <dt id="compas_tna.diagrams.ForceDiagram">
 <em class="property">class </em><code class="descclassname">compas_tna.diagrams.</code><code class="descname">ForceDiagram</code></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_tna.diagrams.Diagram</span></code></p>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+</tbody>
+</table>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjacency</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p>A data dict representing the mesh data structure for serialisation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
+<td><p>The name of the data structure.</p></td>
+</tr>
+</tbody>
+</table>
 <p class="rubric">Methods</p>
 <table class="longtable docutils">
 <colgroup>
@@ -130,12 +157,6 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.clear_vertexdict.html#compas_tna.diagrams.ForceDiagram.clear_vertexdict" title="compas_tna.diagrams.ForceDiagram.clear_vertexdict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexdict</span></code></a>()</p></td>
 <td><p>Clear only the vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.collapse_edge.html#compas_tna.diagrams.ForceDiagram.collapse_edge" title="compas_tna.diagrams.ForceDiagram.collapse_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collapse_edge</span></code></a>(u, v[, t, allow_boundary, fixed])</p></td>
-<td><p>Collapse an edge to its first or second vertex, or to an intermediate point.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.collapse_edge_tri.html#compas_tna.diagrams.ForceDiagram.collapse_edge_tri" title="compas_tna.diagrams.ForceDiagram.collapse_edge_tri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">collapse_edge_tri</span></code></a>(u, v[, t, allow_boundary, …])</p></td>
-<td><p>Collapse an edge to its first or second vertex, or to an intermediate point.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.copy.html#compas_tna.diagrams.ForceDiagram.copy" title="compas_tna.diagrams.ForceDiagram.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
 <td><p>Make an independent copy of the mesh object.</p></td>
 </tr>
@@ -193,26 +214,38 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.edges_where.html#compas_tna.diagrams.ForceDiagram.edges_where" title="compas_tna.diagrams.ForceDiagram.edges_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges_where</span></code></a>(conditions[, data])</p></td>
 <td><p>Get edges for which a certain condition or set of conditions is true.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.euler.html#compas_tna.diagrams.ForceDiagram.euler" title="compas_tna.diagrams.ForceDiagram.euler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.edges_where_predicate.html#compas_tna.diagrams.ForceDiagram.edges_where_predicate" title="compas_tna.diagrams.ForceDiagram.edges_where_predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edges_where_predicate</span></code></a>(predicate[, data])</p></td>
+<td><p>Get edges for which a certain condition or set of conditions is true using a lambda function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.euler.html#compas_tna.diagrams.ForceDiagram.euler" title="compas_tna.diagrams.ForceDiagram.euler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">euler</span></code></a>()</p></td>
 <td><p>Calculate the Euler characterisic.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_adjacency_halfedge.html#compas_tna.diagrams.ForceDiagram.face_adjacency_halfedge" title="compas_tna.diagrams.ForceDiagram.face_adjacency_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_adjacency_halfedge</span></code></a>(f1, f2)</p></td>
-<td><p>Find the half-edge over which tow faces are adjacent.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_adjacency_halfedge.html#compas_tna.diagrams.ForceDiagram.face_adjacency_halfedge" title="compas_tna.diagrams.ForceDiagram.face_adjacency_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_adjacency_halfedge</span></code></a>(f1, f2)</p></td>
+<td><p>Find one half-edge over which two faces are adjacent.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_adjacency_vertices.html#compas_tna.diagrams.ForceDiagram.face_adjacency_vertices" title="compas_tna.diagrams.ForceDiagram.face_adjacency_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_adjacency_vertices</span></code></a>(f1, f2)</p></td>
+<td><p>Find all vertices over which two faces are adjacent.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_area.html#compas_tna.diagrams.ForceDiagram.face_area" title="compas_tna.diagrams.ForceDiagram.face_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_area</span></code></a>(fkey)</p></td>
 <td><p>Compute the area of a face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_center.html#compas_tna.diagrams.ForceDiagram.face_center" title="compas_tna.diagrams.ForceDiagram.face_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_center</span></code></a>(fkey)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_aspect_ratio.html#compas_tna.diagrams.ForceDiagram.face_aspect_ratio" title="compas_tna.diagrams.ForceDiagram.face_aspect_ratio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_aspect_ratio</span></code></a>(fkey)</p></td>
+<td><p>Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_center.html#compas_tna.diagrams.ForceDiagram.face_center" title="compas_tna.diagrams.ForceDiagram.face_center"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_center</span></code></a>(fkey)</p></td>
 <td><p>Compute the location of the center of mass of a face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_centroid.html#compas_tna.diagrams.ForceDiagram.face_centroid" title="compas_tna.diagrams.ForceDiagram.face_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_centroid</span></code></a>(fkey)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_centroid.html#compas_tna.diagrams.ForceDiagram.face_centroid" title="compas_tna.diagrams.ForceDiagram.face_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_centroid</span></code></a>(fkey)</p></td>
 <td><p>Compute the location of the centroid of a face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_coordinates.html#compas_tna.diagrams.ForceDiagram.face_coordinates" title="compas_tna.diagrams.ForceDiagram.face_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_coordinates</span></code></a>(fkey[, axes])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_coordinates.html#compas_tna.diagrams.ForceDiagram.face_coordinates" title="compas_tna.diagrams.ForceDiagram.face_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_coordinates</span></code></a>(fkey[, axes])</p></td>
 <td><p>Compute the coordinates of the vertices of a face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_corners.html#compas_tna.diagrams.ForceDiagram.face_corners" title="compas_tna.diagrams.ForceDiagram.face_corners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_corners</span></code></a>(fkey)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_corners.html#compas_tna.diagrams.ForceDiagram.face_corners" title="compas_tna.diagrams.ForceDiagram.face_corners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_corners</span></code></a>(fkey)</p></td>
 <td><p>Return triplets of face vertices forming the corners of the face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_curvature.html#compas_tna.diagrams.ForceDiagram.face_curvature" title="compas_tna.diagrams.ForceDiagram.face_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_curvature</span></code></a>(fkey)</p></td>
+<td><p>Dimensionless face curvature as the maximum face vertex deviation from the best-fit plane of the face vertices divided by the average lengths of the face vertices to the face centroid.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_degree.html#compas_tna.diagrams.ForceDiagram.face_degree" title="compas_tna.diagrams.ForceDiagram.face_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_degree</span></code></a>(fkey)</p></td>
 <td><p>Count the neighbors of a face.</p></td>
@@ -241,23 +274,29 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_normal.html#compas_tna.diagrams.ForceDiagram.face_normal" title="compas_tna.diagrams.ForceDiagram.face_normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_normal</span></code></a>(fkey[, unitized])</p></td>
 <td><p>Compute the normal of a face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_vertex_ancestor.html#compas_tna.diagrams.ForceDiagram.face_vertex_ancestor" title="compas_tna.diagrams.ForceDiagram.face_vertex_ancestor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_ancestor</span></code></a>(fkey, key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_skewness.html#compas_tna.diagrams.ForceDiagram.face_skewness" title="compas_tna.diagrams.ForceDiagram.face_skewness"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_skewness</span></code></a>(fkey)</p></td>
+<td><p>Face skewness as the maximum absolute angular deviation from the ideal polygon angle.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_vertex_ancestor.html#compas_tna.diagrams.ForceDiagram.face_vertex_ancestor" title="compas_tna.diagrams.ForceDiagram.face_vertex_ancestor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_ancestor</span></code></a>(fkey, key)</p></td>
 <td><p>Return the vertex before the specified vertex in a specific face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_vertex_descendant.html#compas_tna.diagrams.ForceDiagram.face_vertex_descendant" title="compas_tna.diagrams.ForceDiagram.face_vertex_descendant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_descendant</span></code></a>(fkey, key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_vertex_descendant.html#compas_tna.diagrams.ForceDiagram.face_vertex_descendant" title="compas_tna.diagrams.ForceDiagram.face_vertex_descendant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertex_descendant</span></code></a>(fkey, key)</p></td>
 <td><p>Return the vertex after the specified vertex in a specific face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_vertices.html#compas_tna.diagrams.ForceDiagram.face_vertices" title="compas_tna.diagrams.ForceDiagram.face_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertices</span></code></a>(fkey)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.face_vertices.html#compas_tna.diagrams.ForceDiagram.face_vertices" title="compas_tna.diagrams.ForceDiagram.face_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_vertices</span></code></a>(fkey)</p></td>
 <td><p>The vertices of a face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.faces.html#compas_tna.diagrams.ForceDiagram.faces" title="compas_tna.diagrams.ForceDiagram.faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces</span></code></a>([data])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.faces.html#compas_tna.diagrams.ForceDiagram.faces" title="compas_tna.diagrams.ForceDiagram.faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces</span></code></a>([data])</p></td>
 <td><p>Iterate over the faces of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.faces_on_boundary.html#compas_tna.diagrams.ForceDiagram.faces_on_boundary" title="compas_tna.diagrams.ForceDiagram.faces_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_on_boundary</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.faces_on_boundary.html#compas_tna.diagrams.ForceDiagram.faces_on_boundary" title="compas_tna.diagrams.ForceDiagram.faces_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_on_boundary</span></code></a>()</p></td>
 <td><p>Find the faces on the boundary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.faces_where.html#compas_tna.diagrams.ForceDiagram.faces_where" title="compas_tna.diagrams.ForceDiagram.faces_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_where</span></code></a>(conditions[, data])</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.faces_where.html#compas_tna.diagrams.ForceDiagram.faces_where" title="compas_tna.diagrams.ForceDiagram.faces_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_where</span></code></a>(conditions[, data])</p></td>
+<td><p>Get faces for which a certain condition or set of conditions is true.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.faces_where_predicate.html#compas_tna.diagrams.ForceDiagram.faces_where_predicate" title="compas_tna.diagrams.ForceDiagram.faces_where_predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">faces_where_predicate</span></code></a>(predicate[, data])</p></td>
+<td><p>Get faces for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.from_data.html#compas_tna.diagrams.ForceDiagram.from_data" title="compas_tna.diagrams.ForceDiagram.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
 <td><p>Construct a datastructure from structured data.</p></td>
@@ -472,25 +511,13 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.set_vertices_attributes.html#compas_tna.diagrams.ForceDiagram.set_vertices_attributes" title="compas_tna.diagrams.ForceDiagram.set_vertices_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vertices_attributes</span></code></a>(names, values[, keys])</p></td>
 <td><p>Set multiple attributes of multiple vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.split_edge.html#compas_tna.diagrams.ForceDiagram.split_edge" title="compas_tna.diagrams.ForceDiagram.split_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_edge</span></code></a>(u, v[, t, allow_boundary])</p></td>
-<td><p>Split and edge by inserting a vertex along its length.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.split_edge_tri.html#compas_tna.diagrams.ForceDiagram.split_edge_tri" title="compas_tna.diagrams.ForceDiagram.split_edge_tri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_edge_tri</span></code></a>(u, v[, t, allow_boundary])</p></td>
-<td><p>Split an edge of a triangle mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.split_face.html#compas_tna.diagrams.ForceDiagram.split_face" title="compas_tna.diagrams.ForceDiagram.split_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_face</span></code></a>(fkey, u, v)</p></td>
-<td><p>Split a face by inserting an edge between two specified vertices.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.summary.html#compas_tna.diagrams.ForceDiagram.summary" title="compas_tna.diagrams.ForceDiagram.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.summary.html#compas_tna.diagrams.ForceDiagram.summary" title="compas_tna.diagrams.ForceDiagram.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a>()</p></td>
 <td><p>Print a summary of the mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.swap_edge_tri.html#compas_tna.diagrams.ForceDiagram.swap_edge_tri" title="compas_tna.diagrams.ForceDiagram.swap_edge_tri"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swap_edge_tri</span></code></a>(u, v[, allow_boundary])</p></td>
-<td><p>Replace an edge of the mesh by an edge connecting the opposite vertices of the adjacent faces.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.to_data.html#compas_tna.diagrams.ForceDiagram.to_data" title="compas_tna.diagrams.ForceDiagram.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Returns a dictionary of structured data representing the data structure.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.to_json.html#compas_tna.diagrams.ForceDiagram.to_json" title="compas_tna.diagrams.ForceDiagram.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.to_json.html#compas_tna.diagrams.ForceDiagram.to_json" title="compas_tna.diagrams.ForceDiagram.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialise the structured data representing the data structure to json.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.to_obj.html#compas_tna.diagrams.ForceDiagram.to_obj" title="compas_tna.diagrams.ForceDiagram.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a>(filepath)</p></td>
@@ -502,23 +529,23 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.to_vertices_and_faces.html#compas_tna.diagrams.ForceDiagram.to_vertices_and_faces" title="compas_tna.diagrams.ForceDiagram.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a>()</p></td>
 <td><p>Return the vertices and faces of a mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.unweld_vertices.html#compas_tna.diagrams.ForceDiagram.unweld_vertices" title="compas_tna.diagrams.ForceDiagram.unweld_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unweld_vertices</span></code></a>(fkey[, where])</p></td>
-<td><p>Unweld a face of the mesh.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.update_default_edge_attributes.html#compas_tna.diagrams.ForceDiagram.update_default_edge_attributes" title="compas_tna.diagrams.ForceDiagram.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a>([attr_dict])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.update_default_edge_attributes.html#compas_tna.diagrams.ForceDiagram.update_default_edge_attributes" title="compas_tna.diagrams.ForceDiagram.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a>([attr_dict])</p></td>
 <td><p>Update the default edge attributes (this also affects already existing edges).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.update_default_face_attributes.html#compas_tna.diagrams.ForceDiagram.update_default_face_attributes" title="compas_tna.diagrams.ForceDiagram.update_default_face_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_face_attributes</span></code></a>([attr_dict])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.update_default_face_attributes.html#compas_tna.diagrams.ForceDiagram.update_default_face_attributes" title="compas_tna.diagrams.ForceDiagram.update_default_face_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_face_attributes</span></code></a>([attr_dict])</p></td>
 <td><p>Update the default face attributes (this also affects already existing faces).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.update_default_vertex_attributes.html#compas_tna.diagrams.ForceDiagram.update_default_vertex_attributes" title="compas_tna.diagrams.ForceDiagram.update_default_vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code></a>([attr_dict])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.update_default_vertex_attributes.html#compas_tna.diagrams.ForceDiagram.update_default_vertex_attributes" title="compas_tna.diagrams.ForceDiagram.update_default_vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code></a>([attr_dict])</p></td>
 <td><p>Update the default vertex attributes (this also affects already existing vertices).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.vertex_area.html#compas_tna.diagrams.ForceDiagram.vertex_area" title="compas_tna.diagrams.ForceDiagram.vertex_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_area</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.vertex_area.html#compas_tna.diagrams.ForceDiagram.vertex_area" title="compas_tna.diagrams.ForceDiagram.vertex_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_area</span></code></a>(key)</p></td>
 <td><p>Compute the tributary area of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.vertex_coordinates.html#compas_tna.diagrams.ForceDiagram.vertex_coordinates" title="compas_tna.diagrams.ForceDiagram.vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_coordinates</span></code></a>(key[, axes])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.vertex_coordinates.html#compas_tna.diagrams.ForceDiagram.vertex_coordinates" title="compas_tna.diagrams.ForceDiagram.vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_coordinates</span></code></a>(key[, axes])</p></td>
 <td><p>Return the coordinates of a vertex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.vertex_curvature.html#compas_tna.diagrams.ForceDiagram.vertex_curvature" title="compas_tna.diagrams.ForceDiagram.vertex_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_curvature</span></code></a>(vkey)</p></td>
+<td><p>Dimensionless vertex curvature.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.vertex_degree.html#compas_tna.diagrams.ForceDiagram.vertex_degree" title="compas_tna.diagrams.ForceDiagram.vertex_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_degree</span></code></a>(key)</p></td>
 <td><p>Count the neighbors of a vertex.</p></td>
@@ -564,6 +591,9 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.vertices_where.html#compas_tna.diagrams.ForceDiagram.vertices_where" title="compas_tna.diagrams.ForceDiagram.vertices_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where</span></code></a>(conditions[, data])</p></td>
 <td><p>Get vertices for which a certain condition or set of conditions is true.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.vertices_where_predicate.html#compas_tna.diagrams.ForceDiagram.vertices_where_predicate" title="compas_tna.diagrams.ForceDiagram.vertices_where_predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where_predicate</span></code></a>(predicate[, data])</p></td>
+<td><p>Get vertices for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
 </tbody>
 </table>
@@ -644,11 +674,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jan 14, 2019.
+                Last updated on Apr 30, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
             
         </footer>
 
