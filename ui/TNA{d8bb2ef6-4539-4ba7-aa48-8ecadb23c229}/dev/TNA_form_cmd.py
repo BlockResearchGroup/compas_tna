@@ -51,15 +51,14 @@ def RunCommand(is_interactive):
     else:
         raise NotImplementedError
 
-    form.draw(layer=settings['layer.form'], clear_layer=True, settings=settings)
-
-    compas_rhino.clear_layer(settings['layer.form'])
-
     del TNA['form']
     del TNA['force']
 
     TNA['form'] = form
     TNA['force'] = None
+
+    compas_rhino.clear_layer(settings['layer.force'])
+    form.draw(layer=settings['layer.form'], clear_layer=True, settings=settings)
 
 
 # ==============================================================================
