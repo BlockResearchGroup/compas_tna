@@ -23,6 +23,7 @@ def RunCommand(is_interactive):
     form = TNA['form']
     force = ForceDiagram.from_formdiagram(form)
 
+    del TNA['force']
     TNA['force'] = force
 
     force.draw(layer=TNA['settings']['layer.force'], clear_layer=True)

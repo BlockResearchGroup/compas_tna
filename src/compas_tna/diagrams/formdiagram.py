@@ -30,7 +30,39 @@ __all__ = ['FormDiagram']
 
 
 class FormDiagram(Diagram):
-    """"""
+    """The ``FormDiagram`` extends the base ``Diagram`` with attributes and methods relevant for a form diagram in TNA.
+
+    Notes
+    -----
+    A ``FormDiagram`` has the following constructor functions
+
+    *   ``from_obj`` : Construct a diagram from the geometry described in an OBJ file. Only points, lines, and faces are taken into account.
+    *   ``from_json`` : Construct a diagram from a JSON file containing a serialised "data" dictionary.
+    *   ``from_lines`` : Construct a diagram from pairs of line start and end points.
+    *   ``from_rhinomesh`` : Construct a diagram from a Rhino mesh.
+    *   ``from_rhinosurface`` : Construct a diagram from a Rhino surface, using the U and V isolines.
+    *   ``from_rhinolines`` : Construct a diagram from a selection of Rhino lines (i.e. curves of degree 1).
+
+    A ``FormDiagram`` has the following default attributes
+
+    *   ``default_vertex_attributes``
+
+        *   ``x``  : The X coordinate of the vertex.
+        *   ``y``  : The Y coordinate of the vertex.
+        *   ``z``  : The Z coordinate of the vertex.
+        *   ``px`` : The X component of the applied load on the vertex.
+        *   ``py`` : The Y component of the applied load on the vertex.
+        *   ``pz`` : The Z component of the applied load on the vertex.
+        *   ``rx`` : The X component of the residual force at the vertex.
+        *   ``ry`` : The Y component of the residual force at the vertex.
+        *   ``rz`` : The Z component of the residual force at the vertex.
+        *   ``sw`` : The selfweight of the structure at the vertex.
+        *   ``t``  : The thickness of the structure at the vertex.
+        *   ``is_anchor``   : Flag to indicate that the vertex is an anchor, i.e. a support
+        *   ``is_fixed``    : Flag to indicate that the position of a vertex is fixed.
+        *   ``is_external`` : Flag to indicate that a vertex is external to the structure.
+
+    """
 
     __module__ = 'compas_tna.diagrams'
 

@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 import scriptcontext as sc
-
+import compas_rhino
 
 __commandname__ = "TNA_settings"
 
@@ -18,7 +18,10 @@ def RunCommand(is_interactive):
     force = TNA['force']
 
     if compas_rhino.update_settings(TNA['settings']):
-        pass
+        if form:
+            form.draw(layer=TNA['settings']['layer.form'], clear_layer=True, settings=TNA['settings'])
+        if force:
+            force.draw(layer=TNA['settings']['layer.force'], clear_layer=True)
 
 
 # ==============================================================================

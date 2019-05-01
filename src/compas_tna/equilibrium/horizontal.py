@@ -60,16 +60,6 @@ def horizontal_nodal_proxy(formdata, forcedata, *args, **kwargs):
 def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     r"""Compute horizontal equilibrium.
 
-    This implementation is based on the following formulation
-
-    .. math::
-
-        \mathbf{C}^{T} \mathbf{C} \mathbf{xy} = \mathbf{C}^{T} \mathbf{t}
-
-    with :math:`\mathbf{C}` the connectivity matrix and :math:`\mathbf{t}` the
-    target vectors.
-
-
     Parameters
     ----------
     form : compas_tna.diagrams.formdiagram.FormDiagram
@@ -82,6 +72,17 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
        Maximum number of iterations (the default is 100).
     display : bool
         Display information about the current iteration (the default is True).
+
+    Notes
+    -----
+    This implementation is based on the following formulation
+
+    .. math::
+
+        \mathbf{C}^{T} \mathbf{C} \mathbf{xy} = \mathbf{C}^{T} \mathbf{t}
+
+    with :math:`\mathbf{C}` the connectivity matrix and :math:`\mathbf{t}` the
+    target vectors.
 
     """
     # --------------------------------------------------------------------------

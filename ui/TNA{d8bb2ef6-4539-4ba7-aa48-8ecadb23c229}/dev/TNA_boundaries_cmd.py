@@ -23,7 +23,7 @@ def RunCommand(is_interactive):
     form = TNA['form']
     force = TNA['force']
 
-    form.update_boundaries(feet=2)
+    form.update_boundaries(feet=TNA['settings']['boundaries.feet'])
 
     form.draw(layer=TNA['settings']['layer.form'], clear_layer=True, settings=TNA['settings'])
 

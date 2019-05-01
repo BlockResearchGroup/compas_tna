@@ -63,11 +63,6 @@
 <dt id="compas_tna.equilibrium.horizontal">
 <code class="descclassname">compas_tna.equilibrium.</code><code class="descname">horizontal</code><span class="sig-paren">(</span><em>form</em>, <em>force</em>, <em>alpha=100.0</em>, <em>kmax=100</em>, <em>display=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_tna/equilibrium/horizontal.html#horizontal"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Compute horizontal equilibrium.</p>
-<p>This implementation is based on the following formulation</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{C}^{T} \mathbf{C} \mathbf{xy} = \mathbf{C}^{T} \mathbf{t}\]</div>
-<p>with <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> the connectivity matrix and <span class="math notranslate nohighlight">\(\mathbf{t}\)</span> the
-target vectors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -81,6 +76,12 @@ If 0.0, the target vectors are the edges of the force diagram.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This implementation is based on the following formulation</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{C}^{T} \mathbf{C} \mathbf{xy} = \mathbf{C}^{T} \mathbf{t}\]</div>
+<p>with <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> the connectivity matrix and <span class="math notranslate nohighlight">\(\mathbf{t}\)</span> the
+target vectors.</p>
 </dd></dl>
 
 </div>
@@ -156,7 +157,7 @@ If 0.0, the target vectors are the edges of the force diagram.</p></li>
 
         <footer class="compas-footer">
             
-                Last updated on Apr 30, 2019.
+                Last updated on May 01, 2019.
             
 
             

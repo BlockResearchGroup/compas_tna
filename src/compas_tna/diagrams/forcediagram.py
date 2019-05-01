@@ -40,7 +40,9 @@ class ForceDiagram(Diagram):
 
     @classmethod
     def from_formdiagram(cls, formdiagram):
-        return formdiagram.dual(cls)
+        dual = formdiagram.dual(cls)
+        dual.set_vertices_attribute('z', 0.0)
+        return dual
 
     # --------------------------------------------------------------------------
     # Vertices

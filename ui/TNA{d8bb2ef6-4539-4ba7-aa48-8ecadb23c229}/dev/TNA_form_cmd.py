@@ -20,9 +20,10 @@ def RunCommand(is_interactive):
 
     TNA = sc.sticky['TNA']
 
+    settings = TNA['settings']
+
     options = ['obj', 'json', 'lines', 'mesh']
     option = rs.GetString("Initialise FormDiagram from", options[0], options)
-
     if not option:
         return
 
@@ -31,30 +32,31 @@ def RunCommand(is_interactive):
         if not filepath:
             return
         form = FormDiagram.from_obj(filepath)
-
     elif option == 'json':
         filepath = compas_rhino.select_file(folder=compas_tna.DATA, filter='json')
         if not filepath:
             return
         form = FormDiagram.from_json(filepath)
-
     elif option == 'lines':
         guids = compas_rhino.select_lines()
         if not guids:
             return
-        lines = compas_rhino.get_lines_coordinates(guids)
+        lines = compas_rhino.get_line_coordinates(guids)
         form = FormDiagram.from_lines(lines)
-
     elif option == 'mesh':
         guid = compas_rhino.select_mesh()
         if not guid:
             return
         form = FormDiagram.from_rhinomesh(guid)
-
     else:
         raise NotImplementedError
 
-    form.draw(layer=TNA['settings']['layer.form'], clear_layer=True, settings=TNA['settings'])
+    form.draw(layer=settings['layer.form'], clear_layer=True, settings=settings)
+
+    compas_rhino.clear_layer(settings['layer.form'])
+
+    del TNA['form']
+    del TNA['force']
 
     TNA['form'] = form
     TNA['force'] = None

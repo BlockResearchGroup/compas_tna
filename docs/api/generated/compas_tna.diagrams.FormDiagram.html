@@ -63,6 +63,39 @@
 <dt id="compas_tna.diagrams.FormDiagram">
 <em class="property">class </em><code class="descclassname">compas_tna.diagrams.</code><code class="descname">FormDiagram</code></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_tna.diagrams.Diagram</span></code></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">FormDiagram</span></code> extends the base <code class="docutils literal notranslate"><span class="pre">Diagram</span></code> with attributes and methods relevant for a form diagram in TNA.</p>
+<p class="rubric">Notes</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">FormDiagram</span></code> has the following constructor functions</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">from_data</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_obj</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_json</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_lines</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_rhinomesh</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_rhinosurface</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_rhinolines</span></code></p></li>
+</ul>
+<p>A <code class="docutils literal notranslate"><span class="pre">FormDiagram</span></code> has the following default attributes</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">default_vertex_attributes</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>  : The X coordinate of the vertex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>  : The Y coordinate of the vertex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>  : The Z coordinate of the vertex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">px</span></code> : The X component of the applied load on the vertex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">py</span></code> : The Y component of the applied load on the vertex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pz</span></code> : The Z component of the applied load on the vertex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rx</span></code> : The X component of the residual force at the vertex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ry</span></code> : The Y component of the residual force at the vertex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rz</span></code> : The Z component of the residual force at the vertex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sw</span></code> : The selfweight of the structure at the vertex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t</span></code>  : The thickness of the structure at the vertex.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_anchor</span></code>   : Flag to indicate that the vertex is an anchor, i.e. a support</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_fixed</span></code>    : Flag to indicate that the position of a vertex is fixed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_external</span></code> : Flag to indicate that a vertex is external to the structure.</p></li>
+</ul>
+</li>
+</ul>
 <p class="rubric">Attributes</p>
 <table class="longtable docutils">
 <colgroup>
@@ -704,7 +737,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Apr 30, 2019.
+                Last updated on May 01, 2019.
             
 
             

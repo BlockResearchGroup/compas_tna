@@ -144,11 +144,13 @@
         <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
         <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="ForceDiagram.draw"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.ForceDiagram.draw.html#compas_tna.diagrams.ForceDiagram.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="ForceDiagram.draw"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.ForceDiagram.draw.html#compas_tna.diagrams.ForceDiagram.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">compas_tna.rhino</span> <span class="k">import</span> <span class="n">ForceArtist</span>
         <span class="n">artist</span> <span class="o">=</span> <span class="n">ForceArtist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">clear_layer</span><span class="p">:</span>
             <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">settings</span><span class="p">:</span>
+            <span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">vertexcolor</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">vertexcolor</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#00ff00&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
         <span class="n">artist</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">vertexcolor</span><span class="p">)</span>
@@ -223,7 +225,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Apr 30, 2019.
+                Last updated on May 01, 2019.
             
 
             

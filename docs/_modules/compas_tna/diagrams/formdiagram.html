@@ -86,7 +86,40 @@
 
 
 <span class="k">class</span> <span class="nc">FormDiagram</span><span class="p">(</span><span class="n">Diagram</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;The ``FormDiagram`` extends the base ``Diagram`` with attributes and methods relevant for a form diagram in TNA.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    A ``FormDiagram`` has the following constructor functions</span>
+
+<span class="sd">    *   ``from_data``</span>
+<span class="sd">    *   ``from_obj``</span>
+<span class="sd">    *   ``from_json``</span>
+<span class="sd">    *   ``from_lines``</span>
+<span class="sd">    *   ``from_rhinomesh``</span>
+<span class="sd">    *   ``from_rhinosurface``</span>
+<span class="sd">    *   ``from_rhinolines``</span>
+
+<span class="sd">    A ``FormDiagram`` has the following default attributes</span>
+
+<span class="sd">    *   ``default_vertex_attributes``</span>
+
+<span class="sd">        *   ``x``  : The X coordinate of the vertex.</span>
+<span class="sd">        *   ``y``  : The Y coordinate of the vertex.</span>
+<span class="sd">        *   ``z``  : The Z coordinate of the vertex.</span>
+<span class="sd">        *   ``px`` : The X component of the applied load on the vertex.</span>
+<span class="sd">        *   ``py`` : The Y component of the applied load on the vertex.</span>
+<span class="sd">        *   ``pz`` : The Z component of the applied load on the vertex.</span>
+<span class="sd">        *   ``rx`` : The X component of the residual force at the vertex.</span>
+<span class="sd">        *   ``ry`` : The Y component of the residual force at the vertex.</span>
+<span class="sd">        *   ``rz`` : The Z component of the residual force at the vertex.</span>
+<span class="sd">        *   ``sw`` : The selfweight of the structure at the vertex.</span>
+<span class="sd">        *   ``t``  : The thickness of the structure at the vertex.</span>
+<span class="sd">        *   ``is_anchor``   : Flag to indicate that the vertex is an anchor, i.e. a support</span>
+<span class="sd">        *   ``is_fixed``    : Flag to indicate that the position of a vertex is fixed.</span>
+<span class="sd">        *   ``is_external`` : Flag to indicate that a vertex is external to the structure.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;compas_tna.diagrams&#39;</span>
 
@@ -663,7 +696,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on Apr 30, 2019.
+                Last updated on May 01, 2019.
             
 
             
