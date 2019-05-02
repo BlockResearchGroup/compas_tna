@@ -18,6 +18,19 @@ class Diagram(Mesh):
     # --------------------------------------------------------------------------
 
     def get_edges_of_opening(self, key):
+        """Get all the edges of an opening in the diagram.
+
+        Parameters
+        ----------
+        key : hashable
+            The identifier of the face forming the opening.
+
+        Returns
+        -------
+        list
+            The edges on the perimeter of the opening.
+
+        """
         edges = []
         for uv in self.face_halfedges(key):
             is_edge, is_external = self.get_edge_attributes(uv, ('is_edge', 'is_external'))
@@ -49,7 +62,7 @@ class Diagram(Mesh):
             if a == end:
                 break
             if stop is not None and a == stop:
-                break 
+                break
             if self.get_vertex_attribute(a, 'is_anchor', False):
                 break
             nbrs = self.vertex_neighbors(a, ordered=True)
@@ -66,7 +79,7 @@ class Diagram(Mesh):
             if a == end:
                 break
             if stop is not None and a == stop:
-                break 
+                break
             if self.get_vertex_attribute(a, 'is_anchor', False):
                 break
             nbrs = self.vertex_neighbors(a, ordered=True)
