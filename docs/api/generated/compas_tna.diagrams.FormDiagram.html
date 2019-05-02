@@ -67,13 +67,12 @@
 <p class="rubric">Notes</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">FormDiagram</span></code> has the following constructor functions</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">from_data</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">from_obj</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">from_json</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">from_lines</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">from_rhinomesh</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">from_rhinosurface</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">from_rhinolines</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_obj</span></code> : Construct a diagram from the geometry described in an OBJ file. Only points, lines, and faces are taken into account.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_json</span></code> : Construct a diagram from a JSON file containing a serialised “data” dictionary.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_lines</span></code> : Construct a diagram from pairs of line start and end points.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_rhinomesh</span></code> : Construct a diagram from a Rhino mesh.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_rhinosurface</span></code> : Construct a diagram from a Rhino surface, using the U and V isolines.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_rhinolines</span></code> : Construct a diagram from a selection of Rhino lines (i.e. curves of degree 1).</p></li>
 </ul>
 <p>A <code class="docutils literal notranslate"><span class="pre">FormDiagram</span></code> has the following default attributes</p>
 <ul class="simple">
@@ -97,7 +96,7 @@
 </li>
 </ul>
 <p class="rubric">Attributes</p>
-<table class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -106,7 +105,7 @@
 </tbody>
 </table>
 <p class="rubric">Inherited Attributes</p>
-<table class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -124,7 +123,7 @@
 </tbody>
 </table>
 <p class="rubric">Methods</p>
-<table class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -196,7 +195,7 @@
 </tbody>
 </table>
 <p class="rubric">Inherited Methods</p>
-<table class="longtable docutils">
+<table class="longtable docutils align-center">
 <colgroup>
 <col style="width: 10%" />
 <col style="width: 90%" />
@@ -437,7 +436,7 @@
 <td><p>Get the values of multiple named attribute of multiple edges.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.get_edges_of_opening.html#compas_tna.diagrams.FormDiagram.get_edges_of_opening" title="compas_tna.diagrams.FormDiagram.get_edges_of_opening"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_edges_of_opening</span></code></a>(key)</p></td>
-<td><p></p></td>
+<td><p>Get all the edges of an opening in the diagram.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.get_face_attribute.html#compas_tna.diagrams.FormDiagram.get_face_attribute" title="compas_tna.diagrams.FormDiagram.get_face_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_face_attribute</span></code></a>(key, name[, value])</p></td>
 <td><p>Get the value of a named attribute of one face.</p></td>
@@ -694,6 +693,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../intro.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
 <li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_tna.html">compas_tna</a><ul class="nav active">
 <li class="nav-item active"><a class="nav-link reference internal" href="../compas_tna.diagrams.html">compas_tna.diagrams</a></li>
@@ -737,11 +737,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on May 01, 2019.
+                Last updated on May 02, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
             
         </footer>
 

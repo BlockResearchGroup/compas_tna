@@ -9,6 +9,7 @@ compas_tna
    intro
    gettingstarted
    tutorial
+   examples
    api
    license
    citing

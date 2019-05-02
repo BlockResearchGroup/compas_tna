@@ -96,7 +96,9 @@
 
 <div class="viewcode-block" id="ForceDiagram.from_formdiagram"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.ForceDiagram.from_formdiagram.html#compas_tna.diagrams.ForceDiagram.from_formdiagram">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_formdiagram</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">formdiagram</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">formdiagram</span><span class="o">.</span><span class="n">dual</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span></div>
+        <span class="n">dual</span> <span class="o">=</span> <span class="n">formdiagram</span><span class="o">.</span><span class="n">dual</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+        <span class="n">dual</span><span class="o">.</span><span class="n">set_vertices_attribute</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dual</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># Vertices</span>
@@ -196,6 +198,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../intro.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../api.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
@@ -225,11 +228,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on May 01, 2019.
+                Last updated on May 02, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
             
         </footer>
 

@@ -92,13 +92,12 @@
 <span class="sd">    -----</span>
 <span class="sd">    A ``FormDiagram`` has the following constructor functions</span>
 
-<span class="sd">    *   ``from_data``</span>
-<span class="sd">    *   ``from_obj``</span>
-<span class="sd">    *   ``from_json``</span>
-<span class="sd">    *   ``from_lines``</span>
-<span class="sd">    *   ``from_rhinomesh``</span>
-<span class="sd">    *   ``from_rhinosurface``</span>
-<span class="sd">    *   ``from_rhinolines``</span>
+<span class="sd">    *   ``from_obj`` : Construct a diagram from the geometry described in an OBJ file. Only points, lines, and faces are taken into account.</span>
+<span class="sd">    *   ``from_json`` : Construct a diagram from a JSON file containing a serialised &quot;data&quot; dictionary.</span>
+<span class="sd">    *   ``from_lines`` : Construct a diagram from pairs of line start and end points.</span>
+<span class="sd">    *   ``from_rhinomesh`` : Construct a diagram from a Rhino mesh.</span>
+<span class="sd">    *   ``from_rhinosurface`` : Construct a diagram from a Rhino surface, using the U and V isolines.</span>
+<span class="sd">    *   ``from_rhinolines`` : Construct a diagram from a selection of Rhino lines (i.e. curves of degree 1).</span>
 
 <span class="sd">    A ``FormDiagram`` has the following default attributes</span>
 
@@ -667,6 +666,7 @@
 <li class="nav-item"><a class="nav-link reference internal" href="../../../intro.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../api.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
@@ -696,11 +696,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on May 01, 2019.
+                Last updated on May 02, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
             
         </footer>
 
