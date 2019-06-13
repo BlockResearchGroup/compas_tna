@@ -38,7 +38,6 @@ FormDiagram
         ~FormDiagram.__init__
         ~FormDiagram.add_feet
         ~FormDiagram.anchors
-        ~FormDiagram.collapse_small_edges
         ~FormDiagram.corners
         ~FormDiagram.draw
         ~FormDiagram.dual

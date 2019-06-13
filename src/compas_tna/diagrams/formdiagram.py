@@ -2,17 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
-
 from math import pi
 from math import sin
 from math import cos
 from math import sqrt
 
 import compas
-import compas_tna
-
-from compas.utilities import pairwise
 
 from compas.datastructures.mesh._mesh import TPL
 
@@ -20,8 +15,6 @@ from compas.geometry import subtract_vectors_xy
 from compas.geometry import add_vectors_xy
 from compas.geometry import normalize_vector_xy
 from compas.geometry import cross_vectors
-
-from compas.datastructures import mesh_smooth_area
 
 from compas_tna.diagrams import Diagram
 
@@ -62,6 +55,25 @@ class FormDiagram(Diagram):
         *   ``is_fixed``    : Flag to indicate that the position of a vertex is fixed.
         *   ``is_external`` : Flag to indicate that a vertex is external to the structure.
 
+    *   ``default_edge_attributes``
+
+        *   ``q``    : The force density in the edge.
+        *   ``f``    : The (horizontal) force in the edge.
+        *   ``l``    : The length of the edge.
+        *   ``a``    : The angle between this edge and the corresponding edge in the force diagram.
+        *   ``qmin`` : The minimum force density allowed in the edge.
+        *   ``qmax`` : The maximum force density allowed in the edge.
+        *   ``fmin`` : The minimum (horizontal) force allowed in the edge.
+        *   ``fmax`` : The maximum (horizontal) force allowed in the edge.
+        *   ``lmin`` : The minimum length of the edge.
+        *   ``lmax`` : The maximum length of the edge.
+        *   ``is_edge``     : Flag to indicate that the edge represents an actual edge of the diagram.
+        *   ``is_external`` : Flag to indicate that the edge represents an external force.
+
+    *   ``default_face_attributes``
+
+        *   ``is_loaded`` : Flag to indicate that a face of the form diagram is part of the surface of the structure.
+
     """
 
     __module__ = 'compas_tna.diagrams'
@@ -86,15 +98,15 @@ class FormDiagram(Diagram):
         })
         self.default_edge_attributes.update({
             'q'           : 1.0,
-            'l'           : 0.0,
             'f'           : 0.0,
+            'l'           : 0.0,
+            'a'           : 0.0,
             'qmin'        : 1e-7,
             'qmax'        : 1e+7,
             'lmin'        : 1e-7,
             'lmax'        : 1e+7,
             'fmin'        : 1e-7,
             'fmax'        : 1e+7,
-            'a'           : 0.0,
             'is_edge'     : True,
             'is_external' : False
         })
@@ -257,7 +269,7 @@ class FormDiagram(Diagram):
         return mesh
 
     def __str__(self):
-        """Compile a summary of the mesh."""
+        """Compile a mesh summary of the form diagram."""
         numv = self.number_of_vertices()
         nume = len(list(self.edges_where({'is_edge': True})))
         numf = self.number_of_faces()
@@ -332,7 +344,7 @@ class FormDiagram(Diagram):
     # --------------------------------------------------------------------------
 
     def leaves(self):
-        """Yields vertices with degree 1.
+        """Vertices with degree 1.
 
         Returns
         -------
@@ -343,7 +355,7 @@ class FormDiagram(Diagram):
         return self.vertices_where({'vertex_degree': 1})
 
     def corners(self):
-        """Yields vertices with degree 2.
+        """Vertices with degree 2.
 
         Returns
         -------
@@ -354,9 +366,25 @@ class FormDiagram(Diagram):
         return self.vertices_where({'vertex_degree': 2})
 
     def anchors(self):
+        """Vertices with ``is_anchor`` set to ``True``.
+
+        Returns
+        -------
+        iterator
+            An iterator of vertex keys.
+
+        """
         return self.vertices_where({'is_anchor': True})
 
     def fixed(self):
+        """Vertices with ``is_fixed`` set to ``True``.
+
+        Returns
+        -------
+        iterator
+            An iterator of vertex keys.
+
+        """
         return self.vertices_where({'is_fixed': True})
 
     def residual(self):
@@ -380,13 +408,13 @@ class FormDiagram(Diagram):
     # postprocess
     # --------------------------------------------------------------------------
 
-    def collapse_small_edges(self, tol=1e-2):
-        boundaries = self.vertices_on_boundaries()
-        for boundary in boundaries:
-            for u, v in pairwise(boundary):
-                l = self.edge_length(u, v)
-                if l < tol:
-                    self.collapse_edge(v, u, t=0.5, allow_boundary=True)
+    # def collapse_small_edges(self, tol=1e-2):
+    #     boundaries = self.vertices_on_boundaries()
+    #     for boundary in boundaries:
+    #         for u, v in pairwise(boundary):
+    #             l = self.edge_length(u, v)
+    #             if l < tol:
+    #                 mesh_collapse_edge(self, v, u, t=0.5, allow_boundary=True)
 
     # def smooth(self, fixed, kmax=10):
     #     mesh_smooth_area(self, fixed=fixed, kmax=kmax)

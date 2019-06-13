@@ -13,8 +13,6 @@ Functions
     :toctree: generated/
     :nosignatures:
 
-    count_dof
-    identify_dof
     parallelise
     parallelise_sparse
     parallelise_nodal

@@ -71,9 +71,6 @@
     <span class="k">if</span> <span class="s1">&#39;ironpython&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
         <span class="k">raise</span>
 
-<span class="kn">import</span> <span class="nn">compas_tna</span>
-
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">XFunc</span>
 <span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">connectivity_matrix</span>
 <span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">normrow</span>
 
@@ -93,44 +90,6 @@
 
 
 <span class="n">EPS</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">epsilon</span>
-
-
-<span class="c1"># def vertical_from_zmax_rhino(form, *args, **kwargs):</span>
-<span class="c1">#     import compas_rhino</span>
-<span class="c1">#     def callback(line, args):</span>
-<span class="c1">#         print(line)</span>
-<span class="c1">#         compas_rhino.wait()</span>
-<span class="c1">#     f = XFunc(&#39;compas_tna.equilibrium.vertical_from_zmax_xfunc&#39;)</span>
-<span class="c1">#     f.tmpdir = compas_tna.TEMP</span>
-<span class="c1">#     f.callback = callback</span>
-<span class="c1">#     formdata, scale = f(form.to_data(), *args, **kwargs)</span>
-<span class="c1">#     form.data = formdata</span>
-<span class="c1">#     return scale</span>
-
-
-<span class="c1"># def vertical_from_bbox_rhino(form, *args, **kwargs):</span>
-<span class="c1">#     import compas_rhino</span>
-<span class="c1">#     def callback(line, args):</span>
-<span class="c1">#         print(line)</span>
-<span class="c1">#         compas_rhino.wait()</span>
-<span class="c1">#     f = XFunc(&#39;compas_tna.equilibrium.vertical_from_bbox_xfunc&#39;)</span>
-<span class="c1">#     f.tmpdir = compas_tna.TEMP</span>
-<span class="c1">#     f.callback = callback</span>
-<span class="c1">#     formdata, scale = f(form.to_data(), *args, **kwargs)</span>
-<span class="c1">#     form.data = formdata</span>
-<span class="c1">#     return scale</span>
-
-
-<span class="c1"># def vertical_from_q_rhino(form, *args, **kwargs):</span>
-<span class="c1">#     import compas_rhino</span>
-<span class="c1">#     def callback(line, args):</span>
-<span class="c1">#         print(line)</span>
-<span class="c1">#         compas_rhino.wait()</span>
-<span class="c1">#     f = XFunc(&#39;compas_tna.equilibrium.vertical_from_q_xfunc&#39;)</span>
-<span class="c1">#     f.tmpdir = compas_tna.TEMP</span>
-<span class="c1">#     f.callback = callback</span>
-<span class="c1">#     formdata = f(form.to_data(), *args, **kwargs)</span>
-<span class="c1">#     form.data = formdata</span>
 
 
 <div class="viewcode-block" id="vertical_from_zmax_proxy"><a class="viewcode-back" href="../../../api/generated/compas_tna.equilibrium.vertical_from_zmax_proxy.html#compas_tna.equilibrium.vertical_from_zmax_proxy">[docs]</a><span class="k">def</span> <span class="nf">vertical_from_zmax_proxy</span><span class="p">(</span><span class="n">formdata</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -256,7 +215,6 @@
     <span class="n">l</span>  <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xyz</span><span class="p">))</span>
     <span class="n">f</span>  <span class="o">=</span> <span class="n">q</span> <span class="o">*</span> <span class="n">l</span>
     <span class="n">r</span>  <span class="o">=</span> <span class="n">Ct</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">C</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="o">-</span> <span class="n">p</span>
-    <span class="n">sw</span> <span class="o">=</span> <span class="n">p</span> <span class="o">-</span> <span class="n">p0</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># form</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
@@ -266,11 +224,9 @@
         <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;rx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;ry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
         <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;rz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;sw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sw</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">uv_i</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
         <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">scale</span></div>
 
@@ -339,7 +295,6 @@
     <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">uv_i</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
         <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">scale</span></div>
 
@@ -421,8 +376,7 @@
         <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;sw&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sw</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">):</span>
         <span class="n">index</span> <span class="o">=</span> <span class="n">uv_i</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
-        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
-        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span></div>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span></div>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -492,7 +446,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on May 02, 2019.
+                Last updated on Jun 07, 2019.
             
 
             

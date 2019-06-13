@@ -15,9 +15,6 @@ except ImportError:
     if 'ironpython' not in sys.version.lower():
         raise
 
-import compas_tna
-
-from compas.utilities import XFunc
 from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
 
@@ -37,44 +34,6 @@ __all__ = [
 
 
 EPS = 1 / sys.float_info.epsilon
-
-
-# def vertical_from_zmax_rhino(form, *args, **kwargs):
-#     import compas_rhino
-#     def callback(line, args):
-#         print(line)
-#         compas_rhino.wait()
-#     f = XFunc('compas_tna.equilibrium.vertical_from_zmax_xfunc')
-#     f.tmpdir = compas_tna.TEMP
-#     f.callback = callback
-#     formdata, scale = f(form.to_data(), *args, **kwargs)
-#     form.data = formdata
-#     return scale
-
-
-# def vertical_from_bbox_rhino(form, *args, **kwargs):
-#     import compas_rhino
-#     def callback(line, args):
-#         print(line)
-#         compas_rhino.wait()
-#     f = XFunc('compas_tna.equilibrium.vertical_from_bbox_xfunc')
-#     f.tmpdir = compas_tna.TEMP
-#     f.callback = callback
-#     formdata, scale = f(form.to_data(), *args, **kwargs)
-#     form.data = formdata
-#     return scale
-
-
-# def vertical_from_q_rhino(form, *args, **kwargs):
-#     import compas_rhino
-#     def callback(line, args):
-#         print(line)
-#         compas_rhino.wait()
-#     f = XFunc('compas_tna.equilibrium.vertical_from_q_xfunc')
-#     f.tmpdir = compas_tna.TEMP
-#     f.callback = callback
-#     formdata = f(form.to_data(), *args, **kwargs)
-#     form.data = formdata
 
 
 def vertical_from_zmax_proxy(formdata, *args, **kwargs):
@@ -200,7 +159,6 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
     l  = normrow(C.dot(xyz))
     f  = q * l
     r  = Ct.dot(Q).dot(C).dot(xyz) - p
-    sw = p - p0
     # --------------------------------------------------------------------------
     # form
     # --------------------------------------------------------------------------
@@ -210,11 +168,9 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
         attr['rx'] = r[index, 0]
         attr['ry'] = r[index, 1]
         attr['rz'] = r[index, 2]
-        attr['sw'] = sw[index, 2]
     for u, v, attr in form.edges_where({'is_edge': True}, True):
         index = uv_i[(u, v)]
         attr['f'] = f[index, 0]
-        attr['l'] = l[index, 0]
 
     return scale
 
@@ -283,7 +239,6 @@ def vertical_from_bbox(form, factor=5.0, kmax=100, tol=1e-3, density=1.0, displa
     for u, v, attr in form.edges_where({'is_edge': True}, True):
         index = uv_i[(u, v)]
         attr['f'] = f[index, 0]
-        attr['l'] = l[index, 0]
 
     return scale
 
@@ -366,7 +321,6 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Tr
     for u, v, attr in form.edges_where({'is_edge': True}, True):
         index = uv_i[(u, v)]
         attr['f'] = f[index, 0]
-        attr['l'] = l[index, 0]
 
 
 # ==============================================================================

@@ -91,8 +91,6 @@
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;count_dof&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;identify_dof&#39;</span><span class="p">,</span>
     <span class="s1">&#39;parallelise&#39;</span><span class="p">,</span>
     <span class="s1">&#39;parallelise_sparse&#39;</span><span class="p">,</span>
     <span class="s1">&#39;parallelise_nodal&#39;</span><span class="p">,</span>
@@ -100,33 +98,13 @@
     <span class="s1">&#39;apply_bounds&#39;</span><span class="p">,</span>
     <span class="s1">&#39;update_z&#39;</span><span class="p">,</span>
     <span class="s1">&#39;update_q_from_qind&#39;</span><span class="p">,</span>
+
+    <span class="s1">&#39;form_count_dof&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;form_identify_dof&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <span class="n">EPS</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">epsilon</span>
-
-
-<div class="viewcode-block" id="count_dof"><a class="viewcode-back" href="../../../api/generated/compas_tna.utilities.count_dof.html#compas_tna.utilities.count_dof">[docs]</a><span class="k">def</span> <span class="nf">count_dof</span><span class="p">(</span><span class="n">form</span><span class="p">):</span>
-    <span class="n">k2i</span>   <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
-    <span class="n">xyz</span>   <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">xyz</span><span class="p">()</span>
-    <span class="n">fixed</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">anchors</span><span class="p">(</span><span class="n">k2i</span><span class="o">=</span><span class="n">k2i</span><span class="p">)</span>
-    <span class="n">free</span>  <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">))</span>
-    <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">k2i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k2i</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})]</span>
-    <span class="n">C</span>     <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
-    <span class="n">E</span>     <span class="o">=</span> <span class="n">equilibrium_matrix</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">free</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">dof</span><span class="p">(</span><span class="n">E</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="identify_dof"><a class="viewcode-back" href="../../../api/generated/compas_tna.utilities.identify_dof.html#compas_tna.utilities.identify_dof">[docs]</a><span class="k">def</span> <span class="nf">identify_dof</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">algo</span>  <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;algo&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;sympy&#39;</span>
-    <span class="n">k2i</span>   <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
-    <span class="n">xyz</span>   <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">xyz</span><span class="p">()</span>
-    <span class="n">fixed</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">anchors</span><span class="p">(</span><span class="n">k2i</span><span class="o">=</span><span class="n">k2i</span><span class="p">)</span>
-    <span class="n">free</span>  <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">))</span>
-    <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">k2i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k2i</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})]</span>
-    <span class="n">C</span>     <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
-    <span class="n">E</span>     <span class="o">=</span> <span class="n">equilibrium_matrix</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">free</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">nonpivots</span><span class="p">(</span><span class="n">rref</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="n">algo</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="parallelise"><a class="viewcode-back" href="../../../api/generated/compas_tna.utilities.parallelise.html#compas_tna.utilities.parallelise">[docs]</a><span class="k">def</span> <span class="nf">parallelise</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">known</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -237,12 +215,12 @@
         <span class="n">updateloads</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">xyz</span><span class="p">)</span>
 
         <span class="n">r</span>   <span class="o">=</span> <span class="n">CtQC</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xyz</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span> <span class="o">-</span> <span class="n">p</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
-        <span class="n">res</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="n">free</span><span class="p">])</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">norm</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="n">free</span><span class="p">])</span>
 
-        <span class="k">if</span> <span class="n">res</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">residual</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
             <span class="k">break</span>
 
-    <span class="k">return</span> <span class="n">res</span></div>
+    <span class="k">return</span> <span class="n">residual</span></div>
 
 
 <div class="viewcode-block" id="update_q_from_qind"><a class="viewcode-back" href="../../../api/generated/compas_tna.utilities.update_q_from_qind.html#compas_tna.utilities.update_q_from_qind">[docs]</a><span class="k">def</span> <span class="nf">update_q_from_qind</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">dep</span><span class="p">,</span> <span class="n">ind</span><span class="p">):</span>
@@ -288,6 +266,34 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">qd</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="o">-</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
     <span class="n">q</span><span class="p">[</span><span class="n">dep</span><span class="p">]</span> <span class="o">=</span> <span class="n">qd</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Form Diagram Functions</span>
+<span class="c1"># ==============================================================================</span>
+
+
+<span class="k">def</span> <span class="nf">form_count_dof</span><span class="p">(</span><span class="n">form</span><span class="p">):</span>
+    <span class="n">k2i</span>   <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+    <span class="n">xyz</span>   <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">xyz</span><span class="p">()</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">anchors</span><span class="p">(</span><span class="n">k2i</span><span class="o">=</span><span class="n">k2i</span><span class="p">)</span>
+    <span class="n">free</span>  <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">))</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">k2i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k2i</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})]</span>
+    <span class="n">C</span>     <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">E</span>     <span class="o">=</span> <span class="n">equilibrium_matrix</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">free</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dof</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">form_identify_dof</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="n">algo</span>  <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;algo&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s1">&#39;sympy&#39;</span>
+    <span class="n">k2i</span>   <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+    <span class="n">xyz</span>   <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">xyz</span><span class="p">()</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">anchors</span><span class="p">(</span><span class="n">k2i</span><span class="o">=</span><span class="n">k2i</span><span class="p">)</span>
+    <span class="n">free</span>  <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()))</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">fixed</span><span class="p">))</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">k2i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k2i</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})]</span>
+    <span class="n">C</span>     <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">E</span>     <span class="o">=</span> <span class="n">equilibrium_matrix</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">free</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nonpivots</span><span class="p">(</span><span class="n">rref</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="n">algo</span><span class="p">))</span>
 
 
 <span class="c1"># ==============================================================================</span>
@@ -357,7 +363,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on May 02, 2019.
+                Last updated on Jun 07, 2019.
             
 
             

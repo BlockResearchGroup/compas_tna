@@ -58,17 +58,12 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
-<span class="kn">import</span> <span class="nn">sys</span>
-
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">pi</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sin</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">cos</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">sqrt</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">import</span> <span class="nn">compas_tna</span>
-
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">pairwise</span>
 
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh._mesh</span> <span class="k">import</span> <span class="n">TPL</span>
 
@@ -76,8 +71,6 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">add_vectors_xy</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">normalize_vector_xy</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">cross_vectors</span>
-
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">mesh_smooth_area</span>
 
 <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="k">import</span> <span class="n">Diagram</span>
 
@@ -118,6 +111,25 @@
 <span class="sd">        *   ``is_fixed``    : Flag to indicate that the position of a vertex is fixed.</span>
 <span class="sd">        *   ``is_external`` : Flag to indicate that a vertex is external to the structure.</span>
 
+<span class="sd">    *   ``default_edge_attributes``</span>
+
+<span class="sd">        *   ``q``    : The force density in the edge.</span>
+<span class="sd">        *   ``f``    : The (horizontal) force in the edge.</span>
+<span class="sd">        *   ``l``    : The length of the edge.</span>
+<span class="sd">        *   ``a``    : The angle between this edge and the corresponding edge in the force diagram.</span>
+<span class="sd">        *   ``qmin`` : The minimum force density allowed in the edge.</span>
+<span class="sd">        *   ``qmax`` : The maximum force density allowed in the edge.</span>
+<span class="sd">        *   ``fmin`` : The minimum (horizontal) force allowed in the edge.</span>
+<span class="sd">        *   ``fmax`` : The maximum (horizontal) force allowed in the edge.</span>
+<span class="sd">        *   ``lmin`` : The minimum length of the edge.</span>
+<span class="sd">        *   ``lmax`` : The maximum length of the edge.</span>
+<span class="sd">        *   ``is_edge``     : Flag to indicate that the edge represents an actual edge of the diagram.</span>
+<span class="sd">        *   ``is_external`` : Flag to indicate that the edge represents an external force.</span>
+
+<span class="sd">    *   ``default_face_attributes``</span>
+
+<span class="sd">        *   ``is_loaded`` : Flag to indicate that a face of the form diagram is part of the surface of the structure.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;compas_tna.diagrams&#39;</span>
@@ -142,15 +154,15 @@
         <span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
             <span class="s1">&#39;q&#39;</span>           <span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
-            <span class="s1">&#39;l&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;f&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;l&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;a&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;qmin&#39;</span>        <span class="p">:</span> <span class="mf">1e-7</span><span class="p">,</span>
             <span class="s1">&#39;qmax&#39;</span>        <span class="p">:</span> <span class="mf">1e+7</span><span class="p">,</span>
             <span class="s1">&#39;lmin&#39;</span>        <span class="p">:</span> <span class="mf">1e-7</span><span class="p">,</span>
             <span class="s1">&#39;lmax&#39;</span>        <span class="p">:</span> <span class="mf">1e+7</span><span class="p">,</span>
             <span class="s1">&#39;fmin&#39;</span>        <span class="p">:</span> <span class="mf">1e-7</span><span class="p">,</span>
             <span class="s1">&#39;fmax&#39;</span>        <span class="p">:</span> <span class="mf">1e+7</span><span class="p">,</span>
-            <span class="s1">&#39;a&#39;</span>           <span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;is_edge&#39;</span>     <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
             <span class="s1">&#39;is_external&#39;</span> <span class="p">:</span> <span class="kc">False</span>
         <span class="p">})</span>
@@ -313,7 +325,7 @@
         <span class="k">return</span> <span class="n">mesh</span></div>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compile a summary of the mesh.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Compile a mesh summary of the form diagram.&quot;&quot;&quot;</span>
         <span class="n">numv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span>
         <span class="n">nume</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})))</span>
         <span class="n">numf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">()</span>
@@ -388,7 +400,7 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="FormDiagram.leaves"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.leaves.html#compas_tna.diagrams.FormDiagram.leaves">[docs]</a>    <span class="k">def</span> <span class="nf">leaves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Yields vertices with degree 1.</span>
+        <span class="sd">&quot;&quot;&quot;Vertices with degree 1.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -399,7 +411,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;vertex_degree&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="FormDiagram.corners"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.corners.html#compas_tna.diagrams.FormDiagram.corners">[docs]</a>    <span class="k">def</span> <span class="nf">corners</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Yields vertices with degree 2.</span>
+        <span class="sd">&quot;&quot;&quot;Vertices with degree 2.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -410,9 +422,25 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;vertex_degree&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="FormDiagram.anchors"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.anchors.html#compas_tna.diagrams.FormDiagram.anchors">[docs]</a>    <span class="k">def</span> <span class="nf">anchors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Vertices with ``is_anchor`` set to ``True``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        iterator</span>
+<span class="sd">            An iterator of vertex keys.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="FormDiagram.fixed"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.fixed.html#compas_tna.diagrams.FormDiagram.fixed">[docs]</a>    <span class="k">def</span> <span class="nf">fixed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Vertices with ``is_fixed`` set to ``True``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        iterator</span>
+<span class="sd">            An iterator of vertex keys.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="FormDiagram.residual"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.residual.html#compas_tna.diagrams.FormDiagram.residual">[docs]</a>    <span class="k">def</span> <span class="nf">residual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -436,13 +464,13 @@
     <span class="c1"># postprocess</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
 
-<div class="viewcode-block" id="FormDiagram.collapse_small_edges"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.collapse_small_edges.html#compas_tna.diagrams.FormDiagram.collapse_small_edges">[docs]</a>    <span class="k">def</span> <span class="nf">collapse_small_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
-        <span class="n">boundaries</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_on_boundaries</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">boundary</span> <span class="ow">in</span> <span class="n">boundaries</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">boundary</span><span class="p">):</span>
-                <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_length</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">collapse_edge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">allow_boundary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+    <span class="c1"># def collapse_small_edges(self, tol=1e-2):</span>
+    <span class="c1">#     boundaries = self.vertices_on_boundaries()</span>
+    <span class="c1">#     for boundary in boundaries:</span>
+    <span class="c1">#         for u, v in pairwise(boundary):</span>
+    <span class="c1">#             l = self.edge_length(u, v)</span>
+    <span class="c1">#             if l &lt; tol:</span>
+    <span class="c1">#                 mesh_collapse_edge(self, v, u, t=0.5, allow_boundary=True)</span>
 
     <span class="c1"># def smooth(self, fixed, kmax=10):</span>
     <span class="c1">#     mesh_smooth_area(self, fixed=fixed, kmax=kmax)</span>
@@ -696,7 +724,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on May 02, 2019.
+                Last updated on Jun 07, 2019.
             
 
             

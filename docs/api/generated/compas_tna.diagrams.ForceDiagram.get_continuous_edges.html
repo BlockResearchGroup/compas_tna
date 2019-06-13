@@ -62,7 +62,28 @@
 <dl class="method">
 <dt id="compas_tna.diagrams.ForceDiagram.get_continuous_edges">
 <code class="descclassname">ForceDiagram.</code><code class="descname">get_continuous_edges</code><span class="sig-paren">(</span><em>uv</em>, <em>stop=None</em><span class="sig-paren">)</span></dt>
-<dd></dd></dl>
+<dd><p>Get all edges forming a continuous line with a given edge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uv</strong> (<em>tuple</em>) – The pair of vertex keys identifying the base edge of the continuous line.</p></li>
+<li><p><strong>stop</strong> (<em>vertex identifier (None)</em>) – The identifier of a vertex that marks the end of the line.
+If no stop is provided, the line continuous until hits the boundary of the diagram.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list</em> – The pairs of vertex keys identifying the edges forming the line.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function only makes sense in a quad-dominant mesh.</p>
+<p>Given an edge, the connected edges forming a ‘continuous line’ with that edge
+can only be identified in a meaningful way if the vertices if the given edge
+have degree four.</p>
+<p>Therefore, in addition to reaching the boundary of the diagram, the end
+of the line is reached if a vertex is encountered with a vertex degree
+other than four.</p>
+</dd></dl>
 
 </div>
 
@@ -138,7 +159,7 @@
 
         <footer class="compas-footer">
             
-                Last updated on May 02, 2019.
+                Last updated on Jun 07, 2019.
             
 
             

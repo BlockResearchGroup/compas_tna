@@ -3,13 +3,13 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.datastructures import Mesh
-from compas.utilities import geometric_key
 
 
 __all__ = ['Diagram']
 
 
 class Diagram(Mesh):
+    """Base diagram implementing attributes shared between the form and force diagram."""
 
     __module__ = 'compas_tna.diagrams'
 
@@ -39,6 +39,34 @@ class Diagram(Mesh):
         return edges
 
     def get_continuous_edges(self, uv, stop=None):
+        """Get all edges forming a continuous line with a given edge.
+
+        Parameters
+        ----------
+        uv : tuple
+            The pair of vertex keys identifying the base edge of the continuous line.
+        stop : vertex identifier (None)
+            The identifier of a vertex that marks the end of the line.
+            If no stop is provided, the line continuous until hits the boundary of the diagram.
+
+        Returns
+        -------
+        list
+            The pairs of vertex keys identifying the edges forming the line.
+
+        Notes
+        -----
+        This function only makes sense in a quad-dominant mesh.
+
+        Given an edge, the connected edges forming a 'continuous line' with that edge
+        can only be identified in a meaningful way if the vertices if the given edge
+        have degree four.
+
+        Therefore, in addition to reaching the boundary of the diagram, the end
+        of the line is reached if a vertex is encountered with a vertex degree
+        other than four.
+
+        """
         a, b = uv
 
         ab = self.halfedge[a][b]
@@ -93,6 +121,28 @@ class Diagram(Mesh):
 
 
     def get_parallel_edges(self, uv):
+        """Get all edges forming a parallel strip with a given edge.
+
+        Parameters
+        ----------
+        uv : tuple
+            Pair of vertex identifiers identifying the edge.
+
+        Returns
+        -------
+        list
+            The pairs of vertex identifiers of the edges forming the parallel strip.
+
+        Notes
+        -----
+        This function only makes sense in a quad-dominant mesh.
+
+        Given a starting edge, the edges forming a parallel strip with that edge
+        are identified as the opposite edges in the adjacent faces of the given edge.
+
+        Therefore, the strip stops if a face with degree other than four is encountered.
+
+        """
         edges = [uv]
 
         a, b = a0, b0 = uv

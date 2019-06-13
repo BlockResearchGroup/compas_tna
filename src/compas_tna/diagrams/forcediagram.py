@@ -23,7 +23,6 @@ class ForceDiagram(Diagram):
             'is_fixed' : False,
         })
         self.default_edge_attributes.update({
-            'l' : 0.0,
         })
         self.attributes.update({
             'name'         : 'ForceDiagram',

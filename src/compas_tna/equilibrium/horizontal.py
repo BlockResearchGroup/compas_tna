@@ -12,10 +12,6 @@ except ImportError:
     if 'ironpython' not in sys.version.lower():
         raise
 
-import compas
-import compas_tna
-
-from compas.utilities import XFunc
 from compas.geometry import angle_vectors_xy
 
 from compas.numerical import connectivity_matrix
@@ -99,10 +95,10 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     fixed = [k_i[key] for key in fixed]
     edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
     xy    = array(form.get_vertices_attributes('xy'), dtype=float64)
-    lmin   = array([attr.get('lmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    lmax   = array([attr.get('lmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    fmin   = array([attr.get('fmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    fmax   = array([attr.get('fmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    lmin  = array([attr.get('lmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    lmax  = array([attr.get('lmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    fmin  = array([attr.get('fmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    fmax  = array([attr.get('fmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
     C     = connectivity_matrix(edges, 'csr')
     Ct    = C.transpose()
     CtC   = Ct.dot(C)
@@ -157,7 +153,8 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     # --------------------------------------------------------------------------
     # compute the force densities
     # --------------------------------------------------------------------------
-    q = (_l / l).astype(float64)
+    f = _l
+    q = (f / l).astype(float64)
     # --------------------------------------------------------------------------
     # rotate the force diagram 90 degrees in CW direction
     # this way the relation between the two diagrams is easier to read
@@ -178,7 +175,10 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     for u, v, attr in form.edges_where({'is_edge': True}, True):
         i = uv_i[(u, v)]
         attr['q'] = q[i, 0]
+        attr['f'] = f[i, 0]
+        attr['l'] = l[i, 0]
         attr['a'] = a[i]
+
     # --------------------------------------------------------------------------
     # update force
     # --------------------------------------------------------------------------
