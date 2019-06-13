@@ -61,39 +61,28 @@
 <h1>Getting Started</h1>
 <div class="section" id="installation">
 <h2>Installation</h2>
-<p>Released versions of <a class="reference internal" href="api/compas_tna.html#module-compas_tna" title="compas_tna"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_tna</span></code></a> can be installed with <em>pip</em>.
-To get the latest release do</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>$ pip install compas_tna
-</code></pre></div>
-</div>
-<p>To get a specific release</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>$ pip install <span class="nv">compas_tna</span><span class="o">==</span><span class="m">0</span>.1.0
-</code></pre></div>
-</div>
-<p>You can also install directly from the GitHub repo.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>$ pip install git+https://github.com/BlockResearchGroup/compas_tna.git
+<p>With pip, <a class="reference internal" href="api/compas_tna.html#module-compas_tna" title="compas_tna"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_tna</span></code></a> can be installed directly from the GitHub repo.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>pip install git+https://github.com/BlockResearchGroup/compas_tna.git#egg<span class="o">=</span>compas_tna
 </code></pre></div>
 </div>
 <p>Or from local source files.</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>$ git clone https://github.com/BlockResearchGroup/compas_tna.git
-$ <span class="nb">cd</span> compas_tna
-$ pip install -r requirements-dev.txt
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>git clone https://github.com/BlockResearchGroup/compas_tna.git
+<span class="nb">cd</span> compas_tna
+pip install -e .
 </code></pre></div>
 </div>
-</div>
-<div class="section" id="updates">
-<h2>Updates</h2>
-<p>If you already have <a class="reference internal" href="api/compas_tna.html#module-compas_tna" title="compas_tna"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_tna</span></code></a> installed and you want to upgrade to the latest
-version, do</p>
-<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>$ pip install compas_tna --upgrade
+<p>With conda, <a class="reference internal" href="api/compas_tna.html#module-compas_tna" title="compas_tna"><code class="xref py py-mod docutils literal notranslate"><span class="pre">compas_tna</span></code></a> can be added to an active environment using the following
+commands.</p>
+<div class="language-bash notranslate"><div class="highlight"><pre><code><span></span>conda env update -f environment.yml
 </code></pre></div>
 </div>
 </div>
 <div class="section" id="first-steps">
 <h2>First steps</h2>
 <ul class="simple">
-<li><p><a class="reference external" href="https://compas-dev.github.io/compas_tna/examples.html">https://compas-dev.github.io/compas_tna/examples.html</a></p></li>
-<li><p><a class="reference external" href="https://compas-dev.github.io/compas_tna/api.html">https://compas-dev.github.io/compas_tna/api.html</a></p></li>
+<li><p><a class="reference external" href="https://blockresearchgroup.github.io/compas_tna/tutorial.html">https://blockresearchgroup.github.io/compas_tna/tutorial.html</a></p></li>
+<li><p><a class="reference external" href="https://blockresearchgroup.github.io/compas_tna/examples.html">https://blockresearchgroup.github.io/compas_tna/examples.html</a></p></li>
+<li><p><a class="reference external" href="https://blockresearchgroup.github.io/compas_tna/api.html">https://blockresearchgroup.github.io/compas_tna/api.html</a></p></li>
 </ul>
 </div>
 </div>
@@ -152,7 +141,6 @@ version, do</p>
                     <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">Getting Started</a><ul class="nav">
 <li class="nav-item"><a class="nav-link reference internal" href="#installation">Installation</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#updates">Updates</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#first-steps">First steps</a></li>
 </ul>
 </li>
@@ -166,7 +154,7 @@ version, do</p>
 
         <footer class="compas-footer">
             
-                Last updated on Jun 07, 2019.
+                Last updated on Jun 13, 2019.
             
 
             

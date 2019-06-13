@@ -2,56 +2,36 @@
 Getting Started
 ********************************************************************************
 
-.. highlight:: bash
-
-
 Installation
 ============
 
-Released versions of :mod:`compas_tna` can be installed with *pip*.
-To get the latest release do
+With pip, :mod:`compas_tna` can be installed directly from the GitHub repo.
 
-::
+.. code-block:: bash
 
-    $ pip install compas_tna
-
-
-To get a specific release
-
-::
-
-    $ pip install compas_tna==0.1.0
-
-
-You can also install directly from the GitHub repo.
-
-::
-
-    $ pip install git+https://github.com/BlockResearchGroup/compas_tna.git
+    pip install git+https://github.com/BlockResearchGroup/compas_tna.git#egg=compas_tna
 
 
 Or from local source files.
 
-::
+.. code-block:: bash
 
-    $ git clone https://github.com/BlockResearchGroup/compas_tna.git
-    $ cd compas_tna
-    $ pip install -r requirements-dev.txt
+    git clone https://github.com/BlockResearchGroup/compas_tna.git
+    cd compas_tna
+    pip install -e .
 
 
-Updates
-=======
+With conda, :mod:`compas_tna` can be added to an active environment using the following
+commands.
 
-If you already have :mod:`compas_tna` installed and you want to upgrade to the latest
-version, do
+.. code-block:: bash
 
-::
-
-    $ pip install compas_tna --upgrade
+    conda env update -f environment.yml
 
 
 First steps
 ===========
 
-* https://compas-dev.github.io/compas_tna/examples.html
-* https://compas-dev.github.io/compas_tna/api.html
+* https://blockresearchgroup.github.io/compas_tna/tutorial.html
+* https://blockresearchgroup.github.io/compas_tna/examples.html
+* https://blockresearchgroup.github.io/compas_tna/api.html
