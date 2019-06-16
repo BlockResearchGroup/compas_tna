@@ -7,4 +7,6 @@ Examples
    :titlesonly:
    :glob:
 
-   examples/*
+   examples/barrelvault
+   examples/crossvault
+   examples/dome
