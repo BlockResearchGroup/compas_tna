@@ -121,6 +121,8 @@ zmax = rs.GetReal('Z Max')
 scale = vertical(form, zmax)
 force.attributes['scale'] = scale
 
+# visualise the result
+
 settings = {
     'show.forces'    : True,
     'show.reactions' : True,

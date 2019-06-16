@@ -53,6 +53,7 @@ ForceArtist
         ~ForceArtist.clear_mesh
         ~ForceArtist.clear_vertexlabels
         ~ForceArtist.clear_vertices
+        ~ForceArtist.draw_circles
         ~ForceArtist.draw_edgelabels
         ~ForceArtist.draw_edges
         ~ForceArtist.draw_facelabels

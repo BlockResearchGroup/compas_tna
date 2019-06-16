@@ -123,6 +123,16 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=N
             # add damping factor?
             xy[j] /= len(nbrs)
 
+        for (i, j) in ij_e:
+            e = ij_e[(i, j)]
+
+            if l[e, 0] == 0.0:
+                a = xy[i]
+                b = xy[j]
+                c = 0.5 * (a + b)
+                xy[i] = c[:]
+                xy[j] = c[:]
+
 
 def rot90(xy, zdir=1.0):
     temp = empty_like(xy)

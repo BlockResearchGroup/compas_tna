@@ -63,6 +63,7 @@ FormArtist
         ~FormArtist.clear_mesh
         ~FormArtist.clear_vertexlabels
         ~FormArtist.clear_vertices
+        ~FormArtist.draw_circles
         ~FormArtist.draw_edgelabels
         ~FormArtist.draw_edges
         ~FormArtist.draw_facelabels

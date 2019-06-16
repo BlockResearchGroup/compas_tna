@@ -114,34 +114,6 @@
     <span class="k">return</span> <span class="n">guids</span>
 
 
-<span class="k">def</span> <span class="nf">select_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
-    <span class="n">guids</span> <span class="o">=</span> <span class="n">match_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">SelectObjects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">unselect_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
-    <span class="n">guids</span> <span class="o">=</span> <span class="n">match_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">UnselectObjects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">select_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
-    <span class="n">guids</span> <span class="o">=</span> <span class="n">match_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">SelectObjects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">unselect_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
-    <span class="n">guids</span> <span class="o">=</span> <span class="n">match_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">UnselectObjects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
-    <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-
-
 <div class="viewcode-block" id="DiagramHelper"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.html#compas_tna.rhino.DiagramHelper">[docs]</a><span class="k">class</span> <span class="nc">DiagramHelper</span><span class="p">(</span><span class="n">VertexSelector</span><span class="p">,</span>
                     <span class="n">EdgeSelector</span><span class="p">,</span>
                     <span class="n">FaceSelector</span><span class="p">,</span>
@@ -149,10 +121,38 @@
                     <span class="n">EdgeModifier</span><span class="p">,</span>
                     <span class="n">FaceModifier</span><span class="p">):</span>
 
+<div class="viewcode-block" id="DiagramHelper.highlight_edges"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.highlight_edges.html#compas_tna.rhino.DiagramHelper.highlight_edges">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">highlight_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">match_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">SelectObjects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DiagramHelper.unhighlight_edges"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.unhighlight_edges.html#compas_tna.rhino.DiagramHelper.unhighlight_edges">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">unhighlight_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">match_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">UnselectObjects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DiagramHelper.highlight_vertices"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.highlight_vertices.html#compas_tna.rhino.DiagramHelper.highlight_vertices">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">highlight_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">match_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">SelectObjects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DiagramHelper.unhighlight_vertices"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.unhighlight_vertices.html#compas_tna.rhino.DiagramHelper.unhighlight_vertices">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">unhighlight_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">match_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">UnselectObjects</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">EnableRedraw</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="DiagramHelper.select_vertices_where"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.select_vertices_where.html#compas_tna.rhino.DiagramHelper.select_vertices_where">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">select_vertices_where</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
         <span class="n">rs</span><span class="o">.</span><span class="n">UnselectAllObjects</span><span class="p">()</span>
-        <span class="n">select_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span></div>
+        <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">highlight_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DiagramHelper.select_vertices_on_boundary"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.select_vertices_on_boundary.html#compas_tna.rhino.DiagramHelper.select_vertices_on_boundary">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">select_vertices_on_boundary</span><span class="p">(</span><span class="n">diagram</span><span class="p">):</span>
@@ -163,7 +163,7 @@
         <span class="n">boundaries</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">vertices_on_boundaries</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">boundary</span> <span class="ow">in</span> <span class="n">boundaries</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">boundary</span><span class="p">:</span>
-                <span class="n">select_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">boundary</span><span class="p">)</span>
+                <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">highlight_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">boundary</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">boundary</span></div>
 
 <div class="viewcode-block" id="DiagramHelper.select_vertices_on_curve"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.select_vertices_on_curve.html#compas_tna.rhino.DiagramHelper.select_vertices_on_curve">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -171,7 +171,7 @@
         <span class="n">rs</span><span class="o">.</span><span class="n">UnselectAllObjects</span><span class="p">()</span>
         <span class="n">guid</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_curve</span><span class="p">()</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">identify_vertices_on_curve</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">guid</span><span class="p">)</span>
-        <span class="n">select_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">highlight_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">keys</span></div>
 
 <div class="viewcode-block" id="DiagramHelper.select_vertices_on_curves"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.select_vertices_on_curves.html#compas_tna.rhino.DiagramHelper.select_vertices_on_curves">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -179,7 +179,15 @@
         <span class="n">rs</span><span class="o">.</span><span class="n">UnselectAllObjects</span><span class="p">()</span>
         <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_curves</span><span class="p">()</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">identify_vertices_on_curves</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
-        <span class="n">select_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">highlight_vertices</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">keys</span></div>
+
+<div class="viewcode-block" id="DiagramHelper.select_edges_on_curves"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.select_edges_on_curves.html#compas_tna.rhino.DiagramHelper.select_edges_on_curves">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">select_edges_on_curves</span><span class="p">(</span><span class="n">diagram</span><span class="p">):</span>
+        <span class="n">rs</span><span class="o">.</span><span class="n">UnselectAllObjects</span><span class="p">()</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_curves</span><span class="p">()</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">identify_edges_on_curves</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
+        <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">highlight_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">keys</span></div>
 
 <div class="viewcode-block" id="DiagramHelper.select_continuous_edges"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.select_continuous_edges.html#compas_tna.rhino.DiagramHelper.select_continuous_edges">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -190,7 +198,7 @@
             <span class="k">return</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">diagram</span><span class="o">.</span><span class="n">get_continuous_edges</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">keys</span><span class="p">))))</span>
-        <span class="n">select_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">highlight_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">keys</span></div>
 
 <div class="viewcode-block" id="DiagramHelper.select_parallel_edges"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.select_parallel_edges.html#compas_tna.rhino.DiagramHelper.select_parallel_edges">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -201,7 +209,7 @@
             <span class="k">return</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="p">[</span><span class="n">diagram</span><span class="o">.</span><span class="n">get_parallel_edges</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">]</span>
         <span class="n">keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">flatten</span><span class="p">(</span><span class="n">keys</span><span class="p">))))</span>
-        <span class="n">select_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
+        <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">highlight_edges</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">keys</span></div>
 
 <div class="viewcode-block" id="DiagramHelper.identify_vertices_on_points"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.identify_vertices_on_points.html#compas_tna.rhino.DiagramHelper.identify_vertices_on_points">[docs]</a>    <span class="nd">@staticmethod</span>
@@ -244,6 +252,18 @@
                     <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">gkey_key</span><span class="p">[</span><span class="n">gkey</span><span class="p">]:</span>
                         <span class="n">keys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">keys</span></div>
+
+<div class="viewcode-block" id="DiagramHelper.identify_edges_on_curves"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.identify_edges_on_curves.html#compas_tna.rhino.DiagramHelper.identify_edges_on_curves">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">identify_edges_on_curves</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">guids</span><span class="p">):</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">guid</span> <span class="ow">in</span> <span class="n">guids</span><span class="p">:</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">identify_vertices_on_curve</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">guid</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
+                <span class="n">vertices</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">vertices</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
+                        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">edges</span></div>
 
 <div class="viewcode-block" id="DiagramHelper.move"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.DiagramHelper.move.html#compas_tna.rhino.DiagramHelper.move">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="n">diagram</span><span class="p">):</span>
@@ -349,11 +369,11 @@
 
         <footer class="compas-footer">
             
-                Last updated on Jun 13, 2019.
+                Last updated on Jun 17, 2019.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
             
         </footer>
 
