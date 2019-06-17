@@ -18,11 +18,11 @@
         <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
         
-            <link rel="next" title="horizontal" href="generated/compas_tna.equilibrium.horizontal.html" />
+            <link rel="next" title="&lt;no title&gt;" href="compas_tna.rhino.html" />
         
         
         
-            <link rel="prev" title="ForceDiagram.vertices_where_predicate" href="generated/compas_tna.diagrams.ForceDiagram.vertices_where_predicate.html" />
+            <link rel="prev" title="&lt;no title&gt;" href="compas_tna.diagrams.html" />
         
 
         <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -57,107 +57,7 @@
 
                         
 
-                        <span class="target" id="module-compas_tna.equilibrium"></span><div class="section" id="compas-tna-equilibrium">
-<h1>compas_tna.equilibrium</h1>
-<div class="section" id="horizontal">
-<h2>Horizontal</h2>
-<p>Algorithms related to horizontal equilibrium of the form diagram and thus of the
-corresponding thrust network.</p>
-<p>Horizontal equilibrium is established when the form and force diagram are reciprocal.
-Two diagrams are said to be reciprocal if they are each other’s dual and if all
-corresponding edges are at any specific constant angle.</p>
-<p>Note that for legibility, the form and force diagrams in <code class="docutils literal notranslate"><span class="pre">compas_tna</span></code> are drawn
-such that corresponding edges of reciprocal diagrams are perpendicular.
-However, the diagrams are made reciprocal by parallelising the corresponding edges.
-The diagrams are thus rotated by 90 degrees and back at the beginning and end of
-each of the horizontal equilibrium algorithms.</p>
-<table class="longtable docutils">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_tna.equilibrium.horizontal.html#compas_tna.equilibrium.horizontal" title="compas_tna.equilibrium.horizontal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">horizontal</span></code></a></p></td>
-<td><p>Compute horizontal equilibrium.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_tna.equilibrium.horizontal_nodal.html#compas_tna.equilibrium.horizontal_nodal" title="compas_tna.equilibrium.horizontal_nodal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">horizontal_nodal</span></code></a></p></td>
-<td><p>Compute horizontal equilibrium using a node-per-node approach.</p></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="proxies">
-<h3>Proxies</h3>
-<p>Use these functions in combination with a <code class="docutils literal notranslate"><span class="pre">Proxy</span></code> server to use the above horizontal
-equilibrium algorithms directly from Rhino.</p>
-<p>Note that whenever the original algorithm expects a diagram instance as parameter,
-the corresponding proxy function will expect the data representing that diagram
-instead. The data representing the diagram is stored in the <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute of the
-diagram.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="n">proxy</span> <span class="o">=</span> <span class="n">Proxy</span><span class="p">(</span><span class="s1">&#39;compas_tna.equilibrium&#39;</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">proxy</span><span class="o">.</span><span class="n">horizontal_nodal_proxy</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">force</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">result</span><span class="p">:</span>
-    <span class="n">form</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">force</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-</code></pre></div>
-</div>
-<table class="longtable docutils">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_tna.equilibrium.horizontal_proxy.html#compas_tna.equilibrium.horizontal_proxy" title="compas_tna.equilibrium.horizontal_proxy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">horizontal_proxy</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_tna.equilibrium.horizontal_nodal_proxy.html#compas_tna.equilibrium.horizontal_nodal_proxy" title="compas_tna.equilibrium.horizontal_nodal_proxy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">horizontal_nodal_proxy</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="section" id="vertical">
-<h2>Vertical</h2>
-<table class="longtable docutils">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_tna.equilibrium.vertical_from_zmax.html#compas_tna.equilibrium.vertical_from_zmax" title="compas_tna.equilibrium.vertical_from_zmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_from_zmax</span></code></a></p></td>
-<td><p>For the given form and force diagram, compute the scale of the force diagram for which the highest point of the thrust network is equal to a specified value.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_tna.equilibrium.vertical_from_bbox.html#compas_tna.equilibrium.vertical_from_bbox" title="compas_tna.equilibrium.vertical_from_bbox"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_from_bbox</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_tna.equilibrium.vertical_from_q.html#compas_tna.equilibrium.vertical_from_q" title="compas_tna.equilibrium.vertical_from_q"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_from_q</span></code></a></p></td>
-<td><p>Compute vertical equilibrium from the force densities of the independent edges.</p></td>
-</tr>
-</tbody>
-</table>
-<div class="section" id="id1">
-<h3>Proxies</h3>
-<table class="longtable docutils">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_tna.equilibrium.vertical_from_zmax_proxy.html#compas_tna.equilibrium.vertical_from_zmax_proxy" title="compas_tna.equilibrium.vertical_from_zmax_proxy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_from_zmax_proxy</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="generated/compas_tna.equilibrium.vertical_from_bbox_proxy.html#compas_tna.equilibrium.vertical_from_bbox_proxy" title="compas_tna.equilibrium.vertical_from_bbox_proxy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_from_bbox_proxy</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="generated/compas_tna.equilibrium.vertical_from_q_proxy.html#compas_tna.equilibrium.vertical_from_q_proxy" title="compas_tna.equilibrium.vertical_from_q_proxy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertical_from_q_proxy</span></code></a></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-
+                        
                         
                     
 
@@ -184,21 +84,12 @@ diagram.</p>
                             <div class="navbar-expand-md">
                                 <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
-                                <ul class="nav flex-column active">
+                                <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../intro.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../examples.html">Examples</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../api.html">API Reference</a><ul class="nav active">
-<li class="nav-item active"><a class="nav-link reference internal" href="compas_tna.html">compas_tna</a><ul class="nav active">
-<li class="nav-item"><a class="nav-link reference internal" href="compas_tna.diagrams.html">compas_tna.diagrams</a></li>
-<li class="nav-item active"><a class="nav-link active current reference internal" href="#">compas_tna.equilibrium</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas_tna.rhino.html">compas_tna.rhino</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="compas_tna.utilities.html">compas_tna.utilities</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../api.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../citing.html">Citing</a></li>
 </ul>
@@ -218,18 +109,7 @@ diagram.</p>
 
                     
 
-                    <ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">compas_tna.equilibrium</a><ul class="nav">
-<li class="nav-item"><a class="nav-link reference internal" href="#horizontal">Horizontal</a><ul class="nav">
-<li class="nav-item"><a class="nav-link reference internal" href="#proxies">Proxies</a></li>
-</ul>
-</li>
-<li class="nav-item"><a class="nav-link reference internal" href="#vertical">Vertical</a><ul class="nav">
-<li class="nav-item"><a class="nav-link reference internal" href="#id1">Proxies</a></li>
-</ul>
-</li>
-</ul>
-</li>
+                    <ul class="simple">
 </ul>
 
 
