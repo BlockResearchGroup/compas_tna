@@ -21,12 +21,9 @@ Or from local source files.
     pip install -e .
 
 
-With conda, :mod:`compas_tna` can be added to an active environment using the following
-commands.
+.. note::
 
-.. code-block:: bash
-
-    conda env update -f environment.yml
+    Don't forget the "." at the end of ``pip install -e .``!
 
 
 First steps
