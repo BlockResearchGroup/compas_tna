@@ -291,7 +291,7 @@ equilibrium si fully resolved.
 * ``TNA_vertical``
 
 
-Using ``z max := 4.0``, compute the final equilibrium shape of the constrained funicular problem.
+Using ``zmax := 4.0``, compute the final equilibrium shape of the constrained funicular problem.
 
 
 .. figure:: /_images/TNA_vertical-constrained.png
