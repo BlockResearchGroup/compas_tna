@@ -59,177 +59,217 @@
 
                         <div class="section" id="the-cross-vault">
 <h1>The cross vault</h1>
-<div class="figure">
+<div class="figure align-default">
 <img alt="../_images/crossvault.png" class="figure-img img-fluid" src="../_images/crossvault.png" />
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This example uses the Rhino UI for <code class="docutils literal notranslate"><span class="pre">compas_tna</span></code>.
+Please download and install the Plugin from here:
+<a class="reference external" href="https://github.com/BlockResearchGroup/compas_tna-UI">https://github.com/BlockResearchGroup/compas_tna-UI</a></p>
+</div>
+<div class="section" id="load-the-sample-file">
+<h2>Load the sample file</h2>
+<p>First download and open the Rhino file with sample input geometry: <a class="reference download internal" download="" href="../_downloads/efb6d3dc0747e8dfee389053cbc3bc9b/crossvault.3dm"><code class="xref download docutils literal notranslate"><span class="pre">crossvault.3dm</span></code></a>.</p>
+<div class="figure align-default">
+<img alt="../_images/TNA_open.png" class="figure-img img-fluid" src="../_images/TNA_open.png" />
+</div>
+</div>
+<div class="section" id="initialise-the-ui">
+<h2>Initialise the UI</h2>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_init</span></code></p></li>
+</ul>
+<p>To initialise the TNA PythonPlugin, run the command <code class="docutils literal notranslate"><span class="pre">TNA_init</span></code>.</p>
+<div class="figure align-default">
+<img alt="../_images/TNA_init.png" class="figure-img img-fluid" src="../_images/TNA_init.png" />
+</div>
 </div>
 <div class="section" id="make-the-form-diagram">
 <h2>Make the form diagram</h2>
-<p>The first step is to make a form diagram from a set of connected lines.
-Make sure the lines are individual line segments and properly connected.
-Alternatively, the form diagram can be created from an OBJ file, from a JSON file,
-from a Rhino mesh, or a Rhino surface.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># make the form diagram from selected line elements</span>
-
-<span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_lines</span><span class="p">()</span>
-
-<span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_rhinolines</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
-<span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</code></pre></div>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_form</span> <span class="pre">&gt;</span> <span class="pre">lines</span></code></p></li>
+</ul>
+<p>The first step is then to make a form diagram from a set of connected lines.
+Run the command <code class="docutils literal notranslate"><span class="pre">TNA_form</span></code> and select the option <code class="docutils literal notranslate"><span class="pre">lines</span></code>.
+Then select the lines on the layer <code class="docutils literal notranslate"><span class="pre">Input::Lines</span></code>.</p>
+<div class="figure align-default">
+<img alt="../_images/TNA_form.png" class="figure-img img-fluid" src="../_images/TNA_form.png" />
 </div>
 </div>
 <div class="section" id="identify-the-supports">
 <h2>Identify the supports</h2>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_attributes</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">vertices</span></code></p></li>
+</ul>
 <p>After initialising the form diagram, we identify the supports.
-The identify the supports, we select the relevant vertices and change their attribute
-<code class="docutils literal notranslate"><span class="pre">is_anchor</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># identify the supports</span>
-
-<span class="n">keys</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">select_vertices</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
-
-<span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
-    <span class="n">form</span><span class="o">.</span><span class="n">set_vertices_attributes</span><span class="p">([</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">,</span> <span class="s1">&#39;is_fixed&#39;</span><span class="p">],</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">],</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">)</span>
-    <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</code></pre></div>
+Select the vertices in the corners of the diagram and change their attribute <code class="docutils literal notranslate"><span class="pre">is_anchor</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>.
+Use the command <code class="docutils literal notranslate"><span class="pre">TNA_attributes</span></code> with options <code class="docutils literal notranslate"><span class="pre">form</span></code> and <code class="docutils literal notranslate"><span class="pre">vertices</span></code>.</p>
+<div class="figure align-default">
+<img alt="../_images/TNA_supports.png" class="figure-img img-fluid" src="../_images/TNA_supports.png" />
 </div>
 </div>
 <div class="section" id="update-the-boundary-conditions">
 <h2>Update the boundary conditions</h2>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_boundaries</span></code></p></li>
+</ul>
 <p>Having identified the supports, we update the boundary conditions.
-To update the boundary conditions, we add “feet” to the support vertices.</p>
+To update the boundary conditions, we add “feet” to the support vertices
+that represent the horizontal components of the reaction forces at the supports.</p>
 <p>There are two options.
-We can add one “foot” per support or two.
-The feet represent the horizontal components of the reaction forces at the supports.
-If only foot is added, the reaction force at that support is fully constrained to the direction of the foot.
-If two feet are added, the horizontal component of the reaction force can be any combination of those two force vectors.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># update the boundaries</span>
-<span class="c1"># Note: two feet per support to allow for non-symmetrical force distributions</span>
-<span class="c1">#       in the different webs of the cross-vault</span>
-
-<span class="n">form</span><span class="o">.</span><span class="n">update_boundaries</span><span class="p">(</span><span class="n">feet</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</code></pre></div>
+We can add one horizontal component per support or two.
+If only component is added, the direction of the horizontal reaction force at that support is fully constrained.
+If two components are added, the horizontal component of the reaction force at that support can be any combination of those two force vectors.</p>
+<div class="figure align-default">
+<img alt="../_images/TNA_boundaries.png" class="figure-img img-fluid" src="../_images/TNA_boundaries.png" />
 </div>
 </div>
 <div class="section" id="make-the-force-diagram">
 <h2>Make the force diagram</h2>
-<p>Once the boundary conditions are set, we can make the force diagram.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># make the force diagram</span>
-
-<span class="n">force</span> <span class="o">=</span> <span class="n">ForceDiagram</span><span class="o">.</span><span class="n">from_formdiagram</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
-<span class="n">force</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::ForceDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-
-<span class="c1"># move the force diagram</span>
-
-<span class="k">if</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">force</span><span class="p">):</span>
-    <span class="n">force</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::ForceDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</code></pre></div>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_force</span></code></p></li>
+</ul>
+<p>Once the boundary conditions are set, we can make the force diagram.
+The force diagram is intialised as the dual of the form diagram.
+This means that the vertices of the force diagram are at the centroids of the
+corresponding faces of the form diagram.</p>
+<div class="figure align-default">
+<img alt="../_images/TNA_force.png" class="figure-img img-fluid" src="../_images/TNA_force.png" />
+</div>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_move</span> <span class="pre">&gt;</span> <span class="pre">force</span> <span class="pre">&gt;</span> <span class="pre">diagram</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_attributes</span> <span class="pre">&gt;</span> <span class="pre">force</span> <span class="pre">&gt;</span> <span class="pre">vertices</span></code></p></li>
+</ul>
+<p>After constructing the force diagram, we move it out of the way,
+and mark one of its vertices as fixed such that it stays there.</p>
+<div class="figure align-default">
+<img alt="../_images/TNA_move.png" class="figure-img img-fluid" src="../_images/TNA_move.png" />
+</div>
+</div>
+<div class="section" id="initial-equilibrium-shape">
+<h2>Initial equilibrium shape</h2>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_horizontal</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_settings</span></code></p></li>
+</ul>
+<p>At this point, we can generate a first, unconstrained version of the equilibrium shape of the funicular force network.
+First, run horizontal equilibrium using <code class="docutils literal notranslate"><span class="pre">TNA_horizontal</span></code>.</p>
+<p>Note that the default settings of the horizontal equilibrium solver will allow for only 100 iterations at a time.
+It is unlikey that this immediately results in fully resolved horizontal equilibrium with no residual forces.
+Either increase the maximum number of iterations, or run <code class="docutils literal notranslate"><span class="pre">TNA_horizontal</span></code> multiple time, or both.
+Use the commmand <code class="docutils literal notranslate"><span class="pre">TNA_settings</span></code> to change <code class="docutils literal notranslate"><span class="pre">horizontal.kmax</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The horizontal and vertical equilibrium solvers use Numpy and Scipy to solve the computational problem.
+Since Numpy and Scipy and not available in Rhino, we use Remote Procedure Calls to work around this limitation.
+The current implementation of <code class="docutils literal notranslate"><span class="pre">compas.rpc</span></code> is limited in the amount of time it allows a remote procedure to run
+before the connection is interrupted.
+Therefore, don’t increase the number of iterations by too much.
+For example, don’t go over 500.
+If you need more iterations, just run the command multiple times.</p>
+</div>
+<div class="figure align-default">
+<img alt="../_images/TNA_horizontal.png" class="figure-img img-fluid" src="../_images/TNA_horizontal.png" />
+</div>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_vertical</span></code></p></li>
+</ul>
+<p>Once horizontal equilibrium has been established, run <code class="docutils literal notranslate"><span class="pre">TNA_vertical</span></code>.
+This command will ask for <code class="docutils literal notranslate"><span class="pre">Z</span> <span class="pre">Max</span></code>, which is a value for the highest vertex
+of the equilibrium network that will be used to determine an appropriate scale</p>
+<div class="figure align-default">
+<img alt="../_images/TNA_vertical.png" class="figure-img img-fluid" src="../_images/TNA_vertical.png" />
 </div>
 </div>
 <div class="section" id="set-the-constraints">
 <h2>Set the constraints</h2>
-<p>This is the most important part of the procedure that ensures we end up with a barrel vault.
-A barrel vault is a single curvature geometry and therefore carries loads in only one direction.</p>
-<p>This means we have to constrain the relationship between form and force diagram
-to only allow forces in one direction. and to make sure that the forces are equally
-distributed over the single-span arches.</p>
-<p>First, set the constraints for the edges in the directions spanning the ribs.
-Set <code class="docutils literal notranslate"><span class="pre">fmin</span> <span class="pre">:=</span> <span class="pre">2</span></code> and <code class="docutils literal notranslate"><span class="pre">fmax</span> <span class="pre">:=</span> <span class="pre">2</span></code>.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># set the constraints for the edges in the spanning direction</span>
-<span class="c1"># =&gt; fmin := 2, fmax := 2</span>
-
-<span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_curves</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;spanning&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">guids</span><span class="p">:</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">identify_edges_on_curves</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
-        <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">highlight_edges</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">update_edge_attributes</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fmin&#39;</span><span class="p">,</span> <span class="s1">&#39;fmax&#39;</span><span class="p">]):</span>
-            <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<p>Then the edges on the boundary.
-Set <code class="docutils literal notranslate"><span class="pre">fmin</span> <span class="pre">:=</span> <span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">fmax</span> <span class="pre">:=</span> <span class="pre">0</span></code>.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># set the constraints for the edges on the boundary</span>
-<span class="c1"># =&gt; fmin := 1, fmax := 1</span>
-
-<span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_curves</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;boundary&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">guids</span><span class="p">:</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">identify_edges_on_curves</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
-        <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">highlight_edges</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">update_edge_attributes</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fmin&#39;</span><span class="p">,</span> <span class="s1">&#39;fmax&#39;</span><span class="p">]):</span>
-            <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<p>Then the edges perpendicular to the boundary.
-Set <code class="docutils literal notranslate"><span class="pre">fmin</span> <span class="pre">:=</span> <span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">fmax</span> <span class="pre">:=</span> <span class="pre">0</span></code>.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># set the constraints for the other edges</span>
-<span class="c1"># =&gt; fmin := 0, fmax := 0</span>
-
-<span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_curves</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;other&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">guids</span><span class="p">:</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">identify_edges_on_curves</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
-        <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">highlight_edges</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">update_edge_attributes</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fmin&#39;</span><span class="p">,</span> <span class="s1">&#39;fmax&#39;</span><span class="p">]):</span>
-            <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</code></pre></div>
-</div>
-<p>Finally, the edges of the cross in the middle.
-Set <code class="docutils literal notranslate"><span class="pre">fmin</span> <span class="pre">:=</span> <span class="pre">2</span></code>.</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># set the constraints for the edges in the central cross</span>
-<span class="c1"># =&gt; fmin := 1</span>
-
-<span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">get_curves</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;cross&#39;</span><span class="p">)</span>
-<span class="k">if</span> <span class="n">guids</span><span class="p">:</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">identify_edges_on_curves</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
-        <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">highlight_edges</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">update_edge_attributes</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">keys</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fmin&#39;</span><span class="p">,</span> <span class="s1">&#39;fmax&#39;</span><span class="p">]):</span>
-            <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</code></pre></div>
+<div class="section" id="edges-spanning-the-ribs">
+<h3>1. Edges spanning the ribs</h3>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_select</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span> <span class="pre">&gt;</span> <span class="pre">continuous</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_attributes</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span></code></p></li>
+</ul>
+<p>First, we select the edges in the directions spanning the ribs.
+Run command <code class="docutils literal notranslate"><span class="pre">TNA_select</span></code>, choose option <code class="docutils literal notranslate"><span class="pre">form</span></code> and then <code class="docutils literal notranslate"><span class="pre">edges</span></code> and finally
+selection mode <code class="docutils literal notranslate"><span class="pre">continuous</span></code>.
+Then, select one edge per spanning direction to select all relevant edges.
+Finally, use command <code class="docutils literal notranslate"><span class="pre">TNA_attributes</span></code> (choose <code class="docutils literal notranslate"><span class="pre">form</span></code> and then <code class="docutils literal notranslate"><span class="pre">edges</span></code>)
+to set <code class="docutils literal notranslate"><span class="pre">fmin</span> <span class="pre">:=</span> <span class="pre">2</span></code> and <code class="docutils literal notranslate"><span class="pre">fmax</span> <span class="pre">:=</span> <span class="pre">2</span></code> of the selected edges.</p>
+<div class="figure align-default">
+<img alt="../_images/TNA_constraints-spanning.png" class="figure-img img-fluid" src="../_images/TNA_constraints-spanning.png" />
 </div>
 </div>
-<div class="section" id="horizontal-equilibrium">
-<h2>Horizontal equilibrium</h2>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># compute horizontal equilibrium</span>
-<span class="c1"># Note: this is split up into two parts to avoid BrokenPipeError</span>
-
-<span class="n">horizontal</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="n">horizontal</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-
-<span class="n">force</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::ForceDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-
-<span class="n">horizontal</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="n">horizontal</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-
-<span class="n">force</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::ForceDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-</code></pre></div>
+<div class="section" id="edges-on-boundary">
+<h3>2. Edges on boundary</h3>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_select</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span> <span class="pre">&gt;</span> <span class="pre">continuous</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_attributes</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span></code></p></li>
+</ul>
+<p>As in the barrel vault, the vertices on the boundary carry less load than the internal ones.
+Therefore, use the same procedure as before to select the edges on the boundary and set
+<code class="docutils literal notranslate"><span class="pre">fmin</span> <span class="pre">:=</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">fmax</span> <span class="pre">:=</span> <span class="pre">1</span></code>.</p>
+<div class="figure align-default">
+<img alt="../_images/TNA_constraints-boundary.png" class="figure-img img-fluid" src="../_images/TNA_constraints-boundary.png" />
 </div>
 </div>
-<div class="section" id="vertical-equilibrium">
-<h2>Vertical equilibrium</h2>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># compute vertical equilibrium based on a chosen height of the highest point of the equilibrium network</span>
-
-<span class="n">zmax</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="n">GetReal</span><span class="p">(</span><span class="s1">&#39;Z Max&#39;</span><span class="p">)</span>
-
-<span class="n">scale</span> <span class="o">=</span> <span class="n">vertical</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">zmax</span><span class="p">)</span>
-<span class="n">force</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s1">&#39;scale&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span>
-</code></pre></div>
+<div class="section" id="edges-perpendicular-to-boundary">
+<h3>3. Edges perpendicular to boundary</h3>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_select</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span> <span class="pre">&gt;</span> <span class="pre">parallel</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_attributes</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span></code></p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../_images/TNA_constraints-other.png" class="figure-img img-fluid" src="../_images/TNA_constraints-other.png" />
+</div>
+</div>
+<div class="section" id="edges-central-cross">
+<h3>4. Edges central cross</h3>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_attributes</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span></code></p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../_images/TNA_constraints-cross.png" class="figure-img img-fluid" src="../_images/TNA_constraints-cross.png" />
+</div>
+</div>
+</div>
+<div class="section" id="constrained-equilibrium">
+<h2>Constrained equilibrium</h2>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_horizontal</span></code></p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../_images/TNA_horizontal-constrained.png" class="figure-img img-fluid" src="../_images/TNA_horizontal-constrained.png" />
+</div>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_vertical</span></code></p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../_images/TNA_vertical-constrained.png" class="figure-img img-fluid" src="../_images/TNA_vertical-constrained.png" />
 </div>
 </div>
 <div class="section" id="visualise-the-result">
 <h2>Visualise the result</h2>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># visualise the result</span>
-
-<span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;show.forces&#39;</span>    <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;show.reactions&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;scale.forces&#39;</span>   <span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
-    <span class="s1">&#39;scale.reactions&#39;</span><span class="p">:</span> <span class="mf">0.1</span>
-<span class="p">}</span>
-
-<span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
-</code></pre></div>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_settings</span></code></p></li>
+</ul>
+<div class="figure align-default">
+<img alt="../_images/TNA_result.png" class="figure-img img-fluid" src="../_images/TNA_result.png" />
 </div>
 </div>
 </div>
@@ -292,13 +332,21 @@ Set <code class="docutils literal notranslate"><span class="pre">fmin</span> <sp
 
                     <ul class="nav flex-column" id="compas-localnav">
 <li class="nav-item"><a class="nav-link reference internal" href="#">The cross vault</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#load-the-sample-file">Load the sample file</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#initialise-the-ui">Initialise the UI</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#make-the-form-diagram">Make the form diagram</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#identify-the-supports">Identify the supports</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#update-the-boundary-conditions">Update the boundary conditions</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#make-the-force-diagram">Make the force diagram</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#set-the-constraints">Set the constraints</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#horizontal-equilibrium">Horizontal equilibrium</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="#vertical-equilibrium">Vertical equilibrium</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#initial-equilibrium-shape">Initial equilibrium shape</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#set-the-constraints">Set the constraints</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#edges-spanning-the-ribs">1. Edges spanning the ribs</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#edges-on-boundary">2. Edges on boundary</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#edges-perpendicular-to-boundary">3. Edges perpendicular to boundary</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#edges-central-cross">4. Edges central cross</a></li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="#constrained-equilibrium">Constrained equilibrium</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="#visualise-the-result">Visualise the result</a></li>
 </ul>
 </li>
@@ -316,7 +364,7 @@ Set <code class="docutils literal notranslate"><span class="pre">fmin</span> <sp
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.
             
         </footer>
 

@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>compas_tna</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="" />
+        <meta name="description" content="" />
+
+        <link rel="shortcut icon" href="../../../_static/images/compas.ico" type="image/x-icon">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+
+        <link rel="stylesheet" type="text/css" href="../../../_static/css/prism.css" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="../../../_static/css/compas-reference.css" />
+
+        
+        
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand compas-navbar justify-content-between">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../../../index.html">
+                    COMPAS TNA 0.1.0
+                </a>
+            </div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://compas-dev.github.io">
+                        <img src="../../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
+                    </a>
+                </li>
+            </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <!-- main content -->
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+
+                        <h1>Source code for compas_tna.equilibrium.horizontal</h1><div class="highlight"><pre><code>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">array</span>
+    <span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">float64</span>
+
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">&#39;ironpython&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="k">raise</span>
+
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="k">import</span> <span class="n">angle_vectors_xy</span>
+
+<span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">connectivity_matrix</span>
+<span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">normrow</span>
+<span class="kn">from</span> <span class="nn">compas.numerical</span> <span class="k">import</span> <span class="n">normalizerow</span>
+
+<span class="kn">from</span> <span class="nn">compas_tna.utilities</span> <span class="k">import</span> <span class="n">rot90</span>
+<span class="kn">from</span> <span class="nn">compas_tna.utilities</span> <span class="k">import</span> <span class="n">apply_bounds</span>
+<span class="kn">from</span> <span class="nn">compas_tna.utilities</span> <span class="k">import</span> <span class="n">parallelise_sparse</span>
+<span class="kn">from</span> <span class="nn">compas_tna.utilities</span> <span class="k">import</span> <span class="n">parallelise_nodal</span>
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;horizontal&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;horizontal_proxy&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;horizontal_nodal&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;horizontal_nodal_proxy&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="n">EPS</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">epsilon</span>
+
+
+<div class="viewcode-block" id="horizontal_proxy"><a class="viewcode-back" href="../../../api/generated/compas_tna.equilibrium.horizontal_proxy.html#compas_tna.equilibrium.horizontal_proxy">[docs]</a><span class="k">def</span> <span class="nf">horizontal_proxy</span><span class="p">(</span><span class="n">formdata</span><span class="p">,</span> <span class="n">forcedata</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="k">import</span> <span class="n">FormDiagram</span>
+    <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="k">import</span> <span class="n">ForceDiagram</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">formdata</span><span class="p">)</span>
+    <span class="n">force</span> <span class="o">=</span> <span class="n">ForceDiagram</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">forcedata</span><span class="p">)</span>
+    <span class="n">horizontal</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">(),</span> <span class="n">force</span><span class="o">.</span><span class="n">to_data</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="horizontal_nodal_proxy"><a class="viewcode-back" href="../../../api/generated/compas_tna.equilibrium.horizontal_nodal_proxy.html#compas_tna.equilibrium.horizontal_nodal_proxy">[docs]</a><span class="k">def</span> <span class="nf">horizontal_nodal_proxy</span><span class="p">(</span><span class="n">formdata</span><span class="p">,</span> <span class="n">forcedata</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="k">import</span> <span class="n">FormDiagram</span>
+    <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="k">import</span> <span class="n">ForceDiagram</span>
+    <span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">formdata</span><span class="p">)</span>
+    <span class="n">force</span> <span class="o">=</span> <span class="n">ForceDiagram</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">forcedata</span><span class="p">)</span>
+    <span class="n">horizontal_nodal</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">form</span><span class="o">.</span><span class="n">to_data</span><span class="p">(),</span> <span class="n">force</span><span class="o">.</span><span class="n">to_data</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="horizontal"><a class="viewcode-back" href="../../../api/generated/compas_tna.equilibrium.horizontal.html#compas_tna.equilibrium.horizontal">[docs]</a><span class="k">def</span> <span class="nf">horizontal</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute horizontal equilibrium.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    form : compas_tna.diagrams.formdiagram.FormDiagram</span>
+<span class="sd">    force : compas_tna.diagrams.forcediagram.ForceDiagram</span>
+<span class="sd">    alpha : float</span>
+<span class="sd">        Weighting factor for computation of the target vectors (the default is</span>
+<span class="sd">        100.0, which implies that the target vectors are the edges of the form diagram).</span>
+<span class="sd">        If 0.0, the target vectors are the edges of the force diagram.</span>
+<span class="sd">    kmax : int</span>
+<span class="sd">       Maximum number of iterations (the default is 100).</span>
+<span class="sd">    display : bool</span>
+<span class="sd">        Display information about the current iteration (the default is True).</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This implementation is based on the following formulation</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{C}^{T} \mathbf{C} \mathbf{xy} = \mathbf{C}^{T} \mathbf{t}</span>
+
+<span class="sd">    with :math:`\mathbf{C}` the connectivity matrix and :math:`\mathbf{t}` the</span>
+<span class="sd">    target vectors.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># alpha == 1 : form diagram fixed</span>
+    <span class="c1"># alpha == 0 : force diagram fixed</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span><span class="p">))</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># form diagram</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">k_i</span>   <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+    <span class="n">uv_i</span>  <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">uv_index</span><span class="p">()</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">anchors</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">fixed</span><span class="p">()))</span>
+    <span class="n">fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">]</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="p">[[</span><span class="n">k_i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k_i</span><span class="p">[</span><span class="n">v</span><span class="p">]]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})]</span>
+    <span class="n">xy</span>    <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">(</span><span class="s1">&#39;xy&#39;</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">lmin</span>  <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lmin&#39;</span><span class="p">,</span> <span class="mf">1e-7</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">lmax</span>  <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lmax&#39;</span><span class="p">,</span> <span class="mf">1e+7</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">fmin</span>  <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fmin&#39;</span><span class="p">,</span> <span class="mf">1e-7</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">fmax</span>  <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fmax&#39;</span><span class="p">,</span> <span class="mf">1e+7</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">C</span>     <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="s1">&#39;csr&#39;</span><span class="p">)</span>
+    <span class="n">Ct</span>    <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+    <span class="n">CtC</span>   <span class="o">=</span> <span class="n">Ct</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># force diagram</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">_k_i</span>   <span class="o">=</span> <span class="n">force</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+    <span class="n">_fixed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">force</span><span class="o">.</span><span class="n">fixed</span><span class="p">())</span>
+    <span class="n">_fixed</span> <span class="o">=</span> <span class="p">[</span><span class="n">_k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_fixed</span><span class="p">]</span>
+    <span class="n">_fixed</span> <span class="o">=</span> <span class="n">_fixed</span> <span class="ow">or</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_edges</span> <span class="o">=</span> <span class="n">force</span><span class="o">.</span><span class="n">ordered_edges</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+    <span class="n">_xy</span>    <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">force</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">(</span><span class="s1">&#39;xy&#39;</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">_C</span>     <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">_edges</span><span class="p">,</span> <span class="s1">&#39;csr&#39;</span><span class="p">)</span>
+    <span class="n">_Ct</span>    <span class="o">=</span> <span class="n">_C</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+    <span class="n">_Ct_C</span>  <span class="o">=</span> <span class="n">_Ct</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_C</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># rotate force diagram to make it parallel to the form diagram</span>
+    <span class="c1"># use CCW direction (opposite of cycle direction)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">_xy</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">rot90</span><span class="p">(</span><span class="n">_xy</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># make the diagrams parallel to a target vector</span>
+    <span class="c1"># that is the (alpha) weighted average of the directions of corresponding</span>
+    <span class="c1"># edges of the two diagrams</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">uv</span>  <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
+    <span class="n">_uv</span> <span class="o">=</span> <span class="n">_C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_xy</span><span class="p">)</span>
+    <span class="n">l</span>   <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>
+    <span class="n">_l</span>  <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">_uv</span><span class="p">)</span>
+    <span class="n">t</span>   <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">normalizerow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">normalizerow</span><span class="p">(</span><span class="n">_uv</span><span class="p">)</span>
+    <span class="c1"># parallelise</span>
+    <span class="c1"># add the outer loop to the parallelise function</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">kmax</span><span class="p">):</span>
+        <span class="c1"># apply length bounds</span>
+        <span class="n">apply_bounds</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">lmin</span><span class="p">,</span> <span class="n">lmax</span><span class="p">)</span>
+        <span class="n">apply_bounds</span><span class="p">(</span><span class="n">_l</span><span class="p">,</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="p">)</span>
+        <span class="c1"># print, if allowed</span>
+        <span class="k">if</span> <span class="n">display</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">alpha</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="c1"># if emphasis is not entirely on the form</span>
+            <span class="c1"># update the form diagram</span>
+            <span class="n">xy</span> <span class="o">=</span> <span class="n">parallelise_sparse</span><span class="p">(</span><span class="n">CtC</span><span class="p">,</span> <span class="n">Ct</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l</span> <span class="o">*</span> <span class="n">t</span><span class="p">),</span> <span class="n">xy</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="s1">&#39;CtC&#39;</span><span class="p">)</span>
+            <span class="n">uv</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
+            <span class="n">l</span>  <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">alpha</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="c1"># if emphasis is not entirely on the force</span>
+            <span class="c1"># update the force diagram</span>
+            <span class="n">_xy</span> <span class="o">=</span> <span class="n">parallelise_sparse</span><span class="p">(</span><span class="n">_Ct_C</span><span class="p">,</span> <span class="n">_Ct</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_l</span> <span class="o">*</span> <span class="n">t</span><span class="p">),</span> <span class="n">_xy</span><span class="p">,</span> <span class="n">_fixed</span><span class="p">,</span> <span class="s1">&#39;_Ct_C&#39;</span><span class="p">)</span>
+            <span class="n">_uv</span> <span class="o">=</span> <span class="n">_C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_xy</span><span class="p">)</span>
+            <span class="n">_l</span>  <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">_uv</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># compute the force densities</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">_l</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span> <span class="o">/</span> <span class="n">l</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">float64</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># rotate the force diagram 90 degrees in CW direction</span>
+    <span class="c1"># this way the relation between the two diagrams is easier to read</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">_xy</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">rot90</span><span class="p">(</span><span class="n">_xy</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># angle deviations</span>
+    <span class="c1"># note that this does not account for flipped edges!</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">angle_vectors_xy</span><span class="p">(</span><span class="n">uv</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_uv</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))]</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># update form</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">uv_i</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># update force</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">force</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">_k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_xy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_xy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="horizontal_nodal"><a class="viewcode-back" href="../../../api/generated/compas_tna.equilibrium.horizontal_nodal.html#compas_tna.equilibrium.horizontal_nodal">[docs]</a><span class="k">def</span> <span class="nf">horizontal_nodal</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute horizontal equilibrium using a node-per-node approach.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    form : compas_tna.diagrams.FormDiagram</span>
+<span class="sd">    force : compas_tna.diagrams.ForceDiagram</span>
+<span class="sd">    alpha : float</span>
+<span class="sd">        Weighting factor for computation of the target vectors (the default is</span>
+<span class="sd">        100.0, which implies that the target vectors are the edges of the form diagram).</span>
+<span class="sd">        If 0.0, the target vectors are the edges of the force diagram.</span>
+<span class="sd">    kmax : int</span>
+<span class="sd">       Maximum number of iterations (the default is 100).</span>
+<span class="sd">    display : bool</span>
+<span class="sd">        Display information about the current iteration (the default is True).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">alpha</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.0</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="n">alpha</span><span class="p">))</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># form diagram</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">k_i</span>    <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+    <span class="n">uv_i</span>   <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">uv_index</span><span class="p">()</span>
+    <span class="n">i_nbrs</span> <span class="o">=</span> <span class="p">{</span><span class="n">k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span> <span class="p">[</span><span class="n">k_i</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+    <span class="n">ij_e</span>   <span class="o">=</span> <span class="p">{(</span><span class="n">k_i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k_i</span><span class="p">[</span><span class="n">v</span><span class="p">]):</span> <span class="n">index</span> <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">uv_i</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
+    <span class="n">fixed</span>  <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">anchors</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">fixed</span><span class="p">()))</span>
+    <span class="n">fixed</span>  <span class="o">=</span> <span class="p">[</span><span class="n">k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fixed</span><span class="p">]</span>
+    <span class="n">edges</span>  <span class="o">=</span> <span class="p">[[</span><span class="n">k_i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">k_i</span><span class="p">[</span><span class="n">v</span><span class="p">]]</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})]</span>
+    <span class="n">lmin</span>   <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lmin&#39;</span><span class="p">,</span> <span class="mf">1e-7</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">lmax</span>   <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;lmax&#39;</span><span class="p">,</span> <span class="mf">1e+7</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">fmin</span>   <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fmin&#39;</span><span class="p">,</span> <span class="mf">1e-7</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">fmax</span>   <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="n">attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fmax&#39;</span><span class="p">,</span> <span class="mf">1e+7</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">xy</span>     <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">(</span><span class="s1">&#39;xy&#39;</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">C</span>      <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="s1">&#39;csr&#39;</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># force diagram</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">_k_i</span>    <span class="o">=</span> <span class="n">force</span><span class="o">.</span><span class="n">key_index</span><span class="p">()</span>
+    <span class="n">_uv_i</span>   <span class="o">=</span> <span class="n">force</span><span class="o">.</span><span class="n">uv_index</span><span class="p">(</span><span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span>
+    <span class="n">_i_nbrs</span> <span class="o">=</span> <span class="p">{</span><span class="n">_k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span> <span class="p">[</span><span class="n">_k_i</span><span class="p">[</span><span class="n">nbr</span><span class="p">]</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">force</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">)]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">force</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+    <span class="n">_ij_e</span>   <span class="o">=</span> <span class="p">{(</span><span class="n">_k_i</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">_k_i</span><span class="p">[</span><span class="n">v</span><span class="p">]):</span> <span class="n">index</span> <span class="k">for</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_uv_i</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
+    <span class="n">_fixed</span>  <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">force</span><span class="o">.</span><span class="n">fixed</span><span class="p">())</span>
+    <span class="n">_fixed</span>  <span class="o">=</span> <span class="p">[</span><span class="n">_k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_fixed</span><span class="p">]</span>
+    <span class="n">_fixed</span>  <span class="o">=</span> <span class="n">_fixed</span> <span class="ow">or</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">_edges</span>  <span class="o">=</span> <span class="n">force</span><span class="o">.</span><span class="n">ordered_edges</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+    <span class="n">_xy</span>     <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">force</span><span class="o">.</span><span class="n">get_vertices_attributes</span><span class="p">(</span><span class="s1">&#39;xy&#39;</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">_C</span>      <span class="o">=</span> <span class="n">connectivity_matrix</span><span class="p">(</span><span class="n">_edges</span><span class="p">,</span> <span class="s1">&#39;csr&#39;</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># rotate force diagram to make it parallel to the form diagram</span>
+    <span class="c1"># use CCW direction (opposite of cycle direction)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">_xy</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">rot90</span><span class="p">(</span><span class="n">_xy</span><span class="p">,</span> <span class="o">+</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># make the diagrams parallel to a target vector</span>
+    <span class="c1"># that is the (alpha) weighted average of the directions of corresponding</span>
+    <span class="c1"># edges of the two diagrams</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">uv</span>  <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
+    <span class="n">_uv</span> <span class="o">=</span> <span class="n">_C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_xy</span><span class="p">)</span>
+    <span class="n">l</span>   <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>
+    <span class="n">_l</span>  <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">_uv</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># the target vectors</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">targets</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">normalizerow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">normalizerow</span><span class="p">(</span><span class="n">_uv</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># parallelise</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">parallelise_nodal</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">i_nbrs</span><span class="p">,</span> <span class="n">ij_e</span><span class="p">,</span> <span class="n">fixed</span><span class="o">=</span><span class="n">fixed</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="n">kmax</span><span class="p">,</span> <span class="n">lmin</span><span class="o">=</span><span class="n">lmin</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="n">lmax</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">alpha</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">parallelise_nodal</span><span class="p">(</span><span class="n">_xy</span><span class="p">,</span> <span class="n">_C</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">_i_nbrs</span><span class="p">,</span> <span class="n">_ij_e</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="n">kmax</span><span class="p">,</span> <span class="n">lmin</span><span class="o">=</span><span class="n">fmin</span><span class="p">,</span> <span class="n">lmax</span><span class="o">=</span><span class="n">fmax</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># update the coordinate difference vectors</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">uv</span>  <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
+    <span class="n">_uv</span> <span class="o">=</span> <span class="n">_C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_xy</span><span class="p">)</span>
+    <span class="n">l</span>   <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>
+    <span class="n">_l</span>  <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">_uv</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># compute the force densities</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">_l</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="p">(</span><span class="n">f</span> <span class="o">/</span> <span class="n">l</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">float64</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># rotate the force diagram 90 degrees in CW direction</span>
+    <span class="c1"># this way the relation between the two diagrams is easier to read</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">_xy</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">rot90</span><span class="p">(</span><span class="n">_xy</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># angle deviations</span>
+    <span class="c1"># note that this does not account for flipped edges!</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="n">angle_vectors_xy</span><span class="p">(</span><span class="n">uv</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">_uv</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">deg</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))]</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># update form</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">uv_i</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;q&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;f&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="c1"># update force</span>
+    <span class="c1"># --------------------------------------------------------------------------</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">force</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">_k_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_xy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_xy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span></div>
+
+
+<span class="c1"># ==============================================================================</span>
+<span class="c1"># Main</span>
+<span class="c1"># ==============================================================================</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+
+    <span class="k">pass</span>
+</code></pre></div>
+                        
+                    
+
+                </main>
+
+                <!-- site navigation sidebar -->
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../gettingstarted.html">Getting Started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../examples.html">Examples</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../api.html">API Reference</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../../citing.html">Citing</a></li>
+</ul>
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+
+                <!-- table of contents of main content -->
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    
+
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="compas-footer">
+            
+                Last updated on Jun 17, 2019.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.
+            
+        </footer>
+
+        
+
+            <script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.1.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+};
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+            <script src="../../../_static/underscore.js"></script>
+            <script src="../../../_static/doctools.js"></script>
+            <script src="../../../_static/js/searchtools_.js"></script>
+            <script src="../../../_static/js/prism.js"></script>
+
+            <script>
+$(document).ready(function() {
+
+    // $(".language-default pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-bash pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-python pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-c pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-cpp pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-fortran pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-markdown pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-rest pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    anchors.add();
+});
+            </script>
+
+        
+    </body>
+</html>

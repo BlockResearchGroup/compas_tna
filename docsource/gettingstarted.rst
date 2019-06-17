@@ -23,7 +23,23 @@ Or from local source files.
 
 .. note::
 
-    Don't forget the "." at the end of ``pip install -e .``!
+    Don't forget the DOT at the end of ``pip install -e .``
+
+
+Rhino Configuration
+===================
+
+**Installing the package**
+
+.. code-block:: bash
+
+    python -m compas_rhino.install -p compas compas_rhino compas_tna
+
+
+**Installing the UI**
+
+The Rhino UI for ``compas_tna`` and corresponding installation instructions are avilable here:
+https://github.com/BlockResearchGroup/compas_tna-UI
 
 
 First steps

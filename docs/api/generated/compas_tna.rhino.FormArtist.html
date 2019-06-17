@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>compas_tna</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
+        <meta name="author" content="" />
+        <meta name="description" content="" />
+
+        <link rel="shortcut icon" href="../../_static/images/compas.ico" type="image/x-icon">
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous" />
+
+        <link rel="stylesheet" type="text/css" href="../../_static/css/prism.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css" />
+        <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
+
+        
+            <link rel="next" title="FormArtist.__init__" href="compas_tna.rhino.FormArtist.__init__.html" />
+        
+        
+        
+            <link rel="prev" title="DiagramHelper.update_vertex_attributes" href="compas_tna.rhino.DiagramHelper.update_vertex_attributes.html" />
+        
+
+        <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    </head>
+    <body data-spy="scroll" data-target="#compas-localnav">
+
+        <header class="navbar navbar-expand compas-navbar justify-content-between">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="../../index.html">
+                    COMPAS TNA 0.1.0
+                </a>
+            </div>
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://compas-dev.github.io">
+                        <img src="../../_static/images/compas_icon_white.png" width="36px" height="36px" alt="compas" />
+                    </a>
+                </li>
+            </ul>
+        </header>
+        
+        <div class="container-fluid compas-container">
+            <div class="row flex-xl-nowrap">
+
+                <!-- main content -->
+
+                <main class="col-12 col-md-9 col-xl-8 compas-content" role="main">
+
+                    
+
+                        
+
+                        <div class="detail section" id="formartist">
+<h1>FormArtist</h1>
+<dl class="class">
+<dt id="compas_tna.rhino.FormArtist">
+<em class="property">class </em><code class="sig-prename descclassname">compas_tna.rhino.</code><code class="sig-name descname">FormArtist</code><span class="sig-paren">(</span><em class="sig-param">form</em>, <em class="sig-param">layer=None</em><span class="sig-paren">)</span></dt>
+<dd><p>Bases: <a class="reference external" href="https://compas-dev.github.io/main/api/generated/compas_rhino.artists.MeshArtist.html#compas_rhino.artists.MeshArtist" title="(in COMPAS v0.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist</span></code></a></p>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">form</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">layer</span></code></p></td>
+<td><p>The layer that contains the mesh.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh</span></code></p></td>
+<td><p>The mesh that should be painted.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.__init__.html#compas_tna.rhino.FormArtist.__init__" title="compas_tna.rhino.FormArtist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(form[, layer])</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear.html#compas_tna.rhino.FormArtist.clear" title="compas_tna.rhino.FormArtist.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<td><p>Clear the vertices, faces and edges of the mesh, without clearing the other elements in the layer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_forces.html#compas_tna.rhino.FormArtist.clear_forces" title="compas_tna.rhino.FormArtist.clear_forces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_forces</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_loads.html#compas_tna.rhino.FormArtist.clear_loads" title="compas_tna.rhino.FormArtist.clear_loads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_loads</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_reactions.html#compas_tna.rhino.FormArtist.clear_reactions" title="compas_tna.rhino.FormArtist.clear_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_reactions</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_residuals.html#compas_tna.rhino.FormArtist.clear_residuals" title="compas_tna.rhino.FormArtist.clear_residuals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_residuals</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_selfweight.html#compas_tna.rhino.FormArtist.clear_selfweight" title="compas_tna.rhino.FormArtist.clear_selfweight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_selfweight</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_forces.html#compas_tna.rhino.FormArtist.draw_forces" title="compas_tna.rhino.FormArtist.draw_forces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_forces</span></code></a>([scale, color])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_loads.html#compas_tna.rhino.FormArtist.draw_loads" title="compas_tna.rhino.FormArtist.draw_loads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_loads</span></code></a>([scale, color])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_reactions.html#compas_tna.rhino.FormArtist.draw_reactions" title="compas_tna.rhino.FormArtist.draw_reactions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_reactions</span></code></a>([scale, color])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_residuals.html#compas_tna.rhino.FormArtist.draw_residuals" title="compas_tna.rhino.FormArtist.draw_residuals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_residuals</span></code></a>([scale, color])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_selfweight.html#compas_tna.rhino.FormArtist.draw_selfweight" title="compas_tna.rhino.FormArtist.draw_selfweight"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_selfweight</span></code></a>([scale, color])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Inherited Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_edgelabels.html#compas_tna.rhino.FormArtist.clear_edgelabels" title="compas_tna.rhino.FormArtist.clear_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edgelabels</span></code></a>([keys])</p></td>
+<td><p>Clear all edge labels previously drawn by the <code class="docutils literal notranslate"><span class="pre">EdgeArtist</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_edges.html#compas_tna.rhino.FormArtist.clear_edges" title="compas_tna.rhino.FormArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a>([keys])</p></td>
+<td><p>Clear all edges previously drawn by the <code class="docutils literal notranslate"><span class="pre">EdgeArtist</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_facelabels.html#compas_tna.rhino.FormArtist.clear_facelabels" title="compas_tna.rhino.FormArtist.clear_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facelabels</span></code></a>([keys])</p></td>
+<td><p>Clear all face labels previously drawn by the <code class="docutils literal notranslate"><span class="pre">FaceArtist</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_facenormals.html#compas_tna.rhino.FormArtist.clear_facenormals" title="compas_tna.rhino.FormArtist.clear_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facenormals</span></code></a>([keys])</p></td>
+<td><p>Clear the normals of all faces previously drawn by the <code class="docutils literal notranslate"><span class="pre">FaceArtist</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_faces.html#compas_tna.rhino.FormArtist.clear_faces" title="compas_tna.rhino.FormArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a>([keys])</p></td>
+<td><p>Clear all faces previously drawn by the <code class="docutils literal notranslate"><span class="pre">FaceArtist</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_layer.html#compas_tna.rhino.FormArtist.clear_layer" title="compas_tna.rhino.FormArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
+<td><p>Clear the main layer of the artist.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_mesh.html#compas_tna.rhino.FormArtist.clear_mesh" title="compas_tna.rhino.FormArtist.clear_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_mesh</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_vertexlabels.html#compas_tna.rhino.FormArtist.clear_vertexlabels" title="compas_tna.rhino.FormArtist.clear_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexlabels</span></code></a>([keys])</p></td>
+<td><p>Clear all vertex labels previously drawn by the <code class="docutils literal notranslate"><span class="pre">VertexArtist</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_vertices.html#compas_tna.rhino.FormArtist.clear_vertices" title="compas_tna.rhino.FormArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a>([keys])</p></td>
+<td><p>Clear all vertices previously drawn by the <code class="docutils literal notranslate"><span class="pre">VertexArtist</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_edgelabels.html#compas_tna.rhino.FormArtist.draw_edgelabels" title="compas_tna.rhino.FormArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a>([text, color])</p></td>
+<td><p>Draw labels for a selection of edges.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_edges.html#compas_tna.rhino.FormArtist.draw_edges" title="compas_tna.rhino.FormArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([keys, color])</p></td>
+<td><p>Draw a selection of edges.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_facelabels.html#compas_tna.rhino.FormArtist.draw_facelabels" title="compas_tna.rhino.FormArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a>([text, color])</p></td>
+<td><p>Draw labels for a selection of faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_facenormals.html#compas_tna.rhino.FormArtist.draw_facenormals" title="compas_tna.rhino.FormArtist.draw_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facenormals</span></code></a>([color])</p></td>
+<td><p>Draw the normals of the faces.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_faces.html#compas_tna.rhino.FormArtist.draw_faces" title="compas_tna.rhino.FormArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([keys, color, join_faces])</p></td>
+<td><p>Draw a selection of faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_lines.html#compas_tna.rhino.FormArtist.draw_lines" title="compas_tna.rhino.FormArtist.draw_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_lines</span></code></a>(lines[, layer, clear_layer, redraw])</p></td>
+<td><p>Draw a collection of lines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_mesh.html#compas_tna.rhino.FormArtist.draw_mesh" title="compas_tna.rhino.FormArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a>([color])</p></td>
+<td><p>Draw the mesh as a consolidated RhinoMesh.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_points.html#compas_tna.rhino.FormArtist.draw_points" title="compas_tna.rhino.FormArtist.draw_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_points</span></code></a>(points[, layer, clear_layer, redraw])</p></td>
+<td><p>Draw a collection of points.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_polygons.html#compas_tna.rhino.FormArtist.draw_polygons" title="compas_tna.rhino.FormArtist.draw_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polygons</span></code></a>(polygons[, layer, …])</p></td>
+<td><p>Draw a collection of polygons.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_polylines.html#compas_tna.rhino.FormArtist.draw_polylines" title="compas_tna.rhino.FormArtist.draw_polylines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polylines</span></code></a>(polylines[, layer, …])</p></td>
+<td><p>Draw a collection of polygons.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_vertexlabels.html#compas_tna.rhino.FormArtist.draw_vertexlabels" title="compas_tna.rhino.FormArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a>([text, color])</p></td>
+<td><p>Draw labels for a selection vertices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_vertices.html#compas_tna.rhino.FormArtist.draw_vertices" title="compas_tna.rhino.FormArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([keys, color])</p></td>
+<td><p>Draw a selection of vertices.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.redraw.html#compas_tna.rhino.FormArtist.redraw" title="compas_tna.rhino.FormArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>([timeout])</p></td>
+<td><p>Redraw the Rhino view.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.save.html#compas_tna.rhino.FormArtist.save" title="compas_tna.rhino.FormArtist.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path[, width, height, scale, …])</p></td>
+<td><p>Save the current screen view.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+                        
+                    
+
+                </main>
+
+                <!-- site navigation sidebar -->
+
+                <div class="col-12 col-md-3 col-xl-2 compas-sidebar" role="navigation"> 
+                    <div class="navbar-light">
+
+                        <form id="" class="d-flex compas-searchbox" action="../../search.html" method="get">
+                            <input class="form-control" type="text" name="q" placeholder="Search docs" />
+                            <input type="hidden" name="check_keywords" value="yes" />
+                            <input type="hidden" name="area" value="default" />
+
+                            <button class="navbar-toggler d-md-none compas-navigation-toggler" type="button" data-toggle="collapse" data-target="#compas-navigation" aria-controls="compas-navigation" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                        </form>
+
+                        
+                        
+
+                            <div class="navbar-expand-md">
+                                <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
+
+                                <ul class="nav flex-column active">
+<li class="nav-item"><a class="nav-link reference internal" href="../../intro.html">Introduction</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Getting Started</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../examples.html">Examples</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas_tna.html">compas_tna</a><ul class="nav active">
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_tna.diagrams.html">compas_tna.diagrams</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_tna.equilibrium.html">compas_tna.equilibrium</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas_tna.rhino.html">compas_tna.rhino</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_tna.utilities.html">compas_tna.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
+</ul>
+
+
+                                </div>
+                            </div>
+
+                        
+
+                    </div>
+                </div>
+
+                <!-- table of contents of main content -->
+                
+                <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
+
+                    
+
+                    <ul class="nav flex-column" id="compas-localnav">
+<li class="nav-item"><a class="nav-link reference internal" href="#">FormArtist</a><ul class="nav">
+</ul>
+</li>
+</ul>
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <footer class="compas-footer">
+            
+                Last updated on Jun 17, 2019.
+            
+
+            
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.
+            
+        </footer>
+
+        
+
+            <script type="text/javascript">
+var DOCUMENTATION_OPTIONS = {
+    URL_ROOT          : '',
+    VERSION           : '0.1.0',
+    COLLAPSE_INDEX    : false,
+    FILE_SUFFIX       : '.html',
+    HAS_SOURCE        : 'false',
+    SOURCELINK_SUFFIX : '.txt'
+};
+            </script>
+
+            <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.0.0/anchor.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+
+            <script src="../../_static/underscore.js"></script>
+            <script src="../../_static/doctools.js"></script>
+            <script src="../../_static/js/searchtools_.js"></script>
+            <script src="../../_static/js/prism.js"></script>
+
+            <script>
+$(document).ready(function() {
+
+    // $(".language-default pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-bash pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-python pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-c pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-cpp pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-fortran pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-markdown pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    // $(".language-rest pre").each(function(i, element) {
+    //     Prism.highlightElement(element);
+    // });
+
+    anchors.add();
+});
+            </script>
+
+        
+    </body>
+</html>

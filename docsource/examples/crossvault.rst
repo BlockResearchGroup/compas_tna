@@ -7,116 +7,272 @@ The cross vault
     :class: figure-img img-fluid
 
 
+.. note::
+
+    This example uses the Rhino UI for ``compas_tna``.
+    Please download and install the Plugin from here:
+    https://github.com/BlockResearchGroup/compas_tna-UI
+
+
+Load the sample file
+====================
+
+First download and open the Rhino file with sample input geometry: :download:`crossvault.3dm <crossvault.3dm>`.
+
+.. figure:: /_images/TNA_open.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
+Initialise the UI
+=================
+
+**Commands**
+
+* ``TNA_init``
+
+
+To initialise the TNA PythonPlugin, run the command ``TNA_init``.
+
+.. figure:: /_images/TNA_init.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
 Make the form diagram
----------------------
+=====================
 
-The first step is to make a form diagram from a set of connected lines.
-Make sure the lines are individual line segments and properly connected.
-Alternatively, the form diagram can be created from an OBJ file, from a JSON file,
-from a Rhino mesh, or a Rhino surface.
+**Commands**
 
-.. literalinclude:: crossvault.py
-    :language: python
-    :lines: 66-71
+* ``TNA_form > lines``
+
+
+The first step is then to make a form diagram from a set of connected lines.
+Run the command ``TNA_form`` and select the option ``lines``.
+Then select the lines on the layer ``Input::Lines``.
+
+.. figure:: /_images/TNA_form.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
 
 Identify the supports
----------------------
+=====================
+
+**Commands**
+
+* ``TNA_attributes > form > vertices``
+
 
 After initialising the form diagram, we identify the supports.
-The identify the supports, we select the relevant vertices and change their attribute
-``is_anchor`` to ``True``.
+Select the vertices in the corners of the diagram and change their attribute ``is_anchor`` to ``True``.
+Use the command ``TNA_attributes`` with options ``form`` and ``vertices``.
 
-.. literalinclude:: crossvault.py
-    :language: python
-    :lines: 73-79
+.. figure:: /_images/TNA_supports.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
 
 Update the boundary conditions
-------------------------------
+==============================
+
+**Commands**
+
+* ``TNA_boundaries``
+
 
 Having identified the supports, we update the boundary conditions.
-To update the boundary conditions, we add "feet" to the support vertices.
+To update the boundary conditions, we add "feet" to the support vertices
+that represent the horizontal components of the reaction forces at the supports.
 
 There are two options.
-We can add one "foot" per support or two.
-The feet represent the horizontal components of the reaction forces at the supports.
-If only foot is added, the reaction force at that support is fully constrained to the direction of the foot.
-If two feet are added, the horizontal component of the reaction force can be any combination of those two force vectors.
+We can add one horizontal component per support or two.
+If only component is added, the direction of the horizontal reaction force at that support is fully constrained.
+If two components are added, the horizontal component of the reaction force at that support can be any combination of those two force vectors.
 
-.. literalinclude:: crossvault.py
-    :language: python
-    :lines: 81-86
+.. figure:: /_images/TNA_boundaries.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
 
 Make the force diagram
-----------------------
+======================
+
+**Commands**
+
+* ``TNA_force``
+
 
 Once the boundary conditions are set, we can make the force diagram.
+The force diagram is intialised as the dual of the form diagram.
+This means that the vertices of the force diagram are at the centroids of the
+corresponding faces of the form diagram.
 
-.. literalinclude:: crossvault.py
-    :language: python
-    :lines: 88-96
+.. figure:: /_images/TNA_force.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
+**Commands**
+
+* ``TNA_move > force > diagram``
+* ``TNA_attributes > force > vertices``
+
+
+After constructing the force diagram, we move it out of the way,
+and mark one of its vertices as fixed such that it stays there.
+
+.. figure:: /_images/TNA_move.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
+Initial equilibrium shape
+=========================
+
+**Commands**
+
+* ``TNA_horizontal``
+* ``TNA_settings``
+
+
+At this point, we can generate a first, unconstrained version of the equilibrium shape of the funicular force network.
+First, run horizontal equilibrium using ``TNA_horizontal``.
+
+Note that the default settings of the horizontal equilibrium solver will allow for only 100 iterations at a time.
+It is unlikey that this immediately results in fully resolved horizontal equilibrium with no residual forces.
+Either increase the maximum number of iterations, or run ``TNA_horizontal`` multiple time, or both.
+Use the commmand ``TNA_settings`` to change ``horizontal.kmax``.
+
+.. note::
+
+    The horizontal and vertical equilibrium solvers use Numpy and Scipy to solve the computational problem.
+    Since Numpy and Scipy and not available in Rhino, we use Remote Procedure Calls to work around this limitation.
+    The current implementation of ``compas.rpc`` is limited in the amount of time it allows a remote procedure to run
+    before the connection is interrupted.
+    Therefore, don't increase the number of iterations by too much.
+    For example, don't go over 500.
+    If you need more iterations, just run the command multiple times.
+
+
+.. figure:: /_images/TNA_horizontal.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
+**Commands**
+
+* ``TNA_vertical``
+
+
+Once horizontal equilibrium has been established, run ``TNA_vertical``.
+This command will ask for ``Z Max``, which is a value for the highest vertex
+of the equilibrium network that will be used to determine an appropriate scale
+
+
+.. figure:: /_images/TNA_vertical.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
 
 Set the constraints
--------------------
+===================
 
-This is the most important part of the procedure that ensures we end up with a barrel vault.
-A barrel vault is a single curvature geometry and therefore carries loads in only one direction.
+1. Edges spanning the ribs
+--------------------------
 
-This means we have to constrain the relationship between form and force diagram
-to only allow forces in one direction. and to make sure that the forces are equally
-distributed over the single-span arches.
+**Commands**
 
-First, set the constraints for the edges in the directions spanning the ribs.
-Set ``fmin := 2`` and ``fmax := 2``.
-
-.. literalinclude:: crossvault.py
-    :language: python
-    :lines: 106-115
-
-Then the edges on the boundary.
-Set ``fmin := 0`` and ``fmax := 0``.
-
-.. literalinclude:: crossvault.py
-    :language: python
-    :lines: 117-126
-
-Then the edges perpendicular to the boundary.
-Set ``fmin := 0`` and ``fmax := 0``.
-
-.. literalinclude:: crossvault.py
-    :language: python
-    :lines: 139-148
-
-Finally, the edges of the cross in the middle.
-Set ``fmin := 2``.
-
-.. literalinclude:: crossvault.py
-    :language: python
-    :lines: 128-137
+* ``TNA_select > form > edges > continuous``
+* ``TNA_attributes > form > edges``
 
 
-Horizontal equilibrium
-----------------------
+First, we select the edges in the directions spanning the ribs.
+Run command ``TNA_select``, choose option ``form`` and then ``edges`` and finally
+selection mode ``continuous``.
+Then, select one edge per spanning direction to select all relevant edges.
+Finally, use command ``TNA_attributes`` (choose ``form`` and then ``edges``)
+to set ``fmin := 2`` and ``fmax := 2`` of the selected edges.
 
-.. literalinclude:: crossvault.py
-    :language: python
-    :lines: 150-161
+.. figure:: /_images/TNA_constraints-spanning.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
 
-Vertical equilibrium
+2. Edges on boundary
 --------------------
 
-.. literalinclude:: crossvault.py
-    :language: python
-    :lines: 163-168
+**Commands**
+
+* ``TNA_select > form > edges > continuous``
+* ``TNA_attributes > form > edges``
+
+
+As in the barrel vault, the vertices on the boundary carry less load than the internal ones.
+Therefore, use the same procedure as before to select the edges on the boundary and set
+``fmin := 1`` and ``fmax := 1``.
+
+.. figure:: /_images/TNA_constraints-boundary.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
+3. Edges perpendicular to boundary
+----------------------------------
+
+**Commands**
+
+* ``TNA_select > form > edges > parallel``
+* ``TNA_attributes > form > edges``
+
+.. figure:: /_images/TNA_constraints-other.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
+4. Edges central cross
+----------------------
+
+**Commands**
+
+* ``TNA_attributes > form > edges``
+
+.. figure:: /_images/TNA_constraints-cross.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
+Constrained equilibrium
+=======================
+
+**Commands**
+
+* ``TNA_horizontal``
+
+
+.. figure:: /_images/TNA_horizontal-constrained.png
+    :figclass: figure
+    :class: figure-img img-fluid
+
+
+**Commands**
+
+* ``TNA_vertical``
+
+
+.. figure:: /_images/TNA_vertical-constrained.png
+    :figclass: figure
+    :class: figure-img img-fluid
 
 
 Visualise the result
---------------------
+====================
 
-.. literalinclude:: crossvault.py
-    :language: python
-    :lines: 170-179
+**Commands**
+
+* ``TNA_settings``
+
+
+.. figure:: /_images/TNA_result.png
+    :figclass: figure
+    :class: figure-img img-fluid

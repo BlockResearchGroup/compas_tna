@@ -59,6 +59,9 @@
 
                         <div class="section" id="boundary-conditions">
 <h1>Boundary conditions</h1>
+<div class="figure align-default">
+<img alt="../_images/040_boundaryconditions.png" class="figure-img img-fluid" src="../_images/040_boundaryconditions.png" />
+</div>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">from</span> <span class="nn">compas.plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
 
 <span class="kn">from</span> <span class="nn">compas_tna.diagrams</span> <span class="kn">import</span> <span class="n">FormDiagram</span>
@@ -69,10 +72,10 @@
 
 <span class="n">corners</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;vertex_degree&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">}))</span>
 
-<span class="n">form</span><span class="o">.</span><span class="n">set_vertices_attributes</span><span class="p">((</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">,</span> <span class="s1">&#39;is_fixed&#39;</span><span class="p">),</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">),</span> <span class="n">keys</span><span class="o">=</span><span class="n">corners</span><span class="p">)</span>
+<span class="n">form</span><span class="o">.</span><span class="n">set_vertices_attribute</span><span class="p">(</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">corners</span><span class="p">)</span>
 <span class="n">form</span><span class="o">.</span><span class="n">set_edges_attribute</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">edges_on_boundary</span><span class="p">())</span>
 
-<span class="n">relax_boundary_openings</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+<span class="n">relax_boundary_openings</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">corners</span><span class="p">)</span>
 
 <span class="n">form</span><span class="o">.</span><span class="n">update_boundaries</span><span class="p">(</span><span class="n">feet</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
@@ -188,7 +191,7 @@
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.2.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.1.1.
             
         </footer>
 

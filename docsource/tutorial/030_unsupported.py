@@ -6,9 +6,8 @@ form = FormDiagram.from_obj('data/rhinomesh.obj')
 
 corners = list(form.vertices_where({'vertex_degree': 2}))
 
-form.set_vertices_attribute('is_fixed', True, keys=corners)
 form.set_edges_attribute('q', 10.0, keys=form.edges_on_boundary())
 
-relax_boundary_openings(form)
+relax_boundary_openings(form, corners)
 
 form.plot()
