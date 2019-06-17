@@ -64,7 +64,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This example uses the Rhino UI for <code class="docutils literal notranslate"><span class="pre">compas_tna</span></code>.
+<p>This example uses the Rhino UI for compas_tna.
 Please download and install the Plugin from here:
 <a class="reference external" href="https://github.com/BlockResearchGroup/compas_tna-UI">https://github.com/BlockResearchGroup/compas_tna-UI</a></p>
 </div>
@@ -145,10 +145,9 @@ corresponding faces of the form diagram.</p>
 <p><strong>Commands</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TNA_move</span> <span class="pre">&gt;</span> <span class="pre">force</span> <span class="pre">&gt;</span> <span class="pre">diagram</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TNA_attributes</span> <span class="pre">&gt;</span> <span class="pre">force</span> <span class="pre">&gt;</span> <span class="pre">vertices</span></code></p></li>
 </ul>
-<p>After constructing the force diagram, we move it out of the way,
-and mark one of its vertices as fixed such that it stays there.</p>
+<p>After constructing the force diagram, move it out of the way.
+Use the command <code class="docutils literal notranslate"><span class="pre">TNA_move</span></code> with the options <code class="docutils literal notranslate"><span class="pre">force</span></code> and <code class="docutils literal notranslate"><span class="pre">diagram</span></code>.</p>
 <div class="figure align-default">
 <img alt="../_images/TNA_move.png" class="figure-img img-fluid" src="../_images/TNA_move.png" />
 </div>
@@ -158,26 +157,29 @@ and mark one of its vertices as fixed such that it stays there.</p>
 <p><strong>Commands</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TNA_horizontal</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TNA_settings</span></code></p></li>
 </ul>
 <p>At this point, we can generate a first, unconstrained version of the equilibrium shape of the funicular force network.
 First, run horizontal equilibrium using <code class="docutils literal notranslate"><span class="pre">TNA_horizontal</span></code>.</p>
+<div class="figure align-default">
+<img alt="../_images/TNA_horizontal.png" class="figure-img img-fluid" src="../_images/TNA_horizontal.png" />
+</div>
+<p><strong>Commands</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_settings</span></code></p></li>
+</ul>
 <p>Note that the default settings of the horizontal equilibrium solver will allow for only 100 iterations at a time.
-It is unlikey that this immediately results in fully resolved horizontal equilibrium with no residual forces.
-Either increase the maximum number of iterations, or run <code class="docutils literal notranslate"><span class="pre">TNA_horizontal</span></code> multiple time, or both.
+This will not immediately result in the fully resolved horizontal equilibrium depicted above.
+Either increase the maximum number of iterations, or run <code class="docutils literal notranslate"><span class="pre">TNA_horizontal</span></code> multiple times, or both.
 Use the commmand <code class="docutils literal notranslate"><span class="pre">TNA_settings</span></code> to change <code class="docutils literal notranslate"><span class="pre">horizontal.kmax</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The horizontal and vertical equilibrium solvers use Numpy and Scipy to solve the computational problem.
-Since Numpy and Scipy and not available in Rhino, we use Remote Procedure Calls to work around this limitation.
-The current implementation of <code class="docutils literal notranslate"><span class="pre">compas.rpc</span></code> is limited in the amount of time it allows a remote procedure to run
-before the connection is interrupted.
+<p>We use Remote Procedure Calls to solve horizontal and vertical equilibrium
+outside of Rhino such that we can use Numpy and Scipy.
+The current implementation of <code class="docutils literal notranslate"><span class="pre">compas.rpc</span></code> limits the amount of time a remote
+procedure can run before the connection is interrupted.
 Therefore, don’t increase the number of iterations by too much.
 For example, don’t go over 500.
 If you need more iterations, just run the command multiple times.</p>
-</div>
-<div class="figure align-default">
-<img alt="../_images/TNA_horizontal.png" class="figure-img img-fluid" src="../_images/TNA_horizontal.png" />
 </div>
 <p><strong>Commands</strong></p>
 <ul class="simple">
@@ -202,7 +204,8 @@ of the equilibrium network that will be used to determine an appropriate scale</
 <p>First, we select the edges in the directions spanning the ribs.
 Run command <code class="docutils literal notranslate"><span class="pre">TNA_select</span></code>, choose option <code class="docutils literal notranslate"><span class="pre">form</span></code> and then <code class="docutils literal notranslate"><span class="pre">edges</span></code> and finally
 selection mode <code class="docutils literal notranslate"><span class="pre">continuous</span></code>.
-Then, select one edge per spanning direction to select all relevant edges.
+Then, select one edge per spanning direction (see image below).
+Selection mode <code class="docutils literal notranslate"><span class="pre">continuous</span></code> will make sure all other adges are found as well.
 Finally, use command <code class="docutils literal notranslate"><span class="pre">TNA_attributes</span></code> (choose <code class="docutils literal notranslate"><span class="pre">form</span></code> and then <code class="docutils literal notranslate"><span class="pre">edges</span></code>)
 to set <code class="docutils literal notranslate"><span class="pre">fmin</span> <span class="pre">:=</span> <span class="pre">2</span></code> and <code class="docutils literal notranslate"><span class="pre">fmax</span> <span class="pre">:=</span> <span class="pre">2</span></code> of the selected edges.</p>
 <div class="figure align-default">
@@ -216,8 +219,8 @@ to set <code class="docutils literal notranslate"><span class="pre">fmin</span> 
 <li><p><code class="docutils literal notranslate"><span class="pre">TNA_select</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span> <span class="pre">&gt;</span> <span class="pre">continuous</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TNA_attributes</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span></code></p></li>
 </ul>
-<p>As in the barrel vault, the vertices on the boundary carry less load than the internal ones.
-Therefore, use the same procedure as before to select the edges on the boundary and set
+<p>The vertices on the boundary carry less load than the internal ones.
+Therefore, use the same procedure as in the previous step to select the edges on the boundary and set
 <code class="docutils literal notranslate"><span class="pre">fmin</span> <span class="pre">:=</span> <span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">fmax</span> <span class="pre">:=</span> <span class="pre">1</span></code>.</p>
 <div class="figure align-default">
 <img alt="../_images/TNA_constraints-boundary.png" class="figure-img img-fluid" src="../_images/TNA_constraints-boundary.png" />
@@ -230,6 +233,11 @@ Therefore, use the same procedure as before to select the edges on the boundary 
 <li><p><code class="docutils literal notranslate"><span class="pre">TNA_select</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span> <span class="pre">&gt;</span> <span class="pre">parallel</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TNA_attributes</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span></code></p></li>
 </ul>
+<p>The edges perpendicular to the vault boundaries are not supposed to carry any loads.
+Therefore, we set <code class="docutils literal notranslate"><span class="pre">fmin</span> <span class="pre">:=</span> <span class="pre">0.0</span></code> and <code class="docutils literal notranslate"><span class="pre">fmax</span> <span class="pre">:=</span> <span class="pre">0.0</span></code> such that the corresponding
+edges in the force diagram collapse.
+Use the selection mode <code class="docutils literal notranslate"><span class="pre">parallel</span></code> and select the edges shown in the image below to
+select all the edges perpendicular to the boundary.</p>
 <div class="figure align-default">
 <img alt="../_images/TNA_constraints-other.png" class="figure-img img-fluid" src="../_images/TNA_constraints-other.png" />
 </div>
@@ -240,6 +248,8 @@ Therefore, use the same procedure as before to select the edges on the boundary 
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TNA_attributes</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">edges</span></code></p></li>
 </ul>
+<p>Finally, make sure the edges in the force diagram corresponding to the central cross (see image below) don’t collapse.
+Set <code class="docutils literal notranslate"><span class="pre">fmin</span> <span class="pre">:=</span> <span class="pre">1.0</span></code>.</p>
 <div class="figure align-default">
 <img alt="../_images/TNA_constraints-cross.png" class="figure-img img-fluid" src="../_images/TNA_constraints-cross.png" />
 </div>
@@ -251,6 +261,9 @@ Therefore, use the same procedure as before to select the edges on the boundary 
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TNA_horizontal</span></code></p></li>
 </ul>
+<p>After setting all constraints, we can update horizontal equilibrium.
+As before, you will have to run <code class="docutils literal notranslate"><span class="pre">TNA_horizontal</span></code> multiple times before horizontal
+equilibrium si fully resolved.</p>
 <div class="figure align-default">
 <img alt="../_images/TNA_horizontal-constrained.png" class="figure-img img-fluid" src="../_images/TNA_horizontal-constrained.png" />
 </div>
@@ -258,6 +271,7 @@ Therefore, use the same procedure as before to select the edges on the boundary 
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TNA_vertical</span></code></p></li>
 </ul>
+<p>Using <code class="docutils literal notranslate"><span class="pre">z</span> <span class="pre">max</span> <span class="pre">:=</span> <span class="pre">4.0</span></code>, compute the final equilibrium shape of the constrained funicular problem.</p>
 <div class="figure align-default">
 <img alt="../_images/TNA_vertical-constrained.png" class="figure-img img-fluid" src="../_images/TNA_vertical-constrained.png" />
 </div>
@@ -267,6 +281,14 @@ Therefore, use the same procedure as before to select the edges on the boundary 
 <p><strong>Commands</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TNA_settings</span></code></p></li>
+</ul>
+<p>Use the settings dialog to turn on the visualisation of the internal forces and the reaction forces in the solution.
+Run command <code class="docutils literal notranslate"><span class="pre">TNA_settings</span></code> and set</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">show.forces</span> <span class="pre">:=</span> <span class="pre">True</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">show.reactions</span> <span class="pre">:=</span> <span class="pre">True</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scale.forces</span> <span class="pre">:=</span> <span class="pre">0.01</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scale.reactions</span> <span class="pre">:=</span> <span class="pre">0.1</span></code></p></li>
 </ul>
 <div class="figure align-default">
 <img alt="../_images/TNA_result.png" class="figure-img img-fluid" src="../_images/TNA_result.png" />
