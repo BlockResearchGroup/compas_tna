@@ -7,6 +7,12 @@ The barrel vault
     :class: figure-img img-fluid
 
 
+**Downloads**
+
+* :download:`barrelvault.3dm <barrelvault.3dm>`
+* :download:`barrelvault.py <barrelvault.py>`
+
+
 Make the form diagram
 ---------------------
 
@@ -85,3 +91,30 @@ they carry only half of the load (set ``fmin`` and ``fmax`` to ``1``).
     :language: python
     :lines: 93-105
 
+
+Horizontal equilibrium
+----------------------
+
+Compute horizontal equilibrium considering the constraints set in the previous step.
+
+.. literalinclude:: barrelvault.py
+    :language: python
+    :lines: 112-115
+
+
+Vertical equilibrium
+--------------------
+
+Compute vertical equilibrium for a chosen maximum height of the solution.
+
+.. literalinclude:: barrelvault.py
+    :language: python
+    :lines: 117-122
+
+
+Visualise the result
+--------------------
+
+.. literalinclude:: barrelvault.py
+    :language: python
+    :lines: 124-133

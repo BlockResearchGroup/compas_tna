@@ -62,6 +62,40 @@
 <div class="figure align-default">
 <img alt="../_images/dome.png" class="figure-img img-fluid" src="../_images/dome.png" />
 </div>
+<p><strong>Downloads</strong></p>
+<ul class="simple">
+<li><p><a class="reference download internal" download="" href="../_downloads/a0683f22be616271eb6d284cf183399e/dome.3dm"><code class="xref download docutils literal notranslate"><span class="pre">dome.3dm</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/030bd7b9102056730cc3cf5a5f857f1b/dome.json"><code class="xref download docutils literal notranslate"><span class="pre">dome.json</span></code></a></p></li>
+</ul>
+<div class="section" id="load-session">
+<h2>Load session</h2>
+<p>In this example, we will load the previously computed form and force diagrams of
+a dome from a TNA json file, which can be downloaded from the link above.</p>
+<p>Note that if you would like to go through the process yourself, the connected lines which served
+as input geometry are available in the Rhino file (<a class="reference download internal" download="" href="../_downloads/a0683f22be616271eb6d284cf183399e/dome.3dm"><code class="xref download docutils literal notranslate"><span class="pre">dome.3dm</span></code></a>).
+These are the required steps:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_form</span> <span class="pre">&gt;</span> <span class="pre">lines</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_select</span> <span class="pre">&gt;</span> <span class="pre">form</span> <span class="pre">&gt;</span> <span class="pre">vertices</span> <span class="pre">&gt;</span> <span class="pre">boundary</span></code> =&gt; mark as supports (<code class="docutils literal notranslate"><span class="pre">is_anchor</span> <span class="pre">=</span> <span class="pre">True</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_settings</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">boundaries.feet</span> <span class="pre">=</span> <span class="pre">1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_boundaries</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_force</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_move</span> <span class="pre">&gt;</span> <span class="pre">force</span> <span class="pre">&gt;</span> <span class="pre">diagram</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_horizontal</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TNA_vertical</span></code> =&gt; <code class="docutils literal notranslate"><span class="pre">Z</span> <span class="pre">Max</span> <span class="pre">=</span> <span class="pre">4.0</span></code></p></li>
+</ul>
+<p>To load the equilibrium solution from a session file, run <code class="docutils literal notranslate"><span class="pre">TNA_file</span></code>,
+choose the option <code class="docutils literal notranslate"><span class="pre">open</span></code> and then select the downloaded json file.</p>
+</div>
+<div class="section" id="modify-equilibrium">
+<h2>Modify equilibrium</h2>
+<p>At this point you can continue modifying the equilibrium starting from the previously
+saved state and save the new state as a different session..</p>
+<p>For example, you could recompute vertical equilibrium with a different <code class="docutils literal notranslate"><span class="pre">Z</span> <span class="pre">Max</span></code> value,
+or you could set constraints on the horizontal forces and see what happens.</p>
+<p>To save the new state, do <code class="docutils literal notranslate"><span class="pre">TNA_file</span> <span class="pre">&gt;</span> <span class="pre">save_as</span></code>, select a destination folder and
+provide a new target name.</p>
+</div>
 </div>
 
                         
@@ -121,7 +155,11 @@
                     
 
                     <ul class="nav flex-column" id="compas-localnav">
-<li class="nav-item"><a class="nav-link reference internal" href="#">The dome</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">The dome</a><ul class="nav">
+<li class="nav-item"><a class="nav-link reference internal" href="#load-session">Load session</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#modify-equilibrium">Modify equilibrium</a></li>
+</ul>
+</li>
 </ul>
 
 
