@@ -33,7 +33,7 @@ These are the required steps:
 * ``TNA_vertical`` => ``Z Max = 4.0``
 
 To load the equilibrium solution from a session file, run ``TNA_file``,
-choose the option ``open`` and then select the downloaded json file.
+choose the option ``open`` and then select the downloaded json file (:download:`dome.json <dome.json>`).
 
 
 Modify equilibrium
@@ -45,5 +45,6 @@ saved state and save the new state as a different session..
 For example, you could recompute vertical equilibrium with a different ``Z Max`` value,
 or you could set constraints on the horizontal forces and see what happens.
 
-To save the new state, do ``TNA_file > save_as``, select a destination folder and
+To save the new state in the same file, do ``TNA_file > save``
+To save the new state in a different file, do ``TNA_file > save_as``, select a destination folder and
 provide a new target name.
