@@ -3,25 +3,22 @@ from __future__ import absolute_import
 from __future__ import division
 
 import sys
-
-try:
-    from numpy import array
-    from numpy import float64
-
-except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+import compas
 
 from compas.geometry import angle_vectors_xy
 
-from compas.numerical import connectivity_matrix
-from compas.numerical import normrow
-from compas.numerical import normalizerow
+if not compas.IPY:
+    from numpy import array
+    from numpy import float64
 
-from compas_tna.utilities import rot90
-from compas_tna.utilities import apply_bounds
-from compas_tna.utilities import parallelise_sparse
-from compas_tna.utilities import parallelise_nodal
+    from compas.numerical import connectivity_matrix
+    from compas.numerical import normrow
+    from compas.numerical import normalizerow
+
+    from compas_tna.utilities import rot90
+    from compas_tna.utilities import apply_bounds
+    from compas_tna.utilities import parallelise_sparse
+    from compas_tna.utilities import parallelise_nodal
 
 
 __all__ = [

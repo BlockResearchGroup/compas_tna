@@ -3,30 +3,26 @@ from __future__ import absolute_import
 from __future__ import division
 
 import sys
+import compas
 
-try:
+if not compas.IPY:
     from numpy import array
     from numpy import float64
 
     from scipy.sparse import diags
     from scipy.sparse.linalg import spsolve
 
-except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+    from compas.numerical import connectivity_matrix
+    from compas.numerical import normrow
 
-from compas.numerical import connectivity_matrix
-from compas.numerical import normrow
-
-from compas_tna.utilities import LoadUpdater
-from compas_tna.utilities import update_z
+    from compas_tna.utilities import LoadUpdater
+    from compas_tna.utilities import update_z
 
 
 __all__ = [
     'vertical_from_zmax',
     'vertical_from_bbox',
     'vertical_from_q',
-
     'vertical_from_zmax_proxy',
     'vertical_from_bbox_proxy',
     'vertical_from_q_proxy',
