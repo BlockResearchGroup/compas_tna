@@ -252,18 +252,19 @@ class FormArtist(MeshArtist):
         a_min = 0
         a_range = a_max - a_min
 
-        labels = []
-        for u, v, attr in self.form.edges(True):
-            a = 180 * attr['a'] / 3.14159 
-            if a > tol:
-                labels.append({
-                    'pos'   : self.form.edge_midpoint(u, v),
-                    'text'  : "{:.2f}".format(attr['a'] / 3.14159 * 180),
-                    'color' : i_to_green((attr['a'] - a_min) / a_range),
-                    'name'  : "{}.angle.{}-{}".format(self.form.name, u, v)
-                })            
+        if a_range:
+            labels = []
+            for u, v, attr in self.form.edges(True):
+                a = 180 * attr['a'] / 3.14159 
+                if a > tol:
+                    labels.append({
+                        'pos'   : self.form.edge_midpoint(u, v),
+                        'text'  : "{:.2f}".format(attr['a'] / 3.14159 * 180),
+                        'color' : i_to_green((attr['a'] - a_min) / a_range),
+                        'name'  : "{}.angle.{}-{}".format(self.form.name, u, v)
+                    })            
 
-        compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
+            compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
 # ==============================================================================
 # Main
