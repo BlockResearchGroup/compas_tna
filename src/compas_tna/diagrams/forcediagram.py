@@ -83,7 +83,7 @@ class ForceDiagram(Diagram):
     # --------------------------------------------------------------------------
 
     def plot(self):
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
         plotter = MeshPlotter(self, figsize=(12, 8), tight=True)
         plotter.draw_vertices(radius=0.05)
         plotter.draw_edges()

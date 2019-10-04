@@ -553,7 +553,7 @@ class FormDiagram(Diagram):
     # --------------------------------------------------------------------------
 
     def plot(self):
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
         plotter = MeshPlotter(self, figsize=(12, 8), tight=True)
         vertexcolor = {}
         vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
