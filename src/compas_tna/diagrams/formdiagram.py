@@ -586,7 +586,7 @@ class FormDiagram(Diagram):
         if settings.get('show.reactions', False):
             artist.draw_reactions(scale=settings.get('scale.reactions', 0.01))
         if settings.get('show.angles', False):
-            artist.draw_angles()
+            artist.draw_angles(tol=settings.get('tol.angle', 5.0))
         artist.redraw()
 
 
