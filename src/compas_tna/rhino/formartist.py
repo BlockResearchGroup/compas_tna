@@ -6,6 +6,7 @@ import compas
 import compas_rhino
 
 from compas.geometry import scale_vector
+from compas.utilities import i_to_green
 
 from compas_rhino.artists import MeshArtist
 
