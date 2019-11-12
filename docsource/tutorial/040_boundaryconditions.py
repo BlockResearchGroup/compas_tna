@@ -1,10 +1,16 @@
-from compas.plotters import MeshPlotter
+import os
 
+from compas_plotters import MeshPlotter
 from compas_tna.diagrams import FormDiagram
 from compas_tna.utilities import relax_boundary_openings
 
+HERE = os.path.dirname(__file__)
+DATA = os.path.join(HERE, 'data')
 
-form = FormDiagram.from_obj('data/rhinomesh.obj')
+FILE_I = os.path.join(DATA, 'rhinomesh.obj')
+FILE_O = os.path.join(DATA, 'boundaryconditions.json')
+
+form = FormDiagram.from_obj(FILE_I)
 
 corners = list(form.vertices_where({'vertex_degree': 2}))
 
@@ -15,7 +21,7 @@ relax_boundary_openings(form, corners)
 
 form.update_boundaries(feet=2)
 
-form.to_json('data/boundaryconditions.json')
+form.to_json(FILE_O)
 
 # ==============================================================================
 # Visualisation

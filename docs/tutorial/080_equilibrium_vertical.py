@@ -4,7 +4,7 @@ from compas_tna.diagrams import ForceDiagram
 from compas_tna.equilibrium import horizontal
 from compas_tna.equilibrium import vertical_from_zmax
 
-from compas.plotters import MeshPlotter
+from compas_plotters import MeshPlotter
 from compas.utilities import i_to_black
 
 

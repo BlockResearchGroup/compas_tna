@@ -1,15 +1,18 @@
+import os
+
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
-
 from compas_tna.equilibrium import horizontal
 from compas_tna.equilibrium import vertical_from_zmax
-
-from compas.plotters import MeshPlotter
+from compas_plotters import MeshPlotter
 from compas.utilities import i_to_black
 
+HERE = os.path.dirname(__file__)
+DATA = os.path.join(HERE, 'data')
+FILE = os.path.join(DATA, 'boundaryconditions.json')
 
-form = FormDiagram.from_json('data/boundaryconditions.json')
-force = ForceDiagram.from_formdiagram(form)
+form = FormDiagram.from_json(FILE)
+force  = ForceDiagram.from_formdiagram(form)
 
 horizontal(form, force, alpha=100)
 scale = vertical_from_zmax(form, 3.0)

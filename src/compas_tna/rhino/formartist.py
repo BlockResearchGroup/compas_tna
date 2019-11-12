@@ -6,6 +6,7 @@ import compas
 import compas_rhino
 
 from compas.geometry import scale_vector
+from compas.utilities import i_to_green
 
 from compas_rhino.artists import MeshArtist
 
@@ -52,6 +53,7 @@ class FormArtist(MeshArtist):
         self.clear_reactions()
         self.clear_forces()
         self.clear_residuals()
+        self.clear_angles()
 
     def clear_loads(self):
         compas_rhino.delete_objects_by_name(name='{}.load.*'.format(self.form.name))
@@ -67,6 +69,9 @@ class FormArtist(MeshArtist):
 
     def clear_residuals(self):
         compas_rhino.delete_objects_by_name(name='{}.residual.*'.format(self.form.name))
+
+    def clear_angles(self):
+        compas_rhino.delete_objects_by_name(name='{}.angle.*'.format(self.form.name))
 
     def draw_loads(self, scale=None, color=None):
         self.clear_loads()
@@ -239,6 +244,27 @@ class FormArtist(MeshArtist):
 
         compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
 
+    def draw_angles(self, tol=5.0):
+        self.clear_angles()
+
+        a = self.form.get_edges_attribute('a')
+        a_max = tol
+        a_min = 0
+        a_range = a_max - a_min
+
+        if a_range:
+            labels = []
+            for u, v, attr in self.form.edges(True):
+                a = 180 * attr['a'] / 3.14159 
+                if a > tol:
+                    labels.append({
+                        'pos'   : self.form.edge_midpoint(u, v),
+                        'text'  : "{:.2f}".format(attr['a'] / 3.14159 * 180),
+                        'color' : i_to_green((attr['a'] - a_min) / a_range),
+                        'name'  : "{}.angle.{}-{}".format(self.form.name, u, v)
+                    })            
+
+            compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 
 # ==============================================================================
 # Main

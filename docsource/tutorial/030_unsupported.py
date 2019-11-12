@@ -1,8 +1,13 @@
+import os
+
 from compas_tna.diagrams import FormDiagram
 from compas_tna.utilities import relax_boundary_openings
 
+HERE = os.path.dirname(__file__)
+DATA = os.path.join(HERE, 'data')
+FILE = os.path.join(DATA, 'rhinomesh.obj')
 
-form = FormDiagram.from_obj('data/rhinomesh.obj')
+form = FormDiagram.from_obj(FILE)
 
 corners = list(form.vertices_where({'vertex_degree': 2}))
 

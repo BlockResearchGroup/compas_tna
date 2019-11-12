@@ -553,7 +553,7 @@ class FormDiagram(Diagram):
     # --------------------------------------------------------------------------
 
     def plot(self):
-        from compas.plotters import MeshPlotter
+        from compas_plotters import MeshPlotter
         plotter = MeshPlotter(self, figsize=(12, 8), tight=True)
         vertexcolor = {}
         vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
@@ -585,6 +585,8 @@ class FormDiagram(Diagram):
             artist.draw_forces(scale=settings.get('scale.forces', 0.1))
         if settings.get('show.reactions', False):
             artist.draw_reactions(scale=settings.get('scale.reactions', 0.01))
+        if settings.get('show.angles', False):
+            artist.draw_angles(tol=settings.get('tol.angle', 5.0))
         artist.redraw()
 
 

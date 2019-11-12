@@ -2,7 +2,7 @@ from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 from compas_tna.equilibrium import horizontal
 
-from compas.plotters import MeshPlotter
+from compas_plotters import MeshPlotter
 
 
 form = FormDiagram.from_json('data/boundaryconditions.json')

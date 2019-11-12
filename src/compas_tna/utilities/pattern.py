@@ -12,10 +12,10 @@ __all__ = [
 ]
 
 
-def relax_boundary_openings_proxy(formdata):
+def relax_boundary_openings_proxy(formdata, fixed):
     from compas_tna.diagrams import FormDiagram
     form = FormDiagram.from_data(formdata)
-    relax_boundary_openings(form)
+    relax_boundary_openings(form, fixed)
     return form.to_data()
 
 
