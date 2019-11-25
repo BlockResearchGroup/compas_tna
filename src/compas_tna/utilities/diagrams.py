@@ -3,30 +3,28 @@ from __future__ import absolute_import
 from __future__ import division
 
 import sys
-import compas
 
-if not compas.IPY:
-    from numpy import array
-    from numpy import float64
-    from numpy import empty_like
-    from numpy.linalg import cond
+from numpy import array
+from numpy import float64
+from numpy import empty_like
+from numpy.linalg import cond
 
-    from scipy.linalg import cho_factor
-    from scipy.linalg import cho_solve
-    from scipy.linalg import lstsq
-    from scipy.linalg import solve
-    from scipy.linalg import norm
+from scipy.linalg import cho_factor
+from scipy.linalg import cho_solve
+from scipy.linalg import lstsq
+from scipy.linalg import solve
+from scipy.linalg import norm
 
-    from scipy.sparse.linalg import factorized
+from scipy.sparse.linalg import factorized
 
-    from compas.numerical import connectivity_matrix
-    from compas.numerical import normrow
-    from compas.numerical import chofactor
-    from compas.numerical import lufactorized
-    from compas.numerical import dof
-    from compas.numerical import rref
-    from compas.numerical import nonpivots
-    from compas.numerical import equilibrium_matrix
+from compas.numerical import connectivity_matrix
+from compas.numerical import normrow
+from compas.numerical import chofactor
+from compas.numerical import lufactorized
+from compas.numerical import dof
+from compas.numerical import rref
+from compas.numerical import nonpivots
+from compas.numerical import equilibrium_matrix
 
 
 __all__ = [

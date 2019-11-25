@@ -2,39 +2,33 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
-import compas
-
 from compas.geometry import angle_vectors_xy
 
-if not compas.IPY:
-    from numpy import array
-    from numpy import float64
+from numpy import array
+from numpy import float64
 
-    from compas.numerical import connectivity_matrix
-    from compas.numerical import normrow
-    from compas.numerical import normalizerow
+from compas.numerical import connectivity_matrix
+from compas.numerical import normrow
+from compas.numerical import normalizerow
 
-    from compas_tna.utilities import rot90
-    from compas_tna.utilities import apply_bounds
-    from compas_tna.utilities import parallelise_sparse
-    from compas_tna.utilities import parallelise_nodal
+from compas_tna.diagrams import FormDiagram
+from compas_tna.diagrams import ForceDiagram
+
+from compas_tna.utilities import rot90
+from compas_tna.utilities import apply_bounds
+from compas_tna.utilities import parallelise_sparse
+from compas_tna.utilities import parallelise_nodal
 
 
 __all__ = [
     'horizontal',
-    'horizontal_proxy',
     'horizontal_nodal',
-    'horizontal_nodal_proxy',
+    'horizontal_proxy',
+    'horizontal_nodal_proxy'
 ]
 
 
-EPS = 1 / sys.float_info.epsilon
-
-
 def horizontal_proxy(formdata, forcedata, *args, **kwargs):
-    from compas_tna.diagrams import FormDiagram
-    from compas_tna.diagrams import ForceDiagram
     form = FormDiagram.from_data(formdata)
     force = ForceDiagram.from_data(forcedata)
     horizontal(form, force, *args, **kwargs)
@@ -42,8 +36,6 @@ def horizontal_proxy(formdata, forcedata, *args, **kwargs):
 
 
 def horizontal_nodal_proxy(formdata, forcedata, *args, **kwargs):
-    from compas_tna.diagrams import FormDiagram
-    from compas_tna.diagrams import ForceDiagram
     form = FormDiagram.from_data(formdata)
     force = ForceDiagram.from_data(forcedata)
     horizontal_nodal(form, force, *args, **kwargs)

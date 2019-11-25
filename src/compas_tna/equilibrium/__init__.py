@@ -84,7 +84,10 @@ Proxies
 """
 from __future__ import absolute_import
 
-from .horizontal import *
-from .vertical import *
+import compas
+
+if not compas.IPY:
+    from .horizontal import *
+    from .vertical import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]
