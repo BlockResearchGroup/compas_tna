@@ -4,33 +4,26 @@ from __future__ import division
 
 import sys
 
-try:
-    from numpy import array
-    from numpy import float64
-    from numpy import empty_like
-    from numpy.linalg import cond
+from numpy import array
+from numpy import float64
+from numpy import empty_like
+from numpy.linalg import cond
 
-    from scipy.linalg import cho_factor
-    from scipy.linalg import cho_solve
-    from scipy.linalg import lstsq
-    from scipy.linalg import solve
-    from scipy.linalg import norm
+from scipy.linalg import cho_factor
+from scipy.linalg import cho_solve
+from scipy.linalg import lstsq
+from scipy.linalg import solve
+from scipy.linalg import norm
 
-    from scipy.sparse.linalg import factorized
-
-except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+from scipy.sparse.linalg import factorized
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
 from compas.numerical import chofactor
 from compas.numerical import lufactorized
-
 from compas.numerical import dof
 from compas.numerical import rref
 from compas.numerical import nonpivots
-
 from compas.numerical import equilibrium_matrix
 
 
@@ -42,7 +35,6 @@ __all__ = [
     'apply_bounds',
     'update_z',
     'update_q_from_qind',
-
     'form_count_dof',
     'form_identify_dof',
 ]

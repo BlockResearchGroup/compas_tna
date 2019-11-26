@@ -37,9 +37,13 @@ Proxies
 """
 from __future__ import absolute_import
 
-from .diagrams import *
+import compas
+
 from .loads import *
 from .pattern import *
 from .thickness import *
+
+if not compas.IPY:
+    from .diagrams import *
 
 __all__ = [name for name in dir() if not name.startswith('_')]

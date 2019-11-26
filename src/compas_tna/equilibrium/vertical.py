@@ -2,21 +2,16 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
+from numpy import array
+from numpy import float64
 
-try:
-    from numpy import array
-    from numpy import float64
-
-    from scipy.sparse import diags
-    from scipy.sparse.linalg import spsolve
-
-except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+from scipy.sparse import diags
+from scipy.sparse.linalg import spsolve
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
+
+from compas_tna.diagrams import FormDiagram
 
 from compas_tna.utilities import LoadUpdater
 from compas_tna.utilities import update_z
@@ -26,32 +21,25 @@ __all__ = [
     'vertical_from_zmax',
     'vertical_from_bbox',
     'vertical_from_q',
-
     'vertical_from_zmax_proxy',
     'vertical_from_bbox_proxy',
-    'vertical_from_q_proxy',
-]
-
-
-EPS = 1 / sys.float_info.epsilon
+    'vertical_from_q_proxy'
+    ]
 
 
 def vertical_from_zmax_proxy(formdata, *args, **kwargs):
-    from compas_tna.diagrams import FormDiagram
     form = FormDiagram.from_data(formdata)
     scale = vertical_from_zmax(form, *args, **kwargs)
     return form.to_data(), scale
 
 
 def vertical_from_bbox_proxy(formdata, *args, **kwargs):
-    from compas_tna.diagrams import FormDiagram
     form = FormDiagram.from_data(formdata)
     scale = vertical_from_bbox(form, *args, **kwargs)
     return form.to_data(), scale
 
 
 def vertical_from_q_proxy(formdata, *args, **kwargs):
-    from compas_tna.diagrams import FormDiagram
     form = FormDiagram.from_data(formdata)
     vertical_from_q(form, *args, **kwargs)
     return form.to_data()
