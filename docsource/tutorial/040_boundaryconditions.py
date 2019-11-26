@@ -1,8 +1,4 @@
-<<<<<<< .merge_file_hD5tYt
-from compas_plotters import MeshPlotter
-=======
 import os
->>>>>>> .merge_file_JrqZuM
 
 from compas_plotters import MeshPlotter
 from compas_tna.diagrams import FormDiagram
