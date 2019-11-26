@@ -111,5 +111,7 @@ temp/**
 !temp/PLACEHOLDER
 
 docsource/api/generated
+.DS_Store
+
 
 .vscode/**
