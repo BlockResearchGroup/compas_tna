@@ -112,4 +112,4 @@ temp/**
 
 docsource/api/generated
 
-settings.json
+.vscode
