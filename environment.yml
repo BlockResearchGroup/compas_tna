@@ -1,3 +1,0 @@
-dependencies:
-    - pip:
-        - git+https://github.com/BlockResearchGroup/compas_tna.git#egg=compas_tna
