@@ -4,48 +4,7 @@ COMPAS package for Thrust Network Analaysis. This package provides the base impl
 
 ## Getting Started
 
-### Installation
-
-`compas_tna` is not yet on the Python Package Index. For now, it still needs to be installed "from source". Note that as with all things COMPAS, we highly recommend installing `compas_tna` in a specific `conda` environment.
-
-```bash
-conda create -n tna -c conda-forge python=3.7 COMPAS
-conda activate tna
-```
-
-> Note that if you are working on Mac, you need to also install `python.app` in the environment: `conda create -n tna -c conda-forge python=3.7 python.app COMPAS`.
-
-If you have cloned or downloaded the `compas_tna` repo to your computer, navigate to the roof folder and do
-
-```bash
-pip install -e .
-```
-
-If you prefer installing directly from the github repo, do
-
-```bash
-pip install git+https://github.com/compas-dev/compas_tna.git#egg=compas_tna
-```
-
-> Note that you will need to have Git installed on your computer for this.
-
-To verify the installation, start an interactive Python interpreter (just type `python` on the command line) and try to import the package.
-
-```python
->>> import compas
->>> import compas_tna
->> exit()
-```
-
-### Installation for Rhino
-
-To make `compas_tna` available in Rhino, run the following command from within the `tna` environment on the command line:
-
-```bash
-python -m compas_rhino.install -p compas compas_rhino compas_tna
-```
-
-The next time you start Rhino, `compas`, `compas_rhino`, and `compas_tna` will be available.
+Have a look at the "Getting Started" instructions in the docs: <https://compas-dev.github.io/compas_tna/gettingstarted.html>.
 
 ## First Steps
 
