@@ -1,14 +1,11 @@
-import os
+import compas_tna
 
 from compas_plotters import MeshPlotter
 from compas_tna.diagrams import FormDiagram
 from compas_tna.utilities import relax_boundary_openings
 
-HERE = os.path.dirname(__file__)
-DATA = os.path.join(HERE, 'data')
-
-FILE_I = os.path.join(DATA, 'rhinomesh.obj')
-FILE_O = os.path.join(DATA, 'boundaryconditions.json')
+FILE_I = compas_tna.get('tutorial/rhinomesh.obj')
+FILE_O = compas_tna.get('tutorial/boundaryconditions.json')
 
 form = FormDiagram.from_obj(FILE_I)
 

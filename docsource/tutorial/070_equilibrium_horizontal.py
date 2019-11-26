@@ -1,13 +1,11 @@
-import os
+import compas_tna
 
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 from compas_tna.equilibrium import horizontal
 from compas_plotters import MeshPlotter
 
-HERE = os.path.dirname(__file__)
-DATA = os.path.join(HERE, 'data')
-FILE = os.path.join(DATA, 'boundaryconditions.json')
+FILE = compas_tna.get('tutorial/boundaryconditions.json')
 
 form = FormDiagram.from_json(FILE)
 force  = ForceDiagram.from_formdiagram(form)
