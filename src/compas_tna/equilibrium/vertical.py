@@ -158,6 +158,7 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
         attr['rz'] = r[index, 2]
     for u, v, attr in form.edges_where({'is_edge': True}, True):
         index = uv_i[(u, v)]
+        attr['q'] = q[index, 0]
         attr['f'] = f[index, 0]
 
     return scale
@@ -226,6 +227,7 @@ def vertical_from_bbox(form, factor=5.0, kmax=100, tol=1e-3, density=1.0, displa
         attr['sw'] = sw[index, 2]
     for u, v, attr in form.edges_where({'is_edge': True}, True):
         index = uv_i[(u, v)]
+        attr['q'] = q[index, 0]
         attr['f'] = f[index, 0]
 
     return scale
