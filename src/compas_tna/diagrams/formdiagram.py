@@ -32,6 +32,7 @@ class FormDiagram(Diagram):
     *   ``from_obj`` : Construct a diagram from the geometry described in an OBJ file. Only points, lines, and faces are taken into account.
     *   ``from_json`` : Construct a diagram from a JSON file containing a serialised "data" dictionary.
     *   ``from_lines`` : Construct a diagram from pairs of line start and end points.
+    *   ``from_mesh`` : Construct a diagram from a Mesh.
     *   ``from_rhinomesh`` : Construct a diagram from a Rhino mesh.
     *   ``from_rhinosurface`` : Construct a diagram from a Rhino surface, using the U and V isolines.
     *   ``from_rhinolines`` : Construct a diagram from a selection of Rhino lines (i.e. curves of degree 1).
@@ -169,6 +170,45 @@ class FormDiagram(Diagram):
         if 'name' in kwargs:
             mesh.name = kwargs['name']
         return mesh
+
+    @classmethod
+    def from_mesh(cls, mesh, **kwargs):
+        """Construct a FormDiagram from a Mesh.
+
+        Parameters
+        ----------
+        mesh : compas.datastructures.Mesh
+            The mesh to be taken as reference.
+            The keys of the faces and vertices of the base mesh will be kept.
+            Only the XY coordinates per vertex are stored. Z = 0.0
+
+        Returns
+        -------
+        FormDiagram
+            A FormDiagram object.
+
+        Examples
+        --------
+        .. code-block:: python
+            
+            import compas
+            from compas.datastructures import Mesh
+            from compas_tna.diagrams import FormDiagram
+
+            mesh = Mesh.from_obj(compas.get('faces.obj'))
+            form = FormDiagram.from_mesh(mesh)
+            form.plot()
+        """
+        form = cls()
+        
+        for vkey, attr in mesh.vertices(True):
+            form.add_vertex(key=vkey, x=attr['x'], y=attr['y'], z=0.0)
+        for fkey in mesh.faces():
+            form.add_face(vertices=mesh.face_vertices(fkey), fkey=fkey)
+        
+        if 'name' in kwargs:
+            mesh.name = kwargs['name']
+        return form
 
     @classmethod
     def from_rhinomesh(cls, guid, **kwargs):
@@ -597,6 +637,7 @@ class FormDiagram(Diagram):
 if __name__ == '__main__':
 
     import compas
+    from compas.datastructures import Mesh
     from compas.files import OBJ
 
     filepath = compas.get('lines.obj')
@@ -607,5 +648,14 @@ if __name__ == '__main__':
     lines    = [(vertices[u], vertices[v], 0) for u, v in edges]
 
     form = FormDiagram.from_lines(lines, delete_boundary_face=False)
+
+    mesh = Mesh.from_obj(compas.get('faces.obj'))
+    height = 5.0
+    mesh.set_vertices_attribute('z', height)
+    form = FormDiagram.from_mesh(mesh)
+
+    assert form.number_of_faces() == mesh.number_of_faces()
+    assert form.number_of_vertices() == mesh.number_of_vertices()
+    assert max(mesh.get_vertices_attribute('z')) - height == max(form.get_vertices_attribute('z'))
 
     form.plot()
