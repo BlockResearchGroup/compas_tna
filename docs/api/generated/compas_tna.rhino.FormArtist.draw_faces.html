@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
     
-        <link rel="next" title="FormArtist.draw_lines" href="compas_tna.rhino.FormArtist.draw_lines.html" />
+        <link rel="next" title="FormArtist.draw_mesh" href="compas_tna.rhino.FormArtist.draw_mesh.html" />
     
     
     
@@ -73,7 +73,7 @@ as a tuple of RGB components.
 To apply the same color to all faces, provide a single color
 specification. Individual colors can be assigned using a dictionary
 of key-color pairs. Missing keys will be assigned the default face
-color (<code class="docutils literal notranslate"><span class="pre">self.defaults['face.color']</span></code>).
+color (<code class="docutils literal notranslate"><span class="pre">self.settings['face.color']</span></code>).
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all faces are assigned the
 default face color.</p></li>
 </ul>
@@ -81,7 +81,7 @@ default face color.</p></li>
 </dl>
 <p class="rubric">Notes</p>
 <p>The faces are named using the following template:
-<code class="docutils literal notranslate"><span class="pre">&quot;{}.face.{}&quot;.format(self.datastructure.name,</span> <span class="pre">key)</span></code>.
+<code class="docutils literal notranslate"><span class="pre">&quot;{}.face.{}&quot;.format(self.mesh.name,</span> <span class="pre">key)</span></code>.
 This name is used afterwards to identify faces in the Rhino model.</p>
 </dd></dl>
 
@@ -160,11 +160,11 @@ This name is used afterwards to identify faces in the Rhino model.</p>
     <footer class="bg-dark pb-5">
         <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Nov 26, 2019.
+                Last updated on Jan 24, 2020.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
             
         </div>
     </footer>

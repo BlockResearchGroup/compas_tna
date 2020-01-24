@@ -61,7 +61,7 @@
 <dl class="class">
 <dt id="compas_tna.rhino.FormArtist">
 <em class="property">class </em><code class="sig-prename descclassname">compas_tna.rhino.</code><code class="sig-name descname">FormArtist</code><span class="sig-paren">(</span><em class="sig-param">form</em>, <em class="sig-param">layer=None</em><span class="sig-paren">)</span></dt>
-<dd><p>Bases: <a class="reference external" href="https://compas-dev.github.io/main/api/generated/compas_rhino.artists.MeshArtist.html#compas_rhino.artists.MeshArtist" title="(in COMPAS v0.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">compas_rhino.artists.MeshArtist</span></code></p>
 <p class="rubric">Attributes</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -81,12 +81,6 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">layer</span></code></p></td>
-<td><p>The layer that contains the mesh.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh</span></code></p></td>
-<td><p>The mesh that should be painted.</p></td>
-</tr>
 </tbody>
 </table>
 <p class="rubric">Methods</p>
@@ -147,83 +141,74 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_edgelabels.html#compas_tna.rhino.FormArtist.clear_edgelabels" title="compas_tna.rhino.FormArtist.clear_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edgelabels</span></code></a>([keys])</p></td>
-<td><p>Clear all edge labels previously drawn by the <code class="docutils literal notranslate"><span class="pre">EdgeArtist</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_edges.html#compas_tna.rhino.FormArtist.clear_edges" title="compas_tna.rhino.FormArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a>([keys])</p></td>
-<td><p>Clear all edges previously drawn by the <code class="docutils literal notranslate"><span class="pre">EdgeArtist</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_facelabels.html#compas_tna.rhino.FormArtist.clear_facelabels" title="compas_tna.rhino.FormArtist.clear_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facelabels</span></code></a>([keys])</p></td>
-<td><p>Clear all face labels previously drawn by the <code class="docutils literal notranslate"><span class="pre">FaceArtist</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_facenormals.html#compas_tna.rhino.FormArtist.clear_facenormals" title="compas_tna.rhino.FormArtist.clear_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facenormals</span></code></a>([keys])</p></td>
-<td><p>Clear the normals of all faces previously drawn by the <code class="docutils literal notranslate"><span class="pre">FaceArtist</span></code>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_faces.html#compas_tna.rhino.FormArtist.clear_faces" title="compas_tna.rhino.FormArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a>([keys])</p></td>
-<td><p>Clear all faces previously drawn by the <code class="docutils literal notranslate"><span class="pre">FaceArtist</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_layer.html#compas_tna.rhino.FormArtist.clear_layer" title="compas_tna.rhino.FormArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
-<td><p>Clear the main layer of the artist.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_mesh.html#compas_tna.rhino.FormArtist.clear_mesh" title="compas_tna.rhino.FormArtist.clear_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_mesh</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.build.html#compas_tna.rhino.FormArtist.build" title="compas_tna.rhino.FormArtist.build"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build</span></code></a>(item, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_normals.html#compas_tna.rhino.FormArtist.clear_normals" title="compas_tna.rhino.FormArtist.clear_normals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_normals</span></code></a>([keys])</p></td>
-<td><p>Clear all normals previously drawn by the <code class="docutils literal notranslate"><span class="pre">MeshArtist</span></code>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_edgelabels.html#compas_tna.rhino.FormArtist.clear_edgelabels" title="compas_tna.rhino.FormArtist.clear_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edgelabels</span></code></a>([keys])</p></td>
+<td><p>Clear all previously drawn edge labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_edges.html#compas_tna.rhino.FormArtist.clear_edges" title="compas_tna.rhino.FormArtist.clear_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_edges</span></code></a>([keys])</p></td>
+<td><p>Clear all previously drawn edges.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_facelabels.html#compas_tna.rhino.FormArtist.clear_facelabels" title="compas_tna.rhino.FormArtist.clear_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facelabels</span></code></a>([keys])</p></td>
+<td><p>Clear all previously drawn face labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_facenormals.html#compas_tna.rhino.FormArtist.clear_facenormals" title="compas_tna.rhino.FormArtist.clear_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_facenormals</span></code></a>([keys])</p></td>
+<td><p>Clear the all previously drawn face normals.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_faces.html#compas_tna.rhino.FormArtist.clear_faces" title="compas_tna.rhino.FormArtist.clear_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_faces</span></code></a>([keys])</p></td>
+<td><p>Clear all previously drawn faces.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_layer.html#compas_tna.rhino.FormArtist.clear_layer" title="compas_tna.rhino.FormArtist.clear_layer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_layer</span></code></a>()</p></td>
+<td><p>Clear the main layer of the artist.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_mesh.html#compas_tna.rhino.FormArtist.clear_mesh" title="compas_tna.rhino.FormArtist.clear_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_mesh</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_vertexlabels.html#compas_tna.rhino.FormArtist.clear_vertexlabels" title="compas_tna.rhino.FormArtist.clear_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexlabels</span></code></a>([keys])</p></td>
-<td><p>Clear all vertex labels previously drawn by the <code class="docutils literal notranslate"><span class="pre">VertexArtist</span></code>.</p></td>
+<td><p>Clear all previously drawn vertex labels.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_vertices.html#compas_tna.rhino.FormArtist.clear_vertices" title="compas_tna.rhino.FormArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a>([keys])</p></td>
-<td><p>Clear all vertices previously drawn by the <code class="docutils literal notranslate"><span class="pre">VertexArtist</span></code>.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_vertexnormals.html#compas_tna.rhino.FormArtist.clear_vertexnormals" title="compas_tna.rhino.FormArtist.clear_vertexnormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertexnormals</span></code></a>([keys])</p></td>
+<td><p>Clear all previously drawn vertex normals.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_circles.html#compas_tna.rhino.FormArtist.draw_circles" title="compas_tna.rhino.FormArtist.draw_circles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_circles</span></code></a>(circles[, layer, clear_layer, …])</p></td>
-<td><p>Draw a collection of circles.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.clear_vertices.html#compas_tna.rhino.FormArtist.clear_vertices" title="compas_tna.rhino.FormArtist.clear_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_vertices</span></code></a>([keys])</p></td>
+<td><p>Clear all previously drawn vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_edgelabels.html#compas_tna.rhino.FormArtist.draw_edgelabels" title="compas_tna.rhino.FormArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a>([text, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw.html#compas_tna.rhino.FormArtist.draw" title="compas_tna.rhino.FormArtist.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_edgelabels.html#compas_tna.rhino.FormArtist.draw_edgelabels" title="compas_tna.rhino.FormArtist.draw_edgelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edgelabels</span></code></a>([text, color])</p></td>
 <td><p>Draw labels for a selection of edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_edges.html#compas_tna.rhino.FormArtist.draw_edges" title="compas_tna.rhino.FormArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([keys, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_edges.html#compas_tna.rhino.FormArtist.draw_edges" title="compas_tna.rhino.FormArtist.draw_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_edges</span></code></a>([keys, color])</p></td>
 <td><p>Draw a selection of edges.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_facelabels.html#compas_tna.rhino.FormArtist.draw_facelabels" title="compas_tna.rhino.FormArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a>([text, color])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_facelabels.html#compas_tna.rhino.FormArtist.draw_facelabels" title="compas_tna.rhino.FormArtist.draw_facelabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facelabels</span></code></a>([text, color])</p></td>
 <td><p>Draw labels for a selection of faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_facenormals.html#compas_tna.rhino.FormArtist.draw_facenormals" title="compas_tna.rhino.FormArtist.draw_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facenormals</span></code></a>([color, scale])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_facenormals.html#compas_tna.rhino.FormArtist.draw_facenormals" title="compas_tna.rhino.FormArtist.draw_facenormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_facenormals</span></code></a>([keys, color, scale])</p></td>
 <td><p>Draw the normals of the faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_faces.html#compas_tna.rhino.FormArtist.draw_faces" title="compas_tna.rhino.FormArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([keys, color, join_faces])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_faces.html#compas_tna.rhino.FormArtist.draw_faces" title="compas_tna.rhino.FormArtist.draw_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_faces</span></code></a>([keys, color, join_faces])</p></td>
 <td><p>Draw a selection of faces.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_lines.html#compas_tna.rhino.FormArtist.draw_lines" title="compas_tna.rhino.FormArtist.draw_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_lines</span></code></a>(lines[, layer, clear_layer, redraw])</p></td>
-<td><p>Draw a collection of lines.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_mesh.html#compas_tna.rhino.FormArtist.draw_mesh" title="compas_tna.rhino.FormArtist.draw_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_mesh</span></code></a>([color, disjoint])</p></td>
 <td><p>Draw the mesh as a consolidated RhinoMesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_normals.html#compas_tna.rhino.FormArtist.draw_normals" title="compas_tna.rhino.FormArtist.draw_normals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_normals</span></code></a>([keys, color, scale])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_points.html#compas_tna.rhino.FormArtist.draw_points" title="compas_tna.rhino.FormArtist.draw_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_points</span></code></a>(points[, layer, clear_layer, redraw])</p></td>
-<td><p>Draw a collection of points.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_polygons.html#compas_tna.rhino.FormArtist.draw_polygons" title="compas_tna.rhino.FormArtist.draw_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polygons</span></code></a>(polygons[, layer, …])</p></td>
-<td><p>Draw a collection of polygons.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_polylines.html#compas_tna.rhino.FormArtist.draw_polylines" title="compas_tna.rhino.FormArtist.draw_polylines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_polylines</span></code></a>(polylines[, layer, …])</p></td>
-<td><p>Draw a collection of polygons.</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_vertexlabels.html#compas_tna.rhino.FormArtist.draw_vertexlabels" title="compas_tna.rhino.FormArtist.draw_vertexlabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexlabels</span></code></a>([text, color])</p></td>
 <td><p>Draw labels for a selection vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_vertices.html#compas_tna.rhino.FormArtist.draw_vertices" title="compas_tna.rhino.FormArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([keys, color])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_vertexnormals.html#compas_tna.rhino.FormArtist.draw_vertexnormals" title="compas_tna.rhino.FormArtist.draw_vertexnormals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertexnormals</span></code></a>([keys, color, scale])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.draw_vertices.html#compas_tna.rhino.FormArtist.draw_vertices" title="compas_tna.rhino.FormArtist.draw_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw_vertices</span></code></a>([keys, color])</p></td>
 <td><p>Draw a selection of vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.redraw.html#compas_tna.rhino.FormArtist.redraw" title="compas_tna.rhino.FormArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>([timeout])</p></td>
-<td><p>Redraw the Rhino view.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.redraw.html#compas_tna.rhino.FormArtist.redraw" title="compas_tna.rhino.FormArtist.redraw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">redraw</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.save.html#compas_tna.rhino.FormArtist.save" title="compas_tna.rhino.FormArtist.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(path[, width, height, scale, …])</p></td>
-<td><p>Save the current screen view.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.rhino.FormArtist.register.html#compas_tna.rhino.FormArtist.register" title="compas_tna.rhino.FormArtist.register"><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code></a>(item_type, artist_type)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -306,11 +291,11 @@
     <footer class="bg-dark pb-5">
         <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Nov 26, 2019.
+                Last updated on Jan 24, 2020.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
             
         </div>
     </footer>

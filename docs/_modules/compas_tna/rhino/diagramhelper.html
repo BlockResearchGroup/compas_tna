@@ -53,32 +53,32 @@
                     
 
                     <h1>Source code for compas_tna.rhino.diagramhelper</h1><div class="highlight"><pre><code>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
-<span class="kn">from</span> <span class="nn">ast</span> <span class="k">import</span> <span class="n">literal_eval</span>
+<span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">literal_eval</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
 
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">flatten</span>
-<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="k">import</span> <span class="n">geometric_key</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">flatten</span>
+<span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">geometric_key</span>
 
-<span class="kn">from</span> <span class="nn">compas_rhino.geometry</span> <span class="k">import</span> <span class="n">RhinoPoint</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.geometry</span> <span class="k">import</span> <span class="n">RhinoCurve</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.geometry</span> <span class="kn">import</span> <span class="n">RhinoPoint</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.geometry</span> <span class="kn">import</span> <span class="n">RhinoCurve</span>
 
-<span class="kn">from</span> <span class="nn">compas_rhino.modifiers</span> <span class="k">import</span> <span class="n">VertexModifier</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.modifiers</span> <span class="k">import</span> <span class="n">EdgeModifier</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.modifiers</span> <span class="k">import</span> <span class="n">FaceModifier</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.modifiers</span> <span class="kn">import</span> <span class="n">VertexModifier</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.modifiers</span> <span class="kn">import</span> <span class="n">EdgeModifier</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.modifiers</span> <span class="kn">import</span> <span class="n">FaceModifier</span>
 
-<span class="kn">from</span> <span class="nn">compas_rhino.selectors</span> <span class="k">import</span> <span class="n">VertexSelector</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.selectors</span> <span class="k">import</span> <span class="n">EdgeSelector</span>
-<span class="kn">from</span> <span class="nn">compas_rhino.selectors</span> <span class="k">import</span> <span class="n">FaceSelector</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.selectors</span> <span class="kn">import</span> <span class="n">VertexSelector</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.selectors</span> <span class="kn">import</span> <span class="n">EdgeSelector</span>
+<span class="kn">from</span> <span class="nn">compas_rhino.selectors</span> <span class="kn">import</span> <span class="n">FaceSelector</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">Rhino</span>
-    <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="k">import</span> <span class="n">Point3d</span>
+    <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="kn">import</span> <span class="n">Point3d</span>
     <span class="kn">import</span> <span class="nn">rhinoscriptsyntax</span> <span class="k">as</span> <span class="nn">rs</span>
 
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -369,11 +369,11 @@
     <footer class="bg-dark pb-5">
         <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Nov 26, 2019.
+                Last updated on Jan 24, 2020.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
             
         </div>
     </footer>

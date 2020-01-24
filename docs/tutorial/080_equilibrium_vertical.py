@@ -19,7 +19,7 @@ scale = vertical_from_zmax(form, 3.0)
 # visualise
 # ==============================================================================
 
-z = form.get_vertices_attribute('z')
+z = form.vertices_attribute('z')
 zmin = min(z)
 zmax = max(z)
 

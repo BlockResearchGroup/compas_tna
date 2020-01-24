@@ -65,8 +65,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vertices</strong> (<em>list</em>) – A list of vertex keys.
-For every vertex that does not yet exist, a new vertex is created.</p></li>
+<li><p><strong>vertices</strong> (<em>list</em>) – A list of vertex keys.</p></li>
 <li><p><strong>attr_dict</strong> (<em>dict, optional</em>) – Face attributes.</p></li>
 <li><p><strong>kwattr</strong> (<em>dict, optional</em>) – Additional named face attributes.
 Named face attributes overwrite corresponding attributes in the
@@ -74,14 +73,7 @@ attribute dict (<code class="docutils literal notranslate"><span class="pre">att
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><em>int</em> – The key of the face.
-The key is an integer, if no key was provided.</p></li>
-<li><p><em>hashable</em> – The key of the face.
-Any hashable object may be provided as identifier for the face.
-Provided keys are returned unchanged.</p></li>
-</ul>
-</p>
+<dd class="field-even"><p><em>int</em> – The key of the face.</p>
 </dd>
 <dt class="field-odd">Raises</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#TypeError" title="(in Python v3.8)"><strong>TypeError</strong></a> – If the provided face key is of an unhashable type.</p>
@@ -94,7 +86,7 @@ the highest integer value of any key used so far by 1.</p>
 <p>If a key with an integer value is provided that is higher than the current
 highest integer key value, then the highest integer value is updated accordingly.</p>
 <p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>
 </div>
 </dd></dl>
@@ -174,11 +166,11 @@ highest integer key value, then the highest integer value is updated accordingly
     <footer class="bg-dark pb-5">
         <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Nov 26, 2019.
+                Last updated on Jan 24, 2020.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
             
         </div>
     </footer>

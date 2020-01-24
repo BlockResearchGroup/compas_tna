@@ -19,11 +19,11 @@
     <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
     
-        <link rel="next" title="FormArtist.draw_vertices" href="compas_tna.rhino.FormArtist.draw_vertices.html" />
+        <link rel="next" title="FormArtist.draw_vertexnormals" href="compas_tna.rhino.FormArtist.draw_vertexnormals.html" />
     
     
     
-        <link rel="prev" title="FormArtist.draw_polylines" href="compas_tna.rhino.FormArtist.draw_polylines.html" />
+        <link rel="prev" title="FormArtist.draw_mesh" href="compas_tna.rhino.FormArtist.draw_mesh.html" />
     
 
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -74,13 +74,13 @@ If a dictionary of specififcations is provided, the keys of the
 should refer to vertex keys and the values should be color
 specifications in the form of strings or tuples.
 The default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case the labels are assigned
-the default vertex color (<code class="docutils literal notranslate"><span class="pre">self.defaults['color.vertex']</span></code>).</p></li>
+the default vertex color (<code class="docutils literal notranslate"><span class="pre">self.settings['color.vertex']</span></code>).</p></li>
 </ul>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
 <p>All labels are assigned a name using the folling template:
-<code class="docutils literal notranslate"><span class="pre">&quot;{}.vertex.label.{}&quot;.format(self.datastructure.name,</span> <span class="pre">key)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">&quot;{}.vertex.label.{}&quot;.format(self.mesh.name,</span> <span class="pre">key)</span></code>.</p>
 </dd></dl>
 
 </div>
@@ -158,11 +158,11 @@ the default vertex color (<code class="docutils literal notranslate"><span class
     <footer class="bg-dark pb-5">
         <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Nov 26, 2019.
+                Last updated on Jan 24, 2020.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
             
         </div>
     </footer>

@@ -7,6 +7,6 @@ FILE = compas_tna.get('tutorial/rhinomesh.obj')
 form = FormDiagram.from_obj(FILE)
 
 corners = list(form.vertices_where({'vertex_degree': 2}))
-form.set_vertices_attribute('is_anchor', True, keys=corners)
+form.vertices_attribute('is_anchor', True, keys=corners)
 
 form.plot()

@@ -9,7 +9,7 @@ form = FormDiagram.from_obj(FILE)
 
 corners = list(form.vertices_where({'vertex_degree': 2}))
 
-form.set_edges_attribute('q', 10.0, keys=form.edges_on_boundary())
+form.edges_attribute('q', 10.0, keys=form.edges_on_boundary())
 
 relax_boundary_openings(form, corners)
 

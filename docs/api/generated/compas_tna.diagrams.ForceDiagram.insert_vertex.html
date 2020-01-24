@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
     
-        <link rel="next" title="ForceDiagram.is_edge_on_boundary" href="compas_tna.diagrams.ForceDiagram.is_edge_on_boundary.html" />
+        <link rel="next" title="ForceDiagram.is_connected" href="compas_tna.diagrams.ForceDiagram.is_connected.html" />
     
     
     
@@ -65,8 +65,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fkey</strong> (<em>hashable</em>) – The key of the face in which the vertex should be inserted.</p></li>
-<li><p><strong>key</strong> (<em>hashable, optional</em>) – The key to be used to identify the inserted vertex.</p></li>
+<li><p><strong>fkey</strong> (<em>int</em>) – The key of the face in which the vertex should be inserted.</p></li>
+<li><p><strong>key</strong> (<em>int, optional</em>) – The key to be used to identify the inserted vertex.</p></li>
 <li><p><strong>xyz</strong> (<em>list, optional</em>) – Specific XYZ coordinates for the inserted vertex.</p></li>
 <li><p><strong>return_fkeys</strong> (<em>bool, optional</em>) – By default, this method returns only the key of the inserted vertex.
 This flag can be used to indicate that the keys of the newly created
@@ -75,7 +75,7 @@ faces should be returned as well.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
-<li><p><em>hashable</em> – The key of the inserted vertex, if <code class="docutils literal notranslate"><span class="pre">return_fkeys</span></code> is false.</p></li>
+<li><p><em>int</em> – The key of the inserted vertex, if <code class="docutils literal notranslate"><span class="pre">return_fkeys</span></code> is false.</p></li>
 <li><p><em>tuple</em> – The key of the newly created vertex
 and a list with the newly created faces, if <code class="docutils literal notranslate"><span class="pre">return_fkeys</span></code> is true.</p></li>
 </ul>
@@ -83,22 +83,8 @@ and a list with the newly created faces, if <code class="docutils literal notran
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
-
-<span class="n">key</span><span class="p">,</span> <span class="n">fkeys</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">insert_vertex</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">return_fkeys</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)})</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="n">fkey</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">fkeys</span><span class="p">})</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>
-</div>
-<div class="figure align-default">
-<img alt="../../_images/compas_tna-diagrams-ForceDiagram-insert_vertex-1.png" src="../../_images/compas_tna-diagrams-ForceDiagram-insert_vertex-1.png" />
 </div>
 </dd></dl>
 
@@ -177,11 +163,11 @@ and a list with the newly created faces, if <code class="docutils literal notran
     <footer class="bg-dark pb-5">
         <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Nov 26, 2019.
+                Last updated on Jan 24, 2020.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
             
         </div>
     </footer>

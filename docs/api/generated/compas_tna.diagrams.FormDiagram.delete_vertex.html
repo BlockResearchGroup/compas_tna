@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
     
-        <link rel="next" title="FormDiagram.dump" href="compas_tna.diagrams.FormDiagram.dump.html" />
+        <link rel="next" title="FormDiagram.edge_attribute" href="compas_tna.diagrams.FormDiagram.edge_attribute.html" />
     
     
     
@@ -64,54 +64,16 @@
 <dd><p>Delete a vertex from the mesh and everything that is attached to it.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>key</strong> (<em>hashable</em>) – The identifier of the vertex.</p>
+<dd class="field-odd"><p><strong>key</strong> (<em>int</em>) – The identifier of the vertex.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
-
-<span class="n">mesh</span><span class="o">.</span><span class="n">delete_vertex</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span>
-
-<span class="n">color</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">}</span>
-
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>
-</div>
-<div class="figure align-default">
-<img alt="../../_images/compas_tna-diagrams-FormDiagram-delete_vertex-1.png" src="../../_images/compas_tna-diagrams-FormDiagram-delete_vertex-1.png" />
 </div>
 <p>In some cases, disconnected vertices can remain after application of this
 method. To remove these vertices as well, combine this method with vertex
 culling (<a class="reference internal" href="compas_tna.diagrams.FormDiagram.cull_vertices.html#compas_tna.diagrams.FormDiagram.cull_vertices" title="compas_tna.diagrams.FormDiagram.cull_vertices"><code class="xref py py-meth docutils literal notranslate"><span class="pre">cull_vertices()</span></code></a>).</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
-
-<span class="n">mesh</span><span class="o">.</span><span class="n">delete_vertex</span><span class="p">(</span><span class="mi">17</span><span class="p">)</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">delete_vertex</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">delete_vertex</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">mesh</span><span class="o">.</span><span class="n">cull_vertices</span><span class="p">()</span>
-
-<span class="n">color</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span> <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">vertex_degree</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">}</span>
-
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
-</div>
-<div class="figure align-default">
-<img alt="../../_images/compas_tna-diagrams-FormDiagram-delete_vertex-2.png" src="../../_images/compas_tna-diagrams-FormDiagram-delete_vertex-2.png" />
-</div>
 </dd></dl>
 
 </div>
@@ -189,11 +151,11 @@ culling (<a class="reference internal" href="compas_tna.diagrams.FormDiagram.cul
     <footer class="bg-dark pb-5">
         <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Nov 26, 2019.
+                Last updated on Jan 24, 2020.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
             
         </div>
     </footer>

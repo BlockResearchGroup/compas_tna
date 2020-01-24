@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
     
-        <link rel="next" title="ForceDiagram.edges_on_boundary" href="compas_tna.diagrams.ForceDiagram.edges_on_boundary.html" />
+        <link rel="next" title="ForceDiagram.edges_attribute" href="compas_tna.diagrams.ForceDiagram.edges_attribute.html" />
     
     
     
@@ -67,10 +67,8 @@
 <dd class="field-odd"><p><strong>data</strong> (<em>bool, optional</em>) – Return the edge data as well as the edge vertex keys.</p>
 </dd>
 <dt class="field-even">Yields</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><em>2-tuple</em> – The next edge as a (u, v) tuple, if <code class="docutils literal notranslate"><span class="pre">data</span></code> is false.</p></li>
-<li><p><em>3-tuple</em> – The next edge as a (u, v, data) tuple, if <code class="docutils literal notranslate"><span class="pre">data</span></code> is true.</p></li>
-</ul>
+<dd class="field-even"><p><em>tuple</em> – The next edge as a (u, v) tuple, if <code class="docutils literal notranslate"><span class="pre">data</span></code> is false.
+The next edge as a ((u, v), data) tuple, if <code class="docutils literal notranslate"><span class="pre">data</span></code> is true.</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -85,26 +83,7 @@ edges is <em>as they come out</em>. However, as long as the toplogy remains
 unchanged, the order is consistent.</p>
 </div>
 <p class="rubric">Example</p>
-<div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-
-<span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)):</span>
-    <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;index1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span>
-
-<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)):</span>
-    <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;index2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span>
-
-<span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">)</span>
-
-<span class="n">text</span> <span class="o">=</span> <span class="p">{(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span> <span class="s1">&#39;{}-{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="s1">&#39;index1&#39;</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="s1">&#39;index2&#39;</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="bp">True</span><span class="p">)}</span>
-
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">()</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span>
-<span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="go">&gt;&gt;&gt;</span>
 </code></pre></div>
 </div>
 </dd></dl>
@@ -184,11 +163,11 @@ unchanged, the order is consistent.</p>
     <footer class="bg-dark pb-5">
         <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Nov 26, 2019.
+                Last updated on Jan 24, 2020.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
             
         </div>
     </footer>

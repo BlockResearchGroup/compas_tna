@@ -11,8 +11,8 @@ form = FormDiagram.from_obj(FILE_I)
 
 corners = list(form.vertices_where({'vertex_degree': 2}))
 
-form.set_vertices_attribute('is_anchor', True, keys=corners)
-form.set_edges_attribute('q', 10.0, keys=form.edges_on_boundary())
+form.vertices_attribute('is_anchor', True, keys=corners)
+form.edges_attribute('q', 10.0, keys=form.edges_on_boundary())
 
 relax_boundary_openings(form, corners)
 
@@ -39,14 +39,16 @@ plotter.draw_vertices(
     radius=radius
 )
 
+edges = list(form.edges_where({'is_edge': True}))
 plotter.draw_edges(
-    keys=list(form.edges_where({'is_edge': True})),
+    keys=edges,
     color={key: '#00ff00' for key in form.edges_where({'is_external': True})},
     width={key: 2.0 for key in form.edges_where({'is_external': True})}
 )
 
+faces = list(form.faces_where({'is_loaded': True}))
 plotter.draw_faces(
-    facecolor={key: (1.0, 0.9, 0.9) for key in form.faces_where({'is_loaded': False})},
+    keys=faces, facecolor=(1.0, 0.9, 0.9),
 )
 
 plotter.show()

@@ -53,29 +53,24 @@
                     
 
                     <h1>Source code for compas_rhino.modifiers.edgemodifier</h1><div class="highlight"><pre><code>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">ast</span>
 
 <span class="kn">import</span> <span class="nn">compas</span>
-<span class="kn">import</span> <span class="nn">compas_rhino</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">Rhino</span>
-    <span class="kn">from</span> <span class="nn">Rhino.Geometry</span> <span class="k">import</span> <span class="n">Point3d</span>
-
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">compas_rhino.etoforms</span> <span class="k">import</span> <span class="n">PropertyListForm</span>
-
-<span class="k">except</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">compas_rhino.etoforms</span> <span class="kn">import</span> <span class="n">PropertyListForm</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">Rhino.UI.Dialogs</span> <span class="k">import</span> <span class="n">ShowPropertyListBox</span>
-
+        <span class="kn">from</span> <span class="nn">Rhino.UI.Dialogs</span> <span class="kn">import</span> <span class="n">ShowPropertyListBox</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
 <span class="k">else</span><span class="p">:</span>
@@ -83,23 +78,21 @@
         <span class="kn">import</span> <span class="nn">clr</span>
         <span class="n">clr</span><span class="o">.</span><span class="n">AddReference</span><span class="p">(</span><span class="s1">&#39;Rhino.UI&#39;</span><span class="p">)</span>
         <span class="kn">import</span> <span class="nn">Rhino.UI</span>
-
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">compas</span><span class="o">.</span><span class="n">raise_if_ironpython</span><span class="p">()</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;EdgeModifier&#39;</span><span class="p">,</span>
-
     <span class="s1">&#39;mesh_update_edge_attributes&#39;</span><span class="p">,</span>
     <span class="s1">&#39;network_update_edge_attributes&#39;</span>
-    <span class="p">]</span>
+<span class="p">]</span>
 
 
 <span class="k">def</span> <span class="nf">rhino_update_named_values</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Update named values&#39;</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">dialog</span> <span class="o">=</span> <span class="n">PropertyListForm</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">values</span> <span class="o">=</span> <span class="n">ShowPropertyListBox</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">dialog</span><span class="o">.</span><span class="n">ShowModal</span><span class="p">(</span><span class="n">Rhino</span><span class="o">.</span><span class="n">UI</span><span class="o">.</span><span class="n">RhinoEtoApp</span><span class="o">.</span><span class="n">MainWindow</span><span class="p">):</span>
@@ -211,9 +204,8 @@
 
     <span class="kn">import</span> <span class="nn">compas</span>
 
-    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="k">import</span> <span class="n">Network</span>
-    <span class="kn">from</span> <span class="nn">compas_rhino.artists.networkartist</span> <span class="k">import</span> <span class="n">NetworkArtist</span>
-    <span class="kn">from</span> <span class="nn">compas_rhino.modifiers.edgemodifier</span> <span class="k">import</span> <span class="n">EdgeModifier</span>
+    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
+    <span class="kn">from</span> <span class="nn">compas_rhino.artists.networkartist</span> <span class="kn">import</span> <span class="n">NetworkArtist</span>
 
     <span class="n">network</span> <span class="o">=</span> <span class="n">Network</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;grid_irregular.obj&#39;</span><span class="p">))</span>
 
@@ -291,11 +283,11 @@
     <footer class="bg-dark pb-5">
         <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Nov 26, 2019.
+                Last updated on Jan 24, 2020.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
             
         </div>
     </footer>

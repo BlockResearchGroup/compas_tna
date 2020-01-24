@@ -23,7 +23,7 @@
     
     
     
-        <link rel="prev" title="FormArtist.draw_circles" href="compas_tna.rhino.FormArtist.draw_circles.html" />
+        <link rel="prev" title="FormArtist.draw" href="compas_tna.rhino.FormArtist.draw.html" />
     
 
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -72,7 +72,7 @@ String values are interpreted as hex colors (e.g. <code class="docutils literal 
 Tuples are interpreted as RGB component specifications (e.g. <code class="docutils literal notranslate"><span class="pre">(255,</span> <span class="pre">0,</span> <span class="pre">0)</span> <span class="pre">for</span> <span class="pre">red</span></code>.
 Individual colors can be assigned using a dictionary
 of key-color pairs. Missing keys will be assigned the default face
-color (<code class="docutils literal notranslate"><span class="pre">self.defaults['edge.color']</span></code>).
+color (<code class="docutils literal notranslate"><span class="pre">self.settings['edge.color']</span></code>).
 The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are assigned the
 default edge color.</p></li>
 </ul>
@@ -80,7 +80,7 @@ default edge color.</p></li>
 </dl>
 <p class="rubric">Notes</p>
 <p>All labels are assigned a name using the folling template:
-<code class="docutils literal notranslate"><span class="pre">&quot;{}.edge.{}&quot;.format(self.datastructure.name,</span> <span class="pre">key)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">&quot;{}.edge.{}&quot;.format(self.mesh.name,</span> <span class="pre">key)</span></code>.</p>
 </dd></dl>
 
 </div>
@@ -158,11 +158,11 @@ default edge color.</p></li>
     <footer class="bg-dark pb-5">
         <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Nov 26, 2019.
+                Last updated on Jan 24, 2020.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
             
         </div>
     </footer>

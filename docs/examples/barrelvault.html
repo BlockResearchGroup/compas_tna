@@ -77,7 +77,7 @@ from a Rhino mesh, or a Rhino surface.</p>
 <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">select_lines</span><span class="p">()</span>
 
 <span class="n">form</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_rhinolines</span><span class="p">(</span><span class="n">guids</span><span class="p">)</span>
-<span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
@@ -92,8 +92,8 @@ The identify the supports, we select the relevant vertices and change their attr
 <span class="n">keys</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">identify_vertices_on_curves</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
-    <span class="n">form</span><span class="o">.</span><span class="n">set_vertices_attributes</span><span class="p">([</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">,</span> <span class="s1">&#39;is_fixed&#39;</span><span class="p">],</span> <span class="p">[</span><span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">],</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">)</span>
-    <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">set_vertices_attributes</span><span class="p">([</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">,</span> <span class="s1">&#39;is_fixed&#39;</span><span class="p">],</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">)</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
@@ -115,17 +115,17 @@ spanning arches.</p>
 <span class="c1">#       of the reaction force</span>
 
 <span class="n">form</span><span class="o">.</span><span class="n">update_boundaries</span><span class="p">(</span><span class="n">feet</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># move the &quot;feet&quot; such that the horizontal reaction forces are constrained in the correct direction</span>
 
-<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
     <span class="n">key</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">select_vertex</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">break</span>
 
     <span class="k">if</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">move_vertex</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
@@ -135,7 +135,7 @@ spanning arches.</p>
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># make the force diagram</span>
 
 <span class="n">force</span> <span class="o">=</span> <span class="n">ForceDiagram</span><span class="o">.</span><span class="n">from_formdiagram</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
-<span class="n">force</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::ForceDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">force</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::ForceDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
@@ -158,13 +158,13 @@ they carry only half of the load (set <code class="docutils literal notranslate"
 <span class="c1">#       2. the edges in the spanning direction on the boundary =&gt; fmin := 1, fmin := 1</span>
 <span class="c1">#       3. the edges in the opposite direction                 =&gt; fmin := 0, fmax := 0</span>
 
-<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+<span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
     <span class="n">edges</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">select_edges</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">edges</span><span class="p">:</span>
         <span class="k">break</span>
 
     <span class="k">if</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">update_edge_attributes</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
-        <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
@@ -174,7 +174,7 @@ they carry only half of the load (set <code class="docutils literal notranslate"
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># compute horizontal equilibrium</span>
 
 <span class="n">horizontal</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">force</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kmax</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
-<span class="n">force</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::ForceDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">force</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::ForceDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
@@ -195,13 +195,13 @@ they carry only half of the load (set <code class="docutils literal notranslate"
 <div class="language-python notranslate"><div class="highlight"><pre><code><span></span><span class="c1"># visualise the result</span>
 
 <span class="n">settings</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;show.forces&#39;</span>    <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
-    <span class="s1">&#39;show.reactions&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s1">&#39;show.forces&#39;</span>    <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s1">&#39;show.reactions&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
     <span class="s1">&#39;scale.forces&#39;</span>   <span class="p">:</span> <span class="mf">0.02</span><span class="p">,</span>
     <span class="s1">&#39;scale.reactions&#39;</span><span class="p">:</span> <span class="mf">1.0</span>
 <span class="p">}</span>
 
-<span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
+<span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
 </code></pre></div>
 </div>
 </div>
@@ -286,11 +286,11 @@ they carry only half of the load (set <code class="docutils literal notranslate"
     <footer class="bg-dark pb-5">
         <div class="container text-center pt-5 pb-5 text-muted">
             
-                Last updated on Nov 26, 2019.
+                Last updated on Jan 24, 2020.
             
 
             
-                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.2.1.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
             
         </div>
     </footer>
