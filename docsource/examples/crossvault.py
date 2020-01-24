@@ -75,7 +75,7 @@ form.draw(layer='TNA::FormDiagram', clear_layer=True)
 keys = DiagramHelper.select_vertices(form)
 
 if keys:
-    form.set_vertices_attributes(['is_anchor', 'is_fixed'], [True, True], keys=keys)
+    form.vertices_attributes(['is_anchor', 'is_fixed'], [True, True], keys=keys)
     form.draw(layer='TNA::FormDiagram', clear_layer=True)
 
 # update the boundaries
@@ -100,7 +100,7 @@ if DiagramHelper.move(force):
 
 key = DiagramHelper.select_vertex(force)
 if key is not None:
-    force.set_vertex_attribute(key, 'is_fixed', True)
+    force.vertex_attribute(key, 'is_fixed', True)
     force.draw(layer='TNA::ForceDiagram', clear_layer=True)
 
 # set the constraints for the edges in the spanning direction

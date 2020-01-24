@@ -33,7 +33,7 @@ class Diagram(Mesh):
         """
         edges = []
         for uv in self.face_halfedges(key):
-            is_edge, is_external = self.get_edge_attributes(uv, ('is_edge', 'is_external'))
+            is_edge, is_external = self.edge_attributes(uv, ('is_edge', 'is_external'))
             if is_edge and not is_external:
                 edges.append(uv)
         return edges
