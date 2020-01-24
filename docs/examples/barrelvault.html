@@ -19,11 +19,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/css/compas-reference.css" />
 
     
-        <link rel="next" title="The cross vault" href="crossvault.html" />
     
-    
-    
-        <link rel="prev" title="Examples" href="../examples.html" />
     
 
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -92,7 +88,7 @@ The identify the supports, we select the relevant vertices and change their attr
 <span class="n">keys</span> <span class="o">=</span> <span class="n">DiagramHelper</span><span class="o">.</span><span class="n">identify_vertices_on_curves</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">guids</span><span class="p">)</span>
 
 <span class="k">if</span> <span class="n">keys</span><span class="p">:</span>
-    <span class="n">form</span><span class="o">.</span><span class="n">set_vertices_attributes</span><span class="p">([</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">,</span> <span class="s1">&#39;is_fixed&#39;</span><span class="p">],</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">)</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">vertices_attributes</span><span class="p">([</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">,</span> <span class="s1">&#39;is_fixed&#39;</span><span class="p">],</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">],</span> <span class="n">keys</span><span class="o">=</span><span class="n">keys</span><span class="p">)</span>
     <span class="n">form</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">layer</span><span class="o">=</span><span class="s1">&#39;TNA::FormDiagram&#39;</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </code></pre></div>
 </div>
@@ -233,16 +229,10 @@ they carry only half of the load (set <code class="docutils literal notranslate"
                         <div class="navbar-expand-md">
                             <div id="compas-navigation" class="collapse navbar-collapse compas-navigation">
 
-                            <ul class="nav flex-column active">
+                            <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link reference internal" href="../intro.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../gettingstarted.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../tutorial.html">Tutorial</a></li>
-<li class="nav-item active"><a class="nav-link reference internal" href="../examples.html">Examples</a><ul class="nav active">
-<li class="nav-item active"><a class="nav-link active current reference internal" href="#">The barrel vault</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="crossvault.html">The cross vault</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="dome.html">The dome</a></li>
-</ul>
-</li>
 <li class="nav-item"><a class="nav-link reference internal" href="../api.html">API Reference</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../citing.html">Citing</a></li>

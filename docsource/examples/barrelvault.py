@@ -70,7 +70,7 @@ guids = compas_rhino.select_curves()
 keys = DiagramHelper.identify_vertices_on_curves(form, guids)
 
 if keys:
-    form.set_vertices_attributes(['is_anchor', 'is_fixed'], [True, True], keys=keys)
+    form.vertices_attributes(['is_anchor', 'is_fixed'], [True, True], keys=keys)
     form.draw(layer='TNA::FormDiagram', clear_layer=True)
 
 # update the boundaries
