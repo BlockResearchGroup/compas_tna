@@ -37,7 +37,7 @@ def distribute_thickness(formdiagram, config=None):
     t = t.flatten().tolist()
     for index, value in enumerate(t):
         key = index_key[index]
-        formdiagram.vertex[key]['t'] = value
+        formdiagram.vertex_attribute(key, 't', value)
 
 
 # ==============================================================================

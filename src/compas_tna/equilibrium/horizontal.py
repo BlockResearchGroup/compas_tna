@@ -83,14 +83,15 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     fixed = set(list(form.anchors()) + list(form.fixed()))
     fixed = [k_i[key] for key in fixed]
     edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
-    xy    = array(form.get_vertices_attributes('xy'), dtype=float64)
-    lmin  = array([attr.get('lmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    lmax  = array([attr.get('lmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    fmin  = array([attr.get('fmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    fmax  = array([attr.get('fmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    xy    = array(form.vertices_attributes('xy'), dtype=float64)
+    lmin  = array([attr.get('lmin', 1e-7) for key, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    lmax  = array([attr.get('lmax', 1e+7) for key, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    fmin  = array([attr.get('fmin', 1e-7) for key, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    fmax  = array([attr.get('fmax', 1e+7) for key, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
     C     = connectivity_matrix(edges, 'csr')
     Ct    = C.transpose()
     CtC   = Ct.dot(C)
+
     # --------------------------------------------------------------------------
     # force diagram
     # --------------------------------------------------------------------------
@@ -99,10 +100,11 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     _fixed = [_k_i[key] for key in _fixed]
     _fixed = _fixed or [0]
     _edges = force.ordered_edges(form)
-    _xy    = array(force.get_vertices_attributes('xy'), dtype=float64)
+    _xy    = array(force.vertices_attributes('xy'), dtype=float64)
     _C     = connectivity_matrix(_edges, 'csr')
     _Ct    = _C.transpose()
     _Ct_C  = _Ct.dot(_C)
+
     # --------------------------------------------------------------------------
     # rotate force diagram to make it parallel to the form diagram
     # use CCW direction (opposite of cycle direction)
@@ -161,7 +163,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
         i = k_i[key]
         attr['x'] = xy[i, 0]
         attr['y'] = xy[i, 1]
-    for u, v, attr in form.edges_where({'is_edge': True}, True):
+    for (u, v), attr in form.edges_where({'is_edge': True}, True):
         i = uv_i[(u, v)]
         attr['q'] = q[i, 0]
         attr['f'] = f[i, 0]
@@ -174,7 +176,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
         i = _k_i[key]
         attr['x'] = _xy[i, 0]
         attr['y'] = _xy[i, 1]
-    for u, v, attr in force.edges_where({'is_edge': True}, True):
+    for (u, v), attr in force.edges_where({'is_edge': True}, True):
         i = _uv_i[(u, v)]
         attr['l'] = _l[i, 0]
 
@@ -208,11 +210,11 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     fixed  = set(list(form.anchors()) + list(form.fixed()))
     fixed  = [k_i[key] for key in fixed]
     edges  = [[k_i[u], k_i[v]] for u, v in form.edges_where({'is_edge': True})]
-    lmin   = array([attr.get('lmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    lmax   = array([attr.get('lmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    fmin   = array([attr.get('fmin', 1e-7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    fmax   = array([attr.get('fmax', 1e+7) for u, v, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    xy     = array(form.get_vertices_attributes('xy'), dtype=float64)
+    lmin   = array([attr.get('lmin', 1e-7) for key, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    lmax   = array([attr.get('lmax', 1e+7) for key, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    fmin   = array([attr.get('fmin', 1e-7) for key, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    fmax   = array([attr.get('fmax', 1e+7) for key, attr in form.edges_where({'is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    xy     = array(form.vertices_attributes('xy'), dtype=float64)
     C      = connectivity_matrix(edges, 'csr')
     # --------------------------------------------------------------------------
     # force diagram
@@ -225,7 +227,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     _fixed  = [_k_i[key] for key in _fixed]
     _fixed  = _fixed or [0]
     _edges  = force.ordered_edges(form)
-    _xy     = array(force.get_vertices_attributes('xy'), dtype=float64)
+    _xy     = array(force.vertices_attributes('xy'), dtype=float64)
     _C      = connectivity_matrix(_edges, 'csr')
     # --------------------------------------------------------------------------
     # rotate force diagram to make it parallel to the form diagram
@@ -281,7 +283,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
         i = k_i[key]
         attr['x'] = xy[i, 0]
         attr['y'] = xy[i, 1]
-    for u, v, attr in form.edges_where({'is_edge': True}, True):
+    for (u, v), attr in form.edges_where({'is_edge': True}, True):
         i = uv_i[(u, v)]
         attr['q'] = q[i, 0]
         attr['f'] = f[i, 0]
@@ -294,7 +296,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
         i = _k_i[key]
         attr['x'] = _xy[i, 0]
         attr['y'] = _xy[i, 1]
-    for u, v, attr in force.edges_where({'is_edge': True}, True):
+    for (u, v), attr in force.edges_where({'is_edge': True}, True):
         i = _uv_i[(u, v)]
         attr['l'] = _l[i, 0]
 

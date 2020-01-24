@@ -40,7 +40,7 @@ class ForceDiagram(Diagram):
     @classmethod
     def from_formdiagram(cls, formdiagram):
         dual = formdiagram.dual(cls)
-        dual.set_vertices_attribute('z', 0.0)
+        dual.vertices_attribute('z', 0.0)
         return dual
 
     # --------------------------------------------------------------------------
@@ -76,7 +76,7 @@ class ForceDiagram(Diagram):
         for u, v in form.face_halfedges(f1):
             if form.halfedge[v][u] == f2:
                 break
-        return form.get_edge_attribute((u, v), name, value=value)
+        return form.edge_attribute((u, v), name, value=value)
 
     # --------------------------------------------------------------------------
     # visualisation

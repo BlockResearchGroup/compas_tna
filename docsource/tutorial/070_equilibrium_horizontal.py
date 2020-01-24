@@ -18,10 +18,10 @@ horizontal(form, force)
 
 plotter = MeshPlotter(force, figsize=(12, 8), tight=True)
 
-vertexcolor = {key: (1.0, 0.9, 0.9) for key in force.vertices() if not form.get_face_attribute(key, 'is_loaded')}
+vertexcolor = {key: (1.0, 0.9, 0.9) for key in force.vertices() if not form.face_attribute(key, 'is_loaded')}
 
 radius = {key: 0.05 for key in force.vertices()}
-radius.update({key: 0.1 for key in force.vertices() if not form.get_face_attribute(key, 'is_loaded')})
+radius.update({key: 0.1 for key in force.vertices() if not form.face_attribute(key, 'is_loaded')})
 
 plotter.draw_vertices(facecolor=vertexcolor, radius=radius)
 

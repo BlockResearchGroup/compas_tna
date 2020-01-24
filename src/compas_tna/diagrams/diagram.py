@@ -91,7 +91,7 @@ class Diagram(Mesh):
                 break
             if stop is not None and a == stop:
                 break
-            if self.get_vertex_attribute(a, 'is_anchor', False):
+            if self.vertex_attribute(a, 'is_anchor'):
                 break
             nbrs = self.vertex_neighbors(a, ordered=True)
             i = nbrs.index(b)
@@ -108,7 +108,7 @@ class Diagram(Mesh):
                 break
             if stop is not None and a == stop:
                 break
-            if self.get_vertex_attribute(a, 'is_anchor', False):
+            if self.vertex_attribute(a, 'is_anchor'):
                 break
             nbrs = self.vertex_neighbors(a, ordered=True)
             i = nbrs.index(b)

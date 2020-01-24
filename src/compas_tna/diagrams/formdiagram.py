@@ -9,8 +9,6 @@ from math import sqrt
 
 import compas
 
-from compas.datastructures.mesh._mesh import TPL
-
 from compas.geometry import subtract_vectors_xy
 from compas.geometry import add_vectors_xy
 from compas.geometry import normalize_vector_xy
@@ -277,7 +275,16 @@ class FormDiagram(Diagram):
         vmax = self.vertex_max_degree()
         fmin = self.face_min_degree()
         fmax = self.face_max_degree()
-        return TPL.format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
+        return """
+Form Diagram
+============
+name: {}
+number of vertices: {}
+number of (real) edges: {}
+number of faces: {}
+vertex degree: {}/{}
+face degree: {}/{}
+""".format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
 
     def uv_index(self):
         """Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)
@@ -439,10 +446,10 @@ class FormDiagram(Diagram):
                     self.add_face(vertices, is_loaded=False)
                     u = vertices[-1]
                     v = vertices[0]
-                    self.set_edge_attribute((u, v), 'is_edge', False)
+                    self.edge_attribute((u, v), 'is_edge', False)
                 else:
                     u, v = vertices
-                    self.set_edge_attribute((u, v), 'is_edge', False)
+                    self.edge_attribute((u, v), 'is_edge', False)
         else:
             self.add_feet(segments, feet=feet)
 
@@ -457,7 +464,7 @@ class FormDiagram(Diagram):
         segments = [segment]
         for key in boundary:
             segment.append(key)
-            if self.vertex[key]['is_anchor']:
+            if self.vertex_attribute(key, 'is_anchor'):
                 segment = [key]
                 segments.append(segment)
         segments[-1] += segments[0]
@@ -531,8 +538,8 @@ class FormDiagram(Diagram):
                 lm = key_foot[l]
                 rm = key_foot[r]
                 self.add_face([lm] + vertices + [rm], is_loaded=False)
-                self.set_edge_attribute((l, lm), 'is_external', True)
-                self.set_edge_attribute((rm, lm), 'is_edge', False)
+                self.edge_attribute((l, lm), 'is_external', True)
+                self.edge_attribute((rm, lm), 'is_edge', False)
 
             elif feet == 2:
                 lb = key_foot[l][0]
@@ -540,10 +547,10 @@ class FormDiagram(Diagram):
                 rb = key_foot[r][0]
                 self.add_face([lb, l, la], is_loaded=False)
                 self.add_face([la] + vertices + [rb], is_loaded=False)
-                self.set_edge_attribute((l, lb), 'is_external', True)
-                self.set_edge_attribute((l, la), 'is_external', True)
-                self.set_edge_attribute((lb, la), 'is_edge', False)
-                self.set_edge_attribute((la, rb), 'is_edge', False)
+                self.edge_attribute((l, lb), 'is_external', True)
+                self.edge_attribute((l, la), 'is_external', True)
+                self.edge_attribute((lb, la), 'is_edge', False)
+                self.edge_attribute((la, rb), 'is_edge', False)
 
             else:
                 pass

@@ -32,7 +32,7 @@ class LoadUpdater(object):
         self.live       = live
         self.key_index  = mesh.key_index()
         self.fkey_index = {fkey: index for index, fkey in enumerate(mesh.faces())}
-        self.is_loaded  = {fkey: mesh.get_face_attribute(fkey, 'is_loaded') for fkey in mesh.faces()}
+        self.is_loaded  = {fkey: mesh.face_attribute(fkey, 'is_loaded') for fkey in mesh.faces()}
         self.F          = self.face_matrix()
 
     def __call__(self, p, xyz):

@@ -22,11 +22,11 @@ def relax_boundary_openings_proxy(formdata, fixed):
 def relax_boundary_openings(form, fixed):
     """"""
     k_i   = form.key_index()
-    xyz   = form.get_vertices_attributes(('x', 'y', 'z'))
+    xyz   = form.vertices_attributes('xyz')
     edges = [(k_i[u], k_i[v]) for u, v in form.edges()]
     fixed = [k_i[key] for key in fixed]
-    q     = form.get_edges_attribute('q')
-    loads = form.get_vertices_attributes(('px', 'py', 'pz'), (0.0, 0.0, 0.0))
+    q     = form.edges_attribute('q')
+    loads = form.vertices_attributes(('px', 'py', 'pz'))
 
     xyz, q, f, l, r = fd_numpy(xyz, edges, fixed, q, loads)
 
