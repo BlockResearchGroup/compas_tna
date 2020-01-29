@@ -408,7 +408,7 @@ face degree: {}/{}
     # --------------------------------------------------------------------------
 
     # def bbox(self):
-    #     x, y, z = zip(* self.get_vertices_attributes('xyz'))
+    #     x, y, z = zip(* self.vertices_attributes('xyz'))
     #     return (min(x), min(y), min(z)), (max(x), max(y), max(z))
 
     # --------------------------------------------------------------------------

@@ -149,10 +149,10 @@ class FormArtist(MeshArtist):
             rz = attr['rz']
 
             for nbr in self.form.vertex_neighbors(key):
-                is_external = self.form.get_edge_attribute((key, nbr), 'is_external', False)
+                is_external = self.form.edge_attribute((key, nbr), 'is_external')
 
                 if is_external:
-                    f = self.form.get_edge_attribute((key, nbr), 'f', 0.0)
+                    f = self.form.edge_attribute((key, nbr), 'f')
                     u = self.form.edge_direction(key, nbr)
                     u[2] = 0
                     v = scale_vector(u, f)
@@ -247,7 +247,7 @@ class FormArtist(MeshArtist):
     def draw_angles(self, tol=5.0):
         self.clear_angles()
 
-        a = self.form.get_edges_attribute('a')
+        a = self.form.edges_attribute('a')
         a_max = tol
         a_min = 0
         a_range = a_max - a_min
@@ -255,14 +255,14 @@ class FormArtist(MeshArtist):
         if a_range:
             labels = []
             for u, v, attr in self.form.edges(True):
-                a = 180 * attr['a'] / 3.14159 
+                a = 180 * attr['a'] / 3.14159
                 if a > tol:
                     labels.append({
                         'pos'   : self.form.edge_midpoint(u, v),
                         'text'  : "{:.2f}".format(attr['a'] / 3.14159 * 180),
                         'color' : i_to_green((attr['a'] - a_min) / a_range),
                         'name'  : "{}.angle.{}-{}".format(self.form.name, u, v)
-                    })            
+                    })
 
             compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
 

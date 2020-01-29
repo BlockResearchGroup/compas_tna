@@ -221,7 +221,7 @@ def update_q_from_qind(E, q, dep, ind):
 
 def form_count_dof(form):
     k2i   = form.key_index()
-    xyz   = form.get_vertices_attributes('xyz')
+    xyz   = form.vertices_attributes('xyz')
     fixed = [k2i[key] for key in form.anchors()]
     free  = list(set(range(form.number_of_vertices())) - set(fixed))
     edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'is_edge': True})]
@@ -233,7 +233,7 @@ def form_count_dof(form):
 def form_identify_dof(form, **kwargs):
     algo  = kwargs.get('algo') or 'sympy'
     k2i   = form.key_index()
-    xyz   = form.get_vertices_attributes('xyz')
+    xyz   = form.vertices_attributes('xyz')
     fixed = [k2i[key] for key in form.anchors()]
     free  = list(set(range(form.number_of_vertices())) - set(fixed))
     edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'is_edge': True})]
