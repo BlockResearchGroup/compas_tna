@@ -161,7 +161,7 @@ class DiagramHelper(VertexSelector,
         gkey_key = diagram.gkey_key()
         keys = []
         for guid in guids:
-            point = RhinoPoint(guid)
+            point = RhinoPoint.from_guid(guid)
             gkey = geometric_key(point.xyz)
             if gkey in gkey_key:
                 key = gkey_key[gkey]
@@ -172,7 +172,7 @@ class DiagramHelper(VertexSelector,
     def identify_vertices_on_curve(diagram, guid):
         gkey_key = diagram.gkey_key()
         keys = []
-        curve = RhinoCurve(guid)
+        curve = RhinoCurve.from_guid(guid)
         for key in diagram.vertices():
             xyz = diagram.vertex_coordinates(key)
             closest = curve.closest_point(xyz)
@@ -187,7 +187,7 @@ class DiagramHelper(VertexSelector,
         gkey_key = diagram.gkey_key()
         keys = []
         for guid in guids:
-            curve = RhinoCurve(guid)
+            curve = RhinoCurve.from_guid(guid)
             for key in diagram.vertices():
                 xyz = diagram.vertex_coordinates(key)
                 closest = curve.closest_point(xyz)
