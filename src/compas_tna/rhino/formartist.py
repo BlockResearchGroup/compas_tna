@@ -21,7 +21,7 @@ class FormArtist(MeshArtist):
 
     def __init__(self, form, layer=None):
         super(FormArtist, self).__init__(form, layer=layer)
-        self.defaults.update({
+        self.settings.update({
             'color.vertex'     : (255, 255, 255),
             'color.edge'       : (0, 0, 0),
             'color.face'       : (210, 210, 210),
@@ -77,9 +77,9 @@ class FormArtist(MeshArtist):
         self.clear_loads()
 
         lines = []
-        color = color or self.defaults['color.load']
-        scale = scale or self.defaults['scale.load']
-        tol   = self.defaults['tol.load']
+        color = color or self.settings['color.load']
+        scale = scale or self.settings['scale.load']
+        tol   = self.settings['tol.load']
         tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
@@ -107,9 +107,9 @@ class FormArtist(MeshArtist):
         self.clear_selfweight()
 
         lines = []
-        color = color or self.defaults['color.selfweight']
-        scale = scale or self.defaults['scale.selfweight']
-        tol   = self.defaults['tol.selfweight']
+        color = color or self.settings['color.selfweight']
+        scale = scale or self.settings['scale.selfweight']
+        tol   = self.settings['tol.selfweight']
         tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
@@ -138,9 +138,9 @@ class FormArtist(MeshArtist):
         self.clear_reactions()
 
         lines = []
-        color = color or self.defaults['color.reaction']
-        scale = scale or self.defaults['scale.reaction']
-        tol   = self.defaults['tol.reaction']
+        color = color or self.settings['color.reaction']
+        scale = scale or self.settings['scale.reaction']
+        tol   = self.settings['tol.reaction']
         tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': True}, True):
@@ -192,9 +192,9 @@ class FormArtist(MeshArtist):
         self.clear_forces()
 
         lines = []
-        color = color or self.defaults['color.force']
-        scale = scale or self.defaults['scale.force']
-        tol   = self.defaults['tol.force']
+        color = color or self.settings['color.force']
+        scale = scale or self.settings['scale.force']
+        tol   = self.settings['tol.force']
         tol2  = tol ** 2
 
         for u, v, attr in self.form.edges_where({'is_edge': True, 'is_external': False}, True):
@@ -218,9 +218,9 @@ class FormArtist(MeshArtist):
         self.clear_residuals()
 
         lines = []
-        color = color or self.defaults['color.residual']
-        scale = scale or self.defaults['scale.residual']
-        tol   = self.defaults['tol.residual']
+        color = color or self.settings['color.residual']
+        scale = scale or self.settings['scale.residual']
+        tol   = self.settings['tol.residual']
         tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
