@@ -44,7 +44,7 @@ class FormArtist(MeshArtist):
 
     @property
     def form(self):
-        return self.datastructure
+        return self.mesh
 
     def clear(self):
         super(FormArtist, self).clear()
