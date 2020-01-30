@@ -15,6 +15,7 @@ class ForceDiagram(Diagram):
 
     def __init__(self):
         super(ForceDiagram, self).__init__()
+        self.primal = None
         self.scale = 1.0
         self.default_vertex_attributes.update({
             'x'        : 0.0,
@@ -41,6 +42,7 @@ class ForceDiagram(Diagram):
     def from_formdiagram(cls, formdiagram):
         dual = formdiagram.dual(cls)
         dual.vertices_attribute('z', 0.0)
+        dual.primal = formdiagram
         return dual
 
     # --------------------------------------------------------------------------
