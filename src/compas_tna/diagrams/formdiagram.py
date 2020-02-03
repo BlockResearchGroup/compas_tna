@@ -193,7 +193,8 @@ class FormDiagram(Diagram):
             form = FormDiagram.from_rhinomesh(guid)
 
         """
-        from compas_rhino.helpers import mesh_from_guid
+        # from compas_rhino.helpers import mesh_from_guid
+        from compas_rhino.geometry._constructors import mesh_from_guid
         mesh = mesh_from_guid(cls, guid)
         if 'name' in kwargs:
             mesh.name = kwargs['name']
@@ -224,7 +225,8 @@ class FormDiagram(Diagram):
             form = FormDiagram.from_rhinosurface(guid)
 
         """
-        from compas_rhino.helpers import mesh_from_surface_uv
+        # from compas_rhino.helpers import mesh_from_surface_uv
+        from compas_rhino.geometry._constructors import mesh_from_surface_uv
         mesh = mesh_from_surface_uv(cls, guid)
         if 'name' in kwargs:
             mesh.name = kwargs['name']
