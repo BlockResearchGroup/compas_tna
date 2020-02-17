@@ -36,19 +36,17 @@ radius.update({key: 0.1 for key in form.vertices_where({'is_anchor': True})})
 
 plotter.draw_vertices(
     facecolor=vertexcolor,
-    radius=radius
-)
+    radius=radius)
 
 edges = list(form.edges_where({'is_edge': True}))
 plotter.draw_edges(
     keys=edges,
     color={key: '#00ff00' for key in form.edges_where({'is_external': True})},
-    width={key: 2.0 for key in form.edges_where({'is_external': True})}
-)
+    width={key: 2.0 for key in form.edges_where({'is_external': True})})
 
 faces = list(form.faces_where({'is_loaded': True}))
+
 plotter.draw_faces(
-    keys=faces, facecolor=(1.0, 0.9, 0.9),
-)
+    keys=faces, facecolor=(1.0, 0.9, 0.9),)
 
 plotter.show()

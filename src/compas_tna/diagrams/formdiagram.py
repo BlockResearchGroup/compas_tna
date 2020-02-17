@@ -140,18 +140,14 @@ class FormDiagram(Diagram):
 
         Examples
         --------
-        .. code-block:: python
-
-            import compas
-            from compas.files import OBJ
-            from compas_tna.diagrams import FormDiagram
-
-            obj = OBJ(compas.get('lines.obj'))
-            vertices = obj.parser.vertices
-            edges = obj.parser.lines
-            lines = [(vertices[u], vertices[v]) for u, v in edges]
-
-            form = FormDiagram.from_lines(lines)
+        >>> import compas
+        >>> from compas.files import OBJ
+        >>> from compas_tna.diagrams import FormDiagram
+        >>> obj = OBJ(compas.get('lines.obj'))
+        >>> vertices = obj.parser.vertices
+        >>> edges = obj.parser.lines
+        >>> lines = [(vertices[u], vertices[v]) for u, v in edges]
+        >>> form = FormDiagram.from_lines(lines)
 
         """
         from compas.datastructures import network_find_faces
@@ -193,8 +189,8 @@ class FormDiagram(Diagram):
             form = FormDiagram.from_rhinomesh(guid)
 
         """
-        from compas_rhino.helpers import mesh_from_guid
-        mesh = mesh_from_guid(cls, guid)
+        from compas_rhino.geometry import RhinoMesh
+        mesh = RhinoMesh.from_guid(guid).to_compas(cls)
         if 'name' in kwargs:
             mesh.name = kwargs['name']
         return mesh
@@ -224,8 +220,8 @@ class FormDiagram(Diagram):
             form = FormDiagram.from_rhinosurface(guid)
 
         """
-        from compas_rhino.helpers import mesh_from_surface_uv
-        mesh = mesh_from_surface_uv(cls, guid)
+        from compas_rhino.geometry import RhinoSurface
+        mesh = RhinoSurface.from_guid(guid).uv_to_compas(cls, **kwargs)
         if 'name' in kwargs:
             mesh.name = kwargs['name']
         return mesh
