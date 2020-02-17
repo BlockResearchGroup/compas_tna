@@ -191,6 +191,7 @@ class FormDiagram(Diagram):
         """
         from compas_rhino.geometry import RhinoMesh
         mesh = RhinoMesh.from_guid(guid).to_compas(cls)
+
         if 'name' in kwargs:
             mesh.name = kwargs['name']
         return mesh
