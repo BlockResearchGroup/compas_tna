@@ -79,43 +79,43 @@ class FormDiagram(Diagram):
     def __init__(self):
         super(FormDiagram, self).__init__()
         self.default_vertex_attributes.update({
-            'x'           : 0.0,
-            'y'           : 0.0,
-            'z'           : 0.0,
-            'px'          : 0.0,
-            'py'          : 0.0,
-            'pz'          : 0.0,
-            'sw'          : 0.0,
-            't'           : 1.0,
-            'is_anchor'   : False,
-            'is_fixed'    : False,
-            'is_external' : False,
-            'rx'          : 0.0,
-            'ry'          : 0.0,
-            'rz'          : 0.0,
+            'x': 0.0,
+            'y': 0.0,
+            'z': 0.0,
+            'px': 0.0,
+            'py': 0.0,
+            'pz': 0.0,
+            'sw': 0.0,
+            't': 1.0,
+            'is_anchor': False,
+            'is_fixed': False,
+            'is_external': False,
+            'rx': 0.0,
+            'ry': 0.0,
+            'rz': 0.0,
         })
         self.default_edge_attributes.update({
-            'q'           : 1.0,
-            'f'           : 0.0,
-            'l'           : 0.0,
-            'a'           : 0.0,
-            'qmin'        : 0.0,
-            'qmax'        : 1e+7,
-            'lmin'        : 0.0,
-            'lmax'        : 1e+7,
-            'fmin'        : 0.0,
-            'fmax'        : 1e+7,
-            'is_edge'     : True,
-            'is_external' : False
+            'q': 1.0,
+            'f': 0.0,
+            'l': 0.0,
+            'a': 0.0,
+            'qmin': 0.0,
+            'qmax': 1e+7,
+            'lmin': 0.0,
+            'lmax': 1e+7,
+            'fmin': 0.0,
+            'fmax': 1e+7,
+            'is_edge': True,
+            'is_external': False
         })
         self.default_face_attributes.update({
             'is_loaded': True
         })
         self.attributes.update({
-            'name'       : 'FormDiagram',
-            'feet.scale' : 1.0,
-            'feet.alpha' : 45,
-            'feet.tol'   : 0.1,
+            'name': 'FormDiagram',
+            'feet.scale': 1.0,
+            'feet.alpha': 45,
+            'feet.tol': 0.1,
         })
 
     @classmethod
@@ -483,7 +483,7 @@ face degree: {}/{}
 
         scale = self.attributes['feet.scale']
         alpha = self.attributes['feet.alpha'] * pi / 180
-        tol   = self.attributes['feet.tol']
+        tol = self.attributes['feet.tol']
 
         key_foot = {}
         key_xyz = {key: self.vertex_coordinates(key, 'xyz') for key in self.vertices()}
@@ -608,10 +608,10 @@ if __name__ == '__main__':
 
     filepath = compas.get('lines.obj')
 
-    obj      = OBJ(filepath)
+    obj = OBJ(filepath)
     vertices = obj.parser.vertices
-    edges    = obj.parser.lines
-    lines    = [(vertices[u], vertices[v], 0) for u, v in edges]
+    edges = obj.parser.lines
+    lines = [(vertices[u], vertices[v], 0) for u, v in edges]
 
     form = FormDiagram.from_lines(lines, delete_boundary_face=False)
 
