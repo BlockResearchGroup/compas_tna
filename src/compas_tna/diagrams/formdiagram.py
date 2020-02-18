@@ -14,6 +14,9 @@ from compas.geometry import add_vectors_xy
 from compas.geometry import normalize_vector_xy
 from compas.geometry import cross_vectors
 
+from compas.datastructures import network_find_cycles
+from compas.datastructures import Network
+
 from compas_tna.diagrams import Diagram
 
 
@@ -149,21 +152,16 @@ class FormDiagram(Diagram):
         >>> edges = obj.parser.lines
         >>> lines = [(vertices[u], vertices[v]) for u, v in edges]
         >>> form = FormDiagram.from_lines(lines)
-
         """
-        from compas.datastructures import network_find_faces
-        from compas.datastructures import Network
         network = Network.from_lines(lines, precision=precision)
-        mesh = cls()
-        for key, attr in network.vertices(True):
-            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0.0)
-        mesh.halfedge = network.halfedge
-        network_find_faces(mesh)
+        points = network.to_points()
+        cycles = network_find_cycles(network, breakpoints=network.leaves())
+        form = cls.from_vertices_and_faces(points, cycles)
         if delete_boundary_face:
-            mesh.delete_face(0)
+            form.delete_face(0)
         if 'name' in kwargs:
-            mesh.name = kwargs['name']
-        return mesh
+            form.name = kwargs['name']
+        return form
 
     @classmethod
     def from_mesh(cls, mesh, **kwargs):
@@ -184,7 +182,7 @@ class FormDiagram(Diagram):
         Examples
         --------
         .. code-block:: python
-            
+
             import compas
             from compas.datastructures import Mesh
             from compas_tna.diagrams import FormDiagram
@@ -194,12 +192,12 @@ class FormDiagram(Diagram):
             form.plot()
         """
         form = cls()
-        
+
         for vkey, attr in mesh.vertices(True):
             form.add_vertex(key=vkey, x=attr['x'], y=attr['y'], z=0.0)
         for fkey in mesh.faces():
             form.add_face(vertices=mesh.face_vertices(fkey), fkey=fkey)
-        
+
         if 'name' in kwargs:
             mesh.name = kwargs['name']
         return form
@@ -466,6 +464,9 @@ face degree: {}/{}
     # --------------------------------------------------------------------------
     # boundary conditions
     # --------------------------------------------------------------------------
+
+    # update boundaries should loop over all boundaries
+    # containing anchors
 
     def update_boundaries(self, feet=2):
         boundaries = self.vertices_on_boundaries()
