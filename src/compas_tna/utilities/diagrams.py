@@ -87,8 +87,8 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=N
         print(k)
 
         xy0 = xy.copy()
-        uv  = C.dot(xy)
-        l   = normrow(uv)
+        uv = C.dot(xy)
+        l = normrow(uv)
 
         if lmin is not None and lmax is not None:
             apply_bounds(l, lmin, lmax)
@@ -97,7 +97,7 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=N
             if j in fixed:
                 continue
 
-            nbrs     = i_nbrs[j]
+            nbrs = i_nbrs[j]
             xy[j, :] = 0.0
 
             for i in nbrs:
@@ -134,21 +134,21 @@ def rot90(xy, zdir=1.0):
 
 
 def apply_bounds(x, xmin, xmax):
-    xsmall    = x < xmin
-    xbig      = x > xmax
+    xsmall = x < xmin
+    xbig = x > xmax
     x[xsmall] = xmin[xsmall]
-    x[xbig]   = xmax[xbig]
+    x[xbig] = xmax[xbig]
 
 
 def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-3, kmax=100, display=True):
-    Ci      = C[:, free]
-    Cf      = C[:, fixed]
-    Ct      = C.transpose()
-    Cit     = Ci.transpose()
-    A       = Cit.dot(Q).dot(Ci)
+    Ci = C[:, free]
+    Cf = C[:, fixed]
+    Ct = C.transpose()
+    Cit = Ci.transpose()
+    A = Cit.dot(Q).dot(Ci)
     A_solve = factorized(A)
-    B       = Cit.dot(Q).dot(Cf)
-    CtQC    = Ct.dot(Q).dot(C)
+    B = Cit.dot(Q).dot(Cf)
+    CtQC = Ct.dot(Q).dot(C)
 
     updateloads(p, xyz)
 
@@ -160,7 +160,7 @@ def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-3, kmax=100, display
 
         updateloads(p, xyz)
 
-        r   = CtQC.dot(xyz[:, 2]) - p[:, 2]
+        r = CtQC.dot(xyz[:, 2]) - p[:, 2]
         residual = norm(r[free])
 
         if residual < tol:
@@ -195,7 +195,7 @@ def update_q_from_qind(E, q, dep, ind):
         #
 
     """
-    m  = E.shape[0] - len(dep)
+    m = E.shape[0] - len(dep)
     qi = q[ind]
     Ei = E[:, ind]
     Ed = E[:, dep]
@@ -220,25 +220,25 @@ def update_q_from_qind(E, q, dep, ind):
 
 
 def form_count_dof(form):
-    k2i   = form.key_index()
-    xyz   = form.vertices_attributes('xyz')
+    k2i = form.key_index()
+    xyz = form.vertices_attributes('xyz')
     fixed = [k2i[key] for key in form.anchors()]
-    free  = list(set(range(form.number_of_vertices())) - set(fixed))
+    free = list(set(range(form.number_of_vertices())) - set(fixed))
     edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'is_edge': True})]
-    C     = connectivity_matrix(edges)
-    E     = equilibrium_matrix(C, xyz, free)
+    C = connectivity_matrix(edges)
+    E = equilibrium_matrix(C, xyz, free)
     return dof(E)
 
 
 def form_identify_dof(form, **kwargs):
-    algo  = kwargs.get('algo') or 'sympy'
-    k2i   = form.key_index()
-    xyz   = form.vertices_attributes('xyz')
+    algo = kwargs.get('algo') or 'sympy'
+    k2i = form.key_index()
+    xyz = form.vertices_attributes('xyz')
     fixed = [k2i[key] for key in form.anchors()]
-    free  = list(set(range(form.number_of_vertices())) - set(fixed))
+    free = list(set(range(form.number_of_vertices())) - set(fixed))
     edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'is_edge': True})]
-    C     = connectivity_matrix(edges)
-    E     = equilibrium_matrix(C, xyz, free)
+    C = connectivity_matrix(edges)
+    E = equilibrium_matrix(C, xyz, free)
     return nonpivots(rref(E, algo=algo))
 
 

@@ -110,7 +110,8 @@ class FormDiagram(Diagram):
             'fmin': 0.0,
             'fmax': 1e+7,
             'is_edge': True,
-            'is_external': False
+            'is_external': False,
+            'is_tension': False
         })
         self.default_face_attributes.update({
             'is_loaded': True

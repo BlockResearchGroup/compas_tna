@@ -18,20 +18,20 @@ class ForceDiagram(Diagram):
         self.primal = None
         self.scale = 1.0
         self.default_vertex_attributes.update({
-            'x'        : 0.0,
-            'y'        : 0.0,
-            'z'        : 0.0,
-            'is_fixed' : False,
+            'x': 0.0,
+            'y': 0.0,
+            'z': 0.0,
+            'is_fixed': False,
         })
         self.default_edge_attributes.update({
         })
         self.attributes.update({
-            'name'         : 'ForceDiagram',
-            'scale'        : 1.0,
+            'name': 'ForceDiagram',
+            'scale': 1.0,
 
-            'color.vertex' : (255, 255, 255),
-            'color.edge'   : (0, 0, 0),
-            'color.face'   : (210, 210, 210),
+            'color.vertex': (255, 255, 255),
+            'color.edge': (0, 0, 0),
+            'color.face': (210, 210, 210),
         })
 
     # --------------------------------------------------------------------------
@@ -68,9 +68,9 @@ class ForceDiagram(Diagram):
 
     def ordered_edges(self, form):
         key_index = self.key_index()
-        uv_index  = self.uv_index(form=form)
-        index_uv  = {index: uv for uv, index in iter(uv_index.items())}
-        edges     = [index_uv[index] for index in range(self.number_of_edges())]
+        uv_index = self.uv_index(form=form)
+        index_uv = {index: uv for uv, index in iter(uv_index.items())}
+        edges = [index_uv[index] for index in range(self.number_of_edges())]
         return [[key_index[u], key_index[v]] for u, v in edges]
 
     def get_form_edge_attribute(self, form, key, name, value=None):
