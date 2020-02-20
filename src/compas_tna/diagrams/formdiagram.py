@@ -123,6 +123,7 @@ class FormDiagram(Diagram):
             'feet.tol': 0.1,
         })
 
+
     @classmethod
     def from_lines(cls, lines, delete_boundary_face=True, precision=None, **kwargs):
         """Construct a FormDiagram from a list of lines described by start and end point coordinates.
