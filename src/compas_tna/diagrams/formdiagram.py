@@ -118,51 +118,51 @@ class FormDiagram(Diagram):
             'feet.tol'   : 0.1,
         })
 
-    @classmethod
-    def from_lines(cls, lines, delete_boundary_face=True, precision=None, **kwargs):
-        """Construct a FormDiagram from a list of lines described by start and end point coordinates.
+    # @classmethod
+    # def from_lines(cls, lines, delete_boundary_face=True, precision=None, **kwargs):
+    #     """Construct a FormDiagram from a list of lines described by start and end point coordinates.
 
-        Parameters
-        ----------
-        lines : list
-            A list of pairs of point coordinates.
-        delete_boundary_face : bool, optional
-            Set ``True`` to delete the face on the outside of the boundary, ``False`` to keep it.
-            Default is ``True``.
-        precision: str, optional
-            The precision of the geometric map that is used to connect the lines.
-            If not specified, the global precision stored in ``compas.PRECISION`` will be used.
+    #     Parameters
+    #     ----------
+    #     lines : list
+    #         A list of pairs of point coordinates.
+    #     delete_boundary_face : bool, optional
+    #         Set ``True`` to delete the face on the outside of the boundary, ``False`` to keep it.
+    #         Default is ``True``.
+    #     precision: str, optional
+    #         The precision of the geometric map that is used to connect the lines.
+    #         If not specified, the global precision stored in ``compas.PRECISION`` will be used.
 
-        Returns
-        -------
-        FormDiagram
-            A FormDiagram object.
+    #     Returns
+    #     -------
+    #     FormDiagram
+    #         A FormDiagram object.
 
-        Examples
-        --------
-        >>> import compas
-        >>> from compas.files import OBJ
-        >>> from compas_tna.diagrams import FormDiagram
-        >>> obj = OBJ(compas.get('lines.obj'))
-        >>> vertices = obj.parser.vertices
-        >>> edges = obj.parser.lines
-        >>> lines = [(vertices[u], vertices[v]) for u, v in edges]
-        >>> form = FormDiagram.from_lines(lines)
+    #     Examples
+    #     --------
+    #     >>> import compas
+    #     >>> from compas.files import OBJ
+    #     >>> from compas_tna.diagrams import FormDiagram
+    #     >>> obj = OBJ(compas.get('lines.obj'))
+    #     >>> vertices = obj.parser.vertices
+    #     >>> edges = obj.parser.lines
+    #     >>> lines = [(vertices[u], vertices[v]) for u, v in edges]
+    #     >>> form = FormDiagram.from_lines(lines)
 
-        """
-        from compas.datastructures import network_find_faces
-        from compas.datastructures import Network
-        network = Network.from_lines(lines, precision=precision)
-        mesh = cls()
-        for key, attr in network.vertices(True):
-            mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0.0)
-        mesh.halfedge = network.halfedge
-        network_find_faces(mesh)
-        if delete_boundary_face:
-            mesh.delete_face(0)
-        if 'name' in kwargs:
-            mesh.name = kwargs['name']
-        return mesh
+    #     """
+    #     from compas.datastructures import network_find_faces
+    #     from compas.datastructures import Network
+    #     network = Network.from_lines(lines, precision=precision)
+    #     mesh = cls()
+    #     for key, attr in network.vertices(True):
+    #         mesh.add_vertex(key, x=attr['x'], y=attr['y'], z=0.0)
+    #     mesh.halfedge = network.halfedge
+    #     network_find_faces(mesh)
+    #     if delete_boundary_face:
+    #         mesh.delete_face(0)
+    #     if 'name' in kwargs:
+    #         mesh.name = kwargs['name']
+    #     return mesh
 
     @classmethod
     def from_rhinomesh(cls, guid, **kwargs):
