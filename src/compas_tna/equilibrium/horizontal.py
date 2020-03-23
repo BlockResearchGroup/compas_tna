@@ -167,9 +167,9 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     for (u, v), attr in form.edges_where({'is_edge': True}, True):
         i = uv_i[(u, v)]
         attr['q'] = q[i, 0]
-        attr['f'] = f[i, 0]
-        attr['l'] = l[i, 0]
-        attr['a'] = a[i]
+        attr['_f'] = f[i, 0]
+        attr['_l'] = l[i, 0]
+        attr['_a'] = a[i]
     # --------------------------------------------------------------------------
     # update force
     # --------------------------------------------------------------------------
@@ -179,7 +179,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
         attr['y'] = _xy[i, 1]
     for (u, v), attr in force.edges_where({'is_edge': True}, True):
         i = _uv_i[(u, v)]
-        attr['l'] = _l[i, 0]
+        attr['_l'] = _l[i, 0]
 
 
 def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
@@ -288,9 +288,9 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     for (u, v), attr in form.edges_where({'is_edge': True}, True):
         i = uv_i[(u, v)]
         attr['q'] = q[i, 0]
-        attr['f'] = f[i, 0]
-        attr['l'] = l[i, 0]
-        attr['a'] = a[i]
+        attr['_f'] = f[i, 0]
+        attr['_l'] = l[i, 0]
+        attr['_a'] = a[i]
     # --------------------------------------------------------------------------
     # update force
     # --------------------------------------------------------------------------
@@ -301,10 +301,10 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     for (u, v), attr in force.edges(True):
         if (u, v) in _uv_i:
             i = _uv_i[(u, v)]
-            attr['l'] = _l[i, 0]
+            attr['_l'] = _l[i, 0]
         elif (v, u) in _uv_i:
             i = _uv_i[(v, u)]
-            attr['l'] = _l[i, 0]
+            attr['_l'] = _l[i, 0]
 
 
 # ==============================================================================

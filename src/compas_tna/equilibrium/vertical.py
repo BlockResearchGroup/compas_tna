@@ -153,13 +153,13 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
     for key, attr in form.vertices(True):
         index = k_i[key]
         attr['z'] = xyz[index, 2]
-        attr['rx'] = r[index, 0]
-        attr['ry'] = r[index, 1]
-        attr['rz'] = r[index, 2]
+        attr['_rx'] = r[index, 0]
+        attr['_ry'] = r[index, 1]
+        attr['_rz'] = r[index, 2]
     for key, attr in form.edges_where({'is_edge': True}, True):
         index = uv_i[key]
         attr['q'] = q[index, 0]
-        attr['f'] = f[index, 0]
+        attr['_f'] = f[index, 0]
 
     return scale
 
@@ -221,14 +221,14 @@ def vertical_from_bbox(form, factor=5.0, kmax=100, tol=1e-3, density=1.0, displa
     for key, attr in form.vertices(True):
         index = k_i[key]
         attr['z'] = xyz[index, 2]
-        attr['rx'] = r[index, 0]
-        attr['ry'] = r[index, 1]
-        attr['rz'] = r[index, 2]
-        attr['sw'] = sw[index, 2]
+        attr['_rx'] = r[index, 0]
+        attr['_ry'] = r[index, 1]
+        attr['_rz'] = r[index, 2]
+        attr['_sw'] = sw[index, 2]
     for key, attr in form.edges_where({'is_edge': True}, True):
         index = uv_i[key]
         attr['q'] = q[index, 0]
-        attr['f'] = f[index, 0]
+        attr['_f'] = f[index, 0]
 
     return scale
 
@@ -304,13 +304,13 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Tr
     for key, attr in form.vertices(True):
         index = k_i[key]
         attr['z'] = xyz[index, 2]
-        attr['rx'] = r[index, 0]
-        attr['ry'] = r[index, 1]
-        attr['rz'] = r[index, 2]
-        attr['sw'] = sw[index, 2]
+        attr['_rx'] = r[index, 0]
+        attr['_ry'] = r[index, 1]
+        attr['_rz'] = r[index, 2]
+        attr['_sw'] = sw[index, 2]
     for key, attr in form.edges_where({'is_edge': True}, True):
         index = uv_i[key]
-        attr['f'] = f[index, 0]
+        attr['_f'] = f[index, 0]
 
 
 # ==============================================================================

@@ -89,20 +89,20 @@ class FormDiagram(Diagram):
             'px': 0.0,
             'py': 0.0,
             'pz': 0.0,
-            'sw': 0.0,
+            '_sw': 0.0,
             't': 1.0,
             'is_anchor': False,
             'is_fixed': False,
-            'is_external': False,
-            'rx': 0.0,
-            'ry': 0.0,
-            'rz': 0.0,
+            '_is_external': False,
+            '_rx': 0.0,
+            '_ry': 0.0,
+            '_rz': 0.0,
         })
         self.default_edge_attributes.update({
             'q': 1.0,
-            'f': 0.0,
-            'l': 0.0,
-            'a': 0.0,
+            '_f': 0.0,
+            '_l': 0.0,
+            '_a': 0.0,
             'qmin': 0.0,
             'qmax': 1e+7,
             'lmin': 0.0,
@@ -452,17 +452,6 @@ face degree: {}/{}
     # postprocess
     # --------------------------------------------------------------------------
 
-    # def collapse_small_edges(self, tol=1e-2):
-    #     boundaries = self.vertices_on_boundaries()
-    #     for boundary in boundaries:
-    #         for u, v in pairwise(boundary):
-    #             l = self.edge_length(u, v)
-    #             if l < tol:
-    #                 mesh_collapse_edge(self, v, u, t=0.5, allow_boundary=True)
-
-    # def smooth(self, fixed, kmax=10):
-    #     mesh_smooth_area(self, fixed=fixed, kmax=kmax)
-
     # --------------------------------------------------------------------------
     # boundary conditions
     # --------------------------------------------------------------------------
@@ -643,26 +632,33 @@ face degree: {}/{}
 
 if __name__ == '__main__':
 
-    import compas
+    # import compas
     from compas.datastructures import Mesh
-    from compas.files import OBJ
+    # from compas.files import OBJ
 
-    filepath = compas.get('lines.obj')
+    # filepath = compas.get('lines.obj')
 
-    obj = OBJ(filepath)
-    vertices = obj.parser.vertices
-    edges = obj.parser.lines
-    lines = [(vertices[u], vertices[v], 0) for u, v in edges]
+    # obj = OBJ(filepath)
+    # vertices = obj.parser.vertices
+    # edges = obj.parser.lines
+    # lines = [(vertices[u], vertices[v], 0) for u, v in edges]
 
-    form = FormDiagram.from_lines(lines, delete_boundary_face=False)
+    # form = FormDiagram.from_lines(lines, delete_boundary_face=False)
 
-    mesh = Mesh.from_obj(compas.get('faces.obj'))
-    height = 5.0
-    mesh.set_vertices_attribute('z', height)
-    form = FormDiagram.from_mesh(mesh)
+    # mesh = Mesh.from_obj(compas.get('faces.obj'))
+    # height = 5.0
+    # mesh.set_vertices_attribute('z', height)
+    # form = FormDiagram.from_mesh(mesh)
 
-    assert form.number_of_faces() == mesh.number_of_faces()
-    assert form.number_of_vertices() == mesh.number_of_vertices()
-    assert max(mesh.get_vertices_attribute('z')) - height == max(form.get_vertices_attribute('z'))
+    # assert form.number_of_faces() == mesh.number_of_faces()
+    # assert form.number_of_vertices() == mesh.number_of_vertices()
+    # assert max(mesh.get_vertices_attribute('z')) - height == max(form.get_vertices_attribute('z'))
 
-    form.plot()
+    # form.plot()
+
+    points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0], [4.0, 0.0, 0.0]]
+    lines = [(0, 1), (1, 2), (2, 3), (3, 4)]
+
+    mesh = Mesh.from_lines([(points[u], points[v]) for u, v in lines])
+
+    print(mesh.summary())

@@ -82,7 +82,7 @@ class FormArtist(MeshArtist):
         tol   = self.settings['tol.load']
         tol2  = tol ** 2
 
-        for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
+        for key, attr in self.form.vertices_where({'is_anchor': False, '_is_external': False}, True):
             px = scale * attr['px']
             py = scale * attr['py']
             pz = scale * attr['pz']
@@ -144,15 +144,15 @@ class FormArtist(MeshArtist):
         tol2  = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': True}, True):
-            rx = attr['rx']
-            ry = attr['ry']
-            rz = attr['rz']
+            rx = attr['_rx']
+            ry = attr['_ry']
+            rz = attr['_rz']
 
             for nbr in self.form.vertex_neighbors(key):
-                is_external = self.form.edge_attribute((key, nbr), 'is_external')
+                is_external = self.form.edge_attribute((key, nbr), '_is_external')
 
                 if is_external:
-                    f = self.form.edge_attribute((key, nbr), 'f')
+                    f = self.form.edge_attribute((key, nbr), '_f')
                     u = self.form.edge_direction(key, nbr)
                     u[2] = 0
                     v = scale_vector(u, f)
@@ -199,7 +199,7 @@ class FormArtist(MeshArtist):
 
         for u, v, attr in self.form.edges_where({'is_edge': True, 'is_external': False}, True):
             sp, ep = self.form.edge_coordinates(u, v)
-            radius = scale * attr['f']
+            radius = scale * attr['_f']
 
             if radius ** 2 < tol2:
                 continue
@@ -223,10 +223,10 @@ class FormArtist(MeshArtist):
         tol   = self.settings['tol.residual']
         tol2  = tol ** 2
 
-        for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
-            rx = scale * attr['rx']
-            ry = scale * attr['ry']
-            rz = scale * attr['rz']
+        for key, attr in self.form.vertices_where({'is_anchor': False, '_is_external': False}, True):
+            rx = scale * attr['_rx']
+            ry = scale * attr['_ry']
+            rz = scale * attr['_rz']
 
             if rx ** 2 + ry ** 2 + rz ** 2 < tol2:
                 continue
@@ -247,7 +247,7 @@ class FormArtist(MeshArtist):
     def draw_angles(self, tol=5.0):
         self.clear_angles()
 
-        a = self.form.edges_attribute('a')
+        a = self.form.edges_attribute('_a')
         a_max = tol
         a_min = 0
         a_range = a_max - a_min
@@ -255,7 +255,7 @@ class FormArtist(MeshArtist):
         if a_range:
             labels = []
             for u, v, attr in self.form.edges(True):
-                a = 180 * attr['a'] / 3.14159
+                a = 180 * attr['_a'] / 3.14159
                 if a > tol:
                     labels.append({
                         'pos'   : self.form.edge_midpoint(u, v),
