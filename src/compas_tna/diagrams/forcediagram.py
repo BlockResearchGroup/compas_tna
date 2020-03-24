@@ -60,7 +60,7 @@ class ForceDiagram(Diagram):
         if not form:
             return dict(((u, v), index) for index, (u, v) in enumerate(self.edges()))
         uv_index = dict()
-        for index, (u, v) in enumerate(form.edges_where({'is_edge': True})):
+        for index, (u, v) in enumerate(form.edges_where({'_is_edge': True})):
             f1 = form.halfedge[u][v]
             f2 = form.halfedge[v][u]
             uv_index[(f1, f2)] = index

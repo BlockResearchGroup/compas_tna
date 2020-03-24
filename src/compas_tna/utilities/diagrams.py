@@ -224,7 +224,7 @@ def form_count_dof(form):
     xyz = form.vertices_attributes('xyz')
     fixed = [k2i[key] for key in form.anchors()]
     free = list(set(range(form.number_of_vertices())) - set(fixed))
-    edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'is_edge': True})]
+    edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'_is_edge': True})]
     C = connectivity_matrix(edges)
     E = equilibrium_matrix(C, xyz, free)
     return dof(E)
@@ -236,7 +236,7 @@ def form_identify_dof(form, **kwargs):
     xyz = form.vertices_attributes('xyz')
     fixed = [k2i[key] for key in form.anchors()]
     free = list(set(range(form.number_of_vertices())) - set(fixed))
-    edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'is_edge': True})]
+    edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'_is_edge': True})]
     C = connectivity_matrix(edges)
     E = equilibrium_matrix(C, xyz, free)
     return nonpivots(rref(E, algo=algo))

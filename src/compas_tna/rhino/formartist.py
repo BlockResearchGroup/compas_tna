@@ -2,7 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import compas
 import compas_rhino
 
 from compas.geometry import scale_vector
@@ -18,28 +17,27 @@ class FormArtist(MeshArtist):
 
     __module__ = 'compas_tna.rhino'
 
-
     def __init__(self, form, layer=None):
         super(FormArtist, self).__init__(form, layer=layer)
         self.settings.update({
-            'color.vertex'     : (255, 255, 255),
-            'color.edge'       : (0, 0, 0),
-            'color.face'       : (210, 210, 210),
-            'color.reaction'   : (0, 255, 0),
-            'color.residual'   : (0, 255, 255),
-            'color.load'       : (0, 255, 0),
-            'color.selfweight' : (0, 0, 255),
-            'color.force'      : (0, 0, 255),
-            'scale.reaction'   : 1.0,
-            'scale.residual'   : 1.0,
-            'scale.load'       : 1.0,
-            'scale.force'      : 1.0,
-            'scale.selfweight' : 1.0,
-            'tol.reaction'     : 1e-3,
-            'tol.residual'     : 1e-3,
-            'tol.load'         : 1e-3,
-            'tol.force'        : 1e-3,
-            'tol.selfweight'   : 1e-3,
+            'color.vertex': (255, 255, 255),
+            'color.edge': (0, 0, 0),
+            'color.face': (210, 210, 210),
+            'color.reaction': (0, 255, 0),
+            'color.residual': (0, 255, 255),
+            'color.load': (0, 255, 0),
+            'color.selfweight': (0, 0, 255),
+            'color.force': (0, 0, 255),
+            'scale.reaction': 1.0,
+            'scale.residual': 1.0,
+            'scale.load': 1.0,
+            'scale.force': 1.0,
+            'scale.selfweight': 1.0,
+            'tol.reaction': 1e-3,
+            'tol.residual': 1e-3,
+            'tol.load': 1e-3,
+            'tol.force': 1e-3,
+            'tol.selfweight': 1e-3,
         })
 
     @property
@@ -79,8 +77,8 @@ class FormArtist(MeshArtist):
         lines = []
         color = color or self.settings['color.load']
         scale = scale or self.settings['scale.load']
-        tol   = self.settings['tol.load']
-        tol2  = tol ** 2
+        tol = self.settings['tol.load']
+        tol2 = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': False, '_is_external': False}, True):
             px = scale * attr['px']
@@ -94,11 +92,11 @@ class FormArtist(MeshArtist):
             ep = sp[0] + px, sp[1] + py, sp[2] + pz
 
             lines.append({
-                'start' : sp,
-                'end'   : ep,
-                'color' : color,
-                'arrow' : 'end',
-                'name'  : "{}.load.{}".format(self.form.name, key)
+                'start': sp,
+                'end': ep,
+                'color': color,
+                'arrow': 'end',
+                'name': "{}.load.{}".format(self.form.name, key)
             })
 
         compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -109,10 +107,10 @@ class FormArtist(MeshArtist):
         lines = []
         color = color or self.settings['color.selfweight']
         scale = scale or self.settings['scale.selfweight']
-        tol   = self.settings['tol.selfweight']
-        tol2  = tol ** 2
+        tol = self.settings['tol.selfweight']
+        tol2 = tol ** 2
 
-        for key, attr in self.form.vertices_where({'is_anchor': False, 'is_external': False}, True):
+        for key, attr in self.form.vertices_where({'is_anchor': False, '_is_external': False}, True):
             t = attr['t']
             a = self.form.vertex_area(key)
             sp = self.form.vertex_coordinates(key)
@@ -125,11 +123,11 @@ class FormArtist(MeshArtist):
             ep = sp[0], sp[1], sp[2] - dz
 
             lines.append({
-                'start' : sp,
-                'end'   : ep,
-                'color' : color,
-                'arrow' : 'end',
-                'name'  : "{}.selfweight.{}".format(self.form.name, key)
+                'start': sp,
+                'end': ep,
+                'color': color,
+                'arrow': 'end',
+                'name': "{}.selfweight.{}".format(self.form.name, key)
             })
 
         compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -140,8 +138,8 @@ class FormArtist(MeshArtist):
         lines = []
         color = color or self.settings['color.reaction']
         scale = scale or self.settings['scale.reaction']
-        tol   = self.settings['tol.reaction']
-        tol2  = tol ** 2
+        tol = self.settings['tol.reaction']
+        tol2 = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': True}, True):
             rx = attr['_rx']
@@ -169,21 +167,21 @@ class FormArtist(MeshArtist):
             if rx ** 2 + ry ** 2 > tol2:
                 e1 = sp[0] + rx, sp[1] + ry, sp[2]
                 lines.append({
-                    'start' : sp,
-                    'end'   : e1,
-                    'color' : color,
-                    'arrow' : 'start',
-                    'name'  : "{}.reaction.{}".format(self.form.name, key)
+                    'start': sp,
+                    'end': e1,
+                    'color': color,
+                    'arrow': 'start',
+                    'name': "{}.reaction.{}".format(self.form.name, key)
                 })
 
             if rz ** 2 > tol2:
                 e2 = sp[0], sp[1], sp[2] + rz
                 lines.append({
-                    'start' : sp,
-                    'end'   : e2,
-                    'color' : color,
-                    'arrow' : 'start',
-                    'name'  : "{}.reaction.{}".format(self.form.name, key)
+                    'start': sp,
+                    'end': e2,
+                    'color': color,
+                    'arrow': 'start',
+                    'name': "{}.reaction.{}".format(self.form.name, key)
                 })
 
         compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -194,10 +192,10 @@ class FormArtist(MeshArtist):
         lines = []
         color = color or self.settings['color.force']
         scale = scale or self.settings['scale.force']
-        tol   = self.settings['tol.force']
-        tol2  = tol ** 2
+        tol = self.settings['tol.force']
+        tol2 = tol ** 2
 
-        for u, v, attr in self.form.edges_where({'is_edge': True, 'is_external': False}, True):
+        for u, v, attr in self.form.edges_where({'_is_edge': True, '_is_external': False}, True):
             sp, ep = self.form.edge_coordinates(u, v)
             radius = scale * attr['_f']
 
@@ -205,11 +203,11 @@ class FormArtist(MeshArtist):
                 continue
 
             lines.append({
-                'start'  : sp,
-                'end'    : ep,
-                'radius' : radius,
-                'color'  : color,
-                'name'   : "{}.force.{}-{}".format(self.form.name, u, v)
+                'start': sp,
+                'end': ep,
+                'radius': radius,
+                'color': color,
+                'name': "{}.force.{}-{}".format(self.form.name, u, v)
             })
 
         compas_rhino.draw_cylinders(lines, layer=self.layer, clear=False, redraw=False)
@@ -220,8 +218,8 @@ class FormArtist(MeshArtist):
         lines = []
         color = color or self.settings['color.residual']
         scale = scale or self.settings['scale.residual']
-        tol   = self.settings['tol.residual']
-        tol2  = tol ** 2
+        tol = self.settings['tol.residual']
+        tol2 = tol ** 2
 
         for key, attr in self.form.vertices_where({'is_anchor': False, '_is_external': False}, True):
             rx = scale * attr['_rx']
@@ -235,11 +233,11 @@ class FormArtist(MeshArtist):
             ep = sp[0] + rx, sp[1] + ry, sp[2] + rz
 
             lines.append({
-                'start' : sp,
-                'end'   : ep,
-                'color' : color,
-                'arrow' : 'start',
-                'name'  : "{}.residual.{}".format(self.form.name, key)
+                'start': sp,
+                'end': ep,
+                'color': color,
+                'arrow': 'start',
+                'name': "{}.residual.{}".format(self.form.name, key)
             })
 
         compas_rhino.draw_lines(lines, layer=self.layer, clear=False, redraw=False)
@@ -258,10 +256,10 @@ class FormArtist(MeshArtist):
                 a = 180 * attr['_a'] / 3.14159
                 if a > tol:
                     labels.append({
-                        'pos'   : self.form.edge_midpoint(u, v),
-                        'text'  : "{:.2f}".format(attr['a'] / 3.14159 * 180),
-                        'color' : i_to_green((attr['a'] - a_min) / a_range),
-                        'name'  : "{}.angle.{}-{}".format(self.form.name, u, v)
+                        'pos': self.form.edge_midpoint(u, v),
+                        'text': "{:.2f}".format(attr['a'] / 3.14159 * 180),
+                        'color': i_to_green((attr['a'] - a_min) / a_range),
+                        'name': "{}.angle.{}-{}".format(self.form.name, u, v)
                     })
 
             compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
@@ -269,6 +267,7 @@ class FormArtist(MeshArtist):
 # ==============================================================================
 # Main
 # ==============================================================================
+
 
 if __name__ == "__main__":
     pass

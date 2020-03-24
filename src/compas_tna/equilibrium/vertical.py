@@ -90,11 +90,11 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
     fixed = set(anchors + fixed)
     fixed = [k_i[key] for key in fixed]
     free = list(set(range(vcount)) - set(fixed))
-    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
+    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'_is_edge': True})]
     xyz = array(form.vertices_attributes('xyz'), dtype=float64)
     thick = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
     p = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
-    q = [attr.get('q', 1.0) for key, attr in form.edges_where({'is_edge': True}, True)]
+    q = [attr.get('q', 1.0) for key, attr in form.edges_where({'_is_edge': True}, True)]
     q = array(q, dtype=float64).reshape((-1, 1))
     C = connectivity_matrix(edges, 'csr')
     Ci = C[:, free]
@@ -156,7 +156,7 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
         attr['_rx'] = r[index, 0]
         attr['_ry'] = r[index, 1]
         attr['_rz'] = r[index, 2]
-    for key, attr in form.edges_where({'is_edge': True}, True):
+    for key, attr in form.edges_where({'_is_edge': True}, True):
         index = uv_i[key]
         attr['q'] = q[index, 0]
         attr['_f'] = f[index, 0]
@@ -176,16 +176,14 @@ def vertical_from_bbox(form, factor=5.0, kmax=100, tol=1e-3, density=1.0, displa
     fixed = set(anchors + fixed)
     fixed = [k_i[key] for key in fixed]
     free = list(set(range(vcount)) - set(fixed))
-    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
+    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'_is_edge': True})]
     xyz = array(form.vertices_attributes('xyz'), dtype=float64)
     thick = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
     p = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
-    q = [attr.get('q', 1.0) for key, attr in form.edges_where({'is_edge': True}, True)]
+    q = [attr.get('q', 1.0) for key, attr in form.edges_where({'_is_edge': True}, True)]
     q = array(q, dtype=float64).reshape((-1, 1))
     C = connectivity_matrix(edges, 'csr')
     Ci = C[:, free]
-    Cf = C[:, fixed]
-    Cit = Ci.transpose()
     Ct = C.transpose()
     # --------------------------------------------------------------------------
     # original data
@@ -225,7 +223,7 @@ def vertical_from_bbox(form, factor=5.0, kmax=100, tol=1e-3, density=1.0, displa
         attr['_ry'] = r[index, 1]
         attr['_rz'] = r[index, 2]
         attr['_sw'] = sw[index, 2]
-    for key, attr in form.edges_where({'is_edge': True}, True):
+    for key, attr in form.edges_where({'_is_edge': True}, True):
         index = uv_i[key]
         attr['q'] = q[index, 0]
         attr['_f'] = f[index, 0]
@@ -265,12 +263,12 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Tr
     fixed = list(form.fixed())
     fixed = set(anchors + fixed)
     fixed = [k_i[key] for key in fixed]
-    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
+    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'_is_edge': True})]
     free = list(set(range(vcount)) - set(fixed))
     xyz = array(form.vertices_attributes('xyz'), dtype=float64)
     thick = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
     p = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
-    q = [attr.get('q', 1.0) for key, attr in form.edges_where({'is_edge': True}, True)]
+    q = [attr.get('q', 1.0) for key, attr in form.edges_where({'_is_edge': True}, True)]
     q = array(q, dtype=float64).reshape((-1, 1))
     C = connectivity_matrix(edges, 'csr')
     # --------------------------------------------------------------------------
@@ -308,7 +306,7 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Tr
         attr['_ry'] = r[index, 1]
         attr['_rz'] = r[index, 2]
         attr['_sw'] = sw[index, 2]
-    for key, attr in form.edges_where({'is_edge': True}, True):
+    for key, attr in form.edges_where({'_is_edge': True}, True):
         index = uv_i[key]
         attr['_f'] = f[index, 0]
 

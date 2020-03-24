@@ -5,14 +5,12 @@ from __future__ import division
 import sys
 
 try:
-    from numpy import array
     from numpy import zeros
 
 except ImportError:
     if 'ironpython' not in sys.version.lower():
         raise
 
-from compas.geometry import centroid_points
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 
@@ -24,16 +22,17 @@ __all__ = ['LoadUpdater']
 
 class LoadUpdater(object):
     """"""
+
     def __init__(self, mesh, p0, thickness=1.0, density=1.0, live=0.0):
-        self.mesh       = mesh
-        self.p0         = p0
-        self.thickness  = thickness
-        self.density    = density
-        self.live       = live
-        self.key_index  = mesh.key_index()
+        self.mesh = mesh
+        self.p0 = p0
+        self.thickness = thickness
+        self.density = density
+        self.live = live
+        self.key_index = mesh.key_index()
         self.fkey_index = {fkey: index for index, fkey in enumerate(mesh.faces())}
-        self.is_loaded  = {fkey: mesh.face_attribute(fkey, 'is_loaded') for fkey in mesh.faces()}
-        self.F          = self.face_matrix()
+        self.is_loaded = {fkey: mesh.face_attribute(fkey, '_is_loaded') for fkey in mesh.faces()}
+        self.F = self.face_matrix()
 
     def __call__(self, p, xyz):
         ta = self._tributary_areas(xyz)
@@ -47,10 +46,10 @@ class LoadUpdater(object):
         return face_matrix(face_vertices, rtype='csr', normalize=True)
 
     def _tributary_areas(self, xyz):
-        mesh       = self.mesh
-        key_index  = self.key_index
+        mesh = self.mesh
+        key_index = self.key_index
         fkey_index = self.fkey_index
-        is_loaded  = self.is_loaded
+        is_loaded = self.is_loaded
 
         C = self.F.dot(xyz)
 
@@ -60,7 +59,7 @@ class LoadUpdater(object):
 
             a = 0
             for v in mesh.halfedge[u]:
-                p1  = xyz[key_index[v]]
+                p1 = xyz[key_index[v]]
                 p01 = p1 - p0
 
                 fkey = mesh.halfedge[u][v]

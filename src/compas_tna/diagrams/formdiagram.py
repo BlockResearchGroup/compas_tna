@@ -109,12 +109,12 @@ class FormDiagram(Diagram):
             'lmax': 1e+7,
             'fmin': 0.0,
             'fmax': 1e+7,
-            'is_edge': True,
-            'is_external': False,
-            'is_tension': False
+            '_is_edge': True,
+            '_is_external': False,
+            '_is_tension': False
         })
         self.default_face_attributes.update({
-            'is_loaded': True
+            '_is_loaded': True
         })
         self.attributes.update({
             'name': 'FormDiagram',
@@ -122,7 +122,6 @@ class FormDiagram(Diagram):
             'feet.alpha': 45,
             'feet.tol': 0.1,
         })
-
 
     @classmethod
     def from_lines(cls, lines, delete_boundary_face=True, precision=None, **kwargs):
@@ -306,7 +305,7 @@ class FormDiagram(Diagram):
     def __str__(self):
         """Compile a mesh summary of the form diagram."""
         numv = self.number_of_vertices()
-        nume = len(list(self.edges_where({'is_edge': True})))
+        nume = len(list(self.edges_where({'_is_edge': True})))
         numf = self.number_of_faces()
         vmin = self.vertex_min_degree()
         vmax = self.vertex_max_degree()
@@ -333,7 +332,7 @@ face degree: {}/{}
             A dictionary of uv-index pairs.
 
         """
-        return {(u, v): index for index, (u, v) in enumerate(self.edges_where({'is_edge': True}))}
+        return {(u, v): index for index, (u, v) in enumerate(self.edges_where({'_is_edge': True}))}
 
     def index_uv(self):
         """Returns a dictionary that maps edges in a list to the corresponding
@@ -345,7 +344,7 @@ face degree: {}/{}
             A dictionary of index-uv pairs.
 
         """
-        return dict(enumerate(self.edges_where({'is_edge': True})))
+        return dict(enumerate(self.edges_where({'_is_edge': True})))
 
     # --------------------------------------------------------------------------
     # dual and reciprocal
@@ -436,7 +435,7 @@ face degree: {}/{}
         # and the result found here
         R = 0
         for key, attr in self.vertices_where({'is_anchor': False, 'is_fixed': False}, True):
-            rx, ry, rz = attr['rx'], attr['ry'], attr['rz']
+            rx, ry, rz = attr['_rx'], attr['_ry'], attr['_rz']
             R += sqrt(rx ** 2 + ry ** 2 + rz ** 2)
         return R
 
@@ -472,20 +471,20 @@ face degree: {}/{}
         if not feet:
             for vertices in segments:
                 if len(vertices) > 2:
-                    self.add_face(vertices, is_loaded=False)
+                    self.add_face(vertices, _is_loaded=False)
                     u = vertices[-1]
                     v = vertices[0]
-                    self.edge_attribute((u, v), 'is_edge', False)
+                    self.edge_attribute((u, v), '_is_edge', False)
                 else:
                     u, v = vertices
-                    self.edge_attribute((u, v), 'is_edge', False)
+                    self.edge_attribute((u, v), '_is_edge', False)
         else:
             self.add_feet(segments, feet=feet)
 
     def update_interior(self, boundaries):
         """"""
         for vertices in boundaries:
-            self.add_face(vertices, is_loaded=False)
+            self.add_face(vertices, _is_loaded=False)
 
     def split_boundary(self, boundary):
         """"""
@@ -546,14 +545,14 @@ face degree: {}/{}
 
             if feet == 1:
                 x, y, z = add_vectors_xy(o, r)
-                m = self.add_vertex(x=x, y=y, z=o[2], is_fixed=True, is_external=True)
+                m = self.add_vertex(x=x, y=y, z=o[2], is_fixed=True, _is_external=True)
                 key_foot[key] = m
 
             elif feet == 2:
                 lx, ly, lz = add_vectors_xy(o, rotate(r, +alpha))
                 rx, ry, rz = add_vectors_xy(o, rotate(r, -alpha))
-                l = self.add_vertex(x=lx, y=ly, z=o[2], is_fixed=True, is_external=True)
-                r = self.add_vertex(x=rx, y=ry, z=o[2], is_fixed=True, is_external=True)
+                l = self.add_vertex(x=lx, y=ly, z=o[2], is_fixed=True, _is_external=True)
+                r = self.add_vertex(x=rx, y=ry, z=o[2], is_fixed=True, _is_external=True)
                 key_foot[key] = l, r
 
             else:
@@ -566,20 +565,20 @@ face degree: {}/{}
             if feet == 1:
                 lm = key_foot[l]
                 rm = key_foot[r]
-                self.add_face([lm] + vertices + [rm], is_loaded=False)
-                self.edge_attribute((l, lm), 'is_external', True)
-                self.edge_attribute((rm, lm), 'is_edge', False)
+                self.add_face([lm] + vertices + [rm], _is_loaded=False)
+                self.edge_attribute((l, lm), '_is_external', True)
+                self.edge_attribute((rm, lm), '_is_edge', False)
 
             elif feet == 2:
                 lb = key_foot[l][0]
                 la = key_foot[l][1]
                 rb = key_foot[r][0]
-                self.add_face([lb, l, la], is_loaded=False)
-                self.add_face([la] + vertices + [rb], is_loaded=False)
-                self.edge_attribute((l, lb), 'is_external', True)
-                self.edge_attribute((l, la), 'is_external', True)
-                self.edge_attribute((lb, la), 'is_edge', False)
-                self.edge_attribute((la, rb), 'is_edge', False)
+                self.add_face([lb, l, la], _is_loaded=False)
+                self.add_face([la] + vertices + [rb], _is_loaded=False)
+                self.edge_attribute((l, lb), '_is_external', True)
+                self.edge_attribute((l, la), '_is_external', True)
+                self.edge_attribute((lb, la), '_is_edge', False)
+                self.edge_attribute((la, rb), '_is_edge', False)
 
             else:
                 pass
@@ -593,11 +592,11 @@ face degree: {}/{}
         plotter = MeshPlotter(self, figsize=(12, 8), tight=True)
         vertexcolor = {}
         vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
-        vertexcolor.update({key: '#0000ff' for key in self.vertices_where({'is_external': True})})
+        vertexcolor.update({key: '#0000ff' for key in self.vertices_where({'_is_external': True})})
         vertexcolor.update({key: '#ff0000' for key in self.vertices_where({'is_anchor': True})})
         plotter.draw_vertices(facecolor=vertexcolor)
-        plotter.draw_edges(keys=list(self.edges_where({'is_edge': True})))
-        plotter.draw_faces(keys=list(self.faces_where({'is_loaded': True})))
+        plotter.draw_edges(keys=list(self.edges_where({'_is_edge': True})))
+        plotter.draw_faces(keys=list(self.faces_where({'_is_loaded': True})))
         plotter.show()
 
     def draw(self, layer=None, clear_layer=True, settings=None):
@@ -610,13 +609,13 @@ face degree: {}/{}
         if settings.get('show.vertices', True):
             vertexcolor = {}
             vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
-            vertexcolor.update({key: '#0000ff' for key in self.vertices_where({'is_external': True})})
+            vertexcolor.update({key: '#0000ff' for key in self.vertices_where({'_is_external': True})})
             vertexcolor.update({key: '#ff0000' for key in self.vertices_where({'is_anchor': True})})
             artist.draw_vertices(color=vertexcolor)
         if settings.get('show.edges', True):
-            artist.draw_edges(keys=list(self.edges_where({'is_edge': True})))
+            artist.draw_edges(keys=list(self.edges_where({'_is_edge': True})))
         if settings.get('show.faces', True):
-            artist.draw_faces(keys=list(self.faces_where({'is_loaded': True})))
+            artist.draw_faces(keys=list(self.faces_where({'_is_loaded': True})))
         if settings.get('show.forces', False):
             artist.draw_forces(scale=settings.get('scale.forces', 0.1))
         if settings.get('show.reactions', False):
