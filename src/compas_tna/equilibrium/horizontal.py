@@ -42,7 +42,7 @@ def horizontal_nodal_proxy(formdata, forcedata, *args, **kwargs):
     return form.to_data(), force.to_data()
 
 
-def horizontal(form, force, alpha=100.0, kmax=100, display=True):
+def horizontal(form, force, alpha=100.0, kmax=100, display=False):
     r"""Compute horizontal equilibrium.
 
     Parameters
@@ -56,7 +56,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
     kmax : int
        Maximum number of iterations (the default is 100).
     display : bool
-        Display information about the current iteration (the default is True).
+        Display information about the current iteration (the default is False).
 
     Notes
     -----
@@ -182,7 +182,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=True):
         attr['_l'] = _l[i, 0]
 
 
-def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
+def horizontal_nodal(form, force, alpha=100, kmax=100, display=False):
     """Compute horizontal equilibrium using a node-per-node approach.
 
     Parameters
@@ -196,7 +196,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=True):
     kmax : int
        Maximum number of iterations (the default is 100).
     display : bool
-        Display information about the current iteration (the default is True).
+        Display information about the current iteration (the default is False).
 
     """
     alpha = float(alpha) / 100.0

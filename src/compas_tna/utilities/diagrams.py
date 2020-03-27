@@ -140,7 +140,7 @@ def apply_bounds(x, xmin, xmax):
     x[xbig] = xmax[xbig]
 
 
-def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-3, kmax=100, display=True):
+def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-3, kmax=100, display=False):
     Ci = C[:, free]
     Cf = C[:, fixed]
     Ct = C.transpose()

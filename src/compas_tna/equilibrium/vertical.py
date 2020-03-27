@@ -45,7 +45,7 @@ def vertical_from_q_proxy(formdata, *args, **kwargs):
     return form.to_data()
 
 
-def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, display=True):
+def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, display=False):
     """For the given form and force diagram, compute the scale of the force
     diagram for which the highest point of the thrust network is equal to a
     specified value.
@@ -71,6 +71,7 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
         consider specified point loads.
     display : bool
         If True, information about the current iteration will be displayed.
+        Default is False.
 
     Returns
     -------
@@ -130,8 +131,9 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
         z = max(xyz[free, 2])
         res2 = (z - zmax) ** 2
 
-        if res2 < xtol2:
-            break
+        if k > 10:
+            if res2 < xtol2:
+                break
 
         scale = scale * (z / zmax)
     # --------------------------------------------------------------------------
@@ -164,7 +166,7 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
     return scale
 
 
-def vertical_from_bbox(form, factor=5.0, kmax=100, tol=1e-3, density=1.0, display=True):
+def vertical_from_bbox(form, factor=5.0, kmax=100, tol=1e-3, density=1.0, display=False):
     # --------------------------------------------------------------------------
     # FormDiagram
     # --------------------------------------------------------------------------
@@ -231,7 +233,7 @@ def vertical_from_bbox(form, factor=5.0, kmax=100, tol=1e-3, density=1.0, displa
     return scale
 
 
-def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=True):
+def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=False):
     """Compute vertical equilibrium from the force densities of the independent edges.
 
     Parameters
@@ -253,7 +255,7 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Tr
         Default is ``0.001``.
     display : bool
         Display information about the current iteration.
-        Default is ``True``.
+        Default is ``False``.
 
     """
     k_i = form.key_index()
