@@ -43,6 +43,7 @@ class ForceDiagram(Diagram):
         dual = formdiagram.dual(cls)
         dual.vertices_attribute('z', 0.0)
         dual.primal = formdiagram
+        formdiagram.dual = dual
         return dual
 
     # --------------------------------------------------------------------------

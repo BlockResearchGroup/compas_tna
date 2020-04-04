@@ -82,6 +82,7 @@ class FormDiagram(Diagram):
 
     def __init__(self):
         super(FormDiagram, self).__init__()
+        self.dual = None
         self.default_vertex_attributes.update({
             'x': 0.0,
             'y': 0.0,
