@@ -351,7 +351,7 @@ face degree: {}/{}
     # dual and reciprocal
     # --------------------------------------------------------------------------
 
-    def dual(self, cls):
+    def dual_diagram(self, cls):
         """Construct the dual of the FormDiagram.
 
         Parameters
