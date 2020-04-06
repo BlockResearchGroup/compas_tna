@@ -83,8 +83,7 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=N
     n = xy.shape[0]
 
     for k in range(kmax):
-
-        print(k)
+        # print(k)
 
         xy0 = xy.copy()
         uv = C.dot(xy)
