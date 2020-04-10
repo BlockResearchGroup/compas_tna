@@ -469,18 +469,18 @@ face degree: {}/{}
     def update_exterior(self, boundary, feet=2):
         """"""
         segments = self.split_boundary(boundary)
-        if not feet:
-            for vertices in segments:
-                if len(vertices) > 2:
-                    self.add_face(vertices, _is_loaded=False)
-                    u = vertices[-1]
-                    v = vertices[0]
-                    self.edge_attribute((u, v), '_is_edge', False)
-                else:
-                    u, v = vertices
-                    self.edge_attribute((u, v), '_is_edge', False)
-        else:
+        if feet:
             self.add_feet(segments, feet=feet)
+            return
+        for vertices in segments:
+            if len(vertices) > 2:
+                self.add_face(vertices, _is_loaded=False)
+                u = vertices[-1]
+                v = vertices[0]
+                self.edge_attribute((u, v), '_is_edge', False)
+            else:
+                u, v = vertices
+                self.edge_attribute((u, v), '_is_edge', False)
 
     def update_interior(self, boundaries):
         """"""
