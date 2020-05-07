@@ -96,9 +96,13 @@ intersphinx_mapping = {
 html_theme = 'compaspkg'
 html_theme_path = sphinx_compas_theme.get_html_theme_path()
 html_theme_options = {
-    "package_name"    : "compas_tna",
-    "package_title"   : project,
-    "package_version" : release,
+    "package_name"       : "compas_tna",
+    "package_title"      : project,
+    "package_version"    : release,
+    "package_author"     : "Tom Van Mele",
+    "package_description": "COMPAS package for Thrust Network Analysis",
+    "package_repo"       : "https://github.com/BlockResearchGroup/compas_tna",
+    "package_docs"       : "https://blockresearchgroup.github.io/compas_tna"
 }
 html_context = {}
 html_static_path = []

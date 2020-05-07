@@ -19,6 +19,9 @@ scale = vertical_from_zmax(form, 3.0)
 # visualise
 # ==============================================================================
 
+# draw pipe diagram
+# and actual reaction forces
+
 z = form.vertices_attribute('z')
 zmin = min(z)
 zmax = max(z)
