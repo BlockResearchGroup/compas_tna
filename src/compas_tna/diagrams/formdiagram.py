@@ -417,12 +417,33 @@ face degree: {}/{}
 
     def update_boundaries(self):
         """"""
-        scale = self.attributes['feet.scale']
-        alpha = pi * 45 / 180
-        tol = self.attributes['feet.tol']
+        # scale = self.attributes['feet.scale']
+        # alpha = pi * 45 / 180
+        # tol = self.attributes['feet.tol']
         # mark all "anchored edges" as '_is_edge=False'
+        # corners are exceptions...
         for edge in self.edges():
-            self.edge_attribute(edge, '_is_edge', not all(self.vertices_attribute('is_anchor', keys=edge)))
+            if all(self.vertices_attribute('is_anchor', keys=edge)):
+                if self.is_edge_on_boundary(*edge):
+                    self.edge_attribute(edge, '_is_edge', False)
+        # delete isolated vertices?
+        for vertex in list(self.vertices_where({'vertex_degree': 2})):
+            nbrs = self.vertex_neighbors(vertex)
+            if all(not self.edge_attribute((vertex, nbr), '_is_edge') for nbr in nbrs):
+                for nbr in nbrs:
+                    face = self.halfedge[vertex][nbr]
+                    if face is not None:
+                        break
+                vertices = self.face_vertices(face)
+                after = nbr
+                before = vertices[vertices.index(after) - 2]
+                if len(vertices) == 3:
+                    before = self.split_edge(vertex, before, t=0.1, allow_boundary=True)
+                    after = self.split_edge(vertex, after, t=0.1, allow_boundary=True)
+                    self.vertices_attribute('is_anchor', True, keys=[before, after])
+                self.split_face(face, before, after)
+                self.edge_attribute((before, after), '_is_edge', False)
+                self.delete_vertex(vertex)
         # outer boundary
         # note: how to make sure this is the "outer" boundary
         boundaries = self.vertices_on_boundaries()
@@ -441,67 +462,67 @@ face degree: {}/{}
         del segments[0]
         # add new vertices
         # where number of `_is_edge=True` connected edges at begin/end vertices of a segment is greater than 1
-        key_foot = {}
-        key_xyz = {key: self.vertex_coordinates(key, 'xyz') for key in self.vertices()}
-        for i, vertices in enumerate(segments):
-            key = vertices[0]
-            nbrs = self.vertex_neighbors(key)
-            # check necessary condition for feet
-            count = 0
-            for nbr in nbrs:
-                edge = key, nbr
-                if self.edge_attribute(edge, '_is_edge'):
-                    count += 1
-            # only add feet if necessary
-            if count > 1:
-                after = vertices[1]
-                before = segments[i - 1][-2]
-                # base point
-                o = key_xyz[key]
-                # +normal
-                b = key_xyz[before]
-                a = key_xyz[after]
-                ob = normalize_vector_xy(subtract_vectors_xy(b, o))
-                oa = normalize_vector_xy(subtract_vectors_xy(a, o))
-                z = cross_z(ob, oa)
-                if z > +tol:
-                    n = normalize_vector_xy(add_vectors_xy(oa, ob))
-                    n = scale_vector(n, -scale)
-                elif z < -tol:
-                    n = normalize_vector_xy(add_vectors_xy(oa, ob))
-                    n = scale_vector(n, +scale)
-                else:
-                    ba = normalize_vector_xy(subtract_vectors_xy(a, b))
-                    n = cross_vectors([0, 0, 1], ba)
-                    n = scale_vector(n, +scale)
-                # left and right
-                lx, ly, lz = add_vectors_xy(o, rotate(n, +alpha))
-                rx, ry, rz = add_vectors_xy(o, rotate(n, -alpha))
-                l = self.add_vertex(x=lx, y=ly, z=o[2], is_fixed=True, _is_external=True)
-                r = self.add_vertex(x=rx, y=ry, z=o[2], is_fixed=True, _is_external=True)
-                key_foot[key] = l, r
-                # foot face
-                self.add_face([l, key, r], _is_loaded=False)
-                # foot face attributes
-                self.edge_attribute((l, key), '_is_external', True)
-                self.edge_attribute((key, r), '_is_external', True)
-                self.edge_attribute((r, l), '_is_edge', False)
+        # key_foot = {}
+        # key_xyz = {key: self.vertex_coordinates(key, 'xyz') for key in self.vertices()}
+        # for i, vertices in enumerate(segments):
+        #     key = vertices[0]
+        #     nbrs = self.vertex_neighbors(key)
+        #     # check necessary condition for feet
+        #     count = 0
+        #     for nbr in nbrs:
+        #         edge = key, nbr
+        #         if self.edge_attribute(edge, '_is_edge'):
+        #             count += 1
+        #     # only add feet if necessary
+        #     if count > 1:
+        #         after = vertices[1]
+        #         before = segments[i - 1][-2]
+        #         # base point
+        #         o = key_xyz[key]
+        #         # +normal
+        #         b = key_xyz[before]
+        #         a = key_xyz[after]
+        #         ob = normalize_vector_xy(subtract_vectors_xy(b, o))
+        #         oa = normalize_vector_xy(subtract_vectors_xy(a, o))
+        #         z = cross_z(ob, oa)
+        #         if z > +tol:
+        #             n = normalize_vector_xy(add_vectors_xy(oa, ob))
+        #             n = scale_vector(n, -scale)
+        #         elif z < -tol:
+        #             n = normalize_vector_xy(add_vectors_xy(oa, ob))
+        #             n = scale_vector(n, +scale)
+        #         else:
+        #             ba = normalize_vector_xy(subtract_vectors_xy(a, b))
+        #             n = cross_vectors([0, 0, 1], ba)
+        #             n = scale_vector(n, +scale)
+        #         # left and right
+        #         lx, ly, lz = add_vectors_xy(o, rotate(n, +alpha))
+        #         rx, ry, rz = add_vectors_xy(o, rotate(n, -alpha))
+        #         left = self.add_vertex(x=lx, y=ly, z=o[2], is_fixed=True, _is_external=True)
+        #         right = self.add_vertex(x=rx, y=ry, z=o[2], is_fixed=True, _is_external=True)
+        #         key_foot[key] = left, right
+        #         # foot face
+        #         self.add_face([left, key, right], _is_loaded=False)
+        #         # foot face attributes
+        #         self.edge_attribute((left, key), '_is_external', True)
+        #         self.edge_attribute((key, right), '_is_external', True)
+        #         self.edge_attribute((right, left), '_is_edge', False)
         # add (opening?) faces
         for vertices in segments:
             if len(vertices) < 3:
                 continue
-            left = vertices[0]
-            right = vertices[-1]
-            start = None
-            end = None
-            if left in key_foot:
-                start = key_foot[left][1]
-            if right in key_foot:
-                end = key_foot[right][0]
-            if start is not None:
-                vertices.insert(0, start)
-            if end is not None:
-                vertices.append(end)
+            # left = vertices[0]
+            # right = vertices[-1]
+            # start = None
+            # end = None
+            # if left in key_foot:
+            #     start = key_foot[left][1]
+            # if right in key_foot:
+            #     end = key_foot[right][0]
+            # if start is not None:
+            #     vertices.insert(0, start)
+            # if end is not None:
+            #     vertices.append(end)
             self.add_face(vertices, _is_loaded=False)
             self.edge_attribute((vertices[0], vertices[-1]), '_is_edge', False)
 
