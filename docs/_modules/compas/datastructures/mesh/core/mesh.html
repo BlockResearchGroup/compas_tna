@@ -39,7 +39,7 @@
   <header id="header" class="compas-header d-flex align-items-center">
     <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
       <!-- brand -->
-      <a class="navbar-brand" href="/index.html">
+      <a class="navbar-brand" href="https://blockresearchgroup.github.io/compas_tna">
         <img src="../../../../../_static/images/compas_icon_white.png" alt="COMPAS TNA" width="48px" height="48px" />
       </a>
       <!-- brand -->
@@ -69,7 +69,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- main -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-4 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
         
         
         <h1 class="display-4 p-0 mb-5">Source code for compas.datastructures.mesh.core.mesh</h1><div class="highlight"><pre><code>
@@ -97,7 +97,7 @@
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">cross_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_point_plane</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_point_point</span>
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">flatness</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">distance_line_line</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">length_vector</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">normal_polygon</span>
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">normalize_vector</span>
@@ -159,6 +159,7 @@
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from compas.datastructures import Mesh</span>
 <span class="sd">    &gt;&gt;&gt; mesh = Mesh.from_polyhedron(6)</span>
 <span class="sd">    &gt;&gt;&gt; V = mesh.number_of_vertices()</span>
 <span class="sd">    &gt;&gt;&gt; E = mesh.number_of_edges()</span>
@@ -167,8 +168,6 @@
 <span class="sd">    True</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;compas.datastructures&#39;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">BaseMesh</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -229,7 +228,7 @@
             <span class="n">lines</span> <span class="o">=</span> <span class="p">[(</span><span class="n">vertices</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">vertices</span><span class="p">[</span><span class="n">v</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">edges</span><span class="p">]</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">to_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unweld</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write the mesh to an OBJ file.</span>
 
 <span class="sd">        Parameters</span>
@@ -238,18 +237,18 @@
 <span class="sd">            Full path of the file.</span>
 <span class="sd">        precision: str, optional</span>
 <span class="sd">            The precision of the geometric map that is used to connect the lines.</span>
+<span class="sd">        unweld : bool, optional</span>
+<span class="sd">            If true, all faces have their own unique vertices.</span>
+<span class="sd">            If false, vertices are shared between faces if this is also the case in the mesh.</span>
+<span class="sd">            Default is ``False``.</span>
 
 <span class="sd">        Warning</span>
 <span class="sd">        -------</span>
-<span class="sd">        Currently this function only writes geometric data about the vertices and</span>
+<span class="sd">        This function only writes geometric data about the vertices and</span>
 <span class="sd">        the faces to the file.</span>
-
-<span class="sd">        Examples</span>
-<span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">obj</span> <span class="o">=</span> <span class="n">OBJ</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">)</span>
-        <span class="n">obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unweld</span><span class="o">=</span><span class="n">unweld</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_ply</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -265,20 +264,9 @@
 <span class="sd">        Mesh :</span>
 <span class="sd">            A mesh object.</span>
 
-<span class="sd">        Note</span>
-<span class="sd">        ----</span>
-<span class="sd">        There are a few sample files available for testing and debugging:</span>
-
-<span class="sd">        * bunny.ply</span>
-
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            import compas</span>
-<span class="sd">            from compas.datastructures import Mesh</span>
-
-<span class="sd">            mesh = Mesh.from_obj(compas.get(&#39;bunny.ply&#39;))</span>
+<span class="sd">        &gt;&gt;&gt;</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ply</span> <span class="o">=</span> <span class="n">PLY</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
@@ -318,13 +306,6 @@
 <span class="sd">        Mesh :</span>
 <span class="sd">            A mesh object.</span>
 
-<span class="sd">        Note</span>
-<span class="sd">        ----</span>
-<span class="sd">        There are a few sample files available for testing and debugging:</span>
-
-<span class="sd">        * cube_ascii.stl</span>
-<span class="sd">        * cube_binary.stl</span>
-
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
 <span class="sd">        &gt;&gt;&gt;</span>
@@ -335,8 +316,31 @@
         <span class="n">mesh</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">faces</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mesh</span>
 
-    <span class="k">def</span> <span class="nf">to_stl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+    <span class="k">def</span> <span class="nf">to_stl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Write a mesh to an STL file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filepath : str</span>
+<span class="sd">            The path to the file.</span>
+<span class="sd">        precision : str, optional</span>
+<span class="sd">            Rounding precision for the vertex coordinates.</span>
+<span class="sd">            Default is ``&quot;3f&quot;``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        STL files only support triangle faces.</span>
+<span class="sd">        However, the writer does not perform any checks</span>
+<span class="sd">        and will just treat every face as a triangle.</span>
+<span class="sd">        It is your responsibility to convert all faces of your mesh to triangles.</span>
+<span class="sd">        For example, with :func:`compas.datastructures.mesh_quads_to_triangles`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">stl</span> <span class="o">=</span> <span class="n">STL</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+        <span class="n">stl</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_off</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filepath</span><span class="p">):</span>
@@ -719,6 +723,55 @@
         <span class="k">if</span> <span class="n">return_fkeys</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">fkeys</span>
         <span class="k">return</span> <span class="n">w</span>
+
+    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add the vertices and faces of another mesh to the current mesh.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        other : compas.datastructures.Mesh</span>
+<span class="sd">            The other mesh.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">            The mesh is modified in place.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Box</span>
+<span class="sd">        &gt;&gt;&gt; from compas.geometry import Translation</span>
+<span class="sd">        &gt;&gt;&gt; from compas.datastructures import Mesh</span>
+<span class="sd">        &gt;&gt;&gt; a = Box.from_width_height_depth(1, 1, 1)</span>
+<span class="sd">        &gt;&gt;&gt; b = Box.from_width_height_depth(1, 1, 1)</span>
+<span class="sd">        &gt;&gt;&gt; T = Translation([2, 0, 0])</span>
+<span class="sd">        &gt;&gt;&gt; b.transform(T)</span>
+<span class="sd">        &gt;&gt;&gt; a = Mesh.from_shape(a)</span>
+<span class="sd">        &gt;&gt;&gt; b = Mesh.from_shape(b)</span>
+<span class="sd">        &gt;&gt;&gt; a.number_of_vertices()</span>
+<span class="sd">        8</span>
+<span class="sd">        &gt;&gt;&gt; a.number_of_faces()</span>
+<span class="sd">        6</span>
+<span class="sd">        &gt;&gt;&gt; b.number_of_vertices()</span>
+<span class="sd">        8</span>
+<span class="sd">        &gt;&gt;&gt; b.number_of_faces()</span>
+<span class="sd">        6</span>
+<span class="sd">        &gt;&gt;&gt; a.join(b)</span>
+<span class="sd">        &gt;&gt;&gt; a.number_of_vertices()</span>
+<span class="sd">        16</span>
+<span class="sd">        &gt;&gt;&gt; a.number_of_faces()</span>
+<span class="sd">        12</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">default_vertex_attributes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">default_face_attributes</span><span class="p">)</span>
+        <span class="n">vertex_old_new</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">vertex</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">vertices</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
+            <span class="n">vertex_old_new</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="k">for</span> <span class="n">face</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">faces</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
+            <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertex_old_new</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">other</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">face</span><span class="p">)]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">attr_dict</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># accessors</span>
@@ -1153,13 +1206,16 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">area_polygon</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">face_flatness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">face_flatness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">maxdev</span><span class="o">=</span><span class="mf">0.02</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Compute the flatness of the mesh face.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        fkey : int</span>
 <span class="sd">            The identifier of the face.</span>
+<span class="sd">        maxdev : float, optional</span>
+<span class="sd">            A maximum value for the allowed deviation from flatness.</span>
+<span class="sd">            Default is ``0.02``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1176,9 +1232,13 @@
 <span class="sd">        -------</span>
 <span class="sd">        This method only makes sense for quadrilateral faces.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_coordinates</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
-        <span class="n">face</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)))</span>
-        <span class="k">return</span> <span class="n">flatness</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="p">[</span><span class="n">face</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_vertices</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_attributes</span><span class="p">(</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">vertices</span><span class="p">)</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">distance_point_point</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">points</span> <span class="o">+</span> <span class="n">points</span><span class="p">[:</span><span class="mi">1</span><span class="p">])]</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">lengths</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">distance_line_line</span><span class="p">((</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">length</span><span class="p">)</span> <span class="o">/</span> <span class="n">maxdev</span>
 
     <span class="k">def</span> <span class="nf">face_aspect_ratio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fkey</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Face aspect ratio as the ratio between the lengths of the maximum and minimum face edges.</span>
@@ -1401,24 +1461,8 @@
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 
-    <span class="kn">import</span> <span class="nn">compas</span>
-    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-    <span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
-
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;quadmesh.obj&#39;</span><span class="p">))</span>
-
-    <span class="n">edges</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges_on_boundary</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">edges</span><span class="p">))</span>
-    <span class="n">faces</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">faces_on_boundary</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">))</span>
-
-    <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">()</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;key&#39;</span><span class="p">)</span>
-    <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">()</span>
-
-    <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
 </code></pre></div>
         
       </main>

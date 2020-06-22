@@ -39,7 +39,7 @@
   <header id="header" class="compas-header d-flex align-items-center">
     <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
       <!-- brand -->
-      <a class="navbar-brand" href="/index.html">
+      <a class="navbar-brand" href="https://blockresearchgroup.github.io/compas_tna">
         <img src="../../../../../../_static/images/compas_icon_white.png" alt="COMPAS TNA" width="48px" height="48px" />
       </a>
       <!-- brand -->
@@ -69,7 +69,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- main -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-4 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
         
         
         <h1 class="display-4 p-0 mb-5">Source code for compas.datastructures.mesh.core.operations.split</h1><div class="highlight"><pre><code>
@@ -237,15 +237,41 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    mesh : compas.datastructures.Mesh</span>
+<span class="sd">    mesh : :class:`~compas.datastructures.Mesh`</span>
 <span class="sd">        Instance of a mesh</span>
-<span class="sd">    fkey : str</span>
+<span class="sd">    fkey : :obj:`str`</span>
 <span class="sd">        The face key.</span>
-<span class="sd">    u : str</span>
+<span class="sd">    u : hashable</span>
 <span class="sd">        The key of the first split vertex.</span>
-<span class="sd">    v : str</span>
+<span class="sd">    v : hashable</span>
 <span class="sd">        The key of the second split vertex.</span>
 
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :obj:`tuple` of :obj:`int`</span>
+<span class="sd">        Keys of the created faces.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    :exc:`ValueError`</span>
+<span class="sd">        If the split vertices does not belong to the split face or if the split</span>
+<span class="sd">        vertices are neighbors.</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import compas</span>
+<span class="sd">    &gt;&gt;&gt; from compas.datastructures import Mesh</span>
+<span class="sd">    &gt;&gt;&gt; mesh = Mesh.from_obj(compas.get(&quot;faces.obj&quot;))</span>
+<span class="sd">    &gt;&gt;&gt; fkey = mesh.get_any_face()</span>
+<span class="sd">    &gt;&gt;&gt; # u and v defines the new edge after splitting</span>
+<span class="sd">    &gt;&gt;&gt; u = mesh.get_any_face_vertex(fkey)</span>
+<span class="sd">    &gt;&gt;&gt; v = mesh.face_vertex_descendant(fkey, u, n=2)</span>
+<span class="sd">    &gt;&gt;&gt; mesh.number_of_faces()  # faces before split</span>
+<span class="sd">    25</span>
+<span class="sd">    &gt;&gt;&gt; mesh_split_face(mesh, fkey, u, v)</span>
+<span class="sd">    (25, 26)</span>
+<span class="sd">    &gt;&gt;&gt; mesh.number_of_faces()  # faces after split</span>
+<span class="sd">    26</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">u</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]</span> <span class="ow">or</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="n">fkey</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The split vertices do not belong to the split face.&#39;</span><span class="p">)</span>
@@ -279,7 +305,8 @@
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
-    <span class="k">pass</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
 </code></pre></div>
         
       </main>

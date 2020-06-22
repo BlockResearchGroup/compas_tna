@@ -17,6 +17,11 @@
 	font-weight: lighter;
   }
   
+  h4 {
+	margin-top: 2rem;
+	margin-bottom: 1rem;
+  }
+  
   a {
 	text-decoration: none;
 	color: #0092d2;
@@ -267,6 +272,10 @@
   
   .compas-toc .nav .nav .nav .nav-link {
 	padding-left: 2.5rem;
+  }
+  
+  .compas-toc .nav .nav .nav .nav .nav-link {
+	padding-left: 3.5rem;
   }
   
   /* Content */

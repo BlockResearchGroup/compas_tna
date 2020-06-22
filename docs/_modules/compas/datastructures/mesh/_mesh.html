@@ -39,7 +39,7 @@
   <header id="header" class="compas-header d-flex align-items-center">
     <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
       <!-- brand -->
-      <a class="navbar-brand" href="/index.html">
+      <a class="navbar-brand" href="https://blockresearchgroup.github.io/compas_tna">
         <img src="../../../../_static/images/compas_icon_white.png" alt="COMPAS TNA" width="48px" height="48px" />
       </a>
       <!-- brand -->
@@ -69,7 +69,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- main -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-4 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
         
         
         <h1 class="display-4 p-0 mb-5">Source code for compas.datastructures.mesh._mesh</h1><div class="highlight"><pre><code>
@@ -86,6 +86,7 @@
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.bbox</span> <span class="kn">import</span> <span class="n">mesh_bounding_box_xy</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.combinatorics</span> <span class="kn">import</span> <span class="n">mesh_is_connected</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.combinatorics</span> <span class="kn">import</span> <span class="n">mesh_connected_components</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.cut</span> <span class="kn">import</span> <span class="n">mesh_cut_by_plane</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.duality</span> <span class="kn">import</span> <span class="n">mesh_dual</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.orientation</span> <span class="kn">import</span> <span class="n">mesh_face_adjacency</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.orientation</span> <span class="kn">import</span> <span class="n">mesh_flip_cycles</span>
@@ -94,6 +95,7 @@
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.smoothing</span> <span class="kn">import</span> <span class="n">mesh_smooth_area</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.transformations</span> <span class="kn">import</span> <span class="n">mesh_transform</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.transformations</span> <span class="kn">import</span> <span class="n">mesh_transformed</span>
+<span class="kn">from</span> <span class="nn">compas.datastructures.mesh.triangulation</span> <span class="kn">import</span> <span class="n">mesh_quads_to_triangles</span>
 
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Mesh&#39;</span><span class="p">]</span>
@@ -107,12 +109,11 @@
 <span class="sd">    &gt;&gt;&gt; mesh = Mesh.from_polyhedron(6)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s2">&quot;compas.datastructures&quot;</span>
-
     <span class="n">bounding_box</span> <span class="o">=</span> <span class="n">mesh_bounding_box</span>
     <span class="n">bounding_box_xy</span> <span class="o">=</span> <span class="n">mesh_bounding_box_xy</span>
     <span class="n">collapse_edge</span> <span class="o">=</span> <span class="n">mesh_collapse_edge</span>
     <span class="n">connected_components</span> <span class="o">=</span> <span class="n">mesh_connected_components</span>
+    <span class="n">cut</span> <span class="o">=</span> <span class="n">mesh_cut_by_plane</span>
     <span class="n">dual</span> <span class="o">=</span> <span class="n">mesh_dual</span>
     <span class="n">face_adjacency</span> <span class="o">=</span> <span class="n">mesh_face_adjacency</span>
     <span class="n">flip_cycles</span> <span class="o">=</span> <span class="n">mesh_flip_cycles</span>
@@ -124,6 +125,11 @@
     <span class="n">transform</span> <span class="o">=</span> <span class="n">mesh_transform</span>
     <span class="n">transformed</span> <span class="o">=</span> <span class="n">mesh_transformed</span>
     <span class="n">unify_cycles</span> <span class="o">=</span> <span class="n">mesh_unify_cycles</span>
+    <span class="n">quads_to_triangles</span> <span class="o">=</span> <span class="n">mesh_quads_to_triangles</span>
+
+    <span class="k">def</span> <span class="nf">transform_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">compas.datastructures.mesh.transformations_numpy</span> <span class="kn">import</span> <span class="n">mesh_transform_numpy</span>
+        <span class="n">mesh_transform_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">to_trimesh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># convert to mesh with only triangle faces</span>
@@ -142,68 +148,8 @@
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 
-    <span class="kn">import</span> <span class="nn">compas</span>
-
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_obj</span><span class="p">(</span><span class="n">compas</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;faces.obj&#39;</span><span class="p">))</span>
-
-    <span class="n">mesh</span><span class="o">.</span><span class="n">update_default_vertex_attributes</span><span class="p">({</span><span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
-    <span class="n">mesh</span><span class="o">.</span><span class="n">update_default_face_attributes</span><span class="p">({</span><span class="s1">&#39;f&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span>
-    <span class="n">mesh</span><span class="o">.</span><span class="n">update_default_edge_attributes</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
-
-    <span class="c1"># key = mesh.get_any_vertex()</span>
-    <span class="c1"># fkey = mesh.get_any_face()</span>
-    <span class="c1"># ekey = mesh.get_any_edge()</span>
-
-    <span class="c1"># mesh.vertex_attribute(key, &#39;v&#39;, 0)</span>
-    <span class="c1"># mesh.face_attribute(fkey, &#39;f&#39;, 5)</span>
-    <span class="c1"># mesh.edge_attribute(ekey, &#39;is_edge&#39;, False)</span>
-
-    <span class="c1"># print(list(mesh.vertices_where({&#39;v&#39;: 0})))</span>
-    <span class="c1"># print(list(mesh.faces_where({&#39;f&#39;: 5})))</span>
-    <span class="c1"># print(list(mesh.edges_where({&#39;is_edge&#39;: False})))</span>
-
-    <span class="c1"># # for key, attr in mesh.vertices(True):</span>
-    <span class="c1"># #     print(key, attr)</span>
-
-    <span class="c1"># # for key, attr in mesh.faces(True):</span>
-    <span class="c1"># #     print(key, attr)</span>
-
-    <span class="nb">print</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">()</span>
-    <span class="c1"># # for key, attr in mesh.edges(True):</span>
-    <span class="c1"># #     print(key, attr)</span>
-
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges_on_boundary</span><span class="p">():</span>
-        <span class="n">mesh</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;is_edge&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-
-    <span class="c1"># print()</span>
-    <span class="c1"># for key, attr in mesh.edges(True):</span>
-    <span class="c1">#     print(key, attr)</span>
-
-    <span class="c1"># print()</span>
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mesh</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;is_edge&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-    <span class="c1"># # print()</span>
-    <span class="c1"># # for key in mesh.edges_on_boundary():</span>
-    <span class="c1"># #     print(key, mesh.edge_attribute(key, &#39;is_edge&#39;))</span>
-
-    <span class="c1"># # xyz = mesh.vertices_attributes(&#39;xyz&#39;)</span>
-    <span class="c1"># # print(xyz)</span>
-
-    <span class="c1"># # attr = mesh.vertex_attributes(0)</span>
-    <span class="c1"># # print(attr)</span>
-
-    <span class="c1"># # attr = mesh.face_attributes(0)</span>
-    <span class="c1"># # attr.custom_only = True</span>
-    <span class="c1"># # print(attr)</span>
-    <span class="c1"># # print(attr.keys())</span>
-    <span class="c1"># # print(list(attr.keys()))</span>
-
-    <span class="c1"># # attr = mesh.edge_attributes((0, 1))</span>
-    <span class="c1"># # print(attr)</span>
-
-    <span class="c1"># # print(mesh)</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">(</span><span class="n">globs</span><span class="o">=</span><span class="nb">globals</span><span class="p">())</span>
 </code></pre></div>
         
       </main>

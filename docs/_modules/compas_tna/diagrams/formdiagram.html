@@ -39,7 +39,7 @@
   <header id="header" class="compas-header d-flex align-items-center">
     <nav class="navbar navbar-expand navbar-dark col flex-column flex-md-row text-center">
       <!-- brand -->
-      <a class="navbar-brand" href="/index.html">
+      <a class="navbar-brand" href="https://blockresearchgroup.github.io/compas_tna">
         <img src="../../../_static/images/compas_icon_white.png" alt="COMPAS TNA" width="48px" height="48px" />
       </a>
       <!-- brand -->
@@ -69,7 +69,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- main -->
-      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-4 compas-content" role="main">
+      <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
         
         
         <h1 class="display-4 p-0 mb-5">Source code for compas_tna.diagrams.formdiagram</h1><div class="highlight"><pre><code>
@@ -657,7 +657,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">((</span><span class="n">la</span><span class="p">,</span> <span class="n">rb</span><span class="p">),</span> <span class="s1">&#39;_is_edge&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">pass</span></div>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># visualisation</span>
@@ -707,36 +707,7 @@
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 
-    <span class="c1"># import compas</span>
-    <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-    <span class="c1"># from compas.files import OBJ</span>
-
-    <span class="c1"># filepath = compas.get(&#39;lines.obj&#39;)</span>
-
-    <span class="c1"># obj = OBJ(filepath)</span>
-    <span class="c1"># vertices = obj.parser.vertices</span>
-    <span class="c1"># edges = obj.parser.lines</span>
-    <span class="c1"># lines = [(vertices[u], vertices[v], 0) for u, v in edges]</span>
-
-    <span class="c1"># form = FormDiagram.from_lines(lines, delete_boundary_face=False)</span>
-
-    <span class="c1"># mesh = Mesh.from_obj(compas.get(&#39;faces.obj&#39;))</span>
-    <span class="c1"># height = 5.0</span>
-    <span class="c1"># mesh.set_vertices_attribute(&#39;z&#39;, height)</span>
-    <span class="c1"># form = FormDiagram.from_mesh(mesh)</span>
-
-    <span class="c1"># assert form.number_of_faces() == mesh.number_of_faces()</span>
-    <span class="c1"># assert form.number_of_vertices() == mesh.number_of_vertices()</span>
-    <span class="c1"># assert max(mesh.get_vertices_attribute(&#39;z&#39;)) - height == max(form.get_vertices_attribute(&#39;z&#39;))</span>
-
-    <span class="c1"># form.plot()</span>
-
-    <span class="n">points</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]]</span>
-    <span class="n">lines</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
-
-    <span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_lines</span><span class="p">([(</span><span class="n">points</span><span class="p">[</span><span class="n">u</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="n">v</span><span class="p">])</span> <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">])</span>
-
-    <span class="nb">print</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+    <span class="k">pass</span>
 </code></pre></div>
         
       </main>
