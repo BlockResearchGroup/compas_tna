@@ -16,7 +16,7 @@ form.edges_attribute('q', 10.0, keys=form.edges_on_boundary())
 
 relax_boundary_openings(form, corners)
 
-form.update_boundaries(feet=2)
+form.update_boundaries()
 
 form.to_json(FILE_O)
 

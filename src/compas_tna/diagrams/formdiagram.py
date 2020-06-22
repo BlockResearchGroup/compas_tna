@@ -9,10 +9,12 @@ from math import sqrt
 
 import compas
 
-from compas.geometry import subtract_vectors_xy
 from compas.geometry import add_vectors_xy
+from compas.geometry import subtract_vectors_xy
 from compas.geometry import normalize_vector_xy
+from compas.geometry import angle_vectors_xy
 from compas.geometry import cross_vectors
+from compas.geometry import scale_vector
 
 from compas.datastructures import network_find_cycles
 from compas.datastructures import Network
@@ -21,6 +23,16 @@ from compas_tna.diagrams import Diagram
 
 
 __all__ = ['FormDiagram']
+
+
+def rotate(point, angle):
+    x = cos(angle) * point[0] - sin(angle) * point[1]
+    y = sin(angle) * point[0] + cos(angle) * point[1]
+    return x, y, 0
+
+
+def cross_z(ab, ac):
+    return ab[0] * ac[1] - ab[1] * ac[0]
 
 
 class FormDiagram(Diagram):
@@ -38,44 +50,6 @@ class FormDiagram(Diagram):
     *   ``from_rhinosurface`` : Construct a diagram from a Rhino surface, using the U and V isolines.
     *   ``from_rhinolines`` : Construct a diagram from a selection of Rhino lines (i.e. curves of degree 1).
 
-    A ``FormDiagram`` has the following default attributes
-
-    *   ``default_vertex_attributes``
-
-        *   ``x``  : The X coordinate of the vertex.
-        *   ``y``  : The Y coordinate of the vertex.
-        *   ``z``  : The Z coordinate of the vertex.
-        *   ``px`` : The X component of the applied load on the vertex.
-        *   ``py`` : The Y component of the applied load on the vertex.
-        *   ``pz`` : The Z component of the applied load on the vertex.
-        *   ``rx`` : The X component of the residual force at the vertex.
-        *   ``ry`` : The Y component of the residual force at the vertex.
-        *   ``rz`` : The Z component of the residual force at the vertex.
-        *   ``sw`` : The selfweight of the structure at the vertex.
-        *   ``t``  : The thickness of the structure at the vertex.
-        *   ``is_anchor``   : Flag to indicate that the vertex is an anchor, i.e. a support
-        *   ``is_fixed``    : Flag to indicate that the position of a vertex is fixed.
-        *   ``is_external`` : Flag to indicate that a vertex is external to the structure.
-
-    *   ``default_edge_attributes``
-
-        *   ``q``    : The force density in the edge.
-        *   ``f``    : The (horizontal) force in the edge.
-        *   ``l``    : The length of the edge.
-        *   ``a``    : The angle between this edge and the corresponding edge in the force diagram.
-        *   ``qmin`` : The minimum force density allowed in the edge.
-        *   ``qmax`` : The maximum force density allowed in the edge.
-        *   ``fmin`` : The minimum (horizontal) force allowed in the edge.
-        *   ``fmax`` : The maximum (horizontal) force allowed in the edge.
-        *   ``lmin`` : The minimum length of the edge.
-        *   ``lmax`` : The maximum length of the edge.
-        *   ``is_edge``     : Flag to indicate that the edge represents an actual edge of the diagram.
-        *   ``is_external`` : Flag to indicate that the edge represents an external force.
-
-    *   ``default_face_attributes``
-
-        *   ``is_loaded`` : Flag to indicate that a face of the form diagram is part of the surface of the structure.
-
     """
 
     __module__ = 'compas_tna.diagrams'
@@ -90,26 +64,28 @@ class FormDiagram(Diagram):
             'px': 0.0,
             'py': 0.0,
             'pz': 0.0,
-            '_sw': 0.0,
             't': 1.0,
             'is_anchor': False,
             'is_fixed': False,
-            '_is_external': False,
+
+            '_sw': 0.0,
             '_rx': 0.0,
             '_ry': 0.0,
             '_rz': 0.0,
+            '_is_external': False,
         })
         self.default_edge_attributes.update({
             'q': 1.0,
-            '_f': 0.0,
-            '_l': 0.0,
-            '_a': 0.0,
             'qmin': 0.0,
             'qmax': 1e+7,
             'lmin': 0.0,
             'lmax': 1e+7,
             'fmin': 0.0,
             'fmax': 1e+7,
+
+            '_f': 0.0,
+            '_l': 0.0,
+            '_a': 0.0,
             '_is_edge': True,
             '_is_external': False,
             '_is_tension': False
@@ -183,23 +159,19 @@ class FormDiagram(Diagram):
 
         Examples
         --------
-        .. code-block:: python
+        >>> import compas
+        >>> from compas.datastructures import Mesh
+        >>> from compas_tna.diagrams import FormDiagram
 
-            import compas
-            from compas.datastructures import Mesh
-            from compas_tna.diagrams import FormDiagram
-
-            mesh = Mesh.from_obj(compas.get('faces.obj'))
-            form = FormDiagram.from_mesh(mesh)
-            form.plot()
+        >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
+        >>> form = FormDiagram.from_mesh(mesh)
+        >>> form.plot()
         """
         form = cls()
-
         for vkey, attr in mesh.vertices(True):
             form.add_vertex(key=vkey, x=attr['x'], y=attr['y'], z=0.0)
         for fkey in mesh.faces():
             form.add_face(vertices=mesh.face_vertices(fkey), fkey=fkey)
-
         if 'name' in kwargs:
             mesh.name = kwargs['name']
         return form
@@ -231,7 +203,6 @@ class FormDiagram(Diagram):
         """
         from compas_rhino.geometry import RhinoMesh
         mesh = RhinoMesh.from_guid(guid).to_compas(cls)
-
         if 'name' in kwargs:
             mesh.name = kwargs['name']
         return mesh
@@ -331,7 +302,6 @@ face degree: {}/{}
         -------
         dict
             A dictionary of uv-index pairs.
-
         """
         return {(u, v): index for index, (u, v) in enumerate(self.edges_where({'_is_edge': True}))}
 
@@ -343,7 +313,6 @@ face degree: {}/{}
         -------
         dict
             A dictionary of index-uv pairs.
-
         """
         return dict(enumerate(self.edges_where({'_is_edge': True})))
 
@@ -394,7 +363,6 @@ face degree: {}/{}
         -------
         iterator
             An iterator of vertex keys.
-
         """
         return self.vertices_where({'vertex_degree': 1})
 
@@ -405,7 +373,6 @@ face degree: {}/{}
         -------
         iterator
             An iterator of vertex keys.
-
         """
         return self.vertices_where({'vertex_degree': 2})
 
@@ -416,7 +383,6 @@ face degree: {}/{}
         -------
         iterator
             An iterator of vertex keys.
-
         """
         return self.vertices_where({'is_anchor': True})
 
@@ -427,26 +393,19 @@ face degree: {}/{}
         -------
         iterator
             An iterator of vertex keys.
-
         """
         return self.vertices_where({'is_fixed': True})
 
     def residual(self):
-        # there is a discrepancy between the norm of residuals calculated by the equilibrium functions`
-        # and the result found here
         R = 0
         for key, attr in self.vertices_where({'is_anchor': False, 'is_fixed': False}, True):
             rx, ry, rz = attr['_rx'], attr['_ry'], attr['_rz']
-            R += sqrt(rx ** 2 + ry ** 2 + rz ** 2)
-        return R
+            R += rx ** 2 + ry ** 2 + rz ** 2
+        return sqrt(R)
 
     # --------------------------------------------------------------------------
     # helpers
     # --------------------------------------------------------------------------
-
-    # def bbox(self):
-    #     x, y, z = zip(* self.vertices_attributes('xyz'))
-    #     return (min(x), min(y), min(z)), (max(x), max(y), max(z))
 
     # --------------------------------------------------------------------------
     # postprocess
@@ -456,133 +415,95 @@ face degree: {}/{}
     # boundary conditions
     # --------------------------------------------------------------------------
 
-    # update boundaries should loop over all boundaries
-    # containing anchors
-
-    def update_boundaries(self, feet=2):
+    def update_boundaries(self):
+        """"""
+        scale = self.attributes['feet.scale']
+        alpha = pi * 45 / 180
+        tol = self.attributes['feet.tol']
+        # mark all "anchored edges" as '_is_edge=False'
+        for edge in self.edges():
+            self.edge_attribute(edge, '_is_edge', not all(self.vertices_attribute('is_anchor', keys=edge)))
+        # outer boundary
+        # note: how to make sure this is the "outer" boundary
         boundaries = self.vertices_on_boundaries()
         exterior = boundaries[0]
-        interior = boundaries[1:]
-        self.update_exterior(exterior, feet=feet)
-        self.update_interior(interior)
-
-    def update_exterior(self, boundary, feet=2):
-        """"""
-        segments = self.split_boundary(boundary)
-        if feet:
-            self.add_feet(segments, feet=feet)
-            return
-        for vertices in segments:
-            if len(vertices) > 2:
-                self.add_face(vertices, _is_loaded=False)
-                u = vertices[-1]
-                v = vertices[0]
-                self.edge_attribute((u, v), '_is_edge', False)
-            else:
-                u, v = vertices
-                self.edge_attribute((u, v), '_is_edge', False)
-
-    def update_interior(self, boundaries):
-        """"""
-        for vertices in boundaries:
-            self.add_face(vertices, _is_loaded=False)
-
-    def split_boundary(self, boundary):
-        """"""
+        # split outer boundary
+        # where `is_anchor=True`
+        # into (ordered) series of boundary edges
         segment = []
         segments = [segment]
-        for key in boundary:
-            segment.append(key)
-            if self.vertex_attribute(key, 'is_anchor'):
-                segment = [key]
+        for vertex in exterior:
+            segment.append(vertex)
+            if self.vertex_attribute(vertex, 'is_anchor'):
+                segment = [vertex]
                 segments.append(segment)
         segments[-1] += segments[0]
         del segments[0]
-        return segments
-
-    def add_feet(self, segments, feet=2):
-        """"""
-        def rotate(point, angle):
-            x = cos(angle) * point[0] - sin(angle) * point[1]
-            y = sin(angle) * point[0] + cos(angle) * point[1]
-            return x, y, 0
-
-        def cross_z(ab, ac):
-            return ab[0] * ac[1] - ab[1] * ac[0]
-
-        scale = self.attributes['feet.scale']
-        alpha = self.attributes['feet.alpha'] * pi / 180
-        tol = self.attributes['feet.tol']
-
+        # add new vertices
+        # where number of `_is_edge=True` connected edges at begin/end vertices of a segment is greater than 1
         key_foot = {}
         key_xyz = {key: self.vertex_coordinates(key, 'xyz') for key in self.vertices()}
-
         for i, vertices in enumerate(segments):
             key = vertices[0]
-            after = vertices[1]
-            before = segments[i - 1][-2]
-
-            b = key_xyz[before]
-            o = key_xyz[key]
-            a = key_xyz[after]
-
-            ob = normalize_vector_xy(subtract_vectors_xy(b, o))
-            oa = normalize_vector_xy(subtract_vectors_xy(a, o))
-
-            z = cross_z(ob, oa)
-
-            if z > +tol:
-                r = normalize_vector_xy(add_vectors_xy(oa, ob))
-                r = [-scale * axis for axis in r]
-
-            elif z < -tol:
-                r = normalize_vector_xy(add_vectors_xy(oa, ob))
-                r = [+scale * axis for axis in r]
-
-            else:
-                ba = normalize_vector_xy(subtract_vectors_xy(a, b))
-                r = cross_vectors([0, 0, 1], ba)
-                r = [+scale * axis for axis in r]
-
-            if feet == 1:
-                x, y, z = add_vectors_xy(o, r)
-                m = self.add_vertex(x=x, y=y, z=o[2], is_fixed=True, _is_external=True)
-                key_foot[key] = m
-
-            elif feet == 2:
-                lx, ly, lz = add_vectors_xy(o, rotate(r, +alpha))
-                rx, ry, rz = add_vectors_xy(o, rotate(r, -alpha))
+            nbrs = self.vertex_neighbors(key)
+            # check necessary condition for feet
+            count = 0
+            for nbr in nbrs:
+                edge = key, nbr
+                if self.edge_attribute(edge, '_is_edge'):
+                    count += 1
+            # only add feet if necessary
+            if count > 1:
+                after = vertices[1]
+                before = segments[i - 1][-2]
+                # base point
+                o = key_xyz[key]
+                # +normal
+                b = key_xyz[before]
+                a = key_xyz[after]
+                ob = normalize_vector_xy(subtract_vectors_xy(b, o))
+                oa = normalize_vector_xy(subtract_vectors_xy(a, o))
+                z = cross_z(ob, oa)
+                if z > +tol:
+                    n = normalize_vector_xy(add_vectors_xy(oa, ob))
+                    n = scale_vector(n, -scale)
+                elif z < -tol:
+                    n = normalize_vector_xy(add_vectors_xy(oa, ob))
+                    n = scale_vector(n, +scale)
+                else:
+                    ba = normalize_vector_xy(subtract_vectors_xy(a, b))
+                    n = cross_vectors([0, 0, 1], ba)
+                    n = scale_vector(n, +scale)
+                # left and right
+                lx, ly, lz = add_vectors_xy(o, rotate(n, +alpha))
+                rx, ry, rz = add_vectors_xy(o, rotate(n, -alpha))
                 l = self.add_vertex(x=lx, y=ly, z=o[2], is_fixed=True, _is_external=True)
                 r = self.add_vertex(x=rx, y=ry, z=o[2], is_fixed=True, _is_external=True)
                 key_foot[key] = l, r
-
-            else:
-                pass
-
+                # foot face
+                self.add_face([l, key, r], _is_loaded=False)
+                # foot face attributes
+                self.edge_attribute((l, key), '_is_external', True)
+                self.edge_attribute((key, r), '_is_external', True)
+                self.edge_attribute((r, l), '_is_edge', False)
+        # add (opening?) faces
         for vertices in segments:
-            l = vertices[0]
-            r = vertices[-1]
-
-            if feet == 1:
-                lm = key_foot[l]
-                rm = key_foot[r]
-                self.add_face([lm] + vertices + [rm], _is_loaded=False)
-                self.edge_attribute((l, lm), '_is_external', True)
-                self.edge_attribute((rm, lm), '_is_edge', False)
-
-            elif feet == 2:
-                lb = key_foot[l][0]
-                la = key_foot[l][1]
-                rb = key_foot[r][0]
-                self.add_face([lb, l, la], _is_loaded=False)
-                self.add_face([la] + vertices + [rb], _is_loaded=False)
-                self.edge_attribute((l, lb), '_is_external', True)
-                self.edge_attribute((l, la), '_is_external', True)
-                self.edge_attribute((lb, la), '_is_edge', False)
-                self.edge_attribute((la, rb), '_is_edge', False)
-
-            else:
-                raise NotImplementedError
+            if len(vertices) < 3:
+                continue
+            left = vertices[0]
+            right = vertices[-1]
+            start = None
+            end = None
+            if left in key_foot:
+                start = key_foot[left][1]
+            if right in key_foot:
+                end = key_foot[right][0]
+            if start is not None:
+                vertices.insert(0, start)
+            if end is not None:
+                vertices.append(end)
+            self.add_face(vertices, _is_loaded=False)
+            self.edge_attribute((vertices[0], vertices[-1]), '_is_edge', False)
 
     # --------------------------------------------------------------------------
     # visualisation
