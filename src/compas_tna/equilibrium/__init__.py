@@ -86,8 +86,13 @@ from __future__ import absolute_import
 
 import compas
 
-if not compas.IPY:
-    from .horizontal import *
-    from .vertical import *
+if compas.IPY:
+    # from .horizontal import *
+    from .vertical_alglib import *
+else:
+    from .horizontal_numpy import *
+    from .vertical_numpy import *
+    # from .scale_numpy import *
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

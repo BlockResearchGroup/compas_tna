@@ -4,16 +4,11 @@ from __future__ import division
 
 import sys
 
-try:
-    from numpy import array
-    from numpy import float64
+from numpy import array
+from numpy import float64
 
-    from scipy.sparse import diags
-    from scipy.sparse.linalg import spsolve
-
-except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+from scipy.sparse import diags
+from scipy.sparse.linalg import spsolve
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import normrow

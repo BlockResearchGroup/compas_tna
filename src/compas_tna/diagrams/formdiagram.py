@@ -582,7 +582,7 @@ face degree: {}/{}
                 self.edge_attribute((la, rb), '_is_edge', False)
 
             else:
-                pass
+                raise NotImplementedError
 
     # --------------------------------------------------------------------------
     # visualisation
@@ -632,33 +632,4 @@ face degree: {}/{}
 
 if __name__ == '__main__':
 
-    # import compas
-    from compas.datastructures import Mesh
-    # from compas.files import OBJ
-
-    # filepath = compas.get('lines.obj')
-
-    # obj = OBJ(filepath)
-    # vertices = obj.parser.vertices
-    # edges = obj.parser.lines
-    # lines = [(vertices[u], vertices[v], 0) for u, v in edges]
-
-    # form = FormDiagram.from_lines(lines, delete_boundary_face=False)
-
-    # mesh = Mesh.from_obj(compas.get('faces.obj'))
-    # height = 5.0
-    # mesh.set_vertices_attribute('z', height)
-    # form = FormDiagram.from_mesh(mesh)
-
-    # assert form.number_of_faces() == mesh.number_of_faces()
-    # assert form.number_of_vertices() == mesh.number_of_vertices()
-    # assert max(mesh.get_vertices_attribute('z')) - height == max(form.get_vertices_attribute('z'))
-
-    # form.plot()
-
-    points = [[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 0.0, 0.0], [3.0, 0.0, 0.0], [4.0, 0.0, 0.0]]
-    lines = [(0, 1), (1, 2), (2, 3), (3, 4)]
-
-    mesh = Mesh.from_lines([(points[u], points[v]) for u, v in lines])
-
-    print(mesh.summary())
+    pass
