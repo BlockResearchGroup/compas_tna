@@ -409,10 +409,10 @@ face degree: {}/{}
                 vertices = self.face_vertices(face)
                 after = nbr
                 before = vertices[vertices.index(after) - 2]
-                if len(vertices) == 3:
-                    before = self.split_edge(vertex, before, t=0.1, allow_boundary=True)
-                    after = self.split_edge(vertex, after, t=0.1, allow_boundary=True)
-                    self.vertices_attribute('is_anchor', True, keys=[before, after])
+                # if len(vertices) == 3:
+                #     before = self.split_edge(vertex, before, t=0.1, allow_boundary=True)
+                #     after = self.split_edge(vertex, after, t=0.1, allow_boundary=True)
+                #     self.vertices_attribute('is_anchor', True, keys=[before, after])
                 self.split_face(face, before, after)
                 self.edge_attribute((before, after), '_is_edge', False)
                 self.delete_vertex(vertex)
