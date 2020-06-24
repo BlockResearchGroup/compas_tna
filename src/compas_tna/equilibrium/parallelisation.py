@@ -15,16 +15,28 @@ def parallelise_edges(xy, edges, targets, i_nbrs, ij_e, fixed=None, kmax=100, lm
 
     Parameters
     ----------
-    mesh : mesh
-        The mesh object.
+    xy : list
+        The XY coordinates of the vertices of the edges.
+    edges : list
+        The edges as pairs of indices in ``xy``.
     targets : list
-        A list of target vectors.
+        A target vector for every edge.
+    i_nbrs : dict
+        A list of neighbours per vertex.
+    ij_e : dict
+        An edge index per vertex pair.
     fixed : list, optional
         The fixed nodes of the mesh.
         Default is ``None``.
     kmax : int, optional
         Maximum number of iterations.
-        Default is ``1``.
+        Default is ``100``.
+    lmin : list, optional
+        Minimum length per edge.
+        Default is ``None``.
+    lmax : list, optional
+        Maximum length per edge.
+        Default is ``None``.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
         Default is ``None``.

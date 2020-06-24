@@ -7,25 +7,39 @@ from compas_tna.equilibrium.parallelisation import parallelise_edges
 
 
 __all__ = [
-    'horizontal_',
+    'horizontal_nodal',
 ]
 
 
-def horizontal_(form, force, alpha=100, kmax=100, display=False, callback=None):
+def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     """Compute horizontal equilibrium using a node-per-node approach.
 
     Parameters
     ----------
     form : compas_tna.diagrams.FormDiagram
+        The form diagram.
     force : compas_tna.diagrams.ForceDiagram
-    alpha : float
+        The force diagram.
+    alpha : float, optional
         Weighting factor for computation of the target vectors (the default is
         100.0, which implies that the target vectors are the edges of the form diagram).
         If 0.0, the target vectors are the edges of the force diagram.
-    kmax : int
-       Maximum number of iterations (the default is 100).
-    display : bool
-        Display information about the current iteration (the default is False).
+    kmax : int, optional
+       Maximum number of iterations.
+       Default is ``100``.
+    callback : callable, optional
+        A callback function to be called at every iteration of the parallelisation algorithm.
+        The callback should take the current iterand, the coordinates of the form diagram,
+        and the coordinates of the force diagram as input parameters.
+        Default is ``None``.
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    This function will update the form and force diagram instead of returning a result.
 
     """
     alpha = float(alpha) / 100.0

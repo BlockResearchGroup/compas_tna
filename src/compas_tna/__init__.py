@@ -21,10 +21,10 @@ import os
 import sys
 
 
-__author__    = ['Tom Van Mele', ]
+__author__ = ['Tom Van Mele', ]
 __copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
-__license__   = 'MIT License'
-__email__     = 'vanmelet@ethz.ch'
+__license__ = 'MIT License'
+__email__ = 'vanmelet@ethz.ch'
 
 __version__ = '0.1.0'
 
@@ -46,9 +46,6 @@ def get(filename):
     ----------
     filename : str
         The name of the data file.
-        The following are available.
-
-        * 
 
     Returns
     -------
@@ -69,12 +66,9 @@ def get(filename):
     The ``compas_tna.get`` function is meant to be used in combination with the static
     constructors of the data structures.
 
-    .. code-block:: python
-
-        import compas_tna
-        from compas_tna.diagrams import FormDiagram
-
-        form = FormDiagram.from_obj(compas.get('faces.obj'))
+    >>> import compas_tna
+    >>> from compas_tna.diagrams import FormDiagram
+    >>> form = FormDiagram.from_obj(compas.get('faces.obj'))
 
     """
     filename = filename.strip('/')

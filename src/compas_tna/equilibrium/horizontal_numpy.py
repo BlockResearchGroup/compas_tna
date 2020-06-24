@@ -22,28 +22,28 @@ from compas_tna.utilities import parallelise_nodal
 
 
 __all__ = [
-    'horizontal',
-    'horizontal_nodal',
-    'horizontal_proxy',
-    'horizontal_nodal_proxy'
+    'horizontal_numpy',
+    'horizontal_nodal_numpy',
+    'horizontal_numpy_proxy',
+    'horizontal_nodal_numpy_proxy'
 ]
 
 
-def horizontal_proxy(formdata, forcedata, *args, **kwargs):
+def horizontal_numpy_proxy(formdata, forcedata, *args, **kwargs):
     form = FormDiagram.from_data(formdata)
     force = ForceDiagram.from_data(forcedata)
-    horizontal(form, force, *args, **kwargs)
+    horizontal_numpy(form, force, *args, **kwargs)
     return form.to_data(), force.to_data()
 
 
-def horizontal_nodal_proxy(formdata, forcedata, *args, **kwargs):
+def horizontal_nodal_numpy_proxy(formdata, forcedata, *args, **kwargs):
     form = FormDiagram.from_data(formdata)
     force = ForceDiagram.from_data(forcedata)
-    horizontal_nodal(form, force, *args, **kwargs)
+    horizontal_nodal_numpy(form, force, *args, **kwargs)
     return form.to_data(), force.to_data()
 
 
-def horizontal(form, force, alpha=100.0, kmax=100, display=False):
+def horizontal_numpy(form, force, alpha=100.0, kmax=100, display=False):
     r"""Compute horizontal equilibrium.
 
     Parameters
@@ -187,7 +187,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=False):
         attr['_a'] = a[i]
 
 
-def horizontal_nodal(form, force, alpha=100, kmax=100, display=False):
+def horizontal_nodal_numpy(form, force, alpha=100, kmax=100, display=False):
     """Compute horizontal equilibrium using a node-per-node approach.
 
     Parameters

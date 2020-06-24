@@ -2,7 +2,7 @@ import compas_tna
 
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
-from compas_tna.equilibrium import horizontal_
+from compas_tna.equilibrium import horizontal_nodal
 from compas_plotters import MeshPlotter
 
 FILE = compas_tna.get('tutorial/boundaryconditions.json')
@@ -10,7 +10,7 @@ FILE = compas_tna.get('tutorial/boundaryconditions.json')
 form = FormDiagram.from_json(FILE)
 force = ForceDiagram.from_formdiagram(form)
 
-horizontal_(form, force, kmax=100)
+horizontal_nodal(form, force, kmax=100)
 
 # ==============================================================================
 # Visualise
