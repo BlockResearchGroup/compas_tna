@@ -7,7 +7,7 @@ from compas_plotters import MeshPlotter
 FILE = compas_tna.get('tutorial/boundaryconditions.json')
 
 form = FormDiagram.from_json(FILE)
-force  = ForceDiagram.from_formdiagram(form)
+force = ForceDiagram.from_formdiagram(form)
 
 # ==============================================================================
 # Visualise

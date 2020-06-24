@@ -2,16 +2,14 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from math import sqrt
 from copy import deepcopy
 
-import compas
 from compas.geometry import cross_vectors
 from compas.geometry import length_vector
 from compas.geometry import centroid_points
 from compas.geometry import norm_vector
 
-from compas.numerical._alglib._core import xalglib
+from compas_tna.equilibrium._alglib._core import xalglib
 
 
 __all__ = ['vertical_from_q_alglib']

@@ -142,7 +142,7 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
     q = scale * q0
     Q = diags([q.ravel()], [0])
 
-    res = update_z(xyz, Q, C, p, free, fixed, update_loads, tol=rtol, kmax=kmax, display=display)
+    update_z(xyz, Q, C, p, free, fixed, update_loads, tol=rtol, kmax=kmax, display=display)
     # --------------------------------------------------------------------------
     # update
     # --------------------------------------------------------------------------

@@ -86,13 +86,14 @@ from __future__ import absolute_import
 
 import compas
 
+from .horizontal import *  # noqa: F401 F403
+
 if compas.IPY:
-    # from .horizontal import *
-    from .vertical_alglib import *
+    # from .vertical_alglib import *  # noqa: F401 F403
+    pass
 else:
-    from .horizontal_numpy import *
-    from .vertical_numpy import *
-    # from .scale_numpy import *
+    from .horizontal_numpy import *  # noqa: F401 F403
+    from .vertical_numpy import *  # noqa: F401 F403
 
 
 __all__ = [name for name in dir() if not name.startswith('_')]

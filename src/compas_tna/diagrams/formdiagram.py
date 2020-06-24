@@ -55,12 +55,10 @@ class FormDiagram(Diagram):
         })
         self.default_edge_attributes.update({
             'q': 1.0,
-            'qmin': 0.0,
-            'qmax': 1e+7,
             'lmin': 0.0,
             'lmax': 1e+7,
-            'fmin': 0.0,
-            'fmax': 1e+7,
+            'hmin': 0.0,
+            'hmax': 1e+7,
 
             '_f': 0.0,
             '_l': 0.0,

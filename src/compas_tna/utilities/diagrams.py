@@ -4,8 +4,6 @@ from __future__ import division
 
 import sys
 
-from numpy import array
-from numpy import float64
 from numpy import empty_like
 from numpy.linalg import cond
 

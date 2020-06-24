@@ -24,7 +24,10 @@ class ForceDiagram(Diagram):
             'is_fixed': False,
         })
         self.default_edge_attributes.update({
-            '_a': 0.0
+            'lmin': 0.0,
+            'lmax': 1e+7,
+
+            '_a': 0.0,
         })
         self.attributes.update({
             'name': 'ForceDiagram',
@@ -60,7 +63,7 @@ class ForceDiagram(Diagram):
 
     def uv_index(self, form=None):
         if not form:
-            return dict(((u, v), index) for index, (u, v) in enumerate(self.edges()))
+            return {uv: index for index, uv in enumerate(self.edges())}
         uv_index = dict()
         for index, (u, v) in enumerate(form.edges_where({'_is_edge': True})):
             f1 = form.halfedge[u][v]

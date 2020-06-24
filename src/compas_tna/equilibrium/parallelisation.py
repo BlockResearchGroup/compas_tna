@@ -2,32 +2,31 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.geometry import midpoint_point_point_xy
+
 
 __all__ = [
-    'network_parallelise_edges',
+    'parallelise_edges',
 ]
 
 
-def network_parallelise_edges(network, targets, fixed=None, kmax=1, callback=None, callback_args=None):
-    """Parallelise the edges of a network to given target vectors.
+def parallelise_edges(xy, edges, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=None, lmax=None, callback=None):
+    """Parallelise the edges of a mesh to given target vectors.
 
     Parameters
     ----------
-    network : Network
-        The network object.
+    mesh : mesh
+        The mesh object.
     targets : list
         A list of target vectors.
     fixed : list, optional
-        The fixed nodes of the network.
+        The fixed nodes of the mesh.
         Default is ``None``.
     kmax : int, optional
         Maximum number of iterations.
         Default is ``1``.
     callback : callable, optional
         A user-defined callback function to be executed after every iteration.
-        Default is ``None``.
-    callback_args : tuple, optional
-        Additional parameters to be passed to the callback.
         Default is ``None``.
 
     Returns
@@ -42,43 +41,59 @@ def network_parallelise_edges(network, targets, fixed=None, kmax=1, callback=Non
         if not callable(callback):
             raise Exception('The provided callback is not callable.')
 
-    free = list(set(range(network.number_of_nodes())) - set(fixed))
-    uv_e = {(u, v): index for index, (u, v) in enumerate(network.edges())}
-    uv_e.update({(v, u): index for index, (u, v) in enumerate(network.edges())})
+    fixed = fixed or []
+    fixed = set(fixed)
 
-    # the main loop
+    n = len(xy)
+
     for k in range(kmax):
-        # current coorinates and lengths
-        key_xyz = {key: network.node_coordinates(key) for key in network.nodes()}
-        lengths = [network.edge_length(u, v) for u, v in network.edges()]
-        # the inner loop
-        for key in free:
-            nbrs = network.neighbors(key)
-            n = float(len(nbrs))
-            x, y, z = 0.0, 0.0, 0.0
+        xy0 = [[x, y] for x, y in xy]
+        uv = [[xy[j][0] - xy[i][0], xy[j][1] - xy[i][1]] for i, j in edges]
+        lengths = [(dx**2 + dy**2)**0.5 for dx, dy in uv]
 
-            for nbr in nbrs:
-                e = uv_e[(key, nbr)]
-                ax, ay, az = key_xyz[nbr]
-                tx, ty, tz = targets[e]
-                l = lengths[e]  # noqa: E741
+        if lmin:
+            lengths[:] = [max(a, b) for a, b in zip(lengths, lmin)]
 
-                if key in network.edge[nbr]:
-                    bx = ax + l * tx
-                    by = ay + l * ty
-                    bz = az + l * tz
+        if lmax:
+            lengths[:] = [min(a, b) for a, b in zip(lengths, lmax)]
+
+        for j in range(n):
+            if j in fixed:
+                continue
+
+            nbrs = i_nbrs[j]
+            x, y = 0.0, 0.0
+
+            for i in nbrs:
+                ax, ay = xy0[i]
+
+                if (i, j) in ij_e:
+                    e = ij_e[(i, j)]
+                    l = lengths[e]  # noqa: E741
+                    tx, ty = targets[e]
+                    x += ax + l * tx
+                    y += ay + l * ty
+
                 else:
-                    bx = ax - l * tx
-                    by = ay - l * ty
-                    bz = az - l * tz
+                    e = ij_e[(j, i)]
+                    l = lengths[e]  # noqa: E741
+                    tx, ty = targets[e]
+                    x += ax - l * tx
+                    y += ay - l * ty
 
-                x += bx
-                y += by
-                z += bz
+            xy[j][0] = x / len(nbrs)
+            xy[j][1] = y / len(nbrs)
 
-            network.node[key]['x'] = x / n
-            network.node[key]['y'] = y / n
-            network.node[key]['z'] = z / n
+        for (i, j) in ij_e:
+            e = ij_e[(i, j)]
+
+            if lengths[e] == 0.0:
+                c = midpoint_point_point_xy(xy[i], xy[j])
+                xy[i][:] = c[:]
+                xy[j][:] = c[:]
+
+        if callback:
+            callback(k, xy)
 
 
 # ==============================================================================

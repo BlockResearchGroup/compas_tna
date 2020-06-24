@@ -6,6 +6,7 @@ from compas.geometry import angle_vectors_xy
 
 from numpy import array
 from numpy import float64
+from numpy import where
 
 from compas.numerical import connectivity_matrix
 from compas.numerical import normrow
@@ -86,12 +87,11 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=False):
     xy = array(form.vertices_attributes('xy'), dtype=float64)
     lmin = array([attr.get('lmin', 1e-7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
     lmax = array([attr.get('lmax', 1e+7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    fmin = array([attr.get('fmin', 1e-7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    fmax = array([attr.get('fmax', 1e+7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    # hmin = array([attr.get('hmin', 1e-7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    # hmax = array([attr.get('hmax', 1e+7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
     C = connectivity_matrix(edges, 'csr')
     Ct = C.transpose()
     CtC = Ct.dot(C)
-
     # --------------------------------------------------------------------------
     # force diagram
     # --------------------------------------------------------------------------
@@ -102,10 +102,11 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=False):
     _fixed = _fixed or [0]
     _edges = force.ordered_edges(form)
     _xy = array(force.vertices_attributes('xy'), dtype=float64)
+    _lmin = array([attr.get('lmin', 1e-7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
+    _lmax = array([attr.get('lmax', 1e+7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
     _C = connectivity_matrix(_edges, 'csr')
     _Ct = _C.transpose()
     _Ct_C = _Ct.dot(_C)
-
     # --------------------------------------------------------------------------
     # rotate force diagram to make it parallel to the form diagram
     # use CCW direction (opposite of cycle direction)
@@ -126,7 +127,7 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=False):
     for k in range(kmax):
         # apply length bounds
         apply_bounds(l, lmin, lmax)
-        apply_bounds(_l, fmin, fmax)
+        apply_bounds(_l, _lmin, _lmax)
         # print, if allowed
         if display:
             print(k)
@@ -177,9 +178,13 @@ def horizontal(form, force, alpha=100.0, kmax=100, display=False):
         i = _k_i[key]
         attr['x'] = _xy[i, 0]
         attr['y'] = _xy[i, 1]
-    for (u, v), attr in force.edges_where({'_is_edge': True}, True):
-        i = _uv_i[(u, v)]
+    for (u, v), attr in force.edges(True):
+        if (u, v) in _uv_i:
+            i = _uv_i[(u, v)]
+        else:
+            i = _uv_i[(v, u)]
         attr['_l'] = _l[i, 0]
+        attr['_a'] = a[i]
 
 
 def horizontal_nodal(form, force, alpha=100, kmax=100, display=False):
@@ -213,8 +218,8 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=False):
     edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({'_is_edge': True})]
     lmin = array([attr.get('lmin', 1e-7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
     lmax = array([attr.get('lmax', 1e+7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    fmin = array([attr.get('fmin', 1e-7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    fmax = array([attr.get('fmax', 1e+7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    hmin = array([attr.get('hmin', 1e-7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+    hmax = array([attr.get('hmax', 1e+7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
     flipmask = array([1.0 if not attr['_is_tension'] else -1.0 for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float).reshape((-1, 1))
     xy = array(form.vertices_attributes('xy'), dtype=float64)
     C = connectivity_matrix(edges, 'csr')
@@ -230,7 +235,10 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=False):
     _fixed = _fixed or [0]
     _edges = force.ordered_edges(form)
     _xy = array(force.vertices_attributes('xy'), dtype=float64)
+    _lmin = array([attr.get('lmin', 1e-7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
+    _lmax = array([attr.get('lmax', 1e+7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
     _C = connectivity_matrix(_edges, 'csr')
+    scale = force.attributes.get('scale', 1.0)
     # --------------------------------------------------------------------------
     # rotate force diagram to make it parallel to the form diagram
     # use CCW direction (opposite of cycle direction)
@@ -250,12 +258,19 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=False):
     # --------------------------------------------------------------------------
     targets = alpha * normalizerow(uv) + (1 - alpha) * normalizerow(_uv)
     # --------------------------------------------------------------------------
+    # proper force bounds
+    # --------------------------------------------------------------------------
+    hmin /= scale
+    hmax /= scale
+    _lmin = where(hmin > _lmin, hmin, _lmin)
+    _lmax = where(hmax < _lmax, hmax, _lmax)
+    # --------------------------------------------------------------------------
     # parallelise
     # --------------------------------------------------------------------------
     if alpha < 1:
         parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=fixed, kmax=kmax, lmin=lmin, lmax=lmax)
     if alpha > 0:
-        parallelise_nodal(_xy, _C, targets, _i_nbrs, _ij_e, kmax=kmax, lmin=fmin, lmax=fmax)
+        parallelise_nodal(_xy, _C, targets, _i_nbrs, _ij_e, kmax=kmax, lmin=_lmin, lmax=_lmax)
     # --------------------------------------------------------------------------
     # update the coordinate difference vectors
     # --------------------------------------------------------------------------
@@ -301,10 +316,10 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, display=False):
     for (u, v), attr in force.edges(True):
         if (u, v) in _uv_i:
             i = _uv_i[(u, v)]
-            attr['_l'] = _l[i, 0]
-        elif (v, u) in _uv_i:
+        else:
             i = _uv_i[(v, u)]
-            attr['_l'] = _l[i, 0]
+        attr['_l'] = _l[i, 0]
+        attr['_a'] = a[i]
 
 
 # ==============================================================================
