@@ -262,9 +262,9 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Fa
     uv_i = form.uv_index()
     vcount = form.number_of_vertices()
     anchors = list(form.anchors())
-    fixed = list(form.fixed())
-    fixed = set(anchors + fixed)
-    fixed = [k_i[key] for key in fixed]
+    # fixed = list(form.fixed())
+    # fixed = set(anchors + fixed)
+    fixed = [k_i[key] for key in anchors]
     edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'_is_edge': True})]
     free = list(set(range(vcount)) - set(fixed))
     xyz = array(form.vertices_attributes('xyz'), dtype=float64)

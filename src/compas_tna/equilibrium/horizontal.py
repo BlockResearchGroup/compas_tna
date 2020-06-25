@@ -109,7 +109,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     if alpha < 1:
         parallelise_edges(xy, edges, targets, i_nbrs, ij_e, fixed=fixed, kmax=kmax, lmin=lmin, lmax=lmax)
     if alpha > 0:
-        parallelise_edges(_xy, _edges, targets, _i_nbrs, _ij_e, kmax=kmax, lmin=_lmin, lmax=_lmax, callback=callback)
+        parallelise_edges(_xy, _edges, targets, _i_nbrs, _ij_e, fixed=_fixed, kmax=kmax, lmin=_lmin, lmax=_lmax, callback=callback)
     # --------------------------------------------------------------------------
     # update the coordinate difference vectors
     # --------------------------------------------------------------------------
