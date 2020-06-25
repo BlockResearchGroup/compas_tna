@@ -105,7 +105,7 @@ def parallelise_edges(xy, edges, targets, i_nbrs, ij_e, fixed=None, kmax=100, lm
                 xy[j][:] = c[:]
 
         if callback:
-            callback(k, xy)
+            callback(k, xy, edges)
 
 
 # ==============================================================================
