@@ -313,6 +313,8 @@ face degree: {}/{}
         vertices = {}
         faces = {}
         for key in inner:
+            if self.vertex_attribute(key, 'is_anchor'):
+                continue
             fkeys = self.vertex_faces(key, ordered=True)
             for fkey in fkeys:
                 if fkey not in vertices:
@@ -438,9 +440,10 @@ face degree: {}/{}
                 for vertices in segments:
                     if len(vertices) < 3:
                         continue
+                    print(vertices)
                     self.add_face(vertices, _is_loaded=False)
-                    if vertices[0] != vertices[-1]:
-                        self.edge_attribute((vertices[0], vertices[-1]), '_is_edge', False)
+                    self.edge_attribute((vertices[0], vertices[-1]), '_is_edge', False)
+                    print(self.edge_attribute((vertices[0], vertices[-1]), '_is_edge'))
 
     # --------------------------------------------------------------------------
     # visualisation
