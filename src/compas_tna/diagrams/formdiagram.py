@@ -51,7 +51,6 @@ class FormDiagram(Diagram):
             '_rx': 0.0,
             '_ry': 0.0,
             '_rz': 0.0,
-            '_is_external': False,
         })
         self.default_edge_attributes.update({
             'q': 1.0,
@@ -64,7 +63,6 @@ class FormDiagram(Diagram):
             '_l': 0.0,
             '_a': 0.0,
             '_is_edge': True,
-            '_is_external': False,
             '_is_tension': False
         })
         self.default_face_attributes.update({
@@ -453,7 +451,6 @@ face degree: {}/{}
         plotter = MeshPlotter(self, figsize=(12, 8), tight=True)
         vertexcolor = {}
         vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
-        vertexcolor.update({key: '#0000ff' for key in self.vertices_where({'_is_external': True})})
         vertexcolor.update({key: '#ff0000' for key in self.vertices_where({'is_anchor': True})})
         plotter.draw_vertices(facecolor=vertexcolor)
         plotter.draw_edges(keys=list(self.edges_where({'_is_edge': True})))
@@ -470,7 +467,6 @@ face degree: {}/{}
         if settings.get('show.vertices', True):
             vertexcolor = {}
             vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
-            vertexcolor.update({key: '#0000ff' for key in self.vertices_where({'_is_external': True})})
             vertexcolor.update({key: '#ff0000' for key in self.vertices_where({'is_anchor': True})})
             artist.draw_vertices(color=vertexcolor)
         if settings.get('show.edges', True):

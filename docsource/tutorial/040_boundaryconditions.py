@@ -28,7 +28,6 @@ plotter = MeshPlotter(form, figsize=(12, 8), tight=True)
 
 vertexcolor = {}
 vertexcolor.update({key: '#00ff00' for key in form.vertices_where({'is_fixed': True})})
-vertexcolor.update({key: '#0000ff' for key in form.vertices_where({'_is_external': True})})
 vertexcolor.update({key: '#ff0000' for key in form.vertices_where({'is_anchor': True})})
 
 radius = {key: 0.05 for key in form.vertices()}
@@ -40,12 +39,9 @@ plotter.draw_vertices(
 
 edges = list(form.edges_where({'_is_edge': True}))
 plotter.draw_edges(
-    keys=edges,
-    color={key: '#00ff00' for key in form.edges_where({'_is_external': True})},
-    width={key: 2.0 for key in form.edges_where({'_is_external': True})})
+    keys=edges)
 
 faces = list(form.faces_where({'_is_loaded': True}))
-print(faces)
 
 plotter.draw_faces(
     keys=faces, facecolor=(1.0, 0.9, 0.9),)
