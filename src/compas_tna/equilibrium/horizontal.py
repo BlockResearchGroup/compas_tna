@@ -69,7 +69,6 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     _ij_e = {(_k_i[u], _k_i[v]): index for (u, v), index in iter(_uv_i.items())}
     _fixed = list(force.fixed())
     _fixed = [_k_i[key] for key in _fixed]
-    _fixed = _fixed or [0]
     _xy = force.vertices_attributes('xy')
     _edges = force.ordered_edges(form)
     _lmin = [attr.get('lmin', 1e-7) for key, attr in force.edges(True)]
