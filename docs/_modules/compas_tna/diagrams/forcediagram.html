@@ -99,7 +99,10 @@
             <span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
         <span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">default_edge_attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-            <span class="s1">&#39;_a&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+            <span class="s1">&#39;lmin&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s1">&#39;lmax&#39;</span><span class="p">:</span> <span class="mf">1e+7</span><span class="p">,</span>
+
+            <span class="s1">&#39;_a&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
         <span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
             <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;ForceDiagram&#39;</span><span class="p">,</span>
@@ -135,7 +138,7 @@
 
 <div class="viewcode-block" id="ForceDiagram.uv_index"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.ForceDiagram.uv_index.html#compas_tna.diagrams.ForceDiagram.uv_index">[docs]</a>    <span class="k">def</span> <span class="nf">uv_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">form</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">dict</span><span class="p">(((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">()))</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">uv</span><span class="p">:</span> <span class="n">index</span> <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">uv</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">())}</span>
         <span class="n">uv_index</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;_is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})):</span>
             <span class="n">f1</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">halfedge</span><span class="p">[</span><span class="n">u</span><span class="p">][</span><span class="n">v</span><span class="p">]</span>

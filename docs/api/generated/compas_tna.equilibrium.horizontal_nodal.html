@@ -17,11 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-    <link rel="next" title="horizontal_proxy" href="compas_tna.equilibrium.horizontal_proxy.html" />
+    <link rel="next" title="vertical_from_zmax" href="compas_tna.equilibrium.vertical_from_zmax.html" />
   
   
   
-    <link rel="prev" title="horizontal" href="compas_tna.equilibrium.horizontal.html" />
+    <link rel="prev" title="compas_tna.equilibrium.horizontal" href="compas_tna.equilibrium.horizontal.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -80,21 +80,30 @@
 <h1 class="display-4 p-0 mb-5">horizontal_nodal</h1>
 <dl class="function">
 <dt id="compas_tna.equilibrium.horizontal_nodal">
-<code class="sig-prename descclassname">compas_tna.equilibrium.</code><code class="sig-name descname">horizontal_nodal</code><span class="sig-paren">(</span><em class="sig-param">form</em>, <em class="sig-param">force</em>, <em class="sig-param">alpha=100</em>, <em class="sig-param">kmax=100</em>, <em class="sig-param">display=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_tna/equilibrium/horizontal_numpy.html#horizontal_nodal"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">compas_tna.equilibrium.</code><code class="sig-name descname">horizontal_nodal</code><span class="sig-paren">(</span><em class="sig-param">form</em>, <em class="sig-param">force</em>, <em class="sig-param">alpha=100</em>, <em class="sig-param">kmax=100</em>, <em class="sig-param">callback=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_tna/equilibrium/horizontal.html#horizontal_nodal"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Compute horizontal equilibrium using a node-per-node approach.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>form</strong> (<em>compas_tna.diagrams.FormDiagram</em>)</p></li>
-<li><p><strong>force</strong> (<em>compas_tna.diagrams.ForceDiagram</em>)</p></li>
-<li><p><strong>alpha</strong> (<em>float</em>) – Weighting factor for computation of the target vectors (the default is
+<li><p><strong>form</strong> (<em>compas_tna.diagrams.FormDiagram</em>) – The form diagram.</p></li>
+<li><p><strong>force</strong> (<em>compas_tna.diagrams.ForceDiagram</em>) – The force diagram.</p></li>
+<li><p><strong>alpha</strong> (<em>float, optional</em>) – Weighting factor for computation of the target vectors (the default is
 100.0, which implies that the target vectors are the edges of the form diagram).
 If 0.0, the target vectors are the edges of the force diagram.</p></li>
-<li><p><strong>kmax</strong> (<em>int</em>) – Maximum number of iterations (the default is 100).</p></li>
-<li><p><strong>display</strong> (<em>bool</em>) – Display information about the current iteration (the default is False).</p></li>
+<li><p><strong>kmax</strong> (<em>int, optional</em>) – Maximum number of iterations.
+Default is <code class="docutils literal notranslate"><span class="pre">100</span></code>.</p></li>
+<li><p><strong>callback</strong> (<em>callable, optional</em>) – A callback function to be called at every iteration of the parallelisation algorithm.
+The callback should take the current iterand, the coordinates of the form diagram,
+and the coordinates of the force diagram as input parameters.
+Default is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>None</em></p>
+</dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>This function will update the form and force diagram instead of returning a result.</p>
 </dd></dl>
 
 </div>

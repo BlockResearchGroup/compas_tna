@@ -99,7 +99,7 @@
 
 <span class="n">relax_boundary_openings</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">corners</span><span class="p">)</span>
 
-<span class="n">form</span><span class="o">.</span><span class="n">update_boundaries</span><span class="p">(</span><span class="n">feet</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">form</span><span class="o">.</span><span class="n">update_boundaries</span><span class="p">()</span>
 
 <span class="n">form</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">FILE_O</span><span class="p">)</span>
 
@@ -111,7 +111,6 @@
 
 <span class="n">vertexcolor</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">vertexcolor</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#00ff00&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
-<span class="n">vertexcolor</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#0000ff&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;_is_external&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
 <span class="n">vertexcolor</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
 
 <span class="n">radius</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="mf">0.05</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
@@ -123,12 +122,9 @@
 
 <span class="n">edges</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;_is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}))</span>
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span>
-    <span class="n">keys</span><span class="o">=</span><span class="n">edges</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#00ff00&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;_is_external&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})},</span>
-    <span class="n">width</span><span class="o">=</span><span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="mf">2.0</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;_is_external&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
+    <span class="n">keys</span><span class="o">=</span><span class="n">edges</span><span class="p">)</span>
 
 <span class="n">faces</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">faces_where</span><span class="p">({</span><span class="s1">&#39;_is_loaded&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span>
 
 <span class="n">plotter</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span>
     <span class="n">keys</span><span class="o">=</span><span class="n">faces</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">),)</span>

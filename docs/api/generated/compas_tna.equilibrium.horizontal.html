@@ -76,33 +76,20 @@
       <main class="col-12 col-md-9 col-xl-7 px-2 px-md-5 py-5 compas-content" role="main">
         
         
-        <div class="detail section" id="horizontal">
-<h1 class="display-4 p-0 mb-5">horizontal</h1>
-<dl class="function">
-<dt id="compas_tna.equilibrium.horizontal">
-<code class="sig-prename descclassname">compas_tna.equilibrium.</code><code class="sig-name descname">horizontal</code><span class="sig-paren">(</span><em class="sig-param">form</em>, <em class="sig-param">force</em>, <em class="sig-param">alpha=100.0</em>, <em class="sig-param">kmax=100</em>, <em class="sig-param">display=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/compas_tna/equilibrium/horizontal_numpy.html#horizontal"><span class="viewcode-link">[source]</span></a></dt>
-<dd><p>Compute horizontal equilibrium.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>form</strong> (<em>compas_tna.diagrams.formdiagram.FormDiagram</em>)</p></li>
-<li><p><strong>force</strong> (<em>compas_tna.diagrams.forcediagram.ForceDiagram</em>)</p></li>
-<li><p><strong>alpha</strong> (<em>float</em>) – Weighting factor for computation of the target vectors (the default is
-100.0, which implies that the target vectors are the edges of the form diagram).
-If 0.0, the target vectors are the edges of the force diagram.</p></li>
-<li><p><strong>kmax</strong> (<em>int</em>) – Maximum number of iterations (the default is 100).</p></li>
-<li><p><strong>display</strong> (<em>bool</em>) – Display information about the current iteration (the default is False).</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>This implementation is based on the following formulation</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{C}^{T} \mathbf{C} \mathbf{xy} = \mathbf{C}^{T} \mathbf{t}\]</div>
-<p>with <span class="math notranslate nohighlight">\(\mathbf{C}\)</span> the connectivity matrix and <span class="math notranslate nohighlight">\(\mathbf{t}\)</span> the
-target vectors.</p>
-</dd></dl>
-
+        <div class="detail section" id="module-compas_tna.equilibrium.horizontal">
+<span id="compas-tna-equilibrium-horizontal"></span><h1 class="display-4 p-0 mb-5">compas_tna.equilibrium.horizontal</h1>
+<p class="rubric">Functions</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">horizontal_nodal</span></code>(form, force[, alpha, kmax, …])</p></td>
+<td><p>Compute horizontal equilibrium using a node-per-node approach.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 
         
@@ -147,7 +134,7 @@ target vectors.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">horizontal</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">compas_tna.equilibrium.horizontal</a></li>
 </ul>
 
       </div>
