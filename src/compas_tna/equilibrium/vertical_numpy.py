@@ -19,10 +19,10 @@ from compas_tna.utilities import update_z
 
 __all__ = [
     'vertical_from_zmax',
-    'vertical_from_bbox',
+    # 'vertical_from_bbox',
     'vertical_from_q',
     'vertical_from_zmax_proxy',
-    'vertical_from_bbox_proxy',
+    # 'vertical_from_bbox_proxy',
     'vertical_from_q_proxy'
 ]
 
@@ -33,10 +33,10 @@ def vertical_from_zmax_proxy(formdata, *args, **kwargs):
     return form.to_data(), scale
 
 
-def vertical_from_bbox_proxy(formdata, *args, **kwargs):
-    form = FormDiagram.from_data(formdata)
-    scale = vertical_from_bbox(form, *args, **kwargs)
-    return form.to_data(), scale
+# def vertical_from_bbox_proxy(formdata, *args, **kwargs):
+#     form = FormDiagram.from_data(formdata)
+#     scale = vertical_from_bbox(form, *args, **kwargs)
+#     return form.to_data(), scale
 
 
 def vertical_from_q_proxy(formdata, *args, **kwargs):
@@ -87,9 +87,9 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
     uv_i = form.uv_index()
     vcount = len(form.vertex)
     anchors = list(form.anchors())
-    fixed = list(form.fixed())
-    fixed = set(anchors + fixed)
-    fixed = [k_i[key] for key in fixed]
+    # fixed = list(form.fixed())
+    # fixed = set(anchors + fixed)
+    fixed = [k_i[key] for key in anchors]
     free = list(set(range(vcount)) - set(fixed))
     edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'_is_edge': True})]
     xyz = array(form.vertices_attributes('xyz'), dtype=float64)
@@ -166,71 +166,70 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
     return scale
 
 
-def vertical_from_bbox(form, factor=5.0, kmax=100, tol=1e-3, density=1.0, display=False):
-    # --------------------------------------------------------------------------
-    # FormDiagram
-    # --------------------------------------------------------------------------
-    k_i = form.key_index()
-    uv_i = form.uv_index()
-    vcount = len(form.vertex)
-    anchors = list(form.anchors())
-    fixed = list(form.fixed())
-    fixed = set(anchors + fixed)
-    fixed = [k_i[key] for key in fixed]
-    free = list(set(range(vcount)) - set(fixed))
-    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'_is_edge': True})]
-    xyz = array(form.vertices_attributes('xyz'), dtype=float64)
-    thick = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
-    p = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
-    q = [attr.get('q', 1.0) for key, attr in form.edges_where({'_is_edge': True}, True)]
-    q = array(q, dtype=float64).reshape((-1, 1))
-    C = connectivity_matrix(edges, 'csr')
-    Ci = C[:, free]
-    Ct = C.transpose()
-    # --------------------------------------------------------------------------
-    # original data
-    # --------------------------------------------------------------------------
-    p0 = array(p, copy=True)
-    q0 = array(q, copy=True)
-    # --------------------------------------------------------------------------
-    # load updater
-    # --------------------------------------------------------------------------
-    update_loads = LoadUpdater(form, p0, thickness=thick, density=density)
-    # --------------------------------------------------------------------------
-    # scale
-    # --------------------------------------------------------------------------
-    (xmin, ymin, zmin), (xmax, ymax, zmax) = form.bbox()
-    d = ((xmax - xmin) ** 2 + (ymax - ymin) ** 2) ** 0.5
-    scale = d / factor
-    # --------------------------------------------------------------------------
-    # vertical
-    # --------------------------------------------------------------------------
-    q = scale * q0
-    Q = diags([q.ravel()], [0])
-    update_z(xyz, Q, C, p, free, fixed, update_loads, tol=tol, kmax=kmax, display=display)
-    # --------------------------------------------------------------------------
-    # update
-    # --------------------------------------------------------------------------
-    l = normrow(C.dot(xyz))
-    f = q * l
-    r = Ct.dot(Q).dot(C).dot(xyz) - p
-    sw = p - p0
-    # --------------------------------------------------------------------------
-    # form
-    # --------------------------------------------------------------------------
-    for key, attr in form.vertices(True):
-        index = k_i[key]
-        attr['z'] = xyz[index, 2]
-        attr['_rx'] = r[index, 0]
-        attr['_ry'] = r[index, 1]
-        attr['_rz'] = r[index, 2]
-        attr['_sw'] = sw[index, 2]
-    for key, attr in form.edges_where({'_is_edge': True}, True):
-        index = uv_i[key]
-        attr['q'] = q[index, 0]
-        attr['_f'] = f[index, 0]
+# def vertical_from_bbox(form, factor=5.0, kmax=100, tol=1e-3, density=1.0, display=False):
+#     # --------------------------------------------------------------------------
+#     # FormDiagram
+#     # --------------------------------------------------------------------------
+#     k_i = form.key_index()
+#     uv_i = form.uv_index()
+#     vcount = len(form.vertex)
+#     anchors = list(form.anchors())
+#     # fixed = list(form.fixed())
+#     # fixed = set(anchors + fixed)
+#     fixed = [k_i[key] for key in anchors]
+#     free = list(set(range(vcount)) - set(fixed))
+#     edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'_is_edge': True})]
+#     xyz = array(form.vertices_attributes('xyz'), dtype=float64)
+#     thick = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
+#     p = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
+#     q = [attr.get('q', 1.0) for key, attr in form.edges_where({'_is_edge': True}, True)]
+#     q = array(q, dtype=float64).reshape((-1, 1))
+#     C = connectivity_matrix(edges, 'csr')
+#     Ct = C.transpose()
+#     # --------------------------------------------------------------------------
+#     # original data
+#     # --------------------------------------------------------------------------
+#     p0 = array(p, copy=True)
+#     q0 = array(q, copy=True)
+#     # --------------------------------------------------------------------------
+#     # load updater
+#     # --------------------------------------------------------------------------
+#     update_loads = LoadUpdater(form, p0, thickness=thick, density=density)
+#     # --------------------------------------------------------------------------
+#     # scale
+#     # --------------------------------------------------------------------------
+#     (xmin, ymin, zmin), (xmax, ymax, zmax) = form.bbox()
+#     d = ((xmax - xmin) ** 2 + (ymax - ymin) ** 2) ** 0.5
+#     scale = d / factor
+#     # --------------------------------------------------------------------------
+#     # vertical
+#     # --------------------------------------------------------------------------
+#     q = scale * q0
+#     Q = diags([q.ravel()], [0])
+#     update_z(xyz, Q, C, p, free, fixed, update_loads, tol=tol, kmax=kmax, display=display)
+#     # --------------------------------------------------------------------------
+#     # update
+#     # --------------------------------------------------------------------------
+#     l = normrow(C.dot(xyz))
+#     f = q * l
+#     r = Ct.dot(Q).dot(C).dot(xyz) - p
+#     sw = p - p0
+#     # --------------------------------------------------------------------------
+#     # form
+#     # --------------------------------------------------------------------------
+#     for key, attr in form.vertices(True):
+#         index = k_i[key]
+#         attr['z'] = xyz[index, 2]
+#         attr['_rx'] = r[index, 0]
+#         attr['_ry'] = r[index, 1]
+#         attr['_rz'] = r[index, 2]
+#         attr['_sw'] = sw[index, 2]
+#     for key, attr in form.edges_where({'_is_edge': True}, True):
+#         index = uv_i[key]
+#         attr['q'] = q[index, 0]
+#         attr['_f'] = f[index, 0]
 
-    return scale
+#     return scale
 
 
 def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=False):

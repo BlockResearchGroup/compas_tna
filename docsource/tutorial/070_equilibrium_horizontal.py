@@ -10,6 +10,9 @@ FILE = compas_tna.get('tutorial/boundaryconditions.json')
 form = FormDiagram.from_json(FILE)
 force = ForceDiagram.from_formdiagram(form)
 
+form.edges_attribute('hmin', 0.0)
+form.edges_attribute('hmax', 0.0)
+
 horizontal_nodal(form, force, kmax=100)
 
 # ==============================================================================

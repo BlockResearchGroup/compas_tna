@@ -101,8 +101,8 @@ def parallelise_edges(xy, edges, targets, i_nbrs, ij_e, fixed=None, kmax=100, lm
 
             if lengths[e] == 0.0:
                 c = midpoint_point_point_xy(xy[i], xy[j])
-                xy[i][:] = c[:]
-                xy[j][:] = c[:]
+                xy[i][:] = c[:][:2]
+                xy[j][:] = c[:][:2]
 
         if callback:
             callback(k, xy, edges)
