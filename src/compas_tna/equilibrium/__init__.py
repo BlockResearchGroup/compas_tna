@@ -26,36 +26,27 @@ each of the horizontal equilibrium algorithms.
     :toctree: generated/
     :nosignatures:
 
-    horizontal
     horizontal_nodal
 
 
 Proxies
 -------
 
-Use these functions in combination with a ``Proxy`` server to use the above horizontal
-equilibrium algorithms directly from Rhino.
+The ``_numpy`` variants of the above functions can be used directly in Rhino using an RPC server proxy.
 
 Note that whenever the original algorithm expects a diagram instance as parameter,
 the corresponding proxy function will expect the data representing that diagram
 instead. The data representing the diagram is stored in the ``data`` attribute of the
 diagram.
 
-.. code-block:: python
-
-    proxy = Proxy('compas_tna.equilibrium')
-    result = proxy.horizontal_nodal_proxy(form.data, force.data)
-    if result:
-        form.data = result[0]
-        force.data = result[1]
-
+>>> tna = Proxy('compas_tna.equilibrium')
+>>> formdata, forcedata = tna.horizontal_nodal_numpy_proxy(form.data, force.data)
+>>> form.data = formdata
+>>> force.data = forcedata
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
-
-    horizontal_proxy
-    horizontal_nodal_proxy
 
 
 Vertical
@@ -66,7 +57,6 @@ Vertical
     :nosignatures:
 
     vertical_from_zmax
-    vertical_from_bbox
     vertical_from_q
 
 Proxies
@@ -77,7 +67,6 @@ Proxies
     :nosignatures:
 
     vertical_from_zmax_proxy
-    vertical_from_bbox_proxy
     vertical_from_q_proxy
 
 
@@ -91,7 +80,7 @@ from .horizontal import *  # noqa: F401 F403
 if compas.IPY:
     pass
 else:
-    from .horizontal_numpy import *  # noqa: F401 F403
+    # from .horizontal_numpy import *  # noqa: F401 F403
     from .vertical_numpy import *  # noqa: F401 F403
 
 

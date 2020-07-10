@@ -5,16 +5,6 @@ compas_tna.rhino
 
 .. currentmodule:: compas_tna.rhino
 
-Helpers
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    DiagramHelper
-
-
 Artists
 =======
 
@@ -28,8 +18,8 @@ Artists
 """
 from __future__ import absolute_import
 
-from .diagramhelper import *
-from .formartist import *
-from .forceartist import *
+from .formartist import *  # noqa: F401 F403
+from .forceartist import *  # noqa: F401 F403
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

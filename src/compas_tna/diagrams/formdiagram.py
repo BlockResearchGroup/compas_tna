@@ -2,8 +2,6 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from math import sqrt
-
 from compas.datastructures import network_find_cycles
 from compas.datastructures import Network
 from compas.utilities import pairwise
@@ -15,7 +13,7 @@ __all__ = ['FormDiagram']
 
 
 class FormDiagram(Diagram):
-    """The ``FormDiagram`` extends the base ``Diagram`` with attributes and methods relevant for a form diagram in TNA.
+    r"""The ``FormDiagram`` defines a TNA form diagram.
 
     Notes
     -----
@@ -29,9 +27,32 @@ class FormDiagram(Diagram):
     *   ``from_rhinosurface`` : Construct a diagram from a Rhino surface, using the U and V isolines.
     *   ``from_rhinolines`` : Construct a diagram from a selection of Rhino lines (i.e. curves of degree 1).
 
-    """
+    Default vertex/edge/face attributes can be "public" or "protected".
+    Protected attributes are usually only for internal use and should only be modified by the algorithms that rely on them.
+    If you do change them, do so with care...
+    Protected vertex attributes are: ``_sw, _rx, _ry, _rz``.
+    Protected edge attributes are: ``_h, _f, _a, _is_edge, _is_tension``.
+    Protected face attributes are: ``_is_loaded``.
 
-    __module__ = 'compas_tna.diagrams'
+    The ``FormDiagram`` is a mesh.
+    Since edges are implicit objects in COMPAS meshes, those edges that are not relevant from a TNA perspective have to be marked as ``_is_edge=False``.
+    Usually, the user should not have to worry about this.
+    Furthermore, changing an edge to ``_is_edge=False`` requires an equivalent change in the force diagram.
+    Therefore, the attribute ``_is_edge`` is marked as "protected".
+
+    The ``FormDiagram`` holds the information of the form diagram as well as the corresponding thrust surface.
+    This means that the form diagram contains both 2D and 3D geometry and force information.
+    During calculations and manipulations related to horizontal equilibrium, only the 2D information is used.
+    The relationship between force density, length, axial force, horizontal force of form diagram edges
+    and length of the corresponding force edges is the following:
+
+    .. math::
+
+        Q_{i} &= \frac{F_{i}}{L_{i, thrust}} \\
+              &= \frac{H_{i}}{L_{i, form}} \\
+              &= scale * \frac{L_{i, force}}{L_{i, form}}
+
+    """
 
     def __init__(self):
         super(FormDiagram, self).__init__()
@@ -47,7 +68,6 @@ class FormDiagram(Diagram):
             'is_anchor': False,
             'is_fixed': False,
 
-            '_sw': 0.0,
             '_rx': 0.0,
             '_ry': 0.0,
             '_rz': 0.0,
@@ -59,9 +79,11 @@ class FormDiagram(Diagram):
             'hmin': 0.0,
             'hmax': 1e+7,
 
+            '_h': 0.0,
             '_f': 0.0,
             '_l': 0.0,
             '_a': 0.0,
+
             '_is_edge': True,
             '_is_tension': False
         })
@@ -71,6 +93,26 @@ class FormDiagram(Diagram):
         self.attributes.update({
             'name': 'FormDiagram',
         })
+
+    def __str__(self):
+        """Compile a mesh summary of the form diagram."""
+        numv = self.number_of_vertices()
+        nume = len(list(self.edges_where({'_is_edge': True})))
+        numf = self.number_of_faces()
+        vmin = self.vertex_min_degree()
+        vmax = self.vertex_max_degree()
+        fmin = self.face_min_degree()
+        fmax = self.face_max_degree()
+        return """
+Form Diagram
+============
+name: {}
+number of vertices: {}
+number of (real) edges: {}
+number of faces: {}
+vertex degree: {}/{}
+face degree: {}/{}
+""".format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
 
     @classmethod
     def from_lines(cls, lines, delete_boundary_face=True, precision=None, **kwargs):
@@ -246,26 +288,6 @@ class FormDiagram(Diagram):
         mesh = FormDiagram.from_lines(lines, delete_boundary_face=delete_boundary_face, precision=precision, **kwargs)
         return mesh
 
-    def __str__(self):
-        """Compile a mesh summary of the form diagram."""
-        numv = self.number_of_vertices()
-        nume = len(list(self.edges_where({'_is_edge': True})))
-        numf = self.number_of_faces()
-        vmin = self.vertex_min_degree()
-        vmax = self.vertex_max_degree()
-        fmin = self.face_min_degree()
-        fmax = self.face_max_degree()
-        return """
-Form Diagram
-============
-name: {}
-number of vertices: {}
-number of (real) edges: {}
-number of faces: {}
-vertex degree: {}/{}
-face degree: {}/{}
-""".format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
-
     def uv_index(self):
         """Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)
         to the corresponding edge index in a list or array of edges.
@@ -305,16 +327,18 @@ face degree: {}/{}
         Mesh
             The dual as an instance of type ``cls``.
 
+        Notes
+        -----
+        Construction of the dual diagram is based on the faces around the inner, free vertices of the form diagram.
+        This means not only the vertices on the boundary are ignored, but also the vertices that are anchored.
+
         """
         dual = cls()
         fkey_centroid = {fkey: self.face_centroid(fkey) for fkey in self.faces()}
-        outer = self.vertices_on_boundary()
-        inner = list(set(self.vertices()) - set(outer))
+        inner = list(set(self.vertices()) - set(self.vertices_on_boundary()) - set(self.anchors()))
         vertices = {}
         faces = {}
         for key in inner:
-            if self.vertex_attribute(key, 'is_anchor'):
-                continue
             fkeys = self.vertex_faces(key, ordered=True)
             for fkey in fkeys:
                 if fkey not in vertices:
@@ -335,8 +359,8 @@ face degree: {}/{}
 
         Returns
         -------
-        iterator
-            An iterator of vertex keys.
+        generator
+            A generator object for iteration over vertex keys that are leaves.
         """
         return self.vertices_where({'vertex_degree': 1})
 
@@ -345,8 +369,8 @@ face degree: {}/{}
 
         Returns
         -------
-        iterator
-            An iterator of vertex keys.
+        generator
+            A generator object for iteration over vertex keys that are corners.
         """
         return self.vertices_where({'vertex_degree': 2})
 
@@ -355,8 +379,8 @@ face degree: {}/{}
 
         Returns
         -------
-        iterator
-            An iterator of vertex keys.
+        generator
+            A generator object for iteration over vertex keys that are anchors.
         """
         return self.vertices_where({'is_anchor': True})
 
@@ -365,17 +389,17 @@ face degree: {}/{}
 
         Returns
         -------
-        iterator
-            An iterator of vertex keys.
+        generator
+            A generator object for iteration over vertex keys that are fixed.
         """
         return self.vertices_where({'is_fixed': True})
 
-    def residual(self):
-        R = 0
-        for key, attr in self.vertices_where({'is_anchor': False, 'is_fixed': False}, True):
-            rx, ry, rz = attr['_rx'], attr['_ry'], attr['_rz']
-            R += rx ** 2 + ry ** 2 + rz ** 2
-        return sqrt(R)
+    # def residual(self):
+    #     R = 0
+    #     for vertex in self.vertices_where({'is_anchor': False, 'is_fixed': False}):
+    #         rx, ry, rz = self.vertex_attributes(vertex, ['_rx', '_ry', '_rz'])
+    #         R += rx ** 2 + ry ** 2 + rz ** 2
+    #     return sqrt(R)
 
     # --------------------------------------------------------------------------
     # helpers
@@ -390,13 +414,17 @@ face degree: {}/{}
     # --------------------------------------------------------------------------
 
     def update_boundaries(self):
-        """"""
+        """Update the boundaries to add outside faces."""
         # mark all "anchored edges" as '_is_edge=False'
+        # they will be ignored in any futher steps
+        # this is what indierectly creates isolated vertices
+        # and vor example the corner cutoffs in orthogonal grids
         for edge in self.edges():
             if all(self.vertices_attribute('is_anchor', keys=edge)):
                 if self.is_edge_on_boundary(*edge):
                     self.edge_attribute(edge, '_is_edge', False)
-        # delete isolated corner vertices
+        # delete isolated (corner) vertices
+        # technically this can happen for vertices with degree of any kind
         for vertex in list(self.vertices_where({'vertex_degree': 2})):
             nbrs = self.vertex_neighbors(vertex)
             if all(not self.edge_attribute((vertex, nbr), '_is_edge') for nbr in nbrs):
@@ -414,13 +442,22 @@ face degree: {}/{}
         for boundary in self.vertices_on_boundaries():
             anchors = [vertex for vertex in boundary if self.vertex_attribute(vertex, 'is_anchor')]
             if len(anchors) == 0:
+                # if the boundary contains no anchors
+                # only an additional face has to be added
+                # this tends to only be the case with openings/holes
                 vertices = boundary
                 self.add_face(vertices, _is_loaded=False)
             elif len(anchors) == 1:
+                # if the boundary has exactly 1 anchor
+                # the boundary just has to be cut at the anchor and pasted back together
+                # and then a face has to be added
                 i = boundary.index(anchors[0])
                 vertices = boundary[i:] + boundary[:i]
                 self.add_face(vertices, _is_loaded=False)
             else:
+                # if the boundary has more than 1 anchor
+                # split the boundary into segments between the anchors
+                # and add a boundary face for every segment
                 segments = []
                 for start, end in pairwise(anchors + anchors[:1]):
                     i = boundary.index(start)
@@ -444,6 +481,7 @@ face degree: {}/{}
     # --------------------------------------------------------------------------
 
     def plot(self):
+        """Plot a form diagram with a plotter with all the default settings."""
         from compas_plotters import MeshPlotter
         plotter = MeshPlotter(self, figsize=(12, 8), tight=True)
         vertexcolor = {}
@@ -455,6 +493,18 @@ face degree: {}/{}
         plotter.show()
 
     def draw(self, layer=None, clear_layer=True, settings=None):
+        """Draw the form diagram in Rhino.
+
+        Parameters
+        ----------
+        layer : str, optional
+            The layer in which the drawing should be contained.
+        clear_layer : bool, optional
+            Clear the layer if ``True``.
+            Default is ``True``.
+        settings : dict, optional
+            A dictionary of settings overwriting the default settings of the artist.
+        """
         from compas_tna.rhino import FormArtist
         artist = FormArtist(self, layer=layer)
         if clear_layer:

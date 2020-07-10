@@ -12,7 +12,7 @@ __all__ = [
 
 
 def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
-    """Compute horizontal equilibrium using a node-per-node approach.
+    r"""Compute horizontal equilibrium using a node-per-node approach.
 
     Parameters
     ----------
@@ -40,6 +40,14 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     Notes
     -----
     This function will update the form and force diagram instead of returning a result.
+    The relationship between force densities (``q``), horizontal forces (``h``), and lengths (``l``)
+    is the following:
+
+    .. math::
+
+        Q_{i} &= \frac{F_{i, thrust}}{L_{i, thrust}} \\
+              &= \frac{H_{i, form}}{L_{i, form}} \\
+              &= scale * \frac{L_{i, force}}{L_{i, form}}
 
     """
     alpha = float(alpha) / 100.0
@@ -48,31 +56,34 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     # form diagram
     # --------------------------------------------------------------------------
     k_i = form.key_index()
-    uv_i = form.uv_index()
     i_nbrs = {k_i[key]: [k_i[nbr] for nbr in form.vertex_neighbors(key)] for key in form.vertices()}
-    ij_e = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
     fixed = set(list(form.anchors()) + list(form.fixed()))
     fixed = [k_i[key] for key in fixed]
+    xy = form.vertices_attributes('xy')
+
     edges = list(form.edges_where({'_is_edge': True}))
+    uv_i = form.uv_index()
+    ij_e = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
     lmin = form.edges_attribute('lmin', keys=edges)
     lmax = form.edges_attribute('lmax', keys=edges)
     hmin = form.edges_attribute('hmin', keys=edges)
     hmax = form.edges_attribute('hmax', keys=edges)
     edges = [[k_i[u], k_i[v]] for u, v in edges]
-    xy = form.vertices_attributes('xy')
     # --------------------------------------------------------------------------
     # force diagram
     # --------------------------------------------------------------------------
     _k_i = force.key_index()
-    _uv_i = force.uv_index(form=form)
     _i_nbrs = {_k_i[key]: [_k_i[nbr] for nbr in force.vertex_neighbors(key)] for key in force.vertices()}
-    _ij_e = {(_k_i[u], _k_i[v]): index for (u, v), index in iter(_uv_i.items())}
     _fixed = list(force.fixed())
     _fixed = [_k_i[key] for key in _fixed]
     _xy = force.vertices_attributes('xy')
+
     _edges = force.ordered_edges(form)
-    _lmin = [attr.get('lmin', 1e-7) for key, attr in force.edges(True)]
-    _lmax = [attr.get('lmax', 1e+7) for key, attr in force.edges(True)]
+    _uv_i = {uv: index for index, uv in enumerate(_edges)}
+    _ij_e = {(_k_i[u], _k_i[v]): index for (u, v), index in iter(_uv_i.items())}
+    _lmin = force.edges_attribute('lmin', keys=_edges)
+    _lmax = force.edges_attribute('lmax', keys=_edges)
+    _edges = [[_k_i[u], _k_i[v]] for u, v in _edges]
     scale = force.attributes.get('scale', 1.0)
     # --------------------------------------------------------------------------
     # rotate force diagram to make it parallel to the form diagram
