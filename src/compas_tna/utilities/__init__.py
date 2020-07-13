@@ -39,11 +39,11 @@ from __future__ import absolute_import
 
 import compas
 
-from .loads import *
-from .pattern import *
-from .thickness import *
-
 if not compas.IPY:
-    from .diagrams import *
+    from .loads import *  # noqa: F401 F403
+    from .pattern import *  # noqa: F401 F403
+    from .thickness import *  # noqa: F401 F403
+    from .diagrams import *  # noqa: F401 F403
+
 
 __all__ = [name for name in dir() if not name.startswith('_')]

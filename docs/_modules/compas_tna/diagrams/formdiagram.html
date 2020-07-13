@@ -77,8 +77,6 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
-
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">network_find_cycles</span>
 <span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Network</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">pairwise</span>
@@ -89,8 +87,8 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;FormDiagram&#39;</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">FormDiagram</span><span class="p">(</span><span class="n">Diagram</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The ``FormDiagram`` extends the base ``Diagram`` with attributes and methods relevant for a form diagram in TNA.</span>
+<div class="viewcode-block" id="FormDiagram"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.html#compas_tna.diagrams.FormDiagram">[docs]</a><span class="k">class</span> <span class="nc">FormDiagram</span><span class="p">(</span><span class="n">Diagram</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;The ``FormDiagram`` defines a TNA form diagram.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -104,9 +102,32 @@
 <span class="sd">    *   ``from_rhinosurface`` : Construct a diagram from a Rhino surface, using the U and V isolines.</span>
 <span class="sd">    *   ``from_rhinolines`` : Construct a diagram from a selection of Rhino lines (i.e. curves of degree 1).</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    Default vertex/edge/face attributes can be &quot;public&quot; or &quot;protected&quot;.</span>
+<span class="sd">    Protected attributes are usually only for internal use and should only be modified by the algorithms that rely on them.</span>
+<span class="sd">    If you do change them, do so with care...</span>
+<span class="sd">    Protected vertex attributes are: ``_sw, _rx, _ry, _rz``.</span>
+<span class="sd">    Protected edge attributes are: ``_h, _f, _a, _is_edge, _is_tension``.</span>
+<span class="sd">    Protected face attributes are: ``_is_loaded``.</span>
 
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;compas_tna.diagrams&#39;</span>
+<span class="sd">    The ``FormDiagram`` is a mesh.</span>
+<span class="sd">    Since edges are implicit objects in COMPAS meshes, those edges that are not relevant from a TNA perspective have to be marked as ``_is_edge=False``.</span>
+<span class="sd">    Usually, the user should not have to worry about this.</span>
+<span class="sd">    Furthermore, changing an edge to ``_is_edge=False`` requires an equivalent change in the force diagram.</span>
+<span class="sd">    Therefore, the attribute ``_is_edge`` is marked as &quot;protected&quot;.</span>
+
+<span class="sd">    The ``FormDiagram`` holds the information of the form diagram as well as the corresponding thrust surface.</span>
+<span class="sd">    This means that the form diagram contains both 2D and 3D geometry and force information.</span>
+<span class="sd">    During calculations and manipulations related to horizontal equilibrium, only the 2D information is used.</span>
+<span class="sd">    The relationship between force density, length, axial force, horizontal force of form diagram edges</span>
+<span class="sd">    and length of the corresponding force edges is the following:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        Q_{i} &amp;= \frac{F_{i}}{L_{i, thrust}} \\</span>
+<span class="sd">              &amp;= \frac{H_{i}}{L_{i, form}} \\</span>
+<span class="sd">              &amp;= scale * \frac{L_{i, force}}{L_{i, form}}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="FormDiagram.__init__"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.__init__.html#compas_tna.diagrams.FormDiagram.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FormDiagram</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -122,7 +143,6 @@
             <span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
             <span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
 
-            <span class="s1">&#39;_sw&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;_rx&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;_ry&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;_rz&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
@@ -134,9 +154,11 @@
             <span class="s1">&#39;hmin&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;hmax&#39;</span><span class="p">:</span> <span class="mf">1e+7</span><span class="p">,</span>
 
+            <span class="s1">&#39;_h&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;_f&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;_l&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
             <span class="s1">&#39;_a&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+
             <span class="s1">&#39;_is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
             <span class="s1">&#39;_is_tension&#39;</span><span class="p">:</span> <span class="kc">False</span>
         <span class="p">})</span>
@@ -146,6 +168,26 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
             <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;FormDiagram&#39;</span><span class="p">,</span>
         <span class="p">})</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compile a mesh summary of the form diagram.&quot;&quot;&quot;</span>
+        <span class="n">numv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span>
+        <span class="n">nume</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;_is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})))</span>
+        <span class="n">numf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">()</span>
+        <span class="n">vmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_min_degree</span><span class="p">()</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_max_degree</span><span class="p">()</span>
+        <span class="n">fmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_min_degree</span><span class="p">()</span>
+        <span class="n">fmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_max_degree</span><span class="p">()</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Form Diagram</span>
+<span class="s2">============</span>
+<span class="s2">name: </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">number of vertices: </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">number of (real) edges: </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">number of faces: </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">vertex degree: </span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">face degree: </span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">numv</span><span class="p">,</span> <span class="n">nume</span><span class="p">,</span> <span class="n">numf</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">,</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="p">)</span>
 
 <div class="viewcode-block" id="FormDiagram.from_lines"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.from_lines.html#compas_tna.diagrams.FormDiagram.from_lines">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_lines</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">delete_boundary_face</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -321,26 +363,6 @@
         <span class="n">mesh</span> <span class="o">=</span> <span class="n">FormDiagram</span><span class="o">.</span><span class="n">from_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">delete_boundary_face</span><span class="o">=</span><span class="n">delete_boundary_face</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">mesh</span></div>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Compile a mesh summary of the form diagram.&quot;&quot;&quot;</span>
-        <span class="n">numv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span>
-        <span class="n">nume</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;_is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})))</span>
-        <span class="n">numf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_faces</span><span class="p">()</span>
-        <span class="n">vmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_min_degree</span><span class="p">()</span>
-        <span class="n">vmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_max_degree</span><span class="p">()</span>
-        <span class="n">fmin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_min_degree</span><span class="p">()</span>
-        <span class="n">fmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_max_degree</span><span class="p">()</span>
-        <span class="k">return</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Form Diagram</span>
-<span class="s2">============</span>
-<span class="s2">name: </span><span class="si">{}</span><span class="s2"></span>
-<span class="s2">number of vertices: </span><span class="si">{}</span><span class="s2"></span>
-<span class="s2">number of (real) edges: </span><span class="si">{}</span><span class="s2"></span>
-<span class="s2">number of faces: </span><span class="si">{}</span><span class="s2"></span>
-<span class="s2">vertex degree: </span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"></span>
-<span class="s2">face degree: </span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"></span>
-<span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">numv</span><span class="p">,</span> <span class="n">nume</span><span class="p">,</span> <span class="n">numf</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">,</span> <span class="n">fmin</span><span class="p">,</span> <span class="n">fmax</span><span class="p">)</span>
-
 <div class="viewcode-block" id="FormDiagram.uv_index"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.uv_index.html#compas_tna.diagrams.FormDiagram.uv_index">[docs]</a>    <span class="k">def</span> <span class="nf">uv_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)</span>
 <span class="sd">        to the corresponding edge index in a list or array of edges.</span>
@@ -380,16 +402,18 @@
 <span class="sd">        Mesh</span>
 <span class="sd">            The dual as an instance of type ``cls``.</span>
 
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Construction of the dual diagram is based on the faces around the inner, free vertices of the form diagram.</span>
+<span class="sd">        This means not only the vertices on the boundary are ignored, but also the vertices that are anchored.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dual</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
         <span class="n">fkey_centroid</span> <span class="o">=</span> <span class="p">{</span><span class="n">fkey</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">face_centroid</span><span class="p">(</span><span class="n">fkey</span><span class="p">)</span> <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">faces</span><span class="p">()}</span>
-        <span class="n">outer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_on_boundary</span><span class="p">()</span>
-        <span class="n">inner</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">outer</span><span class="p">))</span>
+        <span class="n">inner</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices_on_boundary</span><span class="p">())</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anchors</span><span class="p">()))</span>
         <span class="n">vertices</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">faces</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">inner</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;is_anchor&#39;</span><span class="p">):</span>
-                <span class="k">continue</span>
             <span class="n">fkeys</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_faces</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">fkey</span> <span class="ow">in</span> <span class="n">fkeys</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">fkey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">vertices</span><span class="p">:</span>
@@ -410,8 +434,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        iterator</span>
-<span class="sd">            An iterator of vertex keys.</span>
+<span class="sd">        generator</span>
+<span class="sd">            A generator object for iteration over vertex keys that are leaves.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;vertex_degree&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})</span></div>
 
@@ -420,8 +444,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        iterator</span>
-<span class="sd">            An iterator of vertex keys.</span>
+<span class="sd">        generator</span>
+<span class="sd">            A generator object for iteration over vertex keys that are corners.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;vertex_degree&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span></div>
 
@@ -430,8 +454,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        iterator</span>
-<span class="sd">            An iterator of vertex keys.</span>
+<span class="sd">        generator</span>
+<span class="sd">            A generator object for iteration over vertex keys that are anchors.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span></div>
 
@@ -440,17 +464,17 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        iterator</span>
-<span class="sd">            An iterator of vertex keys.</span>
+<span class="sd">        generator</span>
+<span class="sd">            A generator object for iteration over vertex keys that are fixed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span></div>
 
-<div class="viewcode-block" id="FormDiagram.residual"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.residual.html#compas_tna.diagrams.FormDiagram.residual">[docs]</a>    <span class="k">def</span> <span class="nf">residual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">R</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="kc">True</span><span class="p">):</span>
-            <span class="n">rx</span><span class="p">,</span> <span class="n">ry</span><span class="p">,</span> <span class="n">rz</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_rx&#39;</span><span class="p">],</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_ry&#39;</span><span class="p">],</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_rz&#39;</span><span class="p">]</span>
-            <span class="n">R</span> <span class="o">+=</span> <span class="n">rx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">ry</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">rz</span> <span class="o">**</span> <span class="mi">2</span>
-        <span class="k">return</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">R</span><span class="p">)</span></div>
+    <span class="c1"># def residual(self):</span>
+    <span class="c1">#     R = 0</span>
+    <span class="c1">#     for vertex in self.vertices_where({&#39;is_anchor&#39;: False, &#39;is_fixed&#39;: False}):</span>
+    <span class="c1">#         rx, ry, rz = self.vertex_attributes(vertex, [&#39;_rx&#39;, &#39;_ry&#39;, &#39;_rz&#39;])</span>
+    <span class="c1">#         R += rx ** 2 + ry ** 2 + rz ** 2</span>
+    <span class="c1">#     return sqrt(R)</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># helpers</span>
@@ -465,13 +489,17 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="FormDiagram.update_boundaries"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.update_boundaries.html#compas_tna.diagrams.FormDiagram.update_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">update_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Update the boundaries to add outside faces.&quot;&quot;&quot;</span>
         <span class="c1"># mark all &quot;anchored edges&quot; as &#39;_is_edge=False&#39;</span>
+        <span class="c1"># they will be ignored in any futher steps</span>
+        <span class="c1"># this is what indierectly creates isolated vertices</span>
+        <span class="c1"># and vor example the corner cutoffs in orthogonal grids</span>
         <span class="k">for</span> <span class="n">edge</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">edges</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices_attribute</span><span class="p">(</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">edge</span><span class="p">)):</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_edge_on_boundary</span><span class="p">(</span><span class="o">*</span><span class="n">edge</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">(</span><span class="n">edge</span><span class="p">,</span> <span class="s1">&#39;_is_edge&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-        <span class="c1"># delete isolated corner vertices</span>
+        <span class="c1"># delete isolated (corner) vertices</span>
+        <span class="c1"># technically this can happen for vertices with degree of any kind</span>
         <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;vertex_degree&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})):</span>
             <span class="n">nbrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">vertex</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">((</span><span class="n">vertex</span><span class="p">,</span> <span class="n">nbr</span><span class="p">),</span> <span class="s1">&#39;_is_edge&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="n">nbrs</span><span class="p">):</span>
@@ -489,13 +517,22 @@
         <span class="k">for</span> <span class="n">boundary</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_on_boundaries</span><span class="p">():</span>
             <span class="n">anchors</span> <span class="o">=</span> <span class="p">[</span><span class="n">vertex</span> <span class="k">for</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">boundary</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span> <span class="s1">&#39;is_anchor&#39;</span><span class="p">)]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">anchors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># if the boundary contains no anchors</span>
+                <span class="c1"># only an additional face has to be added</span>
+                <span class="c1"># this tends to only be the case with openings/holes</span>
                 <span class="n">vertices</span> <span class="o">=</span> <span class="n">boundary</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">_is_loaded</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">anchors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># if the boundary has exactly 1 anchor</span>
+                <span class="c1"># the boundary just has to be cut at the anchor and pasted back together</span>
+                <span class="c1"># and then a face has to be added</span>
                 <span class="n">i</span> <span class="o">=</span> <span class="n">boundary</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">anchors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                 <span class="n">vertices</span> <span class="o">=</span> <span class="n">boundary</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span> <span class="o">+</span> <span class="n">boundary</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_face</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span> <span class="n">_is_loaded</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># if the boundary has more than 1 anchor</span>
+                <span class="c1"># split the boundary into segments between the anchors</span>
+                <span class="c1"># and add a boundary face for every segment</span>
                 <span class="n">segments</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">pairwise</span><span class="p">(</span><span class="n">anchors</span> <span class="o">+</span> <span class="n">anchors</span><span class="p">[:</span><span class="mi">1</span><span class="p">]):</span>
                     <span class="n">i</span> <span class="o">=</span> <span class="n">boundary</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
@@ -519,6 +556,7 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
 
 <div class="viewcode-block" id="FormDiagram.plot"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.plot.html#compas_tna.diagrams.FormDiagram.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot a form diagram with a plotter with all the default settings.&quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">compas_plotters</span> <span class="kn">import</span> <span class="n">MeshPlotter</span>
         <span class="n">plotter</span> <span class="o">=</span> <span class="n">MeshPlotter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">tight</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">vertexcolor</span> <span class="o">=</span> <span class="p">{}</span>
@@ -530,28 +568,23 @@
         <span class="n">plotter</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="FormDiagram.draw"><a class="viewcode-back" href="../../../api/generated/compas_tna.diagrams.FormDiagram.draw.html#compas_tna.diagrams.FormDiagram.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">clear_layer</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw the form diagram in Rhino.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        layer : str, optional</span>
+<span class="sd">            The layer in which the drawing should be contained.</span>
+<span class="sd">        clear_layer : bool, optional</span>
+<span class="sd">            Clear the layer if ``True``.</span>
+<span class="sd">            Default is ``True``.</span>
+<span class="sd">        settings : dict, optional</span>
+<span class="sd">            A dictionary of settings overwriting the default settings of the artist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">from</span> <span class="nn">compas_tna.rhino</span> <span class="kn">import</span> <span class="n">FormArtist</span>
-        <span class="n">artist</span> <span class="o">=</span> <span class="n">FormArtist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span>
+        <span class="n">artist</span> <span class="o">=</span> <span class="n">FormArtist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="n">settings</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">clear_layer</span><span class="p">:</span>
             <span class="n">artist</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">settings</span><span class="p">:</span>
-            <span class="n">settings</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;show.vertices&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
-            <span class="n">vertexcolor</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">vertexcolor</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#00ff00&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
-            <span class="n">vertexcolor</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="s1">&#39;#ff0000&#39;</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
-            <span class="n">artist</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">vertexcolor</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;show.edges&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
-            <span class="n">artist</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;_is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})))</span>
-        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;show.faces&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
-            <span class="n">artist</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span><span class="n">keys</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces_where</span><span class="p">({</span><span class="s1">&#39;_is_loaded&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})))</span>
-        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;show.forces&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-            <span class="n">artist</span><span class="o">.</span><span class="n">draw_forces</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scale.forces&#39;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;show.reactions&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-            <span class="n">artist</span><span class="o">.</span><span class="n">draw_reactions</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scale.reactions&#39;</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;show.angles&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
-            <span class="n">artist</span><span class="o">.</span><span class="n">draw_angles</span><span class="p">(</span><span class="n">tol</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tol.angle&#39;</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">))</span>
-        <span class="n">artist</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
+        <span class="n">artist</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div></div>
 
 
 <span class="c1"># ==============================================================================</span>

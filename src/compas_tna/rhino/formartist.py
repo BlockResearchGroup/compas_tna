@@ -16,8 +16,34 @@ __all__ = ['FormArtist']
 
 
 class FormArtist(MeshArtist):
+    """Artist for form diagrams.
 
-    def __init__(self, form, layer=None):
+    Parameters
+    ----------
+    form : :class:`compas_tna.diagrams.FormDiagram`
+        A form diagram.
+    layer : str, optional
+        The layer in which the artist should draw.
+    settings : dict, optional
+        Visualisation settings.
+
+    Attributes
+    ----------
+    settings : dict
+        Visualisation settings.
+
+    Examples
+    --------
+    .. code-block:: python
+
+        from compas_tna.rhino import FormArtist
+
+        artist = FormArtist(form, layer='TNA::FormDiagram')
+        artist.draw()
+
+    """
+
+    def __init__(self, form, layer=None, settings=None):
         super(FormArtist, self).__init__(form, layer=layer)
         self.settings.update({
             'color.vertex': (255, 255, 255),
@@ -40,7 +66,16 @@ class FormArtist(MeshArtist):
             'tol.load': 1e-3,
             'tol.force': 1e-3,
             'tol.selfweight': 1e-3,
-        })
+            'show.vertices': True,
+            'show.edges': True,
+            'show.faces': True,
+            'show.loads': False,
+            'show.reactions': False,
+            'show.residuals': False,
+            'show.forces': False,
+            'show.angles': False})
+        if settings:
+            self.settings.update(settings)
 
     @property
     def form(self):
@@ -49,51 +84,37 @@ class FormArtist(MeshArtist):
     def clear(self):
         super(FormArtist, self).clear()
 
-    def draw(self, show_loads=False, show_reactions=False, show_forces=False, show_selfweight=False):
+    def draw(self):
         """Draw the form diagram.
-
-        Parameters
-        ----------
-        show_loads : bool, optional
-            Draw the loads if ``True``.
-            Default is ``False``.
-        show_reactions : bool, optional
-            Draw the reactions if ``True``.
-            Default is ``False``.
-        show_forces : bool, optional
-            Draw the forces if ``True``.
-            Default is ``False``.
-        show_selfweight : bool, optional
-            Draw the selfweight if ``True``.
-            Default is ``False``.
 
         Notes
         -----
         To change the way individual components are drawn, modify the settings dict of the artist.
 
         """
-        # vertices
-        color_vertices = {vertex: self.settings['color.vertex'] for vertex in self.form.vertices()}
-        color_vertices.update({vertex: self.settings['color.vertex:is_anchor'] for vertex in self.form.vertices_where({'is_anchor': True})})
-        self.draw_vertices(color=color_vertices)
-        # faces
-        faces = list(self.form.faces_where({'_is_loaded': True}))
-        self.draw_faces(keys=faces, join_faces=True)
-        # edges
-        edges = list(self.form.edges_where({'_is_edge': True}))
-        self.draw_edges(keys=edges)
-        # loads
-        if show_loads:
-            self.draw_loads()
-        # reactions
-        if show_reactions:
-            self.draw_reactions()
-        # forces
-        if show_forces:
+        self.clear()
+        if self.layer:
+            self.clear_layer()
+        if self.settings['show.vertices']:
+            vertexcolor = {key: self.settings['color.vertices'] for key in self.vertices()}
+            vertexcolor.update({key: self.settings['color.vertices:is_fixed'] for key in self.vertices_where({'is_fixed': True})})
+            vertexcolor.update({key: self.settings['color.vertices:is_anchor'] for key in self.vertices_where({'is_anchor': True})})
+            self.draw_vertices(color=vertexcolor)
+        if self.settings['show.edges']:
+            self.draw_edges(
+                keys=list(self.edges_where({'_is_edge': True})),
+                color=self.settings['color.edges'])
+        if self.settings['show.faces']:
+            self.draw_faces(
+                keys=list(self.faces_where({'_is_loaded': True})),
+                color=self.settings['color.faces'])
+        if self.settings['show.forces']:
             self.draw_forces()
-        # selfweight
-        if show_selfweight:
-            self.draw_selfweight()
+        if self.settings['show.reactions']:
+            self.draw_reactions()
+        if self.settings['show.angles']:
+            self.draw_angles()
+        self.redraw()
 
     def draw_loads(self, scale=None, color=None):
         """Draw the loads.
@@ -249,6 +270,22 @@ class FormArtist(MeshArtist):
         return guids
 
     def draw_residuals(self, scale=None, color=None):
+        """Draw the residual forces.
+
+        Parameters
+        ----------
+        scale : float, optional
+            Scaling factor for the force vectors.
+            Default is the value from the settings.
+        color : tuple, optional
+            RGB color components for force vectors.
+            Default is the value from the settings.
+
+        Returns
+        -------
+        list
+            The GUIDs of the created Rhino objects.
+        """
         lines = []
         color = color or self.settings['color.residual']
         scale = scale or self.settings['scale.residual']

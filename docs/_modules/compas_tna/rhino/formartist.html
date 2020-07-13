@@ -80,6 +80,8 @@
 <span class="kn">import</span> <span class="nn">compas_rhino</span>
 
 <span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">scale_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">length_vector</span>
+<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">add_vectors</span>
 <span class="kn">from</span> <span class="nn">compas.utilities</span> <span class="kn">import</span> <span class="n">i_to_green</span>
 
 <span class="kn">from</span> <span class="nn">compas_rhino.artists</span> <span class="kn">import</span> <span class="n">MeshArtist</span>
@@ -88,14 +90,40 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;FormArtist&#39;</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">FormArtist</span><span class="p">(</span><span class="n">MeshArtist</span><span class="p">):</span>
+<div class="viewcode-block" id="FormArtist"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.html#compas_tna.rhino.FormArtist">[docs]</a><span class="k">class</span> <span class="nc">FormArtist</span><span class="p">(</span><span class="n">MeshArtist</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Artist for form diagrams.</span>
 
-    <span class="vm">__module__</span> <span class="o">=</span> <span class="s1">&#39;compas_tna.rhino&#39;</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    form : :class:`compas_tna.diagrams.FormDiagram`</span>
+<span class="sd">        A form diagram.</span>
+<span class="sd">    layer : str, optional</span>
+<span class="sd">        The layer in which the artist should draw.</span>
+<span class="sd">    settings : dict, optional</span>
+<span class="sd">        Visualisation settings.</span>
 
-<div class="viewcode-block" id="FormArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.__init__.html#compas_tna.rhino.FormArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    settings : dict</span>
+<span class="sd">        Visualisation settings.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        from compas_tna.rhino import FormArtist</span>
+
+<span class="sd">        artist = FormArtist(form, layer=&#39;TNA::FormDiagram&#39;)</span>
+<span class="sd">        artist.draw()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FormArtist.__init__"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.__init__.html#compas_tna.rhino.FormArtist.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">settings</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">FormArtist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
             <span class="s1">&#39;color.vertex&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;color.vertex:is_fixed&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span>
+            <span class="s1">&#39;color.vertex:is_anchor&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
             <span class="s1">&#39;color.edge&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
             <span class="s1">&#39;color.face&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">210</span><span class="p">,</span> <span class="mi">210</span><span class="p">,</span> <span class="mi">210</span><span class="p">),</span>
             <span class="s1">&#39;color.reaction&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
@@ -113,236 +141,280 @@
             <span class="s1">&#39;tol.load&#39;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
             <span class="s1">&#39;tol.force&#39;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
             <span class="s1">&#39;tol.selfweight&#39;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span>
-        <span class="p">})</span></div>
+            <span class="s1">&#39;show.vertices&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;show.edges&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;show.faces&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;show.loads&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;show.reactions&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;show.residuals&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;show.forces&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s1">&#39;show.angles&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">form</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span>
 
 <div class="viewcode-block" id="FormArtist.clear"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.clear.html#compas_tna.rhino.FormArtist.clear">[docs]</a>    <span class="k">def</span> <span class="nf">clear</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">FormArtist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_loads</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_selfweight</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_reactions</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_forces</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_residuals</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_angles</span><span class="p">()</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">FormArtist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="FormArtist.clear_loads"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.clear_loads.html#compas_tna.rhino.FormArtist.clear_loads">[docs]</a>    <span class="k">def</span> <span class="nf">clear_loads</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects_by_name</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.load.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
+<div class="viewcode-block" id="FormArtist.draw"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.draw.html#compas_tna.rhino.FormArtist.draw">[docs]</a>    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw the form diagram.</span>
 
-<div class="viewcode-block" id="FormArtist.clear_selfweight"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.clear_selfweight.html#compas_tna.rhino.FormArtist.clear_selfweight">[docs]</a>    <span class="k">def</span> <span class="nf">clear_selfweight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects_by_name</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.selfweight.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        To change the way individual components are drawn, modify the settings dict of the artist.</span>
 
-<div class="viewcode-block" id="FormArtist.clear_reactions"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.clear_reactions.html#compas_tna.rhino.FormArtist.clear_reactions">[docs]</a>    <span class="k">def</span> <span class="nf">clear_reactions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects_by_name</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.reaction.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="FormArtist.clear_forces"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.clear_forces.html#compas_tna.rhino.FormArtist.clear_forces">[docs]</a>    <span class="k">def</span> <span class="nf">clear_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects_by_name</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.force.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="FormArtist.clear_residuals"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.clear_residuals.html#compas_tna.rhino.FormArtist.clear_residuals">[docs]</a>    <span class="k">def</span> <span class="nf">clear_residuals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects_by_name</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.residual.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
-
-<div class="viewcode-block" id="FormArtist.clear_angles"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.clear_angles.html#compas_tna.rhino.FormArtist.clear_angles">[docs]</a>    <span class="k">def</span> <span class="nf">clear_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">delete_objects_by_name</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.angle.*&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">))</span></div>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">clear_layer</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.vertices&#39;</span><span class="p">]:</span>
+            <span class="n">vertexcolor</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.vertices&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+            <span class="n">vertexcolor</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.vertices:is_fixed&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_fixed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
+            <span class="n">vertexcolor</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.vertices:is_anchor&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_vertices</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">vertexcolor</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.edges&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_edges</span><span class="p">(</span>
+                <span class="n">keys</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;_is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})),</span>
+                <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.edges&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.faces&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_faces</span><span class="p">(</span>
+                <span class="n">keys</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">faces_where</span><span class="p">({</span><span class="s1">&#39;_is_loaded&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})),</span>
+                <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.faces&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.forces&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_forces</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.reactions&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_reactions</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;show.angles&#39;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">draw_angles</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redraw</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="FormArtist.draw_loads"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.draw_loads.html#compas_tna.rhino.FormArtist.draw_loads">[docs]</a>    <span class="k">def</span> <span class="nf">draw_loads</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_loads</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;Draw the loads.</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scale : float, optional</span>
+<span class="sd">            Scaling factor for the load vectors.</span>
+<span class="sd">            Default is the value from the settings.</span>
+<span class="sd">        color : tuple, optional</span>
+<span class="sd">            RGB color components for load vectors.</span>
+<span class="sd">            Default is the value from the settings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The GUIDs of the created Rhino objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.load&#39;</span><span class="p">]</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;scale.load&#39;</span><span class="p">]</span>
         <span class="n">tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;tol.load&#39;</span><span class="p">]</span>
-        <span class="n">tol2</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">**</span> <span class="mi">2</span>
-
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;_is_external&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="kc">True</span><span class="p">):</span>
-            <span class="n">px</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;px&#39;</span><span class="p">]</span>
-            <span class="n">py</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;py&#39;</span><span class="p">]</span>
-            <span class="n">pz</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;pz&#39;</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="n">px</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">py</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">pz</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol2</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}):</span>
+            <span class="n">load</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;px&#39;</span><span class="p">,</span> <span class="s1">&#39;py&#39;</span><span class="p">,</span> <span class="s1">&#39;pz&#39;</span><span class="p">])</span>
+            <span class="n">load</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">load</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">load</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
                 <span class="k">continue</span>
-
             <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="n">ep</span> <span class="o">=</span> <span class="n">sp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">px</span><span class="p">,</span> <span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">py</span><span class="p">,</span> <span class="n">sp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">pz</span>
-
+            <span class="n">ep</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">load</span><span class="p">)</span>
             <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                 <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">sp</span><span class="p">,</span>
                 <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">ep</span><span class="p">,</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
                 <span class="s1">&#39;arrow&#39;</span><span class="p">:</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.load.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-            <span class="p">})</span>
-
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.load.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">)})</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
 <div class="viewcode-block" id="FormArtist.draw_selfweight"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.draw_selfweight.html#compas_tna.rhino.FormArtist.draw_selfweight">[docs]</a>    <span class="k">def</span> <span class="nf">draw_selfweight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_selfweight</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;Draw the selfweight.</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scale : float, optional</span>
+<span class="sd">            Scaling factor for the selfweight vectors.</span>
+<span class="sd">            Default is the value from the settings.</span>
+<span class="sd">        color : tuple, optional</span>
+<span class="sd">            RGB color components for selfweight vectors.</span>
+<span class="sd">            Default is the value from the settings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The GUIDs of the created Rhino objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.selfweight&#39;</span><span class="p">]</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;scale.selfweight&#39;</span><span class="p">]</span>
         <span class="n">tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;tol.selfweight&#39;</span><span class="p">]</span>
         <span class="n">tol2</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">**</span> <span class="mi">2</span>
-
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;_is_external&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="kc">True</span><span class="p">):</span>
-            <span class="n">t</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}):</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertex_attribute</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">)</span>
             <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertex_area</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
             <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
             <span class="n">dz</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">a</span>
-
             <span class="k">if</span> <span class="n">dz</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol2</span><span class="p">:</span>
                 <span class="k">continue</span>
-
-            <span class="n">ep</span> <span class="o">=</span> <span class="n">sp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">dz</span>
-
+            <span class="n">ep</span> <span class="o">=</span> <span class="p">[</span><span class="n">sp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">dz</span><span class="p">]</span>
             <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                 <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">sp</span><span class="p">,</span>
                 <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">ep</span><span class="p">,</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
                 <span class="s1">&#39;arrow&#39;</span><span class="p">:</span> <span class="s1">&#39;end&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.selfweight.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-            <span class="p">})</span>
-
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.selfweight.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">)})</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
 <div class="viewcode-block" id="FormArtist.draw_reactions"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.draw_reactions.html#compas_tna.rhino.FormArtist.draw_reactions">[docs]</a>    <span class="k">def</span> <span class="nf">draw_reactions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_reactions</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;Draw the reactions.</span>
 
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scale : float, optional</span>
+<span class="sd">            Scaling factor for the reaction vectors.</span>
+<span class="sd">            Default is the value from the settings.</span>
+<span class="sd">        color : tuple, optional</span>
+<span class="sd">            RGB color components for reaction vectors.</span>
+<span class="sd">            Default is the value from the settings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The GUIDs of the created Rhino objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.reaction&#39;</span><span class="p">]</span>
         <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;scale.reaction&#39;</span><span class="p">]</span>
         <span class="n">tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;tol.reaction&#39;</span><span class="p">]</span>
-        <span class="n">tol2</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">**</span> <span class="mi">2</span>
-
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="kc">True</span><span class="p">):</span>
-            <span class="n">rx</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_rx&#39;</span><span class="p">]</span>
-            <span class="n">ry</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_ry&#39;</span><span class="p">]</span>
-            <span class="n">rz</span> <span class="o">=</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_rz&#39;</span><span class="p">]</span>
-
-            <span class="k">for</span> <span class="n">nbr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertex_neighbors</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
-                <span class="n">is_external</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">nbr</span><span class="p">),</span> <span class="s1">&#39;_is_external&#39;</span><span class="p">)</span>
-
-                <span class="k">if</span> <span class="n">is_external</span><span class="p">:</span>
-                    <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">nbr</span><span class="p">),</span> <span class="s1">&#39;_f&#39;</span><span class="p">)</span>
-                    <span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edge_direction</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">nbr</span><span class="p">)</span>
-                    <span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="n">v</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-
-                    <span class="n">rx</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="n">ry</span> <span class="o">+=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-            <span class="n">rx</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">rx</span>
-            <span class="n">ry</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">ry</span>
-            <span class="n">rz</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">rz</span>
-
-            <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">rx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">ry</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="n">tol2</span><span class="p">:</span>
-                <span class="n">e1</span> <span class="o">=</span> <span class="n">sp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">rx</span><span class="p">,</span> <span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">ry</span><span class="p">,</span> <span class="n">sp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                    <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">sp</span><span class="p">,</span>
-                    <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">e1</span><span class="p">,</span>
-                    <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
-                    <span class="s1">&#39;arrow&#39;</span><span class="p">:</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.reaction.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-                <span class="p">})</span>
-
-            <span class="k">if</span> <span class="n">rz</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&gt;</span> <span class="n">tol2</span><span class="p">:</span>
-                <span class="n">e2</span> <span class="o">=</span> <span class="n">sp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">rz</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                    <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">sp</span><span class="p">,</span>
-                    <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">e2</span><span class="p">,</span>
-                    <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
-                    <span class="s1">&#39;arrow&#39;</span><span class="p">:</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span>
-                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.reaction.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-                <span class="p">})</span>
-
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="FormArtist.draw_forces"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.draw_forces.html#compas_tna.rhino.FormArtist.draw_forces">[docs]</a>    <span class="k">def</span> <span class="nf">draw_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_forces</span><span class="p">()</span>
-
-        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.force&#39;</span><span class="p">]</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;scale.force&#39;</span><span class="p">]</span>
-        <span class="n">tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;tol.force&#39;</span><span class="p">]</span>
-        <span class="n">tol2</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">**</span> <span class="mi">2</span>
-
-        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;_is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;_is_external&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="kc">True</span><span class="p">):</span>
-            <span class="n">sp</span><span class="p">,</span> <span class="n">ep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-            <span class="n">radius</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_f&#39;</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol2</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}):</span>
+            <span class="n">reaction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;_rx&#39;</span><span class="p">,</span> <span class="s1">&#39;_ry&#39;</span><span class="p">,</span> <span class="s1">&#39;_rz&#39;</span><span class="p">])</span>
+            <span class="n">reaction</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">reaction</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">reaction</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
                 <span class="k">continue</span>
-
-            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">sp</span><span class="p">,</span>
-                <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">ep</span><span class="p">,</span>
-                <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span>
-                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.force.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-            <span class="p">})</span>
-
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_cylinders</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="FormArtist.draw_residuals"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.draw_residuals.html#compas_tna.rhino.FormArtist.draw_residuals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_residuals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_residuals</span><span class="p">()</span>
-
-        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.residual&#39;</span><span class="p">]</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;scale.residual&#39;</span><span class="p">]</span>
-        <span class="n">tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;tol.residual&#39;</span><span class="p">]</span>
-        <span class="n">tol2</span> <span class="o">=</span> <span class="n">tol</span> <span class="o">**</span> <span class="mi">2</span>
-
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;_is_external&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="kc">True</span><span class="p">):</span>
-            <span class="n">rx</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_rx&#39;</span><span class="p">]</span>
-            <span class="n">ry</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_ry&#39;</span><span class="p">]</span>
-            <span class="n">rz</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_rz&#39;</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="n">rx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">ry</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">rz</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="n">tol2</span><span class="p">:</span>
-                <span class="k">continue</span>
-
             <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-            <span class="n">ep</span> <span class="o">=</span> <span class="n">sp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">rx</span><span class="p">,</span> <span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">ry</span><span class="p">,</span> <span class="n">sp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">rz</span>
-
+            <span class="n">ep</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">reaction</span><span class="p">)</span>
             <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
                 <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">sp</span><span class="p">,</span>
                 <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">ep</span><span class="p">,</span>
                 <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
                 <span class="s1">&#39;arrow&#39;</span><span class="p">:</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.residual.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
-            <span class="p">})</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.reaction.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">)})</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
-        <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+<div class="viewcode-block" id="FormArtist.draw_forces"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.draw_forces.html#compas_tna.rhino.FormArtist.draw_forces">[docs]</a>    <span class="k">def</span> <span class="nf">draw_forces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw the forces.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scale : float, optional</span>
+<span class="sd">            Scaling factor for the force pipes.</span>
+<span class="sd">            Default is the value from the settings.</span>
+<span class="sd">        color : tuple, optional</span>
+<span class="sd">            RGB color components for force pipes.</span>
+<span class="sd">            Default is the value from the settings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The GUIDs of the created Rhino objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.force&#39;</span><span class="p">]</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;scale.force&#39;</span><span class="p">]</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;tol.force&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;_is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}):</span>
+            <span class="n">force</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="s1">&#39;_f&#39;</span><span class="p">)</span>
+            <span class="n">sp</span><span class="p">,</span> <span class="n">ep</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edge_coordinates</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">force</span>
+            <span class="k">if</span> <span class="n">radius</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">sp</span><span class="p">,</span>
+                <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">ep</span><span class="p">,</span>
+                <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.force.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)})</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_cylinders</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
+
+<div class="viewcode-block" id="FormArtist.draw_residuals"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.draw_residuals.html#compas_tna.rhino.FormArtist.draw_residuals">[docs]</a>    <span class="k">def</span> <span class="nf">draw_residuals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw the residual forces.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scale : float, optional</span>
+<span class="sd">            Scaling factor for the force vectors.</span>
+<span class="sd">            Default is the value from the settings.</span>
+<span class="sd">        color : tuple, optional</span>
+<span class="sd">            RGB color components for force vectors.</span>
+<span class="sd">            Default is the value from the settings.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The GUIDs of the created Rhino objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">color</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;color.residual&#39;</span><span class="p">]</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;scale.residual&#39;</span><span class="p">]</span>
+        <span class="n">tol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s1">&#39;tol.residual&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertices_where</span><span class="p">({</span><span class="s1">&#39;is_anchor&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}):</span>
+            <span class="n">residual</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertex_attributes</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;_rx&#39;</span><span class="p">,</span> <span class="s1">&#39;_ry&#39;</span><span class="p">,</span> <span class="s1">&#39;_rz&#39;</span><span class="p">])</span>
+            <span class="n">residual</span> <span class="o">=</span> <span class="n">scale_vector</span><span class="p">(</span><span class="n">residual</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">length_vector</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">vertex_coordinates</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="n">ep</span> <span class="o">=</span> <span class="n">add_vectors</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">residual</span><span class="p">)</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;start&#39;</span><span class="p">:</span> <span class="n">sp</span><span class="p">,</span>
+                <span class="s1">&#39;end&#39;</span><span class="p">:</span> <span class="n">ep</span><span class="p">,</span>
+                <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
+                <span class="s1">&#39;arrow&#39;</span><span class="p">:</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.residual.</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">)})</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div>
 
 <div class="viewcode-block" id="FormArtist.draw_angles"><a class="viewcode-back" href="../../../api/generated/compas_tna.rhino.FormArtist.draw_angles.html#compas_tna.rhino.FormArtist.draw_angles">[docs]</a>    <span class="k">def</span> <span class="nf">draw_angles</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">5.0</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">clear_angles</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;Draw the angle deviations.</span>
 
-        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edges_attribute</span><span class="p">(</span><span class="s1">&#39;_a&#39;</span><span class="p">)</span>
-        <span class="n">a_max</span> <span class="o">=</span> <span class="n">tol</span>
-        <span class="n">a_min</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">a_range</span> <span class="o">=</span> <span class="n">a_max</span> <span class="o">-</span> <span class="n">a_min</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tol : float, optional</span>
+<span class="sd">            Tolerance value for angle deviations.</span>
+<span class="sd">            Default value is ``5.0``.</span>
 
-        <span class="k">if</span> <span class="n">a_range</span><span class="p">:</span>
-            <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="kc">True</span><span class="p">):</span>
-                <span class="n">a</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_a&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">3.14159</span>
-                <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
-                    <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-                        <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edge_midpoint</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
-                        <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">3.14159</span> <span class="o">*</span> <span class="mi">180</span><span class="p">),</span>
-                        <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">i_to_green</span><span class="p">((</span><span class="n">attr</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">a_min</span><span class="p">)</span> <span class="o">/</span> <span class="n">a_range</span><span class="p">),</span>
-                        <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.angle.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-                    <span class="p">})</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list</span>
+<span class="sd">            The GUIDs of the created Rhino objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edges_where</span><span class="p">({</span><span class="s1">&#39;_is_edge&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}):</span>
+            <span class="n">a_rad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edge_attribute</span><span class="p">((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="s1">&#39;_a&#39;</span><span class="p">)</span>
+            <span class="n">a_deg</span> <span class="o">=</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">a_rad</span> <span class="o">/</span> <span class="mf">3.14159</span>
+            <span class="k">if</span> <span class="n">a_deg</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="n">i_to_green</span><span class="p">(</span><span class="n">a_rad</span> <span class="o">/</span> <span class="n">tol</span><span class="p">)</span>
+                <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s1">&#39;pos&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">edge_midpoint</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span>
+                    <span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{:.1f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">a_deg</span><span class="p">),</span>
+                    <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span>
+                    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">.angle.</span><span class="si">{}</span><span class="s2">-</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)})</span>
+        <span class="n">guids</span> <span class="o">=</span> <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guids</span> <span class="o">+=</span> <span class="n">guids</span>
+        <span class="k">return</span> <span class="n">guids</span></div></div>
 
-            <span class="n">compas_rhino</span><span class="o">.</span><span class="n">draw_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="p">,</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">redraw</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 <span class="c1"># ==============================================================================</span>
 <span class="c1"># Main</span>
 <span class="c1"># ==============================================================================</span>
-
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="k">pass</span>

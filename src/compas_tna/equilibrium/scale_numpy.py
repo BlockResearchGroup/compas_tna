@@ -18,8 +18,6 @@ from compas_tna.utilities import update_z
 
 
 __all__ = [
-    'scale_from_zmax',
-    'scale_from_bbox',
     'scale_from_target',
 ]
 
@@ -64,25 +62,25 @@ def scale_from_target(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, d
     # --------------------------------------------------------------------------
     # FormDiagram
     # --------------------------------------------------------------------------
-    k_i     = form.key_index()
-    uv_i    = form.uv_index()
-    vcount  = len(form.vertex)
+    k_i = form.key_index()
+    uv_i = form.uv_index()
+    vcount = len(form.vertex)
     anchors = list(form.anchors())
-    fixed   = list(form.fixed())
-    fixed   = set(anchors + fixed)
-    fixed   = [k_i[key] for key in fixed]
-    free    = list(set(range(vcount)) - set(fixed))
-    edges   = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
-    xyz     = array(form.vertices_attributes('xyz'), dtype=float64)
-    thick   = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
-    p       = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
-    q       = [attr.get('q', 1.0) for key, attr in form.edges_where({'is_edge': True}, True)]
-    q       = array(q, dtype=float64).reshape((-1, 1))
-    C       = connectivity_matrix(edges, 'csr')
-    Ci      = C[:, free]
-    Cf      = C[:, fixed]
-    Cit     = Ci.transpose()
-    Ct      = C.transpose()
+    fixed = list(form.fixed())
+    fixed = set(anchors + fixed)
+    fixed = [k_i[key] for key in fixed]
+    free = list(set(range(vcount)) - set(fixed))
+    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
+    xyz = array(form.vertices_attributes('xyz'), dtype=float64)
+    thick = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
+    p = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
+    q = [attr.get('q', 1.0) for key, attr in form.edges_where({'is_edge': True}, True)]
+    q = array(q, dtype=float64).reshape((-1, 1))
+    C = connectivity_matrix(edges, 'csr')
+    Ci = C[:, free]
+    Cf = C[:, fixed]
+    Cit = Ci.transpose()
+    Ct = C.transpose()
     # --------------------------------------------------------------------------
     # original data
     # --------------------------------------------------------------------------
@@ -104,13 +102,13 @@ def scale_from_target(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, d
 
         update_loads(p, xyz)
 
-        q            = scale * q0
-        Q            = diags([q.ravel()], [0])
-        A            = Cit.dot(Q).dot(Ci)
-        b            = p[free, 2] - Cit.dot(Q).dot(Cf).dot(xyz[fixed, 2])
+        q = scale * q0
+        Q = diags([q.ravel()], [0])
+        A = Cit.dot(Q).dot(Ci)
+        b = p[free, 2] - Cit.dot(Q).dot(Cf).dot(xyz[fixed, 2])
         xyz[free, 2] = spsolve(A, b)
-        z            = max(xyz[free, 2])
-        res2         = (z - zmax) ** 2
+        z = max(xyz[free, 2])
+        res2 = (z - zmax) ** 2
 
         if res2 < xtol2:
             break
@@ -126,15 +124,15 @@ def scale_from_target(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, d
     # --------------------------------------------------------------------------
     # update
     # --------------------------------------------------------------------------
-    l  = normrow(C.dot(xyz))
-    f  = q * l
-    r  = Ct.dot(Q).dot(C).dot(xyz) - p
+    l = normrow(C.dot(xyz))
+    f = q * l
+    r = Ct.dot(Q).dot(C).dot(xyz) - p
     # --------------------------------------------------------------------------
     # form
     # --------------------------------------------------------------------------
     for key, attr in form.vertices(True):
         index = k_i[key]
-        attr['z']  = xyz[index, 2]
+        attr['z'] = xyz[index, 2]
         attr['_rx'] = r[index, 0]
         attr['_ry'] = r[index, 1]
         attr['_rz'] = r[index, 2]

@@ -2,32 +2,28 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-import sys
-
-try:
-    from numpy import array
-    from scipy.interpolate import griddata
-
-except ImportError:
-    if 'ironpython' not in sys.version.lower():
-        raise
+from numpy import array
+from scipy.interpolate import griddata
 
 
 __all__ = ['distribute_thickness']
 
 
-def distribute_thickness(formdiagram, config=None):
+def distribute_thickness(formdiagram):
+    """Distribute thickness by interpolating provided values over the vertex grid."""
     points = []
     values = []
     xi = []
     index_key = {}
     index = 0
-    for key, attr in formdiagram.vertices(True):
-        if attr['t']:
-            points.append((attr['x'], attr['y']))
-            values.append(attr['t'])
+    for key in formdiagram.vertices():
+        t = formdiagram.vertex_attribute(key, 't')
+        xy = formdiagram.vertex_attributes(key, 'xy')
+        if t:
+            points.append(xy)
+            values.append(t)
         else:
-            xi.append((attr['x'], attr['y']))
+            xi.append(xy)
             index_key[index] = key
             index += 1
     points = array(points)

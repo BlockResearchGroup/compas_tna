@@ -43,7 +43,7 @@ def horizontal_nodal_numpy_proxy(formdata, forcedata, *args, **kwargs):
     return form.to_data(), force.to_data()
 
 
-def horizontal_numpy(form, force, alpha=100.0, kmax=100, display=False):
+def horizontal_numpy(form, force, alpha=100.0, kmax=100):
     r"""Compute horizontal equilibrium.
 
     Parameters
@@ -56,8 +56,6 @@ def horizontal_numpy(form, force, alpha=100.0, kmax=100, display=False):
         If 0.0, the target vectors are the edges of the force diagram.
     kmax : int
        Maximum number of iterations (the default is 100).
-    display : bool
-        Display information about the current iteration (the default is False).
 
     Notes
     -----
@@ -83,12 +81,15 @@ def horizontal_numpy(form, force, alpha=100.0, kmax=100, display=False):
     uv_i = form.uv_index()
     fixed = set(list(form.anchors()) + list(form.fixed()))
     fixed = [k_i[key] for key in fixed]
-    edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({'_is_edge': True})]
     xy = array(form.vertices_attributes('xy'), dtype=float64)
-    lmin = array([attr.get('lmin', 1e-7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    lmax = array([attr.get('lmax', 1e+7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    # hmin = array([attr.get('hmin', 1e-7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
-    # hmax = array([attr.get('hmax', 1e+7) for key, attr in form.edges_where({'_is_edge': True}, True)], dtype=float64).reshape((-1, 1))
+
+    edges = list(form.edges_where({'_is_edge': True}))
+    lmin = array(form.edges_attribute('lmin', keys=edges), dtype=float64).reshape((-1, 1))
+    lmax = array(form.edges_attribute('lmax', keys=edges), dtype=float64).reshape((-1, 1))
+    hmin = array(form.edges_attribute('hmin', keys=edges), dtype=float64).reshape((-1, 1))
+    hmax = array(form.edges_attribute('hmax', keys=edges), dtype=float64).reshape((-1, 1))
+    edges = [[k_i[u], k_i[v]] for u, v in edges]
+
     C = connectivity_matrix(edges, 'csr')
     Ct = C.transpose()
     CtC = Ct.dot(C)
@@ -100,13 +101,18 @@ def horizontal_numpy(form, force, alpha=100.0, kmax=100, display=False):
     _fixed = list(force.fixed())
     _fixed = [_k_i[key] for key in _fixed]
     _fixed = _fixed or [0]
-    _edges = force.ordered_edges(form)
     _xy = array(force.vertices_attributes('xy'), dtype=float64)
-    _lmin = array([attr.get('lmin', 1e-7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
-    _lmax = array([attr.get('lmax', 1e+7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
+
+    _edges = force.ordered_edges(form)
+    _lmin = array(force.edges_attribute('lmin', keys=_edges), dtype=float64).reshape((-1, 1))
+    _lmax = array(force.edges_attribute('lmax', keys=_edges), dtype=float64).reshape((-1, 1))
+    _edges = [[_k_i[u], _k_i[v]] for u, v in _edges]
+
     _C = connectivity_matrix(_edges, 'csr')
     _Ct = _C.transpose()
     _Ct_C = _Ct.dot(_C)
+
+    scale = force.attributes.get('scale', 1.0)
     # --------------------------------------------------------------------------
     # rotate force diagram to make it parallel to the form diagram
     # use CCW direction (opposite of cycle direction)
@@ -122,15 +128,17 @@ def horizontal_numpy(form, force, alpha=100.0, kmax=100, display=False):
     l = normrow(uv)
     _l = normrow(_uv)
     t = alpha * normalizerow(uv) + (1 - alpha) * normalizerow(_uv)
+    # proper bounds
+    hmin /= scale
+    hmax /= scale
+    _lmin = where(hmin > _lmin, hmin, _lmin)
+    _lmax = where(hmax < _lmax, hmax, _lmax)
     # parallelise
     # add the outer loop to the parallelise function
     for k in range(kmax):
         # apply length bounds
         apply_bounds(l, lmin, lmax)
         apply_bounds(_l, _lmin, _lmax)
-        # print, if allowed
-        if display:
-            print(k)
         if alpha != 1.0:
             # if emphasis is not entirely on the form
             # update the form diagram
@@ -187,7 +195,7 @@ def horizontal_numpy(form, force, alpha=100.0, kmax=100, display=False):
         attr['_a'] = a[i]
 
 
-def horizontal_nodal_numpy(form, force, alpha=100, kmax=100, display=False):
+def horizontal_nodal_numpy(form, force, alpha=100, kmax=100):
     """Compute horizontal equilibrium using a node-per-node approach.
 
     Parameters
@@ -200,8 +208,6 @@ def horizontal_nodal_numpy(form, force, alpha=100, kmax=100, display=False):
         If 0.0, the target vectors are the edges of the force diagram.
     kmax : int
        Maximum number of iterations (the default is 100).
-    display : bool
-        Display information about the current iteration (the default is False).
 
     """
     alpha = float(alpha) / 100.0

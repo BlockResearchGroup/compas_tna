@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="FormArtist.draw" href="compas_tna.rhino.FormArtist.draw.html" />
+    <link rel="prev" title="FormArtist.clear_layer" href="compas_tna.rhino.FormArtist.clear_layer.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -88,19 +88,20 @@
 <li><p><strong>text</strong> (<em>dict</em>) – A dictionary of edge labels as key-text pairs.
 The default value is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case every edge will be labelled with its key.</p></li>
 <li><p><strong>color</strong> (<em>str, tuple, dict</em>) – The color sepcification of the labels.
-String values are interpreted as hex colors (e.g. <code class="docutils literal notranslate"><span class="pre">'#ff0000'</span></code> for red).
-Tuples are interpreted as RGB component specifications (e.g. <code class="docutils literal notranslate"><span class="pre">(255,</span> <span class="pre">0,</span> <span class="pre">0)</span> <span class="pre">for</span> <span class="pre">red</span></code>.
-Individual colors can be assigned using a dictionary
-of key-color pairs. Missing keys will be assigned the default face
-color (<code class="docutils literal notranslate"><span class="pre">self.settings['edge.color']</span></code>).
-The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are assigned the
-default edge color.</p></li>
+String values are interpreted as hex colors.
+Tuples are interpreted as RGB component specifications.
+Individual colors can be assigned using a dictionary of key-color pairs.
+Missing keys will be assigned the default face color (<code class="docutils literal notranslate"><span class="pre">self.settings['edge.color']</span></code>).
+The default is <code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case all edges are assigned the default edge color.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list</em> – The GUIDs of the created Rhino objects.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>All labels are assigned a name using the folling template:
-<code class="docutils literal notranslate"><span class="pre">&quot;{}.edge.{}&quot;.format(self.mesh.name,</span> <span class="pre">key)</span></code>.</p>
+<p>The edge labels are named using the following template: <code class="docutils literal notranslate"><span class="pre">&quot;{mesh.name}.edge.label.{u}-{v}&quot;</span></code>.
+This name can be used afterwards to identify edges in the Rhino model.</p>
 </dd></dl>
 
 </div>

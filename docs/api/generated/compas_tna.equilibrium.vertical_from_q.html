@@ -100,6 +100,14 @@ Default is <code class="docutils literal notranslate"><span class="pre">False</s
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The force densities stored in the Form Diagram are the ratios of lengths of corresponding edges in the Form and Force Diagram.
+This means they are not yet scaled with the scale of the horizontal forces.
+The horizontal forces stored in the diagram are scaled.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}q_i &amp;= scale * \frac{l_{i, force}}{l_{i, form}} \\
+    &amp;= \frac{h_{i, form}}{l_{i, form}} \\
+    &amp;= \frac{f_{i, thrust}}{l_{i, thrust}}\end{split}\]</div>
 </dd></dl>
 
 </div>

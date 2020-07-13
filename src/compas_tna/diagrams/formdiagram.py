@@ -506,27 +506,10 @@ face degree: {}/{}
             A dictionary of settings overwriting the default settings of the artist.
         """
         from compas_tna.rhino import FormArtist
-        artist = FormArtist(self, layer=layer)
+        artist = FormArtist(self, layer=layer, settings=settings)
         if clear_layer:
             artist.clear_layer()
-        if not settings:
-            settings = {}
-        if settings.get('show.vertices', True):
-            vertexcolor = {}
-            vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
-            vertexcolor.update({key: '#ff0000' for key in self.vertices_where({'is_anchor': True})})
-            artist.draw_vertices(color=vertexcolor)
-        if settings.get('show.edges', True):
-            artist.draw_edges(keys=list(self.edges_where({'_is_edge': True})))
-        if settings.get('show.faces', True):
-            artist.draw_faces(keys=list(self.faces_where({'_is_loaded': True})))
-        if settings.get('show.forces', False):
-            artist.draw_forces(scale=settings.get('scale.forces', 0.1))
-        if settings.get('show.reactions', False):
-            artist.draw_reactions(scale=settings.get('scale.reactions', 0.01))
-        if settings.get('show.angles', False):
-            artist.draw_angles(tol=settings.get('tol.angle', 5.0))
-        artist.redraw()
+        artist.draw()
 
 
 # ==============================================================================

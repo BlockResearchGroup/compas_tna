@@ -81,8 +81,6 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=N
     n = xy.shape[0]
 
     for k in range(kmax):
-        # print(k)
-
         xy0 = xy.copy()
         uv = C.dot(xy)
         l = normrow(uv)
@@ -187,9 +185,7 @@ def update_q_from_qind(E, q, dep, ind):
 
     Examples
     --------
-    .. code-block:: python
-
-        #
+    >>>
 
     """
     m = E.shape[0] - len(dep)

@@ -27,6 +27,8 @@ each of the horizontal equilibrium algorithms.
     :nosignatures:
 
     horizontal_nodal
+    horizontal_numpy
+    horizontal_nodal_numpy
 
 
 Proxies
@@ -40,13 +42,20 @@ instead. The data representing the diagram is stored in the ``data`` attribute o
 diagram.
 
 >>> tna = Proxy('compas_tna.equilibrium')
->>> formdata, forcedata = tna.horizontal_nodal_numpy_proxy(form.data, force.data)
+>>> horizontal = tna.horizontal_nodal_numpy_proxy
+
+Once the proxy is created, it can be used like an actual function with the same signature.
+
+>>> formdata, forcedata = horizontal(form.data, force.data)
 >>> form.data = formdata
 >>> force.data = forcedata
 
 .. autosummary::
     :toctree: generated/
     :nosignatures:
+
+    horizontal_numpy_proxy
+    horizontal_nodal_numpy_proxy
 
 
 Vertical
@@ -80,7 +89,7 @@ from .horizontal import *  # noqa: F401 F403
 if compas.IPY:
     pass
 else:
-    # from .horizontal_numpy import *  # noqa: F401 F403
+    from .horizontal_numpy import *  # noqa: F401 F403
     from .vertical_numpy import *  # noqa: F401 F403
 
 

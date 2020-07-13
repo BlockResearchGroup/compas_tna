@@ -21,7 +21,7 @@
   
   
   
-    <link rel="prev" title="compas_tna.equilibrium.horizontal" href="compas_tna.equilibrium.horizontal.html" />
+    <link rel="prev" title="compas_tna.equilibrium" href="../compas_tna.equilibrium.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -103,7 +103,13 @@ Default is <code class="docutils literal notranslate"><span class="pre">None</sp
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>This function will update the form and force diagram instead of returning a result.</p>
+<p>This function will update the form and force diagram instead of returning a result.
+The relationship between force densities (<code class="docutils literal notranslate"><span class="pre">q</span></code>), horizontal forces (<code class="docutils literal notranslate"><span class="pre">h</span></code>), and lengths (<code class="docutils literal notranslate"><span class="pre">l</span></code>)
+is the following:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}Q_{i} &amp;= \frac{F_{i, thrust}}{L_{i, thrust}} \\
+      &amp;= \frac{H_{i, form}}{L_{i, form}} \\
+      &amp;= scale * \frac{L_{i, force}}{L_{i, form}}\end{split}\]</div>
 </dd></dl>
 
 </div>
