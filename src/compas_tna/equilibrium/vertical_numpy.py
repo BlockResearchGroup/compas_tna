@@ -86,7 +86,7 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
     thick = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
     p = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
 
-    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'_is_edge': True})]
+    edges = list(form.edges_where({'_is_edge': True}))
     q = array(form.edges_attribute('q', keys=edges), dtype=float64).reshape((-1, 1))
     edges = [(k_i[u], k_i[v]) for u, v in edges]
 
@@ -204,7 +204,7 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Fa
     thick = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
     p = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
 
-    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'_is_edge': True})]
+    edges = list(form.edges_where({'_is_edge': True}))
     q = array(form.edges_attribute('q', keys=edges), dtype=float64).reshape((-1, 1))
     edges = [(k_i[u], k_i[v]) for u, v in edges]
 
