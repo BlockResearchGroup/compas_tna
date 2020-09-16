@@ -25,9 +25,10 @@ optional_requirements = {}
 
 setup(
     name='compas_tna',
-    version='0.1.0',
+    version='0.1.1',
     description='COMPAS package for Thrust Network Analysis',
     long_description=long_description,
+    long_description_content_type='text/markdown',
     license='MIT',
     url='https://github.com/BlockResearchGroup/compas_tna',
     author='Tom Van Mele',
