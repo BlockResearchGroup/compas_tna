@@ -242,7 +242,7 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Fa
 
     for edge in form.edges_where({'_is_edge': True}):
         index = uv_i[edge]
-        form.edge_attributes(edge, '_f', f[index, 0])
+        form.edge_attribute(edge, '_f', f[index, 0])
 
 
 # ==============================================================================
