@@ -239,10 +239,13 @@ def horizontal_nodal_numpy(form, force, alpha=100, kmax=100):
     _fixed = list(force.fixed())
     _fixed = [_k_i[key] for key in _fixed]
     _fixed = _fixed or [0]
+
     _edges = force.ordered_edges(form)
     _xy = array(force.vertices_attributes('xy'), dtype=float64)
     _lmin = array([attr.get('lmin', 1e-7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
     _lmax = array([attr.get('lmax', 1e+7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
+    _edges = [[_k_i[u], _k_i[v]] for u, v in _edges]
+
     _C = connectivity_matrix(_edges, 'csr')
     scale = force.attributes.get('scale', 1.0)
     # --------------------------------------------------------------------------
