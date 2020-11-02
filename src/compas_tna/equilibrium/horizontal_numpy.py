@@ -84,10 +84,10 @@ def horizontal_numpy(form, force, alpha=100.0, kmax=100):
     xy = array(form.vertices_attributes('xy'), dtype=float64)
 
     edges = list(form.edges_where({'_is_edge': True}))
-    lmin = array(form.edges_attribute('lmin', edges=edges), dtype=float64).reshape((-1, 1))
-    lmax = array(form.edges_attribute('lmax', edges=edges), dtype=float64).reshape((-1, 1))
-    hmin = array(form.edges_attribute('hmin', edges=edges), dtype=float64).reshape((-1, 1))
-    hmax = array(form.edges_attribute('hmax', edges=edges), dtype=float64).reshape((-1, 1))
+    lmin = array(form.edges_attribute('lmin', keys=edges), dtype=float64).reshape((-1, 1))
+    lmax = array(form.edges_attribute('lmax', keys=edges), dtype=float64).reshape((-1, 1))
+    hmin = array(form.edges_attribute('hmin', keys=edges), dtype=float64).reshape((-1, 1))
+    hmax = array(form.edges_attribute('hmax', keys=edges), dtype=float64).reshape((-1, 1))
     edges = [[k_i[u], k_i[v]] for u, v in edges]
 
     C = connectivity_matrix(edges, 'csr')
@@ -104,8 +104,8 @@ def horizontal_numpy(form, force, alpha=100.0, kmax=100):
     _xy = array(force.vertices_attributes('xy'), dtype=float64)
 
     _edges = force.ordered_edges(form)
-    _lmin = array(force.edges_attribute('lmin', edges=_edges), dtype=float64).reshape((-1, 1))
-    _lmax = array(force.edges_attribute('lmax', edges=_edges), dtype=float64).reshape((-1, 1))
+    _lmin = array(force.edges_attribute('lmin', keys=_edges), dtype=float64).reshape((-1, 1))
+    _lmax = array(force.edges_attribute('lmax', keys=_edges), dtype=float64).reshape((-1, 1))
     _edges = [[_k_i[u], _k_i[v]] for u, v in _edges]
 
     _C = connectivity_matrix(_edges, 'csr')

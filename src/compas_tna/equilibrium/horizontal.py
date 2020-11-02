@@ -64,10 +64,10 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     edges = list(form.edges_where({'_is_edge': True}))
     uv_i = form.uv_index()
     ij_e = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
-    lmin = form.edges_attribute('lmin', edges=edges)
-    lmax = form.edges_attribute('lmax', edges=edges)
-    hmin = form.edges_attribute('hmin', edges=edges)
-    hmax = form.edges_attribute('hmax', edges=edges)
+    lmin = form.edges_attribute('lmin', keys=edges)
+    lmax = form.edges_attribute('lmax', keys=edges)
+    hmin = form.edges_attribute('hmin', keys=edges)
+    hmax = form.edges_attribute('hmax', keys=edges)
     edges = [[k_i[u], k_i[v]] for u, v in edges]
     # --------------------------------------------------------------------------
     # force diagram
@@ -81,8 +81,8 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     _edges = force.ordered_edges(form)
     _uv_i = {uv: index for index, uv in enumerate(_edges)}
     _ij_e = {(_k_i[u], _k_i[v]): index for (u, v), index in iter(_uv_i.items())}
-    _lmin = force.edges_attribute('lmin', edges=_edges)
-    _lmax = force.edges_attribute('lmax', edges=_edges)
+    _lmin = force.edges_attribute('lmin', keys=_edges)
+    _lmax = force.edges_attribute('lmax', keys=_edges)
     _edges = [[_k_i[u], _k_i[v]] for u, v in _edges]
     scale = force.attributes.get('scale', 1.0)
     # --------------------------------------------------------------------------
