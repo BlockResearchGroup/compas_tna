@@ -11,10 +11,14 @@ prune ui
 include LICENSE
 include README.md
 include AUTHORS.md
+include CHANGELOG.md
 include requirements.txt
 
 exclude requirements-dev.txt 
+exclude requirements-dev.txt 
 exclude pytest.ini .bumpversion.cfg .editorconfig
+exclude CONTRIBUTING.md
 exclude tasks.py
+exclude .gitmodules
 
 global-exclude *.py[cod] __pycache__ *.dylib *.nb[ic] .DS_Store
