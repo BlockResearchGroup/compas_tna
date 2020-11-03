@@ -114,3 +114,4 @@ docsource/api/generated
 .DS_Store
 
 .vscode/
+.pytest_cache/
