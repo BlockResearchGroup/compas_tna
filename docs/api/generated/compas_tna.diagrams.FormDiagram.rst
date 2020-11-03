@@ -1,0 +1,232 @@
+.. rst-class:: detail
+
+FormDiagram
+===============================
+
+.. currentmodule:: compas_tna.diagrams
+
+.. autoclass:: FormDiagram
+
+    
+    
+
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+
+    .. rubric:: Inherited Attributes
+
+    .. autosummary::
+    
+        ~FormDiagram.DATASCHEMA
+        ~FormDiagram.JSONSCHEMA
+        ~FormDiagram.adjacency
+        ~FormDiagram.data
+        ~FormDiagram.dtype
+        ~FormDiagram.guid
+        ~FormDiagram.name
+
+    
+    
+
+    
+    
+
+    .. rubric:: Methods
+
+    .. autosummary::
+        :toctree:
+
+    
+        ~FormDiagram.__init__
+        ~FormDiagram.anchors
+        ~FormDiagram.corners
+        ~FormDiagram.draw
+        ~FormDiagram.dual_diagram
+        ~FormDiagram.fixed
+        ~FormDiagram.from_lines
+        ~FormDiagram.from_mesh
+        ~FormDiagram.from_rhinolines
+        ~FormDiagram.from_rhinomesh
+        ~FormDiagram.from_rhinosurface
+        ~FormDiagram.index_uv
+        ~FormDiagram.leaves
+        ~FormDiagram.plot
+        ~FormDiagram.update_boundaries
+        ~FormDiagram.uv_index
+
+    .. rubric:: Inherited Methods
+
+    .. autosummary::
+        :toctree:
+
+    
+        ~FormDiagram.add_face
+        ~FormDiagram.add_vertex
+        ~FormDiagram.area
+        ~FormDiagram.bounding_box
+        ~FormDiagram.bounding_box_xy
+        ~FormDiagram.centroid
+        ~FormDiagram.clear
+        ~FormDiagram.collapse_edge
+        ~FormDiagram.connected_components
+        ~FormDiagram.copy
+        ~FormDiagram.cull_vertices
+        ~FormDiagram.cut
+        ~FormDiagram.delete_face
+        ~FormDiagram.delete_vertex
+        ~FormDiagram.dual
+        ~FormDiagram.edge_attribute
+        ~FormDiagram.edge_attributes
+        ~FormDiagram.edge_coordinates
+        ~FormDiagram.edge_direction
+        ~FormDiagram.edge_faces
+        ~FormDiagram.edge_length
+        ~FormDiagram.edge_loop
+        ~FormDiagram.edge_midpoint
+        ~FormDiagram.edge_point
+        ~FormDiagram.edge_strip
+        ~FormDiagram.edge_vector
+        ~FormDiagram.edges
+        ~FormDiagram.edges_attribute
+        ~FormDiagram.edges_attributes
+        ~FormDiagram.edges_on_boundaries
+        ~FormDiagram.edges_on_boundary
+        ~FormDiagram.edges_where
+        ~FormDiagram.edges_where_predicate
+        ~FormDiagram.euler
+        ~FormDiagram.face_adjacency
+        ~FormDiagram.face_adjacency_halfedge
+        ~FormDiagram.face_adjacency_vertices
+        ~FormDiagram.face_area
+        ~FormDiagram.face_aspect_ratio
+        ~FormDiagram.face_attribute
+        ~FormDiagram.face_attributes
+        ~FormDiagram.face_center
+        ~FormDiagram.face_centroid
+        ~FormDiagram.face_coordinates
+        ~FormDiagram.face_corners
+        ~FormDiagram.face_curvature
+        ~FormDiagram.face_degree
+        ~FormDiagram.face_flatness
+        ~FormDiagram.face_halfedges
+        ~FormDiagram.face_max_degree
+        ~FormDiagram.face_min_degree
+        ~FormDiagram.face_neighborhood
+        ~FormDiagram.face_neighbors
+        ~FormDiagram.face_normal
+        ~FormDiagram.face_plane
+        ~FormDiagram.face_skewness
+        ~FormDiagram.face_vertex_ancestor
+        ~FormDiagram.face_vertex_descendant
+        ~FormDiagram.face_vertices
+        ~FormDiagram.faces
+        ~FormDiagram.faces_attribute
+        ~FormDiagram.faces_attributes
+        ~FormDiagram.faces_on_boundary
+        ~FormDiagram.faces_where
+        ~FormDiagram.faces_where_predicate
+        ~FormDiagram.flip_cycles
+        ~FormDiagram.from_data
+        ~FormDiagram.from_json
+        ~FormDiagram.from_obj
+        ~FormDiagram.from_off
+        ~FormDiagram.from_ply
+        ~FormDiagram.from_points
+        ~FormDiagram.from_polygons
+        ~FormDiagram.from_polyhedron
+        ~FormDiagram.from_polylines
+        ~FormDiagram.from_shape
+        ~FormDiagram.from_stl
+        ~FormDiagram.from_vertices_and_faces
+        ~FormDiagram.genus
+        ~FormDiagram.get_any_face
+        ~FormDiagram.get_any_face_vertex
+        ~FormDiagram.get_any_vertex
+        ~FormDiagram.get_any_vertices
+        ~FormDiagram.gkey_key
+        ~FormDiagram.halfedge_face
+        ~FormDiagram.has_edge
+        ~FormDiagram.has_face
+        ~FormDiagram.has_halfedge
+        ~FormDiagram.has_vertex
+        ~FormDiagram.index_key
+        ~FormDiagram.index_vertex
+        ~FormDiagram.insert_vertex
+        ~FormDiagram.is_connected
+        ~FormDiagram.is_edge_on_boundary
+        ~FormDiagram.is_empty
+        ~FormDiagram.is_face_on_boundary
+        ~FormDiagram.is_manifold
+        ~FormDiagram.is_orientable
+        ~FormDiagram.is_quadmesh
+        ~FormDiagram.is_regular
+        ~FormDiagram.is_trimesh
+        ~FormDiagram.is_valid
+        ~FormDiagram.is_vertex_connected
+        ~FormDiagram.is_vertex_on_boundary
+        ~FormDiagram.join
+        ~FormDiagram.key_gkey
+        ~FormDiagram.key_index
+        ~FormDiagram.normal
+        ~FormDiagram.number_of_edges
+        ~FormDiagram.number_of_faces
+        ~FormDiagram.number_of_vertices
+        ~FormDiagram.quads_to_triangles
+        ~FormDiagram.remove_unused_vertices
+        ~FormDiagram.smooth_area
+        ~FormDiagram.smooth_centroid
+        ~FormDiagram.split_edge
+        ~FormDiagram.split_face
+        ~FormDiagram.summary
+        ~FormDiagram.to_data
+        ~FormDiagram.to_json
+        ~FormDiagram.to_lines
+        ~FormDiagram.to_obj
+        ~FormDiagram.to_off
+        ~FormDiagram.to_ply
+        ~FormDiagram.to_points
+        ~FormDiagram.to_polygons
+        ~FormDiagram.to_polylines
+        ~FormDiagram.to_quadmesh
+        ~FormDiagram.to_stl
+        ~FormDiagram.to_trimesh
+        ~FormDiagram.to_vertices_and_faces
+        ~FormDiagram.transform
+        ~FormDiagram.transform_numpy
+        ~FormDiagram.transformed
+        ~FormDiagram.unify_cycles
+        ~FormDiagram.unset_edge_attribute
+        ~FormDiagram.unset_face_attribute
+        ~FormDiagram.unset_vertex_attribute
+        ~FormDiagram.update_default_edge_attributes
+        ~FormDiagram.update_default_face_attributes
+        ~FormDiagram.update_default_vertex_attributes
+        ~FormDiagram.validate_data
+        ~FormDiagram.validate_json
+        ~FormDiagram.vertex_area
+        ~FormDiagram.vertex_attribute
+        ~FormDiagram.vertex_attributes
+        ~FormDiagram.vertex_coordinates
+        ~FormDiagram.vertex_curvature
+        ~FormDiagram.vertex_degree
+        ~FormDiagram.vertex_faces
+        ~FormDiagram.vertex_index
+        ~FormDiagram.vertex_laplacian
+        ~FormDiagram.vertex_max_degree
+        ~FormDiagram.vertex_min_degree
+        ~FormDiagram.vertex_neighborhood
+        ~FormDiagram.vertex_neighborhood_centroid
+        ~FormDiagram.vertex_neighbors
+        ~FormDiagram.vertex_normal
+        ~FormDiagram.vertices
+        ~FormDiagram.vertices_attribute
+        ~FormDiagram.vertices_attributes
+        ~FormDiagram.vertices_on_boundaries
+        ~FormDiagram.vertices_on_boundary
+        ~FormDiagram.vertices_where
+        ~FormDiagram.vertices_where_predicate
+
+    
+    
