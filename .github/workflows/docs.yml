@@ -14,8 +14,6 @@ jobs:
   build:
     name: build and deploy docs
     runs-on: ubuntu-latest
-    env:
-      GH_PAT: ${{secrets.GH_PAT}}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.8
@@ -57,3 +55,36 @@ jobs:
           keep_history: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  docVersions:
+    name: update doc versions
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+
+      - name: update doc versions
+        run: |
+          >doc_versions.txt
+          for folder in $(ls -d */ | tr -d '/')
+          do 
+              if [[ $folder =~ ^v[0-9]{1,2}\.[0-9]{1,2}\.[0-9]{1,2}$|^latest$ ]]
+              then 
+                  echo ${folder}  >> doc_versions.txt
+              fi
+          done
+          echo found available doc versions:
+          cat doc_versions.txt
+
+      - name: Deploy docs
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: ./
+          keep_history: true  
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
