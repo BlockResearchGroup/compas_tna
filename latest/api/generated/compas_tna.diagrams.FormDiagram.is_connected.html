@@ -17,7 +17,11 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
+    <link rel="next" title="FormDiagram.is_edge_on_boundary" href="compas_tna.diagrams.FormDiagram.is_edge_on_boundary.html" />
   
+  
+  
+    <link rel="prev" title="FormDiagram.insert_vertex" href="compas_tna.diagrams.FormDiagram.insert_vertex.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -85,6 +89,32 @@
         
         <div class="detail section" id="formdiagram-is-connected">
 <h1 class="display-4 p-0 mb-5">FormDiagram.is_connected</h1>
+<dl class="method">
+<dt id="compas_tna.diagrams.FormDiagram.is_connected">
+<code class="sig-prename descclassname">FormDiagram.</code><code class="sig-name descname">is_connected</code><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Verify that the mesh is connected.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mesh</strong> (<em>compas.datastructures.Mesh</em>) – A mesh data structure.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>bool</em> – True, if the mesh is connected.
+False, otherwise.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A mesh is connected if for every two vertices a path exists connecting them.</p>
+<p class="rubric">Examples</p>
+<div class="doctest language-python notranslate"><div class="highlight"><pre><code><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_is_connected</span><span class="p">(</span><span class="n">m1</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_is_connected</span><span class="p">(</span><span class="n">m2</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh_is_connected</span><span class="p">(</span><span class="n">m3</span><span class="p">)</span>
+<span class="go">False</span>
+</code></pre></div>
+</div>
+</dd></dl>
+
 </div>
 
         
@@ -103,11 +133,19 @@
         
         
           <div id="compas-navigation" class="collapse compas-navigation">
-          <ul class="nav flex-column">
+          <ul class="nav flex-column active">
 <li class="nav-item"><a class="nav-link reference internal" href="../../index.html">Introduction</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../gettingstarted.html">Getting Started</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../tutorial.html">Tutorial</a></li>
-<li class="nav-item"><a class="nav-link reference internal" href="../../api.html">API Reference</a></li>
+<li class="nav-item active"><a class="nav-link reference internal" href="../../api.html">API Reference</a><ul class="nav flex-column active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas_tna.html">compas_tna</a><ul class="nav flex-column active">
+<li class="nav-item active"><a class="nav-link reference internal" href="../compas_tna.diagrams.html">compas_tna.diagrams</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_tna.equilibrium.html">compas_tna.equilibrium</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="../compas_tna.utilities.html">compas_tna.utilities</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../license.html">License</a></li>
 <li class="nav-item"><a class="nav-link reference internal" href="../../citing.html">Citing</a></li>
 </ul>
@@ -163,7 +201,7 @@
   <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
   URL_ROOT          : '',
-  VERSION           : '0.1.3',
+  VERSION           : '0.1.4',
   COLLAPSE_INDEX    : false,
   FILE_SUFFIX       : '.html',
   HAS_SOURCE        : 'false',
