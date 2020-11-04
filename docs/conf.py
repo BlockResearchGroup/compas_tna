@@ -4,9 +4,6 @@
 #
 # needs_sphinx = '1.0'
 
-import sys
-import os
-import urllib
 
 import sphinx_compas_theme
 
