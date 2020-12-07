@@ -62,12 +62,16 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     xy = form.vertices_attributes('xy')
 
     edges = list(form.edges_where({'_is_edge': True}))
-    uv_i = form.uv_index()
-    ij_e = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
     lmin = form.edges_attribute('lmin', keys=edges)
     lmax = form.edges_attribute('lmax', keys=edges)
     hmin = form.edges_attribute('hmin', keys=edges)
     hmax = form.edges_attribute('hmax', keys=edges)
+
+    flipmask = [-1.0 if form.edge_attribute(edge, '_is_tension') else 1.0 for edge in edges]
+
+    uv_i = form.uv_index()
+    ij_e = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
+
     edges = [[k_i[u], k_i[v]] for u, v in edges]
     # --------------------------------------------------------------------------
     # force diagram
@@ -96,7 +100,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     # that is the (alpha) weighted average of the directions of corresponding
     # edges of the two diagrams
     # --------------------------------------------------------------------------
-    uv = [[xy[j][0] - xy[i][0], xy[j][1] - xy[i][1]] for i, j in edges]
+    uv = [[factor * (xy[j][0] - xy[i][0]), factor * (xy[j][1] - xy[i][1])] for (i, j), factor in zip(edges, flipmask)]
     _uv = [[_xy[j][0] - _xy[i][0], _xy[j][1] - _xy[i][1]] for i, j in _edges]
     lengths = [(dx**2 + dy**2)**0.5 for dx, dy in uv]
     forces = [(dx**2 + dy**2)**0.5 for dx, dy in _uv]
@@ -130,6 +134,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     # --------------------------------------------------------------------------
     # compute the force densities
     # --------------------------------------------------------------------------
+    forces[:] = [force * factor for force, factor in zip(forces, flipmask)]
     q = [f / l for f, l in zip(forces, lengths)]
     # --------------------------------------------------------------------------
     # rotate the force diagram 90 degrees in CW direction
