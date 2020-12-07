@@ -134,7 +134,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     # --------------------------------------------------------------------------
     # compute the force densities
     # --------------------------------------------------------------------------
-    forces[:] = [force * factor for force, factor in zip(forces, flipmask)]
+    forces[:] = [f * factor for f, factor in zip(forces, flipmask)]
     q = [f / l for f, l in zip(forces, lengths)]
     # --------------------------------------------------------------------------
     # rotate the force diagram 90 degrees in CW direction
