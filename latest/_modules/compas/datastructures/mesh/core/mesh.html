@@ -54,7 +54,7 @@
         <li class="nav-item nav-versions dropdown">
           <a class="nav-item nav-link dropdown-toggle mr-md-2" href="#" id="bd-versions" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false">
-            Version
+            0.1.4
           </a>
           <div id="doc_version_list" class="dropdown-menu dropdown-menu-md-right" aria-labelledby="bd-versions"></div>
         </li>
@@ -686,6 +686,9 @@
         <span class="n">gkey</span> <span class="o">=</span> <span class="n">geometric_key</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_coordinates</span>
         <span class="k">return</span> <span class="p">{</span><span class="n">gkey</span><span class="p">(</span><span class="n">xyz</span><span class="p">(</span><span class="n">key</span><span class="p">),</span> <span class="n">precision</span><span class="p">):</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
+
+    <span class="n">vertex_gkey</span> <span class="o">=</span> <span class="n">key_gkey</span>
+    <span class="n">gkey_vertex</span> <span class="o">=</span> <span class="n">gkey_key</span>
 
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># builders</span>
@@ -1475,7 +1478,14 @@
         <span class="k">return</span> <span class="n">boundaries</span>
 
     <span class="k">def</span> <span class="nf">edges_on_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Find the edges on all boundaries of the mesh.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of list</span>
+<span class="sd">            A list of edges per boundary.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">vertexgroups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices_on_boundaries</span><span class="p">()</span>
         <span class="n">edgegroups</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">vertices</span> <span class="ow">in</span> <span class="n">vertexgroups</span><span class="p">:</span>
