@@ -26,7 +26,7 @@ __copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
 __license__ = 'MIT License'
 __email__ = 'vanmelet@ethz.ch'
 
-__version__ = '0.1.4'
+__version__ = '0.1.5'
 
 
 PY3 = sys.version_info.major == 3
