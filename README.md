@@ -1,5 +1,10 @@
 # compas_tna
 
+[![GitHub - License](https://img.shields.io/github/license/blockresearchgroup/compas_tna.svg)](https://github.com/blockresearchgroup/compas_tna)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/compas-tna.svg)](https://pypi.python.org/project/compas-tna)
+[![PyPI - Latest Release](https://img.shields.io/pypi/v/compas-tna.svg)](https://pypi.python.org/project/compas-tna)
+[![DOI](https://zenodo.org/badge/113331502.svg)](https://zenodo.org/badge/latestdoi/113331502)
+
 COMPAS package for Thrust Network Analaysis. This package provides the base implementation of TNA. For a RhinoVault-style user interface and workflow, see `compas-RV2`.
 
 ## Getting Started
