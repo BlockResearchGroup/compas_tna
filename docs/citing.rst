@@ -2,6 +2,27 @@
 Citing
 ********************************************************************************
 
+.. rst-class:: lead
+
+    If you use ``compas_tna`` in your work, please cite one of the references below.
+
+Code
+====
+
+.. code-block:: none
+
+    @misc{compas-dev,
+        title  = {{compas_tna}: Implementation of Thrust Network Analysis based on COMPAS,
+        author = {Tom Van Mele},
+        note   = {https://blockresearchgroup.github.io/compas_tna/},
+        doi    = {10.5281/zenodo.3979410},
+        url    = {https://doi.org/10.5281/zenodo.3979410},
+    }
+
+
+Publications
+============
+
 .. code-block:: none
 
     @article{Block2016,

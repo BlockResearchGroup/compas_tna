@@ -5,20 +5,11 @@ Getting Started
 Installation
 ============
 
-With pip, :mod:`compas_tna` can be installed directly from the GitHub repo.
+With pip
 
 .. code-block:: bash
 
-    pip install git+https://github.com/BlockResearchGroup/compas_tna.git#egg=compas_tna
-
-
-Or from local source files.
-
-.. code-block:: bash
-
-    git clone https://github.com/BlockResearchGroup/compas_tna.git
-    cd compas_tna
-    pip install -e .
+    pip install compas_tna
 
 
 Rhino Configuration
