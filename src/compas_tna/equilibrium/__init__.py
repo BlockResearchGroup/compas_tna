@@ -86,9 +86,7 @@ import compas
 
 from .horizontal import *  # noqa: F401 F403
 
-if compas.IPY:
-    pass
-else:
+if not compas.IPY:
     from .horizontal_numpy import *  # noqa: F401 F403
     from .vertical_numpy import *  # noqa: F401 F403
 

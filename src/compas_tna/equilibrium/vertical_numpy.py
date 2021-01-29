@@ -27,7 +27,7 @@ __all__ = [
 
 def vertical_from_zmax_proxy(formdata, *args, **kwargs):
     form = FormDiagram.from_data(formdata)
-    scale = vertical_from_zmax(form, *args, **kwargs)
+    _, scale = vertical_from_zmax(form, *args, **kwargs)
     return form.to_data(), scale
 
 
@@ -153,7 +153,7 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
         index = uv_i[edge]
         form.edge_attributes(edge, ['q', '_f'], [q[index, 0], f[index, 0]])
 
-    return scale
+    return form, scale
 
 
 def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=False):
