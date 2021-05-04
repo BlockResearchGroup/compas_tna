@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from numpy import array
 from scipy.interpolate import griddata
 
@@ -34,12 +30,3 @@ def distribute_thickness(formdiagram):
     for index, value in enumerate(t):
         key = index_key[index]
         formdiagram.vertex_attribute(key, 't', value)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    pass

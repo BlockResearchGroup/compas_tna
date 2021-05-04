@@ -1,8 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
-
 from compas_tna.diagrams import FormDiagram
 from compas.numerical import fd_numpy
 
@@ -30,11 +25,3 @@ def relax_boundary_openings(form, fixed):
     for key in form.vertices():
         index = k_i[key]
         form.vertex_attributes(key, 'xyz', xyz[index])
-
-
-# ============================================================================
-# Main
-# ============================================================================
-
-if __name__ == "__main__":
-    pass

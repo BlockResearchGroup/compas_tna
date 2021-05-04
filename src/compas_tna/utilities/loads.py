@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from numpy import zeros
 
 from compas.geometry import length_vector
@@ -91,11 +87,3 @@ class LoadUpdater(object):
                     a += 0.25 * length_vector(cross_vectors(p01, p3 - p0))
             areas[key_index[u]] = a
         return areas
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

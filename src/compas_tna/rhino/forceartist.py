@@ -76,11 +76,3 @@ class ForceArtist(MeshArtist):
             self.draw_faces(
                 color=self.settings['color.faces'])
         self.redraw()
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

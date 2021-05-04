@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 import sys
 
 from numpy import empty_like
@@ -83,7 +79,7 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=N
     for k in range(kmax):
         xy0 = xy.copy()
         uv = C.dot(xy)
-        l = normrow(uv)
+        l = normrow(uv)  # noqa: E741
 
         if lmin is not None and lmax is not None:
             apply_bounds(l, lmin, lmax)
@@ -233,11 +229,3 @@ def form_identify_dof(form, **kwargs):
     C = connectivity_matrix(edges)
     E = equilibrium_matrix(C, xyz, free)
     return nonpivots(rref(E, algo=algo))
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

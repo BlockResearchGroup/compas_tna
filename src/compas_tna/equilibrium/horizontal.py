@@ -168,12 +168,3 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
         else:
             i = _uv_i[(v, u)]
         force.edge_attributes((u, v), ['_l', '_a'], [forces[i], angles[i]])
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    pass

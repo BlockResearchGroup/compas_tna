@@ -335,11 +335,3 @@ class FormArtist(MeshArtist):
         guids = compas_rhino.draw_labels(labels, layer=self.layer, clear=False, redraw=False)
         self.guids += guids
         return guids
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-    pass

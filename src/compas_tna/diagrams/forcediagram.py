@@ -190,12 +190,3 @@ class ForceDiagram(Diagram):
         artist.draw_vertices(color=vertexcolor)
         artist.draw_edges()
         artist.redraw()
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    pass

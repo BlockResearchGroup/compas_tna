@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 from compas.geometry import angle_vectors_xy
 
 from numpy import array
@@ -125,7 +121,7 @@ def horizontal_numpy(form, force, alpha=100.0, kmax=100):
     # --------------------------------------------------------------------------
     uv = C.dot(xy)
     _uv = _C.dot(_xy)
-    l = normrow(uv)
+    l = normrow(uv)  # noqa: E741
     _l = normrow(_uv)
     t = alpha * normalizerow(uv) + (1 - alpha) * normalizerow(_uv)
     # proper bounds
@@ -144,7 +140,7 @@ def horizontal_numpy(form, force, alpha=100.0, kmax=100):
             # update the form diagram
             xy = parallelise_sparse(CtC, Ct.dot(l * t), xy, fixed, 'CtC')
             uv = C.dot(xy)
-            l = normrow(uv)
+            l = normrow(uv)  # noqa: E741
         if alpha != 0.0:
             # if emphasis is not entirely on the force
             # update the force diagram
@@ -260,7 +256,7 @@ def horizontal_nodal_numpy(form, force, alpha=100, kmax=100):
     # --------------------------------------------------------------------------
     uv = flipmask * C.dot(xy)
     _uv = _C.dot(_xy)
-    l = normrow(uv)
+    l = normrow(uv)  # noqa: E741
     _l = normrow(_uv)
     # --------------------------------------------------------------------------
     # the target vectors
@@ -285,7 +281,7 @@ def horizontal_nodal_numpy(form, force, alpha=100, kmax=100):
     # --------------------------------------------------------------------------
     uv = C.dot(xy)
     _uv = _C.dot(_xy)
-    l = normrow(uv)
+    l = normrow(uv)  # noqa: E741
     _l = normrow(_uv)
     # --------------------------------------------------------------------------
     # compute the force densities
@@ -329,12 +325,3 @@ def horizontal_nodal_numpy(form, force, alpha=100, kmax=100):
             i = _uv_i[(v, u)]
         attr['_l'] = _l[i, 0]
         attr['_a'] = a[i]
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-
-    pass

@@ -1,7 +1,3 @@
-from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import division
-
 import sys
 
 from numpy import array
@@ -120,11 +116,11 @@ def scale_from_target(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, d
     q = scale * q0
     Q = diags([q.ravel()], [0])
 
-    res = update_z(xyz, Q, C, p, free, fixed, update_loads, tol=rtol, kmax=kmax, display=display)
+    _ = update_z(xyz, Q, C, p, free, fixed, update_loads, tol=rtol, kmax=kmax, display=display)
     # --------------------------------------------------------------------------
     # update
     # --------------------------------------------------------------------------
-    l = normrow(C.dot(xyz))
+    l = normrow(C.dot(xyz))  # noqa: E741
     f = q * l
     r = Ct.dot(Q).dot(C).dot(xyz) - p
     # --------------------------------------------------------------------------
@@ -141,11 +137,3 @@ def scale_from_target(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, d
         attr['_f'] = f[index, 0]
 
     return scale
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == '__main__':
-    pass

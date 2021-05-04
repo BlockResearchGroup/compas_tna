@@ -106,13 +106,3 @@ def parallelise_edges(xy, edges, targets, i_nbrs, ij_e, fixed=None, kmax=100, lm
 
         if callback:
             callback(k, xy, edges)
-
-
-# ==============================================================================
-# Main
-# ==============================================================================
-
-if __name__ == "__main__":
-
-    import doctest
-    doctest.testmod(globs=globals())
