@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
   <title>compas_tna - ForceDiagram</title>
+  
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -94,14 +96,14 @@
         
         
         <div class="detail section" id="forcediagram">
-<h1>ForceDiagram</h1>
+<h1>ForceDiagram<a class="headerlink" href="#forcediagram" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="compas_tna.diagrams.ForceDiagram">
-<em class="property">class </em><code class="sig-prename descclassname">compas_tna.diagrams.</code><code class="sig-name descname">ForceDiagram</code><a class="reference internal" href="../../_modules/compas_tna/diagrams/forcediagram.html#ForceDiagram"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_tna.diagrams.</span></code><code class="sig-name descname"><span class="pre">ForceDiagram</span></code><a class="reference internal" href="../../_modules/compas_tna/diagrams/forcediagram.html#ForceDiagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_tna.diagrams.ForceDiagram" title="Permalink to this definition">¶</a></dt>
 <dd><p>The <code class="docutils literal notranslate"><span class="pre">ForceDiagram</span></code> defines a TNA force diagram.</p>
 <dl class="py attribute">
 <dt id="compas_tna.diagrams.ForceDiagram.primal">
-<code class="sig-name descname">primal</code></dt>
+<code class="sig-name descname"><span class="pre">primal</span></code><a class="headerlink" href="#compas_tna.diagrams.ForceDiagram.primal" title="Permalink to this definition">¶</a></dt>
 <dd><p>The TNA form diagram corresponding to the force diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -112,7 +114,7 @@
 
 <dl class="py attribute">
 <dt id="compas_tna.diagrams.ForceDiagram.scale">
-<code class="sig-name descname">scale</code></dt>
+<code class="sig-name descname"><span class="pre">scale</span></code><a class="headerlink" href="#compas_tna.diagrams.ForceDiagram.scale" title="Permalink to this definition">¶</a></dt>
 <dd><p>The scale factor for calculating horizontal forces based on edge lengths.
 The horizontal force in an edge of the form diagram is equal
 to the length of the corresponding edge in the force diagram multiplied by the scale factor.</p>
@@ -125,7 +127,7 @@ to the length of the corresponding edge in the force diagram multiplied by the s
 
 <dl class="py attribute">
 <dt id="compas_tna.diagrams.ForceDiagram.default_vertex_attributes">
-<code class="sig-name descname">default_vertex_attributes</code></dt>
+<code class="sig-name descname"><span class="pre">default_vertex_attributes</span></code><a class="headerlink" href="#compas_tna.diagrams.ForceDiagram.default_vertex_attributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>The names and default values of the attributes of vertices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -136,7 +138,7 @@ to the length of the corresponding edge in the force diagram multiplied by the s
 
 <dl class="py attribute">
 <dt id="compas_tna.diagrams.ForceDiagram.default_edge_attributes">
-<code class="sig-name descname">default_edge_attributes</code></dt>
+<code class="sig-name descname"><span class="pre">default_edge_attributes</span></code><a class="headerlink" href="#compas_tna.diagrams.ForceDiagram.default_edge_attributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>The names and default values of the attributes of the edges.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -147,7 +149,7 @@ to the length of the corresponding edge in the force diagram multiplied by the s
 
 <dl class="py attribute">
 <dt id="compas_tna.diagrams.ForceDiagram.default_face_attributes">
-<code class="sig-name descname">default_face_attributes</code></dt>
+<code class="sig-name descname"><span class="pre">default_face_attributes</span></code><a class="headerlink" href="#compas_tna.diagrams.ForceDiagram.default_face_attributes" title="Permalink to this definition">¶</a></dt>
 <dd><p>The names and default values of the attributes of the faces.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -190,7 +192,7 @@ using one of the horizontal equilibrium solvers.</p>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
-<td><p>A data dict representing the mesh data structure for serialisation.</p></td>
+<td><p>A data dict representing the mesh data structure for serialization.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
 <td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
@@ -271,7 +273,7 @@ using one of the horizontal equilibrium solvers.</p>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.copy.html#compas_tna.diagrams.ForceDiagram.copy" title="compas_tna.diagrams.ForceDiagram.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
-<td><p>Make an independent copy of the datastructure object.</p></td>
+<td><p>Make an independent copy of the data object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.cull_vertices.html#compas_tna.diagrams.ForceDiagram.cull_vertices" title="compas_tna.diagrams.ForceDiagram.cull_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_vertices</span></code></a>()</p></td>
 <td><p>Remove all unused vertices from the mesh object.</p></td>
@@ -448,10 +450,10 @@ using one of the horizontal equilibrium solvers.</p>
 <td><p>Flip the cycle directions of all faces.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.from_data.html#compas_tna.diagrams.ForceDiagram.from_data" title="compas_tna.diagrams.ForceDiagram.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
-<td><p>Construct a datastructure from structured data.</p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.from_json.html#compas_tna.diagrams.ForceDiagram.from_json" title="compas_tna.diagrams.ForceDiagram.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct a datastructure from structured data contained in a json file.</p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.from_lines.html#compas_tna.diagrams.ForceDiagram.from_lines" title="compas_tna.diagrams.ForceDiagram.from_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_lines</span></code></a>(lines[, delete_boundary_face, …])</p></td>
 <td><p>Construct a mesh object from a list of lines described by start and end point coordinates.</p></td>
@@ -516,26 +518,32 @@ using one of the horizontal equilibrium solvers.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.halfedge_face.html#compas_tna.diagrams.ForceDiagram.halfedge_face" title="compas_tna.diagrams.ForceDiagram.halfedge_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_face</span></code></a>(u, v)</p></td>
 <td><p>Find the face corresponding to a halfedge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.has_edge.html#compas_tna.diagrams.ForceDiagram.has_edge" title="compas_tna.diagrams.ForceDiagram.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.halfedge_strip.html#compas_tna.diagrams.ForceDiagram.halfedge_strip" title="compas_tna.diagrams.ForceDiagram.halfedge_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_strip</span></code></a>(edge)</p></td>
+<td><p>Find all edges on the same strip as a given halfedge.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.has_edge.html#compas_tna.diagrams.ForceDiagram.has_edge" title="compas_tna.diagrams.ForceDiagram.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a>(key)</p></td>
 <td><p>Verify that the mesh contains a specific edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.has_face.html#compas_tna.diagrams.ForceDiagram.has_face" title="compas_tna.diagrams.ForceDiagram.has_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_face</span></code></a>(fkey)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.has_face.html#compas_tna.diagrams.ForceDiagram.has_face" title="compas_tna.diagrams.ForceDiagram.has_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_face</span></code></a>(fkey)</p></td>
 <td><p>Verify that a face is part of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.has_halfedge.html#compas_tna.diagrams.ForceDiagram.has_halfedge" title="compas_tna.diagrams.ForceDiagram.has_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfedge</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.has_halfedge.html#compas_tna.diagrams.ForceDiagram.has_halfedge" title="compas_tna.diagrams.ForceDiagram.has_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfedge</span></code></a>(key)</p></td>
 <td><p>Verify that a halfedge is part of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.has_vertex.html#compas_tna.diagrams.ForceDiagram.has_vertex" title="compas_tna.diagrams.ForceDiagram.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.has_vertex.html#compas_tna.diagrams.ForceDiagram.has_vertex" title="compas_tna.diagrams.ForceDiagram.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a>(key)</p></td>
 <td><p>Verify that a vertex is in the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.index_key.html#compas_tna.diagrams.ForceDiagram.index_key" title="compas_tna.diagrams.ForceDiagram.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.index_key.html#compas_tna.diagrams.ForceDiagram.index_key" title="compas_tna.diagrams.ForceDiagram.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.index_vertex.html#compas_tna.diagrams.ForceDiagram.index_vertex" title="compas_tna.diagrams.ForceDiagram.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.index_vertex.html#compas_tna.diagrams.ForceDiagram.index_vertex" title="compas_tna.diagrams.ForceDiagram.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.insert_vertex.html#compas_tna.diagrams.ForceDiagram.insert_vertex" title="compas_tna.diagrams.ForceDiagram.insert_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code></a>(fkey[, key, xyz, return_fkeys])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.insert_vertex.html#compas_tna.diagrams.ForceDiagram.insert_vertex" title="compas_tna.diagrams.ForceDiagram.insert_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code></a>(fkey[, key, xyz, return_fkeys])</p></td>
 <td><p>Insert a vertex in the specified face.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.is_closed.html#compas_tna.diagrams.ForceDiagram.is_closed" title="compas_tna.diagrams.ForceDiagram.is_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_closed</span></code></a>()</p></td>
+<td><p>Verify that the mesh is closed.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.is_connected.html#compas_tna.diagrams.ForceDiagram.is_connected" title="compas_tna.diagrams.ForceDiagram.is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_connected</span></code></a>()</p></td>
 <td><p>Verify that the mesh is connected.</p></td>
@@ -544,7 +552,7 @@ using one of the horizontal equilibrium solvers.</p>
 <td><p>Verify that an edge is on the boundary.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.is_empty.html#compas_tna.diagrams.ForceDiagram.is_empty" title="compas_tna.diagrams.ForceDiagram.is_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_empty</span></code></a>()</p></td>
-<td><p>Boolean whether the mesh is empty.</p></td>
+<td><p>Verify that the mesh is empty.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.is_face_on_boundary.html#compas_tna.diagrams.ForceDiagram.is_face_on_boundary" title="compas_tna.diagrams.ForceDiagram.is_face_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_face_on_boundary</span></code></a>(key)</p></td>
 <td><p>Verify that a face is on a boundary.</p></td>
@@ -625,10 +633,10 @@ using one of the horizontal equilibrium solvers.</p>
 <td><p>Print a summary of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.to_data.html#compas_tna.diagrams.ForceDiagram.to_data" title="compas_tna.diagrams.ForceDiagram.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns a dictionary of structured data representing the data structure.</p></td>
+<td><p>Convert an object to its native data representation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.to_json.html#compas_tna.diagrams.ForceDiagram.to_json" title="compas_tna.diagrams.ForceDiagram.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
-<td><p>Serialise the structured data representing the datastructure to json.</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.to_lines.html#compas_tna.diagrams.ForceDiagram.to_lines" title="compas_tna.diagrams.ForceDiagram.to_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lines</span></code></a>(filepath)</p></td>
 <td><p></p></td>

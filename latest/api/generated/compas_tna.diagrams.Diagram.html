@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  
   <title>compas_tna - Diagram</title>
+  
 
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -94,10 +96,10 @@
         
         
         <div class="detail section" id="diagram">
-<h1>Diagram</h1>
+<h1>Diagram<a class="headerlink" href="#diagram" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
 <dt id="compas_tna.diagrams.Diagram">
-<em class="property">class </em><code class="sig-prename descclassname">compas_tna.diagrams.</code><code class="sig-name descname">Diagram</code><a class="reference internal" href="../../_modules/compas_tna/diagrams/diagram.html#Diagram"><span class="viewcode-link">[source]</span></a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">compas_tna.diagrams.</span></code><code class="sig-name descname"><span class="pre">Diagram</span></code><a class="reference internal" href="../../_modules/compas_tna/diagrams/diagram.html#Diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#compas_tna.diagrams.Diagram" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base diagram implementing attributes shared between the form and force diagram.</p>
 <p class="rubric">Attributes</p>
 <table class="longtable docutils align-default">
@@ -125,7 +127,7 @@
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
-<td><p>A data dict representing the mesh data structure for serialisation.</p></td>
+<td><p>A data dict representing the mesh data structure for serialization.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
 <td><p>The type of the object in the form of a “2-level” import and a class name.</p></td>
@@ -185,7 +187,7 @@
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.copy.html#compas_tna.diagrams.Diagram.copy" title="compas_tna.diagrams.Diagram.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
-<td><p>Make an independent copy of the datastructure object.</p></td>
+<td><p>Make an independent copy of the data object.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.cull_vertices.html#compas_tna.diagrams.Diagram.cull_vertices" title="compas_tna.diagrams.Diagram.cull_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cull_vertices</span></code></a>()</p></td>
 <td><p>Remove all unused vertices from the mesh object.</p></td>
@@ -362,10 +364,10 @@
 <td><p>Flip the cycle directions of all faces.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.from_data.html#compas_tna.diagrams.Diagram.from_data" title="compas_tna.diagrams.Diagram.from_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_data</span></code></a>(data)</p></td>
-<td><p>Construct a datastructure from structured data.</p></td>
+<td><p>Construct an object of this type from the provided data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.from_json.html#compas_tna.diagrams.Diagram.from_json" title="compas_tna.diagrams.Diagram.from_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_json</span></code></a>(filepath)</p></td>
-<td><p>Construct a datastructure from structured data contained in a json file.</p></td>
+<td><p>Construct an object from serialized data contained in a JSON file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.from_lines.html#compas_tna.diagrams.Diagram.from_lines" title="compas_tna.diagrams.Diagram.from_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_lines</span></code></a>(lines[, delete_boundary_face, …])</p></td>
 <td><p>Construct a mesh object from a list of lines described by start and end point coordinates.</p></td>
@@ -430,26 +432,32 @@
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.halfedge_face.html#compas_tna.diagrams.Diagram.halfedge_face" title="compas_tna.diagrams.Diagram.halfedge_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_face</span></code></a>(u, v)</p></td>
 <td><p>Find the face corresponding to a halfedge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.has_edge.html#compas_tna.diagrams.Diagram.has_edge" title="compas_tna.diagrams.Diagram.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.halfedge_strip.html#compas_tna.diagrams.Diagram.halfedge_strip" title="compas_tna.diagrams.Diagram.halfedge_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_strip</span></code></a>(edge)</p></td>
+<td><p>Find all edges on the same strip as a given halfedge.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.has_edge.html#compas_tna.diagrams.Diagram.has_edge" title="compas_tna.diagrams.Diagram.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a>(key)</p></td>
 <td><p>Verify that the mesh contains a specific edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.has_face.html#compas_tna.diagrams.Diagram.has_face" title="compas_tna.diagrams.Diagram.has_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_face</span></code></a>(fkey)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.has_face.html#compas_tna.diagrams.Diagram.has_face" title="compas_tna.diagrams.Diagram.has_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_face</span></code></a>(fkey)</p></td>
 <td><p>Verify that a face is part of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.has_halfedge.html#compas_tna.diagrams.Diagram.has_halfedge" title="compas_tna.diagrams.Diagram.has_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfedge</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.has_halfedge.html#compas_tna.diagrams.Diagram.has_halfedge" title="compas_tna.diagrams.Diagram.has_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfedge</span></code></a>(key)</p></td>
 <td><p>Verify that a halfedge is part of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.has_vertex.html#compas_tna.diagrams.Diagram.has_vertex" title="compas_tna.diagrams.Diagram.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.has_vertex.html#compas_tna.diagrams.Diagram.has_vertex" title="compas_tna.diagrams.Diagram.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a>(key)</p></td>
 <td><p>Verify that a vertex is in the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.index_key.html#compas_tna.diagrams.Diagram.index_key" title="compas_tna.diagrams.Diagram.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.index_key.html#compas_tna.diagrams.Diagram.index_key" title="compas_tna.diagrams.Diagram.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.index_vertex.html#compas_tna.diagrams.Diagram.index_vertex" title="compas_tna.diagrams.Diagram.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.index_vertex.html#compas_tna.diagrams.Diagram.index_vertex" title="compas_tna.diagrams.Diagram.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.insert_vertex.html#compas_tna.diagrams.Diagram.insert_vertex" title="compas_tna.diagrams.Diagram.insert_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code></a>(fkey[, key, xyz, return_fkeys])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.insert_vertex.html#compas_tna.diagrams.Diagram.insert_vertex" title="compas_tna.diagrams.Diagram.insert_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code></a>(fkey[, key, xyz, return_fkeys])</p></td>
 <td><p>Insert a vertex in the specified face.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.is_closed.html#compas_tna.diagrams.Diagram.is_closed" title="compas_tna.diagrams.Diagram.is_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_closed</span></code></a>()</p></td>
+<td><p>Verify that the mesh is closed.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.is_connected.html#compas_tna.diagrams.Diagram.is_connected" title="compas_tna.diagrams.Diagram.is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_connected</span></code></a>()</p></td>
 <td><p>Verify that the mesh is connected.</p></td>
@@ -458,7 +466,7 @@
 <td><p>Verify that an edge is on the boundary.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.is_empty.html#compas_tna.diagrams.Diagram.is_empty" title="compas_tna.diagrams.Diagram.is_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_empty</span></code></a>()</p></td>
-<td><p>Boolean whether the mesh is empty.</p></td>
+<td><p>Verify that the mesh is empty.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.is_face_on_boundary.html#compas_tna.diagrams.Diagram.is_face_on_boundary" title="compas_tna.diagrams.Diagram.is_face_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_face_on_boundary</span></code></a>(key)</p></td>
 <td><p>Verify that a face is on a boundary.</p></td>
@@ -539,10 +547,10 @@
 <td><p>Print a summary of the mesh.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.to_data.html#compas_tna.diagrams.Diagram.to_data" title="compas_tna.diagrams.Diagram.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
-<td><p>Returns a dictionary of structured data representing the data structure.</p></td>
+<td><p>Convert an object to its native data representation.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.to_json.html#compas_tna.diagrams.Diagram.to_json" title="compas_tna.diagrams.Diagram.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
-<td><p>Serialise the structured data representing the datastructure to json.</p></td>
+<td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.Diagram.to_lines.html#compas_tna.diagrams.Diagram.to_lines" title="compas_tna.diagrams.Diagram.to_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lines</span></code></a>(filepath)</p></td>
 <td><p></p></td>
