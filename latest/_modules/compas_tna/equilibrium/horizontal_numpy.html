@@ -88,11 +88,7 @@
         
         
         <h1>Source code for compas_tna.equilibrium.horizontal_numpy</h1><div class="highlight"><pre><code>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
-
-<span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">angle_vectors_xy</span>
+<span></span><span class="kn">from</span> <span class="nn">compas.geometry</span> <span class="kn">import</span> <span class="n">angle_vectors_xy</span>
 
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
 <span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">float64</span>
@@ -215,7 +211,7 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="n">uv</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
     <span class="n">_uv</span> <span class="o">=</span> <span class="n">_C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_xy</span><span class="p">)</span>
-    <span class="n">l</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>  <span class="c1"># noqa: E741</span>
     <span class="n">_l</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">_uv</span><span class="p">)</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">normalizerow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">normalizerow</span><span class="p">(</span><span class="n">_uv</span><span class="p">)</span>
     <span class="c1"># proper bounds</span>
@@ -234,7 +230,7 @@
             <span class="c1"># update the form diagram</span>
             <span class="n">xy</span> <span class="o">=</span> <span class="n">parallelise_sparse</span><span class="p">(</span><span class="n">CtC</span><span class="p">,</span> <span class="n">Ct</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">l</span> <span class="o">*</span> <span class="n">t</span><span class="p">),</span> <span class="n">xy</span><span class="p">,</span> <span class="n">fixed</span><span class="p">,</span> <span class="s1">&#39;CtC&#39;</span><span class="p">)</span>
             <span class="n">uv</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
-            <span class="n">l</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>  <span class="c1"># noqa: E741</span>
         <span class="k">if</span> <span class="n">alpha</span> <span class="o">!=</span> <span class="mf">0.0</span><span class="p">:</span>
             <span class="c1"># if emphasis is not entirely on the force</span>
             <span class="c1"># update the force diagram</span>
@@ -350,7 +346,7 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="n">uv</span> <span class="o">=</span> <span class="n">flipmask</span> <span class="o">*</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
     <span class="n">_uv</span> <span class="o">=</span> <span class="n">_C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_xy</span><span class="p">)</span>
-    <span class="n">l</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>  <span class="c1"># noqa: E741</span>
     <span class="n">_l</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">_uv</span><span class="p">)</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># the target vectors</span>
@@ -375,7 +371,7 @@
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="n">uv</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xy</span><span class="p">)</span>
     <span class="n">_uv</span> <span class="o">=</span> <span class="n">_C</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">_xy</span><span class="p">)</span>
-    <span class="n">l</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">uv</span><span class="p">)</span>  <span class="c1"># noqa: E741</span>
     <span class="n">_l</span> <span class="o">=</span> <span class="n">normrow</span><span class="p">(</span><span class="n">_uv</span><span class="p">)</span>
     <span class="c1"># --------------------------------------------------------------------------</span>
     <span class="c1"># compute the force densities</span>
@@ -419,15 +415,6 @@
             <span class="n">i</span> <span class="o">=</span> <span class="n">_uv_i</span><span class="p">[(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)]</span>
         <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_l&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_l</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
         <span class="n">attr</span><span class="p">[</span><span class="s1">&#39;_a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
-
-
-<span class="c1"># ==============================================================================</span>
-<span class="c1"># Main</span>
-<span class="c1"># ==============================================================================</span>
-
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-
-    <span class="k">pass</span>
 </code></pre></div>
         
       </main>
