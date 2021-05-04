@@ -95,7 +95,7 @@ def clean(ctx, docs=True, bytecode=True, builds=True):
 
         if builds:
             folders.append('build/')
-            folders.append('src/compas.egg-info/')
+            folders.append('src/compas_tna.egg-info/')
 
         for folder in folders:
             rmtree(os.path.join(BASE_FOLDER, folder), ignore_errors=True)
@@ -193,17 +193,26 @@ def prepare_changelog(ctx):
 
 
 @task(help={
-      'release_type': 'Type of release follows semver rules. Must be one of: major, minor, patch.'})
+      'release_type': 'Type of release follows semver rules. Must be one of: major, minor, patch, major-rc, minor-rc, patch-rc, rc, release.'})
 def release(ctx, release_type):
     """Releases the project in one swift command!"""
-    if release_type not in ('patch', 'minor', 'major'):
-        raise Exit('The release type parameter is invalid.\nMust be one of: major, minor, patch')
+    if release_type not in ('patch', 'minor', 'major', 'major-rc', 'minor-rc', 'patch-rc', 'rc', 'release'):
+        raise Exit('The release type parameter is invalid.\nMust be one of: major, minor, patch, major-rc, minor-rc, patch-rc, rc, release')
+
+    is_rc = release_type.find('rc') >= 0
+    release_type = release_type.split('-')[0]
 
     # Run checks
-    ctx.run('invoke check test')
+    ctx.run('invoke check')
 
     # Bump version and git tag it
-    ctx.run('bump2version %s --verbose' % release_type)
+    if is_rc:
+        ctx.run('bump2version %s --verbose' % release_type)
+    elif release_type == 'release':
+        ctx.run('bump2version release --verbose')
+    else:
+        ctx.run('bump2version %s --verbose --no-tag' % release_type)
+        ctx.run('bump2version release --verbose')
 
 
 @contextlib.contextmanager
