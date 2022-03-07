@@ -1,9 +1,10 @@
 graft src
 
 prune .github
+prune data
 prune docs
-prune tests
 prune temp
+prune tests
 
 include LICENSE
 include README.md
