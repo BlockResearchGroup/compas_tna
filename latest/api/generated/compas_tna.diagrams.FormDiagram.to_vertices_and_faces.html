@@ -101,23 +101,17 @@
 <h1>FormDiagram.to_vertices_and_faces</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_tna.diagrams.FormDiagram.to_vertices_and_faces">
-<span class="sig-prename descclassname"><span class="pre">FormDiagram.</span></span><span class="sig-name descname"><span class="pre">to_vertices_and_faces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">FormDiagram.</span></span><span class="sig-name descname"><span class="pre">to_vertices_and_faces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas/datastructures/mesh/mesh.py#L478"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Return the vertices and faces of a mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><p><em>tuple</em> – A 2-tuple containing</p>
-<ul class="simple">
-<li><p>a list of vertices, represented by their XYZ coordinates, and</p></li>
-<li><p>a list of faces.</p></li>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>list[list[float]]</em> – The vertices as a list of XYZ coordinates.</p></li>
+<li><p><em>list[list[int]]</em> – The faces as a list of lists of vertex indices.</p></li>
 </ul>
-<p>Each face is a list of indices referencing the list of vertex coordinates.</p>
 </p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -155,6 +149,7 @@
 <li class="toctree-l2 nav-item active"><a class="nav-link reference internal" href="../compas_tna.html">compas_tna</a><ul class="nav flex-column collapse show active">
 <li class="toctree-l3 nav-item active"><a class="nav-link reference internal" href="../compas_tna.diagrams.html">compas_tna.diagrams</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.equilibrium.html">compas_tna.equilibrium</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.rhino.html">compas_tna.rhino</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.utilities.html">compas_tna.utilities</a></li>
 </ul>
 </li>

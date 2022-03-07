@@ -101,20 +101,20 @@
 <h1>ForceDiagram.slice_plane</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_tna.diagrams.ForceDiagram.slice_plane">
-<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">slice_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">slice_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas/datastructures/mesh/slice.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Slice a mesh with a plane and construct the resulting submeshes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<em>compas.datastructures.Mesh</em>) – The original mesh.</p></li>
-<li><p><strong>plane</strong> (<em>compas.geometry.Plane</em>) – The cutting plane.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – The original mesh.</p></li>
+<li><p><strong>plane</strong> (<a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Plane.html#compas.geometry.Plane" title="(in COMPAS v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The cutting plane.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>None or tuple of <code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code> – If the mesh and plane do not intersect,
+<dd class="field-even"><p>tuple[<a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>] | None – The “positive” and “negative” submeshes.
+If the mesh and plane do not intersect,
 or if the intersection is degenerate (point or line),
-the function returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.
-Otherwise, the “positive” and “negative” submeshes are returned.</p>
+the function returns None.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
@@ -166,6 +166,7 @@ Otherwise, the “positive” and “negative” submeshes are returned.</p>
 <li class="toctree-l2 nav-item active"><a class="nav-link reference internal" href="../compas_tna.html">compas_tna</a><ul class="nav flex-column collapse show active">
 <li class="toctree-l3 nav-item active"><a class="nav-link reference internal" href="../compas_tna.diagrams.html">compas_tna.diagrams</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.equilibrium.html">compas_tna.equilibrium</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.rhino.html">compas_tna.rhino</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.utilities.html">compas_tna.utilities</a></li>
 </ul>
 </li>

@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="Diagram.__init__" href="compas_tna.diagrams.Diagram.__init__.html" />
+  <link rel="prev" title="Diagram" href="compas_tna.diagrams.Diagram.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -101,16 +101,14 @@
 <h1>Diagram.add_face</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_tna.diagrams.Diagram.add_face">
-<span class="sig-prename descclassname"><span class="pre">Diagram.</span></span><span class="sig-name descname"><span class="pre">add_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fkey</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">Diagram.</span></span><span class="sig-name descname"><span class="pre">add_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fkey</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas/datastructures/halfedge/halfedge.py#L382"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Add a face to the mesh object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vertices</strong> (<em>list</em>) – A list of vertex keys.</p></li>
-<li><p><strong>attr_dict</strong> (<em>dict, optional</em>) – Face attributes.</p></li>
-<li><p><strong>kwattr</strong> (<em>dict, optional</em>) – Additional named face attributes.
-Named face attributes overwrite corresponding attributes in the
-attribute dict (<code class="docutils literal notranslate"><span class="pre">attr_dict</span></code>).</p></li>
+<li><p><strong>vertices</strong> (<em>list[int]</em>) – A list of vertex keys.</p></li>
+<li><p><strong>attr_dict</strong> (<em>dict[str, Any], optional</em>) – A dictionary of face attributes.</p></li>
+<li><p><strong>**kwattr</strong> (<em>dict[str, Any], optional</em>) – A dictionary of additional attributes compiled of remaining named arguments.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -126,10 +124,6 @@ automatically. An automatically generated key is an integer that increments
 the highest integer value of any key used so far by 1.</p>
 <p>If a key with an integer value is provided that is higher than the current
 highest integer key value, then the highest integer value is updated accordingly.</p>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -167,6 +161,7 @@ highest integer key value, then the highest integer value is updated accordingly
 <li class="toctree-l2 nav-item active"><a class="nav-link reference internal" href="../compas_tna.html">compas_tna</a><ul class="nav flex-column collapse show active">
 <li class="toctree-l3 nav-item active"><a class="nav-link reference internal" href="../compas_tna.diagrams.html">compas_tna.diagrams</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.equilibrium.html">compas_tna.equilibrium</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.rhino.html">compas_tna.rhino</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.utilities.html">compas_tna.utilities</a></li>
 </ul>
 </li>
@@ -196,11 +191,11 @@ highest integer key value, then the highest integer value is updated accordingly
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas_tna.diagrams.Diagram.__init__.html" title="Diagram.__init__" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas_tna.diagrams.Diagram.html" title="Diagram" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          Diagram.__init__
+          Diagram
         </div>
       </a>
       

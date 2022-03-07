@@ -106,21 +106,18 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>lines</strong> (<em>list</em>) – A list of pairs of point coordinates.</p></li>
+<li><p><strong>lines</strong> (<em>list[tuple[list[float], list[float]]]</em>) – A list of pairs of point coordinates.</p></li>
 <li><p><strong>delete_boundary_face</strong> (<em>bool, optional</em>) – The algorithm that finds the faces formed by the connected lines
 first finds the face <em>on the outside</em>. In most cases this face is not expected
 to be there. Therefore, there is the option to have it automatically deleted.</p></li>
-<li><p><strong>precision</strong> (<em>str, optional</em>) – The precision of the geometric map that is used to connect the lines.</p></li>
+<li><p><strong>precision</strong> (<em>str, optional</em>) – The precision of the geometric map that is used to connect the lines.
+Defaults to the value of <code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.PRECISION</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>Mesh</em> – A mesh object.</p>
+<dd class="field-even"><p><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a> – A mesh object.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -158,6 +155,7 @@ to be there. Therefore, there is the option to have it automatically deleted.</p
 <li class="toctree-l2 nav-item active"><a class="nav-link reference internal" href="../compas_tna.html">compas_tna</a><ul class="nav flex-column collapse show active">
 <li class="toctree-l3 nav-item active"><a class="nav-link reference internal" href="../compas_tna.diagrams.html">compas_tna.diagrams</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.equilibrium.html">compas_tna.equilibrium</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.rhino.html">compas_tna.rhino</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.utilities.html">compas_tna.utilities</a></li>
 </ul>
 </li>

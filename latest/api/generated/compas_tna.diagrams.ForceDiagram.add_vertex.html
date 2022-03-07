@@ -101,16 +101,14 @@
 <h1>ForceDiagram.add_vertex</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_tna.diagrams.ForceDiagram.add_vertex">
-<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">add_vertex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">add_vertex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attr_dict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwattr</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas/datastructures/halfedge/halfedge.py#L329"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Add a vertex to the mesh object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> (<em>int, optional</em>) – The vertex identifier.</p></li>
-<li><p><strong>attr_dict</strong> (<em>dict, optional</em>) – Vertex attributes.</p></li>
-<li><p><strong>kwattr</strong> (<em>dict, optional</em>) – Additional named vertex attributes.
-Named vertex attributes overwrite corresponding attributes in the
-attribute dict (<code class="docutils literal notranslate"><span class="pre">attr_dict</span></code>).</p></li>
+<li><p><strong>attr_dict</strong> (<em>dict[str, Any], optional</em>) – A dictionary of vertex attributes.</p></li>
+<li><p><strong>**kwattr</strong> (<em>dict[str, Any], optional</em>) – A dictionary of additional attributes compiled of remaining named arguments.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -173,6 +171,7 @@ highest integer key value, then the highest integer value is updated accordingly
 <li class="toctree-l2 nav-item active"><a class="nav-link reference internal" href="../compas_tna.html">compas_tna</a><ul class="nav flex-column collapse show active">
 <li class="toctree-l3 nav-item active"><a class="nav-link reference internal" href="../compas_tna.diagrams.html">compas_tna.diagrams</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.equilibrium.html">compas_tna.equilibrium</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.rhino.html">compas_tna.rhino</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.utilities.html">compas_tna.utilities</a></li>
 </ul>
 </li>

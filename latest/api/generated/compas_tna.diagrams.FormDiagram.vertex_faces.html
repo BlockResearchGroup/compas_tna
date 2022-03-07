@@ -101,26 +101,20 @@
 <h1>FormDiagram.vertex_faces</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_tna.diagrams.FormDiagram.vertex_faces">
-<span class="sig-prename descclassname"><span class="pre">FormDiagram.</span></span><span class="sig-name descname"><span class="pre">vertex_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">FormDiagram.</span></span><span class="sig-name descname"><span class="pre">vertex_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordered</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_none</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas/datastructures/halfedge/halfedge.py#L1978"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>The faces connected to a vertex.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>key</strong> (<em>int</em>) – The identifier of the vertex.</p></li>
-<li><p><strong>ordered</strong> (<em>bool, optional</em>) – Return the faces in cycling order.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>include_none</strong> (<em>bool, optional</em>) – Include <em>outside</em> faces in the list.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>ordered</strong> (<em>bool, optional</em>) – If True, return the faces in cycling order.</p></li>
+<li><p><strong>include_none</strong> (<em>bool, optional</em>) – If True, include <em>outside</em> faces in the list.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list</em> – The faces connected to a vertex.</p>
+<dd class="field-even"><p><em>list[int]</em> – The faces connected to a vertex.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -158,6 +152,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">False</s
 <li class="toctree-l2 nav-item active"><a class="nav-link reference internal" href="../compas_tna.html">compas_tna</a><ul class="nav flex-column collapse show active">
 <li class="toctree-l3 nav-item active"><a class="nav-link reference internal" href="../compas_tna.diagrams.html">compas_tna.diagrams</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.equilibrium.html">compas_tna.equilibrium</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.rhino.html">compas_tna.rhino</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.utilities.html">compas_tna.utilities</a></li>
 </ul>
 </li>

@@ -20,7 +20,7 @@
   <link rel="stylesheet" type="text/css" href="../../_static/css/compas-reference.css" />
 
   
-  <link rel="next" title="FormDiagram.__init__" href="compas_tna.diagrams.FormDiagram.__init__.html" />
+  <link rel="next" title="FormDiagram.anchors" href="compas_tna.diagrams.FormDiagram.anchors.html" />
   
 
   
@@ -99,8 +99,9 @@
 <h1>FormDiagram</h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="compas_tna.diagrams.FormDiagram">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_tna.diagrams.</span></span><span class="sig-name descname"><span class="pre">FormDiagram</span></span><a class="reference internal" href="../../_modules/compas_tna/diagrams/formdiagram.html#FormDiagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>The <code class="docutils literal notranslate"><span class="pre">FormDiagram</span></code> defines a TNA form diagram.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_tna.diagrams.</span></span><span class="sig-name descname"><span class="pre">FormDiagram</span></span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas_tna/diagrams/formdiagram.py#L15"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="compas_tna.diagrams.Diagram.html#compas_tna.diagrams.Diagram" title="compas_tna.diagrams.diagram.Diagram"><code class="xref py py-class docutils literal notranslate"><span class="pre">Diagram</span></code></a></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">FormDiagram</span></code> defines a TNA form diagram.</p>
 <p class="rubric">Notes</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">FormDiagram</span></code> has the following constructor functions</p>
 <ul class="simple">
@@ -155,31 +156,31 @@ and length of the corresponding force edges is the following:</p>
 <td><p>The schema of the JSON representation of the data of this object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">JSONSCHEMANAME</span></code></p></td>
-<td><p></p></td>
+<td><p>The schema of the data of this object in JSON format.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjacency</span></code></p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
-<td><p>A data dict representing the mesh data structure for serialization.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></p></td>
-<td><p>The type of the object in the form of a '2-level' import and a class name.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">guid</span></code></p></td>
-<td><p>The globally unique identifier of the object.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsondefinitions</span></code></p></td>
 <td><p>Reusable schema definitions.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonstring</span></code></p></td>
-<td><p>The representation of the object data in JSON format.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jsonvalidator</span></code></p></td>
 <td><p>JSON schema validator for draft 7.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p>The name of the data structure.</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -190,52 +191,49 @@ and length of the corresponding force edges is the following:</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.__init__.html#compas_tna.diagrams.FormDiagram.__init__" title="compas_tna.diagrams.FormDiagram.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.anchors.html#compas_tna.diagrams.FormDiagram.anchors" title="compas_tna.diagrams.FormDiagram.anchors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anchors</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.anchors.html#compas_tna.diagrams.FormDiagram.anchors" title="compas_tna.diagrams.FormDiagram.anchors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anchors</span></code></a>()</p></td>
 <td><p>Vertices with <code class="docutils literal notranslate"><span class="pre">is_anchor</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.corners.html#compas_tna.diagrams.FormDiagram.corners" title="compas_tna.diagrams.FormDiagram.corners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">corners</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.corners.html#compas_tna.diagrams.FormDiagram.corners" title="compas_tna.diagrams.FormDiagram.corners"><code class="xref py py-obj docutils literal notranslate"><span class="pre">corners</span></code></a>()</p></td>
 <td><p>Vertices with degree 2.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.draw.html#compas_tna.diagrams.FormDiagram.draw" title="compas_tna.diagrams.FormDiagram.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([layer, clear_layer, settings])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.draw.html#compas_tna.diagrams.FormDiagram.draw" title="compas_tna.diagrams.FormDiagram.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>([layer, clear_layer, settings])</p></td>
 <td><p>Draw the form diagram in Rhino.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.dual_diagram.html#compas_tna.diagrams.FormDiagram.dual_diagram" title="compas_tna.diagrams.FormDiagram.dual_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dual_diagram</span></code></a>(cls)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.dual_diagram.html#compas_tna.diagrams.FormDiagram.dual_diagram" title="compas_tna.diagrams.FormDiagram.dual_diagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dual_diagram</span></code></a>(cls)</p></td>
 <td><p>Construct the dual of the FormDiagram.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.fixed.html#compas_tna.diagrams.FormDiagram.fixed" title="compas_tna.diagrams.FormDiagram.fixed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.fixed.html#compas_tna.diagrams.FormDiagram.fixed" title="compas_tna.diagrams.FormDiagram.fixed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed</span></code></a>()</p></td>
 <td><p>Vertices with <code class="docutils literal notranslate"><span class="pre">is_fixed</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.from_lines.html#compas_tna.diagrams.FormDiagram.from_lines" title="compas_tna.diagrams.FormDiagram.from_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_lines</span></code></a>(lines[, delete_boundary_face, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.from_lines.html#compas_tna.diagrams.FormDiagram.from_lines" title="compas_tna.diagrams.FormDiagram.from_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_lines</span></code></a>(lines[, delete_boundary_face, ...])</p></td>
 <td><p>Construct a FormDiagram from a list of lines described by start and end point coordinates.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.from_mesh.html#compas_tna.diagrams.FormDiagram.from_mesh" title="compas_tna.diagrams.FormDiagram.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a>(mesh, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.from_mesh.html#compas_tna.diagrams.FormDiagram.from_mesh" title="compas_tna.diagrams.FormDiagram.from_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_mesh</span></code></a>(mesh, **kwargs)</p></td>
 <td><p>Construct a FormDiagram from a Mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.from_rhinolines.html#compas_tna.diagrams.FormDiagram.from_rhinolines" title="compas_tna.diagrams.FormDiagram.from_rhinolines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rhinolines</span></code></a>(guids[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.from_rhinolines.html#compas_tna.diagrams.FormDiagram.from_rhinolines" title="compas_tna.diagrams.FormDiagram.from_rhinolines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rhinolines</span></code></a>(guids[, ...])</p></td>
 <td><p>Construct a FormDiagram from a set of Rhino lines represented by their GUIDs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.from_rhinomesh.html#compas_tna.diagrams.FormDiagram.from_rhinomesh" title="compas_tna.diagrams.FormDiagram.from_rhinomesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rhinomesh</span></code></a>(guid, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.from_rhinomesh.html#compas_tna.diagrams.FormDiagram.from_rhinomesh" title="compas_tna.diagrams.FormDiagram.from_rhinomesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rhinomesh</span></code></a>(guid, **kwargs)</p></td>
 <td><p>Construct a FormDiagram from a Rhino mesh represented by a guid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.from_rhinosurface.html#compas_tna.diagrams.FormDiagram.from_rhinosurface" title="compas_tna.diagrams.FormDiagram.from_rhinosurface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rhinosurface</span></code></a>(guid, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.from_rhinosurface.html#compas_tna.diagrams.FormDiagram.from_rhinosurface" title="compas_tna.diagrams.FormDiagram.from_rhinosurface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rhinosurface</span></code></a>(guid, **kwargs)</p></td>
 <td><p>Construct a FormDiagram from a Rhino surface represented by its GUID.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.index_uv.html#compas_tna.diagrams.FormDiagram.index_uv" title="compas_tna.diagrams.FormDiagram.index_uv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_uv</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.index_uv.html#compas_tna.diagrams.FormDiagram.index_uv" title="compas_tna.diagrams.FormDiagram.index_uv"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_uv</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps edges in a list to the corresponding vertex key pairs.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.leaves.html#compas_tna.diagrams.FormDiagram.leaves" title="compas_tna.diagrams.FormDiagram.leaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">leaves</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.leaves.html#compas_tna.diagrams.FormDiagram.leaves" title="compas_tna.diagrams.FormDiagram.leaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">leaves</span></code></a>()</p></td>
 <td><p>Vertices with degree 1.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.plot.html#compas_tna.diagrams.FormDiagram.plot" title="compas_tna.diagrams.FormDiagram.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.plot.html#compas_tna.diagrams.FormDiagram.plot" title="compas_tna.diagrams.FormDiagram.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>()</p></td>
 <td><p>Plot a form diagram with a plotter with all the default settings.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.update_boundaries.html#compas_tna.diagrams.FormDiagram.update_boundaries" title="compas_tna.diagrams.FormDiagram.update_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_boundaries</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.update_boundaries.html#compas_tna.diagrams.FormDiagram.update_boundaries" title="compas_tna.diagrams.FormDiagram.update_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_boundaries</span></code></a>()</p></td>
 <td><p>Update the boundaries to add outside faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.uv_index.html#compas_tna.diagrams.FormDiagram.uv_index" title="compas_tna.diagrams.FormDiagram.uv_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uv_index</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.uv_index.html#compas_tna.diagrams.FormDiagram.uv_index" title="compas_tna.diagrams.FormDiagram.uv_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">uv_index</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps edge keys (i.e.</p></td>
 </tr>
 </tbody>
@@ -272,7 +270,7 @@ and length of the corresponding force edges is the following:</p>
 <td><p>Collapse an edge to its first or second vertex, or to an intermediate point.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.connected_components.html#compas_tna.diagrams.FormDiagram.connected_components" title="compas_tna.diagrams.FormDiagram.connected_components"><code class="xref py py-obj docutils literal notranslate"><span class="pre">connected_components</span></code></a>()</p></td>
-<td><p></p></td>
+<td><p>Find the connected components of the mesh.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.copy.html#compas_tna.diagrams.FormDiagram.copy" title="compas_tna.diagrams.FormDiagram.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>([cls])</p></td>
 <td><p>Make an independent copy of the data object.</p></td>
@@ -319,7 +317,7 @@ and length of the corresponding force edges is the following:</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.edge_sample.html#compas_tna.diagrams.FormDiagram.edge_sample" title="compas_tna.diagrams.FormDiagram.edge_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_sample</span></code></a>([size])</p></td>
 <td><p>A random sample of the edges.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.edge_strip.html#compas_tna.diagrams.FormDiagram.edge_strip" title="compas_tna.diagrams.FormDiagram.edge_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_strip</span></code></a>(edge)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.edge_strip.html#compas_tna.diagrams.FormDiagram.edge_strip" title="compas_tna.diagrams.FormDiagram.edge_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_strip</span></code></a>(edge[, return_faces])</p></td>
 <td><p>Find all edges on the same strip as a given edge.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.edge_vector.html#compas_tna.diagrams.FormDiagram.edge_vector" title="compas_tna.diagrams.FormDiagram.edge_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">edge_vector</span></code></a>(u, v)</p></td>
@@ -383,7 +381,7 @@ and length of the corresponding force edges is the following:</p>
 <td><p>Return triplets of face vertices forming the corners of the face.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.face_curvature.html#compas_tna.diagrams.FormDiagram.face_curvature" title="compas_tna.diagrams.FormDiagram.face_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_curvature</span></code></a>(fkey)</p></td>
-<td><p>Dimensionless face curvature as the maximum face vertex deviation from the best-fit plane of the face vertices divided by the average lengths of the face vertices to the face centroid.</p></td>
+<td><p>Dimensionless face curvature.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.face_degree.html#compas_tna.diagrams.FormDiagram.face_degree" title="compas_tna.diagrams.FormDiagram.face_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">face_degree</span></code></a>(fkey)</p></td>
 <td><p>Count the neighbors of a face.</p></td>
@@ -505,304 +503,301 @@ and length of the corresponding force edges is the following:</p>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.get_any_face.html#compas_tna.diagrams.FormDiagram.get_any_face" title="compas_tna.diagrams.FormDiagram.get_any_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face</span></code></a>()</p></td>
 <td><p>Get the identifier of a random face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.get_any_face_vertex.html#compas_tna.diagrams.FormDiagram.get_any_face_vertex" title="compas_tna.diagrams.FormDiagram.get_any_face_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_face_vertex</span></code></a>(fkey)</p></td>
-<td><p>Get the identifier of a random vertex of a specific face.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.get_any_vertex.html#compas_tna.diagrams.FormDiagram.get_any_vertex" title="compas_tna.diagrams.FormDiagram.get_any_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertex</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.get_any_vertex.html#compas_tna.diagrams.FormDiagram.get_any_vertex" title="compas_tna.diagrams.FormDiagram.get_any_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertex</span></code></a>()</p></td>
 <td><p>Get the identifier of a random vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.get_any_vertices.html#compas_tna.diagrams.FormDiagram.get_any_vertices" title="compas_tna.diagrams.FormDiagram.get_any_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertices</span></code></a>(n[, exclude_leaves])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.get_any_vertices.html#compas_tna.diagrams.FormDiagram.get_any_vertices" title="compas_tna.diagrams.FormDiagram.get_any_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_any_vertices</span></code></a>(n[, exclude_leaves])</p></td>
 <td><p>Get a list of identifiers of a random set of n vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.gkey_key.html#compas_tna.diagrams.FormDiagram.gkey_key" title="compas_tna.diagrams.FormDiagram.gkey_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_key</span></code></a>([precision])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.gkey_key.html#compas_tna.diagrams.FormDiagram.gkey_key" title="compas_tna.diagrams.FormDiagram.gkey_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_key</span></code></a>([precision])</p></td>
 <td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.gkey_vertex.html#compas_tna.diagrams.FormDiagram.gkey_vertex" title="compas_tna.diagrams.FormDiagram.gkey_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_vertex</span></code></a>([precision])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.gkey_vertex.html#compas_tna.diagrams.FormDiagram.gkey_vertex" title="compas_tna.diagrams.FormDiagram.gkey_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gkey_vertex</span></code></a>([precision])</p></td>
 <td><p>Returns a dictionary that maps <em>geometric keys</em> of a certain precision to the keys of the corresponding vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.halfedge_after.html#compas_tna.diagrams.FormDiagram.halfedge_after" title="compas_tna.diagrams.FormDiagram.halfedge_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_after</span></code></a>(u, v)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.halfedge_after.html#compas_tna.diagrams.FormDiagram.halfedge_after" title="compas_tna.diagrams.FormDiagram.halfedge_after"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_after</span></code></a>(u, v)</p></td>
+<td><p>Find the halfedge after the given halfedge in the same face.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.halfedge_before.html#compas_tna.diagrams.FormDiagram.halfedge_before" title="compas_tna.diagrams.FormDiagram.halfedge_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_before</span></code></a>(u, v)</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.halfedge_before.html#compas_tna.diagrams.FormDiagram.halfedge_before" title="compas_tna.diagrams.FormDiagram.halfedge_before"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_before</span></code></a>(u, v)</p></td>
+<td><p>Find the halfedge before the given halfedge in the same face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.halfedge_face.html#compas_tna.diagrams.FormDiagram.halfedge_face" title="compas_tna.diagrams.FormDiagram.halfedge_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_face</span></code></a>(u, v)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.halfedge_face.html#compas_tna.diagrams.FormDiagram.halfedge_face" title="compas_tna.diagrams.FormDiagram.halfedge_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_face</span></code></a>(u, v)</p></td>
 <td><p>Find the face corresponding to a halfedge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.halfedge_loop.html#compas_tna.diagrams.FormDiagram.halfedge_loop" title="compas_tna.diagrams.FormDiagram.halfedge_loop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_loop</span></code></a>(edge)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.halfedge_loop.html#compas_tna.diagrams.FormDiagram.halfedge_loop" title="compas_tna.diagrams.FormDiagram.halfedge_loop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_loop</span></code></a>(edge)</p></td>
 <td><p>Find all edges on the same loop as the halfedge, in the direction of the halfedge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.halfedge_strip.html#compas_tna.diagrams.FormDiagram.halfedge_strip" title="compas_tna.diagrams.FormDiagram.halfedge_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_strip</span></code></a>(edge)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.halfedge_strip.html#compas_tna.diagrams.FormDiagram.halfedge_strip" title="compas_tna.diagrams.FormDiagram.halfedge_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">halfedge_strip</span></code></a>(edge)</p></td>
 <td><p>Find all edges on the same strip as a given halfedge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.has_edge.html#compas_tna.diagrams.FormDiagram.has_edge" title="compas_tna.diagrams.FormDiagram.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.has_edge.html#compas_tna.diagrams.FormDiagram.has_edge" title="compas_tna.diagrams.FormDiagram.has_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_edge</span></code></a>(key)</p></td>
 <td><p>Verify that the mesh contains a specific edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.has_face.html#compas_tna.diagrams.FormDiagram.has_face" title="compas_tna.diagrams.FormDiagram.has_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_face</span></code></a>(fkey)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.has_face.html#compas_tna.diagrams.FormDiagram.has_face" title="compas_tna.diagrams.FormDiagram.has_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_face</span></code></a>(fkey)</p></td>
 <td><p>Verify that a face is part of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.has_halfedge.html#compas_tna.diagrams.FormDiagram.has_halfedge" title="compas_tna.diagrams.FormDiagram.has_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfedge</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.has_halfedge.html#compas_tna.diagrams.FormDiagram.has_halfedge" title="compas_tna.diagrams.FormDiagram.has_halfedge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_halfedge</span></code></a>(key)</p></td>
 <td><p>Verify that a halfedge is part of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.has_vertex.html#compas_tna.diagrams.FormDiagram.has_vertex" title="compas_tna.diagrams.FormDiagram.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.has_vertex.html#compas_tna.diagrams.FormDiagram.has_vertex" title="compas_tna.diagrams.FormDiagram.has_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_vertex</span></code></a>(key)</p></td>
 <td><p>Verify that a vertex is in the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.index_key.html#compas_tna.diagrams.FormDiagram.index_key" title="compas_tna.diagrams.FormDiagram.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.index_key.html#compas_tna.diagrams.FormDiagram.index_key" title="compas_tna.diagrams.FormDiagram.index_key"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_key</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.index_vertex.html#compas_tna.diagrams.FormDiagram.index_vertex" title="compas_tna.diagrams.FormDiagram.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.index_vertex.html#compas_tna.diagrams.FormDiagram.index_vertex" title="compas_tna.diagrams.FormDiagram.index_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index_vertex</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps the indices of a vertex list to keys in a vertex dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.insert_vertex.html#compas_tna.diagrams.FormDiagram.insert_vertex" title="compas_tna.diagrams.FormDiagram.insert_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code></a>(fkey[, key, xyz, return_fkeys])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.insert_vertex.html#compas_tna.diagrams.FormDiagram.insert_vertex" title="compas_tna.diagrams.FormDiagram.insert_vertex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_vertex</span></code></a>(fkey[, key, xyz, return_fkeys])</p></td>
 <td><p>Insert a vertex in the specified face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_closed.html#compas_tna.diagrams.FormDiagram.is_closed" title="compas_tna.diagrams.FormDiagram.is_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_closed</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_closed.html#compas_tna.diagrams.FormDiagram.is_closed" title="compas_tna.diagrams.FormDiagram.is_closed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_closed</span></code></a>()</p></td>
 <td><p>Verify that the mesh is closed.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_connected.html#compas_tna.diagrams.FormDiagram.is_connected" title="compas_tna.diagrams.FormDiagram.is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_connected</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_connected.html#compas_tna.diagrams.FormDiagram.is_connected" title="compas_tna.diagrams.FormDiagram.is_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_connected</span></code></a>()</p></td>
 <td><p>Verify that the mesh is connected.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_edge_on_boundary.html#compas_tna.diagrams.FormDiagram.is_edge_on_boundary" title="compas_tna.diagrams.FormDiagram.is_edge_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code></a>(u, v)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_edge_on_boundary.html#compas_tna.diagrams.FormDiagram.is_edge_on_boundary" title="compas_tna.diagrams.FormDiagram.is_edge_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_edge_on_boundary</span></code></a>(u, v)</p></td>
 <td><p>Verify that an edge is on the boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_empty.html#compas_tna.diagrams.FormDiagram.is_empty" title="compas_tna.diagrams.FormDiagram.is_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_empty</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_empty.html#compas_tna.diagrams.FormDiagram.is_empty" title="compas_tna.diagrams.FormDiagram.is_empty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_empty</span></code></a>()</p></td>
 <td><p>Verify that the mesh is empty.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_face_on_boundary.html#compas_tna.diagrams.FormDiagram.is_face_on_boundary" title="compas_tna.diagrams.FormDiagram.is_face_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_face_on_boundary</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_face_on_boundary.html#compas_tna.diagrams.FormDiagram.is_face_on_boundary" title="compas_tna.diagrams.FormDiagram.is_face_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_face_on_boundary</span></code></a>(key)</p></td>
 <td><p>Verify that a face is on a boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_manifold.html#compas_tna.diagrams.FormDiagram.is_manifold" title="compas_tna.diagrams.FormDiagram.is_manifold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_manifold</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_manifold.html#compas_tna.diagrams.FormDiagram.is_manifold" title="compas_tna.diagrams.FormDiagram.is_manifold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_manifold</span></code></a>()</p></td>
 <td><p>Verify that the mesh is manifold.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_orientable.html#compas_tna.diagrams.FormDiagram.is_orientable" title="compas_tna.diagrams.FormDiagram.is_orientable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_orientable</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_orientable.html#compas_tna.diagrams.FormDiagram.is_orientable" title="compas_tna.diagrams.FormDiagram.is_orientable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_orientable</span></code></a>()</p></td>
 <td><p>Verify that the mesh is orientable.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_quadmesh.html#compas_tna.diagrams.FormDiagram.is_quadmesh" title="compas_tna.diagrams.FormDiagram.is_quadmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_quadmesh</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_quadmesh.html#compas_tna.diagrams.FormDiagram.is_quadmesh" title="compas_tna.diagrams.FormDiagram.is_quadmesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_quadmesh</span></code></a>()</p></td>
 <td><p>Verify that the mesh consists of only quads.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_regular.html#compas_tna.diagrams.FormDiagram.is_regular" title="compas_tna.diagrams.FormDiagram.is_regular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_regular</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_regular.html#compas_tna.diagrams.FormDiagram.is_regular" title="compas_tna.diagrams.FormDiagram.is_regular"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_regular</span></code></a>()</p></td>
 <td><p>Verify that the mesh is regular.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_trimesh.html#compas_tna.diagrams.FormDiagram.is_trimesh" title="compas_tna.diagrams.FormDiagram.is_trimesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_trimesh</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_trimesh.html#compas_tna.diagrams.FormDiagram.is_trimesh" title="compas_tna.diagrams.FormDiagram.is_trimesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_trimesh</span></code></a>()</p></td>
 <td><p>Verify that the mesh consists of only triangles.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_valid.html#compas_tna.diagrams.FormDiagram.is_valid" title="compas_tna.diagrams.FormDiagram.is_valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_valid.html#compas_tna.diagrams.FormDiagram.is_valid" title="compas_tna.diagrams.FormDiagram.is_valid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_valid</span></code></a>()</p></td>
 <td><p>Verify that the mesh is valid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_vertex_connected.html#compas_tna.diagrams.FormDiagram.is_vertex_connected" title="compas_tna.diagrams.FormDiagram.is_vertex_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_connected</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_vertex_connected.html#compas_tna.diagrams.FormDiagram.is_vertex_connected" title="compas_tna.diagrams.FormDiagram.is_vertex_connected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_connected</span></code></a>(key)</p></td>
 <td><p>Verify that a vertex is connected.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_vertex_on_boundary.html#compas_tna.diagrams.FormDiagram.is_vertex_on_boundary" title="compas_tna.diagrams.FormDiagram.is_vertex_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.is_vertex_on_boundary.html#compas_tna.diagrams.FormDiagram.is_vertex_on_boundary" title="compas_tna.diagrams.FormDiagram.is_vertex_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_vertex_on_boundary</span></code></a>(key)</p></td>
 <td><p>Verify that a vertex is on a boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.join.html#compas_tna.diagrams.FormDiagram.join" title="compas_tna.diagrams.FormDiagram.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join</span></code></a>(other)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.join.html#compas_tna.diagrams.FormDiagram.join" title="compas_tna.diagrams.FormDiagram.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join</span></code></a>(other)</p></td>
 <td><p>Add the vertices and faces of another mesh to the current mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.key_gkey.html#compas_tna.diagrams.FormDiagram.key_gkey" title="compas_tna.diagrams.FormDiagram.key_gkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_gkey</span></code></a>([precision])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.key_gkey.html#compas_tna.diagrams.FormDiagram.key_gkey" title="compas_tna.diagrams.FormDiagram.key_gkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_gkey</span></code></a>([precision])</p></td>
 <td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding <em>geometric key</em> up to a certain precision.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.key_index.html#compas_tna.diagrams.FormDiagram.key_index" title="compas_tna.diagrams.FormDiagram.key_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_index</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.key_index.html#compas_tna.diagrams.FormDiagram.key_index" title="compas_tna.diagrams.FormDiagram.key_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">key_index</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding index in a vertex list or array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.merge_faces.html#compas_tna.diagrams.FormDiagram.merge_faces" title="compas_tna.diagrams.FormDiagram.merge_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_faces</span></code></a>(faces)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.merge_faces.html#compas_tna.diagrams.FormDiagram.merge_faces" title="compas_tna.diagrams.FormDiagram.merge_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_faces</span></code></a>(faces)</p></td>
 <td><p>Merge two faces of a mesh over their shared edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_numpy.html#compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_numpy" title="compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_oriented_bounding_box_numpy</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_numpy.html#compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_numpy" title="compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_oriented_bounding_box_numpy</span></code></a>()</p></td>
 <td><p>Compute the (axis aligned) bounding box of a mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_xy_numpy.html#compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_xy_numpy" title="compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_xy_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_oriented_bounding_box_xy_numpy</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_xy_numpy.html#compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_xy_numpy" title="compas_tna.diagrams.FormDiagram.mesh_oriented_bounding_box_xy_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mesh_oriented_bounding_box_xy_numpy</span></code></a>()</p></td>
 <td><p>Compute the (axis aligned) bounding box of a projection of the mesh in the XY plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.normal.html#compas_tna.diagrams.FormDiagram.normal" title="compas_tna.diagrams.FormDiagram.normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.normal.html#compas_tna.diagrams.FormDiagram.normal" title="compas_tna.diagrams.FormDiagram.normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">normal</span></code></a>()</p></td>
 <td><p>Calculate the average mesh normal.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.number_of_edges.html#compas_tna.diagrams.FormDiagram.number_of_edges" title="compas_tna.diagrams.FormDiagram.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.number_of_edges.html#compas_tna.diagrams.FormDiagram.number_of_edges" title="compas_tna.diagrams.FormDiagram.number_of_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_edges</span></code></a>()</p></td>
 <td><p>Count the number of edges in the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.number_of_faces.html#compas_tna.diagrams.FormDiagram.number_of_faces" title="compas_tna.diagrams.FormDiagram.number_of_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.number_of_faces.html#compas_tna.diagrams.FormDiagram.number_of_faces" title="compas_tna.diagrams.FormDiagram.number_of_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_faces</span></code></a>()</p></td>
 <td><p>Count the number of faces in the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.number_of_vertices.html#compas_tna.diagrams.FormDiagram.number_of_vertices" title="compas_tna.diagrams.FormDiagram.number_of_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.number_of_vertices.html#compas_tna.diagrams.FormDiagram.number_of_vertices" title="compas_tna.diagrams.FormDiagram.number_of_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">number_of_vertices</span></code></a>()</p></td>
 <td><p>Count the number of vertices in the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.obb_numpy.html#compas_tna.diagrams.FormDiagram.obb_numpy" title="compas_tna.diagrams.FormDiagram.obb_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obb_numpy</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.obb_numpy.html#compas_tna.diagrams.FormDiagram.obb_numpy" title="compas_tna.diagrams.FormDiagram.obb_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obb_numpy</span></code></a>()</p></td>
 <td><p>Compute the (axis aligned) bounding box of a mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.obb_xy_numpy.html#compas_tna.diagrams.FormDiagram.obb_xy_numpy" title="compas_tna.diagrams.FormDiagram.obb_xy_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obb_xy_numpy</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.obb_xy_numpy.html#compas_tna.diagrams.FormDiagram.obb_xy_numpy" title="compas_tna.diagrams.FormDiagram.obb_xy_numpy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">obb_xy_numpy</span></code></a>()</p></td>
 <td><p>Compute the (axis aligned) bounding box of a projection of the mesh in the XY plane.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.quads_to_triangles.html#compas_tna.diagrams.FormDiagram.quads_to_triangles" title="compas_tna.diagrams.FormDiagram.quads_to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quads_to_triangles</span></code></a>([check_angles])</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.quads_to_triangles.html#compas_tna.diagrams.FormDiagram.quads_to_triangles" title="compas_tna.diagrams.FormDiagram.quads_to_triangles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">quads_to_triangles</span></code></a>([check_angles])</p></td>
+<td><p>Convert all quadrilateral faces of a mesh to triangles by adding a diagonal edge.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.remove_unused_vertices.html#compas_tna.diagrams.FormDiagram.remove_unused_vertices" title="compas_tna.diagrams.FormDiagram.remove_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unused_vertices</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.remove_unused_vertices.html#compas_tna.diagrams.FormDiagram.remove_unused_vertices" title="compas_tna.diagrams.FormDiagram.remove_unused_vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_unused_vertices</span></code></a>()</p></td>
 <td><p>Remove all unused vertices from the mesh object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.slice_plane.html#compas_tna.diagrams.FormDiagram.slice_plane" title="compas_tna.diagrams.FormDiagram.slice_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice_plane</span></code></a>(plane)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.slice_plane.html#compas_tna.diagrams.FormDiagram.slice_plane" title="compas_tna.diagrams.FormDiagram.slice_plane"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slice_plane</span></code></a>(plane)</p></td>
 <td><p>Slice a mesh with a plane and construct the resulting submeshes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.smooth_area.html#compas_tna.diagrams.FormDiagram.smooth_area" title="compas_tna.diagrams.FormDiagram.smooth_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_area</span></code></a>([fixed, kmax, damping, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.smooth_area.html#compas_tna.diagrams.FormDiagram.smooth_area" title="compas_tna.diagrams.FormDiagram.smooth_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_area</span></code></a>([fixed, kmax, damping, ...])</p></td>
 <td><p>Smooth a mesh by moving each vertex to the barycenter of the centroids of the surrounding faces, weighted by area.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.smooth_centroid.html#compas_tna.diagrams.FormDiagram.smooth_centroid" title="compas_tna.diagrams.FormDiagram.smooth_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_centroid</span></code></a>([fixed, kmax, damping, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.smooth_centroid.html#compas_tna.diagrams.FormDiagram.smooth_centroid" title="compas_tna.diagrams.FormDiagram.smooth_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_centroid</span></code></a>([fixed, kmax, damping, ...])</p></td>
 <td><p>Smooth a mesh by moving every free vertex to the centroid of its neighbors.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.split_edge.html#compas_tna.diagrams.FormDiagram.split_edge" title="compas_tna.diagrams.FormDiagram.split_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_edge</span></code></a>(u, v[, t, allow_boundary])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.split_edge.html#compas_tna.diagrams.FormDiagram.split_edge" title="compas_tna.diagrams.FormDiagram.split_edge"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_edge</span></code></a>(u, v[, t, allow_boundary])</p></td>
 <td><p>Split and edge by inserting a vertex along its length.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.split_face.html#compas_tna.diagrams.FormDiagram.split_face" title="compas_tna.diagrams.FormDiagram.split_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_face</span></code></a>(fkey, u, v)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.split_face.html#compas_tna.diagrams.FormDiagram.split_face" title="compas_tna.diagrams.FormDiagram.split_face"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_face</span></code></a>(fkey, u, v)</p></td>
 <td><p>Split a face by inserting an edge between two specified vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.split_strip.html#compas_tna.diagrams.FormDiagram.split_strip" title="compas_tna.diagrams.FormDiagram.split_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_strip</span></code></a>(edge)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.split_strip.html#compas_tna.diagrams.FormDiagram.split_strip" title="compas_tna.diagrams.FormDiagram.split_strip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_strip</span></code></a>(edge)</p></td>
 <td><p>Split the srip of faces corresponding to a given edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.subdivide.html#compas_tna.diagrams.FormDiagram.subdivide" title="compas_tna.diagrams.FormDiagram.subdivide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subdivide</span></code></a>([scheme])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.subdivide.html#compas_tna.diagrams.FormDiagram.subdivide" title="compas_tna.diagrams.FormDiagram.subdivide"><code class="xref py py-obj docutils literal notranslate"><span class="pre">subdivide</span></code></a>([scheme])</p></td>
 <td><p>Subdivide the input mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.summary.html#compas_tna.diagrams.FormDiagram.summary" title="compas_tna.diagrams.FormDiagram.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.summary.html#compas_tna.diagrams.FormDiagram.summary" title="compas_tna.diagrams.FormDiagram.summary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summary</span></code></a>()</p></td>
 <td><p>Print a summary of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_data.html#compas_tna.diagrams.FormDiagram.to_data" title="compas_tna.diagrams.FormDiagram.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_data.html#compas_tna.diagrams.FormDiagram.to_data" title="compas_tna.diagrams.FormDiagram.to_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_data</span></code></a>()</p></td>
 <td><p>Convert an object to its native data representation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_json.html#compas_tna.diagrams.FormDiagram.to_json" title="compas_tna.diagrams.FormDiagram.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_json.html#compas_tna.diagrams.FormDiagram.to_json" title="compas_tna.diagrams.FormDiagram.to_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_json</span></code></a>(filepath[, pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_jsonstring.html#compas_tna.diagrams.FormDiagram.to_jsonstring" title="compas_tna.diagrams.FormDiagram.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_jsonstring.html#compas_tna.diagrams.FormDiagram.to_jsonstring" title="compas_tna.diagrams.FormDiagram.to_jsonstring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_jsonstring</span></code></a>([pretty])</p></td>
 <td><p>Serialize the data representation of an object to a JSON string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_lines.html#compas_tna.diagrams.FormDiagram.to_lines" title="compas_tna.diagrams.FormDiagram.to_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lines</span></code></a>(filepath)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_lines.html#compas_tna.diagrams.FormDiagram.to_lines" title="compas_tna.diagrams.FormDiagram.to_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lines</span></code></a>()</p></td>
+<td><p>Convert the mesh to a collection of lines.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_obj.html#compas_tna.diagrams.FormDiagram.to_obj" title="compas_tna.diagrams.FormDiagram.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a>(filepath[, precision, unweld])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_obj.html#compas_tna.diagrams.FormDiagram.to_obj" title="compas_tna.diagrams.FormDiagram.to_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_obj</span></code></a>(filepath[, precision, unweld])</p></td>
 <td><p>Write the mesh to an OBJ file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_off.html#compas_tna.diagrams.FormDiagram.to_off" title="compas_tna.diagrams.FormDiagram.to_off"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_off</span></code></a>(filepath, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_off.html#compas_tna.diagrams.FormDiagram.to_off" title="compas_tna.diagrams.FormDiagram.to_off"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_off</span></code></a>(filepath, **kwargs)</p></td>
 <td><p>Write a mesh object to an OFF file.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_ply.html#compas_tna.diagrams.FormDiagram.to_ply" title="compas_tna.diagrams.FormDiagram.to_ply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_ply</span></code></a>(filepath, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_ply.html#compas_tna.diagrams.FormDiagram.to_ply" title="compas_tna.diagrams.FormDiagram.to_ply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_ply</span></code></a>(filepath, **kwargs)</p></td>
 <td><p>Write a mesh object to a PLY file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_points.html#compas_tna.diagrams.FormDiagram.to_points" title="compas_tna.diagrams.FormDiagram.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_points.html#compas_tna.diagrams.FormDiagram.to_points" title="compas_tna.diagrams.FormDiagram.to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_points</span></code></a>()</p></td>
+<td><p>Convert the mesh to a collection of points.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_polygons.html#compas_tna.diagrams.FormDiagram.to_polygons" title="compas_tna.diagrams.FormDiagram.to_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygons</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_polygons.html#compas_tna.diagrams.FormDiagram.to_polygons" title="compas_tna.diagrams.FormDiagram.to_polygons"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polygons</span></code></a>()</p></td>
+<td><p>Convert the mesh to a collection of polygons.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_polylines.html#compas_tna.diagrams.FormDiagram.to_polylines" title="compas_tna.diagrams.FormDiagram.to_polylines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polylines</span></code></a>()</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_polylines.html#compas_tna.diagrams.FormDiagram.to_polylines" title="compas_tna.diagrams.FormDiagram.to_polylines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_polylines</span></code></a>()</p></td>
+<td><p>Convert the mesh to a collection of polylines.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_stl.html#compas_tna.diagrams.FormDiagram.to_stl" title="compas_tna.diagrams.FormDiagram.to_stl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_stl</span></code></a>(filepath[, precision, binary])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_stl.html#compas_tna.diagrams.FormDiagram.to_stl" title="compas_tna.diagrams.FormDiagram.to_stl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_stl</span></code></a>(filepath[, precision, binary])</p></td>
 <td><p>Write a mesh to an STL file.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_vertices_and_faces.html#compas_tna.diagrams.FormDiagram.to_vertices_and_faces" title="compas_tna.diagrams.FormDiagram.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.to_vertices_and_faces.html#compas_tna.diagrams.FormDiagram.to_vertices_and_faces" title="compas_tna.diagrams.FormDiagram.to_vertices_and_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_vertices_and_faces</span></code></a>()</p></td>
 <td><p>Return the vertices and faces of a mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.transform.html#compas_tna.diagrams.FormDiagram.transform" title="compas_tna.diagrams.FormDiagram.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.transform.html#compas_tna.diagrams.FormDiagram.transform" title="compas_tna.diagrams.FormDiagram.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(transformation)</p></td>
 <td><p>Transform a mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.transformed.html#compas_tna.diagrams.FormDiagram.transformed" title="compas_tna.diagrams.FormDiagram.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
-<td><p>Transform a copy of <code class="docutils literal notranslate"><span class="pre">mesh</span></code>.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.transformed.html#compas_tna.diagrams.FormDiagram.transformed" title="compas_tna.diagrams.FormDiagram.transformed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transformed</span></code></a>(transformation)</p></td>
+<td><p>Return a transformed copy of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.unify_cycles.html#compas_tna.diagrams.FormDiagram.unify_cycles" title="compas_tna.diagrams.FormDiagram.unify_cycles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unify_cycles</span></code></a>([root])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.unify_cycles.html#compas_tna.diagrams.FormDiagram.unify_cycles" title="compas_tna.diagrams.FormDiagram.unify_cycles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unify_cycles</span></code></a>([root])</p></td>
 <td><p>Unify the cycle directions of all faces.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.unset_edge_attribute.html#compas_tna.diagrams.FormDiagram.unset_edge_attribute" title="compas_tna.diagrams.FormDiagram.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a>(edge, name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.unset_edge_attribute.html#compas_tna.diagrams.FormDiagram.unset_edge_attribute" title="compas_tna.diagrams.FormDiagram.unset_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_edge_attribute</span></code></a>(edge, name)</p></td>
 <td><p>Unset the attribute of an edge.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.unset_face_attribute.html#compas_tna.diagrams.FormDiagram.unset_face_attribute" title="compas_tna.diagrams.FormDiagram.unset_face_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_face_attribute</span></code></a>(key, name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.unset_face_attribute.html#compas_tna.diagrams.FormDiagram.unset_face_attribute" title="compas_tna.diagrams.FormDiagram.unset_face_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_face_attribute</span></code></a>(key, name)</p></td>
 <td><p>Unset the attribute of a face.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.unset_vertex_attribute.html#compas_tna.diagrams.FormDiagram.unset_vertex_attribute" title="compas_tna.diagrams.FormDiagram.unset_vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_vertex_attribute</span></code></a>(key, name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.unset_vertex_attribute.html#compas_tna.diagrams.FormDiagram.unset_vertex_attribute" title="compas_tna.diagrams.FormDiagram.unset_vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unset_vertex_attribute</span></code></a>(key, name)</p></td>
 <td><p>Unset the attribute of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.update_default_edge_attributes.html#compas_tna.diagrams.FormDiagram.update_default_edge_attributes" title="compas_tna.diagrams.FormDiagram.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a>([attr_dict])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.update_default_edge_attributes.html#compas_tna.diagrams.FormDiagram.update_default_edge_attributes" title="compas_tna.diagrams.FormDiagram.update_default_edge_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_edge_attributes</span></code></a>([attr_dict])</p></td>
 <td><p>Update the default edge attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.update_default_face_attributes.html#compas_tna.diagrams.FormDiagram.update_default_face_attributes" title="compas_tna.diagrams.FormDiagram.update_default_face_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_face_attributes</span></code></a>([attr_dict])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.update_default_face_attributes.html#compas_tna.diagrams.FormDiagram.update_default_face_attributes" title="compas_tna.diagrams.FormDiagram.update_default_face_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_face_attributes</span></code></a>([attr_dict])</p></td>
 <td><p>Update the default face attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.update_default_vertex_attributes.html#compas_tna.diagrams.FormDiagram.update_default_vertex_attributes" title="compas_tna.diagrams.FormDiagram.update_default_vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code></a>([attr_dict])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.update_default_vertex_attributes.html#compas_tna.diagrams.FormDiagram.update_default_vertex_attributes" title="compas_tna.diagrams.FormDiagram.update_default_vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_default_vertex_attributes</span></code></a>([attr_dict])</p></td>
 <td><p>Update the default vertex attributes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.validate_data.html#compas_tna.diagrams.FormDiagram.validate_data" title="compas_tna.diagrams.FormDiagram.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
-<td><p>Validate the object's data against its data schema (<cite>self.DATASCHEMA</cite>).</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.validate_data.html#compas_tna.diagrams.FormDiagram.validate_data" title="compas_tna.diagrams.FormDiagram.validate_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_data</span></code></a>()</p></td>
+<td><p>Validate the object's data against its data schema.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.validate_json.html#compas_tna.diagrams.FormDiagram.validate_json" title="compas_tna.diagrams.FormDiagram.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
-<td><p>Validate the object's data against its json schema (<cite>self.JSONSCHEMA</cite>).</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.validate_json.html#compas_tna.diagrams.FormDiagram.validate_json" title="compas_tna.diagrams.FormDiagram.validate_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_json</span></code></a>()</p></td>
+<td><p>Validate the object's data against its json schema.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_area.html#compas_tna.diagrams.FormDiagram.vertex_area" title="compas_tna.diagrams.FormDiagram.vertex_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_area</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_area.html#compas_tna.diagrams.FormDiagram.vertex_area" title="compas_tna.diagrams.FormDiagram.vertex_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_area</span></code></a>(key)</p></td>
 <td><p>Compute the tributary area of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_attribute.html#compas_tna.diagrams.FormDiagram.vertex_attribute" title="compas_tna.diagrams.FormDiagram.vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attribute</span></code></a>(key, name[, value])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_attribute.html#compas_tna.diagrams.FormDiagram.vertex_attribute" title="compas_tna.diagrams.FormDiagram.vertex_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attribute</span></code></a>(key, name[, value])</p></td>
 <td><p>Get or set an attribute of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_attributes.html#compas_tna.diagrams.FormDiagram.vertex_attributes" title="compas_tna.diagrams.FormDiagram.vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attributes</span></code></a>(key[, names, values])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_attributes.html#compas_tna.diagrams.FormDiagram.vertex_attributes" title="compas_tna.diagrams.FormDiagram.vertex_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_attributes</span></code></a>(key[, names, values])</p></td>
 <td><p>Get or set multiple attributes of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_coordinates.html#compas_tna.diagrams.FormDiagram.vertex_coordinates" title="compas_tna.diagrams.FormDiagram.vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_coordinates</span></code></a>(key[, axes])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_coordinates.html#compas_tna.diagrams.FormDiagram.vertex_coordinates" title="compas_tna.diagrams.FormDiagram.vertex_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_coordinates</span></code></a>(key[, axes])</p></td>
 <td><p>Return the coordinates of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_curvature.html#compas_tna.diagrams.FormDiagram.vertex_curvature" title="compas_tna.diagrams.FormDiagram.vertex_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_curvature</span></code></a>(vkey)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_curvature.html#compas_tna.diagrams.FormDiagram.vertex_curvature" title="compas_tna.diagrams.FormDiagram.vertex_curvature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_curvature</span></code></a>(vkey)</p></td>
 <td><p>Dimensionless vertex curvature.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_degree.html#compas_tna.diagrams.FormDiagram.vertex_degree" title="compas_tna.diagrams.FormDiagram.vertex_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_degree</span></code></a>(key)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_degree.html#compas_tna.diagrams.FormDiagram.vertex_degree" title="compas_tna.diagrams.FormDiagram.vertex_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_degree</span></code></a>(key)</p></td>
 <td><p>Count the neighbors of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_edges.html#compas_tna.diagrams.FormDiagram.vertex_edges" title="compas_tna.diagrams.FormDiagram.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a>(vertex)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_edges.html#compas_tna.diagrams.FormDiagram.vertex_edges" title="compas_tna.diagrams.FormDiagram.vertex_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_edges</span></code></a>(vertex)</p></td>
+<td><p>Find all edges connected to a given vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_faces.html#compas_tna.diagrams.FormDiagram.vertex_faces" title="compas_tna.diagrams.FormDiagram.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a>(key[, ordered, include_none])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_faces.html#compas_tna.diagrams.FormDiagram.vertex_faces" title="compas_tna.diagrams.FormDiagram.vertex_faces"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_faces</span></code></a>(key[, ordered, include_none])</p></td>
 <td><p>The faces connected to a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_gkey.html#compas_tna.diagrams.FormDiagram.vertex_gkey" title="compas_tna.diagrams.FormDiagram.vertex_gkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_gkey</span></code></a>([precision])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_gkey.html#compas_tna.diagrams.FormDiagram.vertex_gkey" title="compas_tna.diagrams.FormDiagram.vertex_gkey"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_gkey</span></code></a>([precision])</p></td>
 <td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding <em>geometric key</em> up to a certain precision.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_index.html#compas_tna.diagrams.FormDiagram.vertex_index" title="compas_tna.diagrams.FormDiagram.vertex_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_index</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_index.html#compas_tna.diagrams.FormDiagram.vertex_index" title="compas_tna.diagrams.FormDiagram.vertex_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_index</span></code></a>()</p></td>
 <td><p>Returns a dictionary that maps vertex dictionary keys to the corresponding index in a vertex list or array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_laplacian.html#compas_tna.diagrams.FormDiagram.vertex_laplacian" title="compas_tna.diagrams.FormDiagram.vertex_laplacian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_laplacian</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_laplacian.html#compas_tna.diagrams.FormDiagram.vertex_laplacian" title="compas_tna.diagrams.FormDiagram.vertex_laplacian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_laplacian</span></code></a>(key)</p></td>
 <td><p>Compute the vector from a vertex to the centroid of its neighbors.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_max_degree.html#compas_tna.diagrams.FormDiagram.vertex_max_degree" title="compas_tna.diagrams.FormDiagram.vertex_max_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_max_degree</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_max_degree.html#compas_tna.diagrams.FormDiagram.vertex_max_degree" title="compas_tna.diagrams.FormDiagram.vertex_max_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_max_degree</span></code></a>()</p></td>
 <td><p>Compute the maximum degree of all vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_min_degree.html#compas_tna.diagrams.FormDiagram.vertex_min_degree" title="compas_tna.diagrams.FormDiagram.vertex_min_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_min_degree</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_min_degree.html#compas_tna.diagrams.FormDiagram.vertex_min_degree" title="compas_tna.diagrams.FormDiagram.vertex_min_degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_min_degree</span></code></a>()</p></td>
 <td><p>Compute the minimum degree of all vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_neighborhood.html#compas_tna.diagrams.FormDiagram.vertex_neighborhood" title="compas_tna.diagrams.FormDiagram.vertex_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighborhood</span></code></a>(key[, ring])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_neighborhood.html#compas_tna.diagrams.FormDiagram.vertex_neighborhood" title="compas_tna.diagrams.FormDiagram.vertex_neighborhood"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighborhood</span></code></a>(key[, ring])</p></td>
 <td><p>Return the vertices in the neighborhood of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_neighborhood_centroid.html#compas_tna.diagrams.FormDiagram.vertex_neighborhood_centroid" title="compas_tna.diagrams.FormDiagram.vertex_neighborhood_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighborhood_centroid</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_neighborhood_centroid.html#compas_tna.diagrams.FormDiagram.vertex_neighborhood_centroid" title="compas_tna.diagrams.FormDiagram.vertex_neighborhood_centroid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighborhood_centroid</span></code></a>(key)</p></td>
 <td><p>Compute the centroid of the neighbors of a vertex.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_neighbors.html#compas_tna.diagrams.FormDiagram.vertex_neighbors" title="compas_tna.diagrams.FormDiagram.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a>(key[, ordered])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_neighbors.html#compas_tna.diagrams.FormDiagram.vertex_neighbors" title="compas_tna.diagrams.FormDiagram.vertex_neighbors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_neighbors</span></code></a>(key[, ordered])</p></td>
 <td><p>Return the neighbors of a vertex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_normal.html#compas_tna.diagrams.FormDiagram.vertex_normal" title="compas_tna.diagrams.FormDiagram.vertex_normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_normal</span></code></a>(key)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_normal.html#compas_tna.diagrams.FormDiagram.vertex_normal" title="compas_tna.diagrams.FormDiagram.vertex_normal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_normal</span></code></a>(key)</p></td>
 <td><p>Return the normal vector at the vertex as the weighted average of the normals of the neighboring faces.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_sample.html#compas_tna.diagrams.FormDiagram.vertex_sample" title="compas_tna.diagrams.FormDiagram.vertex_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_sample</span></code></a>([size])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertex_sample.html#compas_tna.diagrams.FormDiagram.vertex_sample" title="compas_tna.diagrams.FormDiagram.vertex_sample"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertex_sample</span></code></a>([size])</p></td>
 <td><p>A random sample of the vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices.html#compas_tna.diagrams.FormDiagram.vertices" title="compas_tna.diagrams.FormDiagram.vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></a>([data])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices.html#compas_tna.diagrams.FormDiagram.vertices" title="compas_tna.diagrams.FormDiagram.vertices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code></a>([data])</p></td>
 <td><p>Iterate over the vertices of the mesh.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_attribute.html#compas_tna.diagrams.FormDiagram.vertices_attribute" title="compas_tna.diagrams.FormDiagram.vertices_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attribute</span></code></a>(name[, value, keys])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_attribute.html#compas_tna.diagrams.FormDiagram.vertices_attribute" title="compas_tna.diagrams.FormDiagram.vertices_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attribute</span></code></a>(name[, value, keys])</p></td>
 <td><p>Get or set an attribute of multiple vertices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_attributes.html#compas_tna.diagrams.FormDiagram.vertices_attributes" title="compas_tna.diagrams.FormDiagram.vertices_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attributes</span></code></a>([names, values, keys])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_attributes.html#compas_tna.diagrams.FormDiagram.vertices_attributes" title="compas_tna.diagrams.FormDiagram.vertices_attributes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_attributes</span></code></a>([names, values, keys])</p></td>
 <td><p>Get or set multiple attributes of multiple vertices.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_on_boundaries.html#compas_tna.diagrams.FormDiagram.vertices_on_boundaries" title="compas_tna.diagrams.FormDiagram.vertices_on_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_on_boundaries</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_on_boundaries.html#compas_tna.diagrams.FormDiagram.vertices_on_boundaries" title="compas_tna.diagrams.FormDiagram.vertices_on_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_on_boundaries</span></code></a>()</p></td>
 <td><p>Find the vertices on all boundaries of the mesh.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_on_boundary.html#compas_tna.diagrams.FormDiagram.vertices_on_boundary" title="compas_tna.diagrams.FormDiagram.vertices_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_on_boundary</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_on_boundary.html#compas_tna.diagrams.FormDiagram.vertices_on_boundary" title="compas_tna.diagrams.FormDiagram.vertices_on_boundary"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_on_boundary</span></code></a>()</p></td>
 <td><p>Find the vertices on the longest boundary.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_where.html#compas_tna.diagrams.FormDiagram.vertices_where" title="compas_tna.diagrams.FormDiagram.vertices_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where</span></code></a>(conditions[, data])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_where.html#compas_tna.diagrams.FormDiagram.vertices_where" title="compas_tna.diagrams.FormDiagram.vertices_where"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where</span></code></a>(conditions[, data])</p></td>
 <td><p>Get vertices for which a certain condition or set of conditions is true.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_where_predicate.html#compas_tna.diagrams.FormDiagram.vertices_where_predicate" title="compas_tna.diagrams.FormDiagram.vertices_where_predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where_predicate</span></code></a>(predicate[, data])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.FormDiagram.vertices_where_predicate.html#compas_tna.diagrams.FormDiagram.vertices_where_predicate" title="compas_tna.diagrams.FormDiagram.vertices_where_predicate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices_where_predicate</span></code></a>(predicate[, data])</p></td>
 <td><p>Get vertices for which a certain condition or set of conditions is true using a lambda function.</p></td>
 </tr>
 </tbody>
@@ -844,6 +839,7 @@ and length of the corresponding force edges is the following:</p>
 <li class="toctree-l2 nav-item active"><a class="nav-link reference internal" href="../compas_tna.html">compas_tna</a><ul class="nav flex-column collapse show active">
 <li class="toctree-l3 nav-item active"><a class="nav-link reference internal" href="../compas_tna.diagrams.html">compas_tna.diagrams</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.equilibrium.html">compas_tna.equilibrium</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.rhino.html">compas_tna.rhino</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.utilities.html">compas_tna.utilities</a></li>
 </ul>
 </li>
@@ -885,10 +881,10 @@ and length of the corresponding force edges is the following:</p>
       
 
       
-      <a href="compas_tna.diagrams.FormDiagram.__init__.html" title="FormDiagram.__init__" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
+      <a href="compas_tna.diagrams.FormDiagram.anchors.html" title="FormDiagram.anchors" class="nav-link footer-link float-end text-right d-flex w-50" rel="next">
         <div class="nav-title footer-link flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Next</div>
-          FormDiagram.__init__
+          FormDiagram.anchors
         </div>
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-right"></i></div>
       </a>

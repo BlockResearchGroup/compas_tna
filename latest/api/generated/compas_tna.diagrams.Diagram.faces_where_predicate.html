@@ -101,27 +101,22 @@
 <h1>Diagram.faces_where_predicate</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_tna.diagrams.Diagram.faces_where_predicate">
-<span class="sig-prename descclassname"><span class="pre">Diagram.</span></span><span class="sig-name descname"><span class="pre">faces_where_predicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">Diagram.</span></span><span class="sig-name descname"><span class="pre">faces_where_predicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas/datastructures/halfedge/halfedge.py#L861"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get faces for which a certain condition or set of conditions is true using a lambda function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>predicate</strong> (<em>callable</em>) – The condition you want to evaluate. The callable takes 2 parameters: <code class="docutils literal notranslate"><span class="pre">key</span></code>, <code class="docutils literal notranslate"><span class="pre">attr</span></code> and should return <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>data</strong> (<em>bool, optional</em>) – Yield the faces and their data attributes.
-Default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>predicate</strong> (<em>callable</em>) – The condition you want to evaluate.
+The callable takes 2 parameters: the face identifier and the face attributes,
+and should return True or False.</p></li>
+<li><p><strong>data</strong> (<em>bool, optional</em>) – If True, yield the face attributes in addition to the face identifiers.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Yields</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>key</strong> (<em>hashable</em>) – The next face that matches the condition.</p></li>
-<li><p><em>2-tuple</em> – The next face and its attributes, if <code class="docutils literal notranslate"><span class="pre">data=True</span></code>.</p></li>
-</ul>
+<dd class="field-even"><p><em>int | tuple[int, dict[str, Any]]</em> – If <cite>data</cite> is False, the next face that matches the condition.
+If <cite>data</cite> is True, the next face and its attributes.</p>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest language-python notranslate"><div class="highlight"><pre><button class="btn copy"><i class="far fa-copy"></i></button><code><span></span><span class="go">&gt;&gt;&gt;</span>
-</code></pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -159,6 +154,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">False</s
 <li class="toctree-l2 nav-item active"><a class="nav-link reference internal" href="../compas_tna.html">compas_tna</a><ul class="nav flex-column collapse show active">
 <li class="toctree-l3 nav-item active"><a class="nav-link reference internal" href="../compas_tna.diagrams.html">compas_tna.diagrams</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.equilibrium.html">compas_tna.equilibrium</a></li>
+<li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.rhino.html">compas_tna.rhino</a></li>
 <li class="toctree-l3 nav-item"><a class="nav-link reference internal" href="../compas_tna.utilities.html">compas_tna.utilities</a></li>
 </ul>
 </li>
