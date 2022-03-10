@@ -197,7 +197,7 @@ def prepare_changelog(ctx):
 def release(ctx, release_type):
     """Releases the project in one swift command!"""
     if release_type not in ('patch', 'minor', 'major'):
-        raise Exit('The release type parameter is invalid.\nMust be one of: major, minor, patch')
+        raise Exit('The release type parameter is invalid.\nMust be one of: major, minor, patch.')
 
     # Run checks
     ctx.run('invoke check test')
@@ -205,20 +205,8 @@ def release(ctx, release_type):
     # Bump version and git tag it
     ctx.run('bump2version %s --verbose' % release_type)
 
-    # Build project
-    ctx.run('python setup.py clean --all sdist bdist_wheel')
-
-    # Prepare changelog for next release
+    # Prepare the change log for the next release
     prepare_changelog(ctx)
-
-    # Clean up local artifacts
-    clean(ctx)
-
-    # Upload to pypi
-    if confirm('Everything is ready. You are about to push to git which will trigger a release to pypi.org. Are you sure? [y/N]'):
-        ctx.run('git push --tags && git push')
-    else:
-        raise Exit('You need to manually revert the tag/commits created.')
 
 
 @contextlib.contextmanager
