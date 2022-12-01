@@ -24,7 +24,7 @@
   
 
   
-  <link rel="prev" title="FormDiagram.remove_unused_vertices" href="compas_tna.diagrams.FormDiagram.remove_unused_vertices.html" />
+  <link rel="prev" title="FormDiagram.sha256" href="compas_tna.diagrams.FormDiagram.sha256.html" />
   
 
   <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
@@ -104,14 +104,14 @@
 <span class="sig-prename descclassname"><span class="pre">FormDiagram.</span></span><span class="sig-name descname"><span class="pre">slice_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">plane</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas/datastructures/mesh/slice.py#L10"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Slice a mesh with a plane and construct the resulting submeshes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>) – The original mesh.</p></li>
-<li><p><strong>plane</strong> (<a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Plane.html#compas.geometry.Plane" title="(in COMPAS v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.geometry.Plane</span></code></a>) – The cutting plane.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>) – The original mesh.</p></li>
+<li><p><strong>plane</strong> (<a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.geometry.Plane.html#compas.geometry.Plane" title="(in COMPAS v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plane</span></code></a>) – The cutting plane.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>tuple[<a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>, <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a>] | None – The “positive” and “negative” submeshes.
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[<a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>, <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mesh</span></code></a>] | None – The “positive” and “negative” submeshes.
 If the mesh and plane do not intersect,
 or if the intersection is degenerate (point or line),
 the function returns None.</p>
@@ -184,7 +184,10 @@ the function returns None.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">FormDiagram.slice_plane</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">FormDiagram.slice_plane</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#compas_tna.diagrams.FormDiagram.slice_plane"><code class="docutils literal notranslate"><span class="pre">FormDiagram.slice_plane()</span></code></a></li>
+</ul>
+</li>
 </ul>
 
       </div>
@@ -196,11 +199,11 @@ the function returns None.</p>
   <footer class="compas-footer">
     <nav class="nav p-2">
       
-      <a href="compas_tna.diagrams.FormDiagram.remove_unused_vertices.html" title="FormDiagram.remove_unused_vertices" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
+      <a href="compas_tna.diagrams.FormDiagram.sha256.html" title="FormDiagram.sha256" class="nav-link footer-link float-start text-left d-flex w-50" rel="prev">
         <div class="nav-button p-2 m-2"><i class="fas fa-arrow-left"></i></div>
         <div class="nav-title flex-grow-1 align-self-center">
           <div class="nav-direction small font-weight-light">Previous</div>
-          FormDiagram.remove_unused_vertices
+          FormDiagram.sha256
         </div>
       </a>
       

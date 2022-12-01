@@ -101,23 +101,16 @@
 <h1>ForceArtist.draw_mesh</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_tna.rhino.ForceArtist.draw_mesh">
-<span class="sig-prename descclassname"><span class="pre">ForceArtist.</span></span><span class="sig-name descname"><span class="pre">draw_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">disjoint</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas_rhino/artists/meshartist.py#L258"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
-<dd><p>Draw the mesh as a consolidated RhinoMesh.</p>
+<span class="sig-prename descclassname"><span class="pre">ForceArtist.</span></span><span class="sig-name descname"><span class="pre">draw_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas/artists/meshartist.py#L345"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Draw the mesh of the mesh.</p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 1.14.1: </span>Use <code class="xref py py-meth docutils literal notranslate"><span class="pre">draw()</span></code> instead.</p>
+</div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>color</strong> (<em>tuple[int, int, int], optional</em>) – The color of the mesh.
-Default is the value of <code class="xref py py-attr docutils literal notranslate"><span class="pre">MeshArtist.default_color</span></code>.</p></li>
-<li><p><strong>disjoint</strong> (<em>bool, optional</em>) – If True, draw the faces of the mesh with disjoint vertices.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>list[System.Guid]</em> – The GUIDs of the created Rhino objects.</p>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>list</em> – The identifiers of the objects representing the mesh in the visualization context.</p>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<p>The mesh should be a valid Rhino Mesh object, which means it should have only triangular or quadrilateral faces.
-Faces with more than 4 vertices will be triangulated on-the-fly.</p>
 </dd></dl>
 
 </section>
@@ -173,7 +166,10 @@ Faces with more than 4 vertices will be triangulated on-the-fly.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">ForceArtist.draw_mesh</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">ForceArtist.draw_mesh</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#compas_tna.rhino.ForceArtist.draw_mesh"><code class="docutils literal notranslate"><span class="pre">ForceArtist.draw_mesh()</span></code></a></li>
+</ul>
+</li>
 </ul>
 
       </div>

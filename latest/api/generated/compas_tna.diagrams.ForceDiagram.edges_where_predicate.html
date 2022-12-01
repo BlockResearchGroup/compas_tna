@@ -101,10 +101,10 @@
 <h1>ForceDiagram.edges_where_predicate</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_tna.diagrams.ForceDiagram.edges_where_predicate">
-<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">edges_where_predicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas/datastructures/halfedge/halfedge.py#L779"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">edges_where_predicate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/blockresearchgroup/compas_tna/blob/main/src/compas/datastructures/halfedge/halfedge.py#L798"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
 <dd><p>Get edges for which a certain condition or set of conditions is true using a lambda function.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>predicate</strong> (<em>callable</em>) – The condition you want to evaluate.
 The callable takes 3 parameters:
@@ -113,7 +113,7 @@ and should return True or False.</p></li>
 <li><p><strong>data</strong> (<em>bool, optional</em>) – If True, yield the vertex attributes in addition ot the vertex identifiers.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Yields</dt>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>tuple[int, int] | tuple[tuple[int, int], dict[str, Any]]</em> – If <cite>data</cite> is False, the next edge as a (u, v) tuple.
 If <cite>data</cite> is True, the next edge as a (u, v, data) tuple.</p>
 </dd>
@@ -173,7 +173,10 @@ If <cite>data</cite> is True, the next edge as a (u, v, data) tuple.</p>
       <div class="d-none d-xl-block col-xl-2 compas-toc" role="toc">
         
         <ul class="nav flex-column" id="compas-toc">
-<li class="nav-item"><a class="nav-link reference internal" href="#">ForceDiagram.edges_where_predicate</a></li>
+<li class="nav-item"><a class="nav-link reference internal" href="#">ForceDiagram.edges_where_predicate</a><ul class="nav flex-column">
+<li class="nav-item"><a class="nav-link reference internal" href="#compas_tna.diagrams.ForceDiagram.edges_where_predicate"><code class="docutils literal notranslate"><span class="pre">ForceDiagram.edges_where_predicate()</span></code></a></li>
+</ul>
+</li>
 </ul>
 
       </div>
