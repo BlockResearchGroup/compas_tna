@@ -418,7 +418,7 @@ face degree: {}/{}
         # mark all "anchored edges" as '_is_edge=False'
         # they will be ignored in any futher steps
         # this is what indierectly creates isolated vertices
-        # and vor example the corner cutoffs in orthogonal grids
+        # and for example the corner cutoffs in orthogonal grids
         for edge in self.edges():
             if all(self.vertices_attribute('is_anchor', keys=edge)):
                 if self.is_edge_on_boundary(*edge):
