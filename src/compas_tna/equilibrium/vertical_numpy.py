@@ -14,10 +14,10 @@ from compas_tna.utilities import update_z
 
 
 __all__ = [
-    'vertical_from_zmax',
-    'vertical_from_q',
-    'vertical_from_zmax_proxy',
-    'vertical_from_q_proxy'
+    "vertical_from_zmax",
+    "vertical_from_q",
+    "vertical_from_zmax_proxy",
+    "vertical_from_q_proxy",
 ]
 
 
@@ -33,7 +33,9 @@ def vertical_from_q_proxy(formdata, *args, **kwargs):
     return form.to_data()
 
 
-def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, display=False):
+def vertical_from_zmax(
+    form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, display=False
+):
     """For the given form and force diagram, compute the scale of the force
     diagram for which the highest point of the thrust network is equal to a
     specified value.
@@ -67,26 +69,26 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
         The scale of the forcedensities.
 
     """
-    xtol2 = xtol ** 2
+    xtol2 = xtol**2
     # --------------------------------------------------------------------------
     # FormDiagram
     # --------------------------------------------------------------------------
-    k_i = form.key_index()
+    k_i = form.vertex_index()
     uv_i = form.uv_index()
 
     vcount = len(form.vertex)
     anchors = list(form.anchors())
     fixed = [k_i[key] for key in anchors]
     free = list(set(range(vcount)) - set(fixed))
-    xyz = array(form.vertices_attributes('xyz'), dtype=float64)
-    thick = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
-    p = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
+    xyz = array(form.vertices_attributes("xyz"), dtype=float64)
+    thick = array(form.vertices_attribute("t"), dtype=float64).reshape((-1, 1))
+    p = array(form.vertices_attributes(("px", "py", "pz")), dtype=float64)
 
-    edges = list(form.edges_where({'_is_edge': True}))
-    q = array(form.edges_attribute('q', keys=edges), dtype=float64).reshape((-1, 1))
+    edges = list(form.edges_where({"_is_edge": True}))
+    q = array(form.edges_attribute("q", keys=edges), dtype=float64).reshape((-1, 1))
     edges = [(k_i[u], k_i[v]) for u, v in edges]
 
-    C = connectivity_matrix(edges, 'csr')
+    C = connectivity_matrix(edges, "csr")
     Ci = C[:, free]
     Cf = C[:, fixed]
     Cit = Ci.transpose()
@@ -131,7 +133,9 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
     q = scale * q0
     Q = diags([q.ravel()], [0])
 
-    update_z(xyz, Q, C, p, free, fixed, update_loads, tol=rtol, kmax=kmax, display=display)
+    update_z(
+        xyz, Q, C, p, free, fixed, update_loads, tol=rtol, kmax=kmax, display=display
+    )
     # --------------------------------------------------------------------------
     # update
     # --------------------------------------------------------------------------
@@ -142,12 +146,12 @@ def vertical_from_zmax(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, 
     # --------------------------------------------------------------------------
     for vertex in form.vertices():
         index = k_i[vertex]
-        form.vertex_attribute(vertex, 'z', xyz[index, 2])
-        form.vertex_attributes(vertex, ['_rx', '_ry', '_rz'], r[index])
+        form.vertex_attribute(vertex, "z", xyz[index, 2])
+        form.vertex_attributes(vertex, ["_rx", "_ry", "_rz"], r[index])
 
-    for edge in form.edges_where({'_is_edge': True}):
+    for edge in form.edges_where({"_is_edge": True}):
         index = uv_i[edge]
-        form.edge_attributes(edge, ['q', '_f'], [q[index, 0], f[index, 0]])
+        form.edge_attributes(edge, ["q", "_f"], [q[index, 0], f[index, 0]])
 
     return form, scale
 
@@ -189,22 +193,22 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Fa
             &= \frac{f_{i, thrust}}{l_{i, thrust}}
 
     """
-    k_i = form.key_index()
+    k_i = form.vertex_index()
     uv_i = form.uv_index()
 
     vcount = form.number_of_vertices()
     anchors = list(form.anchors())
     fixed = [k_i[key] for key in anchors]
     free = list(set(range(vcount)) - set(fixed))
-    xyz = array(form.vertices_attributes('xyz'), dtype=float64)
-    thick = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
-    p = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
+    xyz = array(form.vertices_attributes("xyz"), dtype=float64)
+    thick = array(form.vertices_attribute("t"), dtype=float64).reshape((-1, 1))
+    p = array(form.vertices_attributes(("px", "py", "pz")), dtype=float64)
 
-    edges = list(form.edges_where({'_is_edge': True}))
-    q = array(form.edges_attribute('q', keys=edges), dtype=float64).reshape((-1, 1))
+    edges = list(form.edges_where({"_is_edge": True}))
+    q = array(form.edges_attribute("q", keys=edges), dtype=float64).reshape((-1, 1))
     edges = [(k_i[u], k_i[v]) for u, v in edges]
 
-    C = connectivity_matrix(edges, 'csr')
+    C = connectivity_matrix(edges, "csr")
     # --------------------------------------------------------------------------
     # original data
     # --------------------------------------------------------------------------
@@ -222,7 +226,9 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Fa
     # --------------------------------------------------------------------------
     # compute vertical
     # --------------------------------------------------------------------------
-    update_z(xyz, Q, C, p, free, fixed, update_loads, tol=tol, kmax=kmax, display=display)
+    update_z(
+        xyz, Q, C, p, free, fixed, update_loads, tol=tol, kmax=kmax, display=display
+    )
     # --------------------------------------------------------------------------
     # update
     # --------------------------------------------------------------------------
@@ -233,17 +239,17 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Fa
     # --------------------------------------------------------------------------
     for vertex in form.vertices():
         index = k_i[vertex]
-        form.vertex_attribute(vertex, 'z', xyz[index, 2])
-        form.vertex_attributes(vertex, ['_rx', '_ry', '_rz'], r[index])
+        form.vertex_attribute(vertex, "z", xyz[index, 2])
+        form.vertex_attributes(vertex, ["_rx", "_ry", "_rz"], r[index])
 
-    for edge in form.edges_where({'_is_edge': True}):
+    for edge in form.edges_where({"_is_edge": True}):
         index = uv_i[edge]
-        form.edge_attribute(edge, '_f', f[index, 0])
+        form.edge_attribute(edge, "_f", f[index, 0])
 
 
 # ==============================================================================
 # Main
 # ==============================================================================
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

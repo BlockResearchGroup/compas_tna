@@ -14,14 +14,16 @@ from compas_tna.utilities import update_z
 
 
 __all__ = [
-    'scale_from_target',
+    "scale_from_target",
 ]
 
 
 EPS = 1 / sys.float_info.epsilon
 
 
-def scale_from_target(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, display=False):
+def scale_from_target(
+    form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, display=False
+):
     """For the given form and force diagram, compute the scale of the force
     diagram for which the highest point of the thrust network is equal to a
     specified value.
@@ -54,11 +56,11 @@ def scale_from_target(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, d
         The scale of the forcedensities.
 
     """
-    xtol2 = xtol ** 2
+    xtol2 = xtol**2
     # --------------------------------------------------------------------------
     # FormDiagram
     # --------------------------------------------------------------------------
-    k_i = form.key_index()
+    k_i = form.vertex_index()
     uv_i = form.uv_index()
     vcount = len(form.vertex)
     anchors = list(form.anchors())
@@ -66,13 +68,13 @@ def scale_from_target(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, d
     fixed = set(anchors + fixed)
     fixed = [k_i[key] for key in fixed]
     free = list(set(range(vcount)) - set(fixed))
-    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({'is_edge': True})]
-    xyz = array(form.vertices_attributes('xyz'), dtype=float64)
-    thick = array(form.vertices_attribute('t'), dtype=float64).reshape((-1, 1))
-    p = array(form.vertices_attributes(('px', 'py', 'pz')), dtype=float64)
-    q = [attr.get('q', 1.0) for key, attr in form.edges_where({'is_edge': True}, True)]
+    edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({"is_edge": True})]
+    xyz = array(form.vertices_attributes("xyz"), dtype=float64)
+    thick = array(form.vertices_attribute("t"), dtype=float64).reshape((-1, 1))
+    p = array(form.vertices_attributes(("px", "py", "pz")), dtype=float64)
+    q = [attr.get("q", 1.0) for key, attr in form.edges_where({"is_edge": True}, True)]
     q = array(q, dtype=float64).reshape((-1, 1))
-    C = connectivity_matrix(edges, 'csr')
+    C = connectivity_matrix(edges, "csr")
     Ci = C[:, free]
     Cf = C[:, fixed]
     Cit = Ci.transpose()
@@ -116,7 +118,9 @@ def scale_from_target(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, d
     q = scale * q0
     Q = diags([q.ravel()], [0])
 
-    _ = update_z(xyz, Q, C, p, free, fixed, update_loads, tol=rtol, kmax=kmax, display=display)
+    _ = update_z(
+        xyz, Q, C, p, free, fixed, update_loads, tol=rtol, kmax=kmax, display=display
+    )
     # --------------------------------------------------------------------------
     # update
     # --------------------------------------------------------------------------
@@ -128,12 +132,12 @@ def scale_from_target(form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, d
     # --------------------------------------------------------------------------
     for key, attr in form.vertices(True):
         index = k_i[key]
-        attr['z'] = xyz[index, 2]
-        attr['_rx'] = r[index, 0]
-        attr['_ry'] = r[index, 1]
-        attr['_rz'] = r[index, 2]
-    for key, attr in form.edges_where({'is_edge': True}, True):
+        attr["z"] = xyz[index, 2]
+        attr["_rx"] = r[index, 0]
+        attr["_ry"] = r[index, 1]
+        attr["_rz"] = r[index, 2]
+    for key, attr in form.edges_where({"is_edge": True}, True):
         index = uv_i[key]
-        attr['_f'] = f[index, 0]
+        attr["_f"] = f[index, 0]
 
     return scale

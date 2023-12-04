@@ -22,15 +22,15 @@ from compas.numerical import equilibrium_matrix
 
 
 __all__ = [
-    'parallelise',
-    'parallelise_sparse',
-    'parallelise_nodal',
-    'rot90',
-    'apply_bounds',
-    'update_z',
-    'update_q_from_qind',
-    'form_count_dof',
-    'form_identify_dof',
+    "parallelise",
+    "parallelise_sparse",
+    "parallelise_nodal",
+    "rot90",
+    "apply_bounds",
+    "update_z",
+    "update_q_from_qind",
+    "form_count_dof",
+    "form_identify_dof",
 ]
 
 
@@ -70,7 +70,9 @@ def parallelise_sparse(A, B, X, known, k=1, key=None):
     return X
 
 
-def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=None, lmax=None):
+def parallelise_nodal(
+    xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=None, lmax=None
+):
     fixed = fixed or []
     fixed = set(fixed)
 
@@ -106,7 +108,7 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=N
             # add damping factor?
             xy[j] /= len(nbrs)
 
-        for (i, j) in ij_e:
+        for i, j in ij_e:
             e = ij_e[(i, j)]
 
             if l[e, 0] == 0.0:
@@ -119,8 +121,8 @@ def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=N
 
 def rot90(xy, zdir=1.0):
     temp = empty_like(xy)
-    temp[:, 0] = - zdir * xy[:, 1]
-    temp[:, 1] = + zdir * xy[:, 0]
+    temp[:, 0] = -zdir * xy[:, 1]
+    temp[:, 1] = +zdir * xy[:, 0]
     return temp
 
 
@@ -209,23 +211,23 @@ def update_q_from_qind(E, q, dep, ind):
 
 
 def form_count_dof(form):
-    k2i = form.key_index()
-    xyz = form.vertices_attributes('xyz')
+    k2i = form.vertex_index()
+    xyz = form.vertices_attributes("xyz")
     fixed = [k2i[key] for key in form.anchors()]
     free = list(set(range(form.number_of_vertices())) - set(fixed))
-    edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'_is_edge': True})]
+    edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({"_is_edge": True})]
     C = connectivity_matrix(edges)
     E = equilibrium_matrix(C, xyz, free)
     return dof(E)
 
 
 def form_identify_dof(form, **kwargs):
-    algo = kwargs.get('algo') or 'sympy'
-    k2i = form.key_index()
-    xyz = form.vertices_attributes('xyz')
+    algo = kwargs.get("algo") or "sympy"
+    k2i = form.vertex_index()
+    xyz = form.vertices_attributes("xyz")
     fixed = [k2i[key] for key in form.anchors()]
     free = list(set(range(form.number_of_vertices())) - set(fixed))
-    edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({'_is_edge': True})]
+    edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({"_is_edge": True})]
     C = connectivity_matrix(edges)
     E = equilibrium_matrix(C, xyz, free)
     return nonpivots(rref(E, algo=algo))
