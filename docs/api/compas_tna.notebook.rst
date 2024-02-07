@@ -1,5 +1,5 @@
 ********************************************************************************
-compas_tna.rhino
+compas_tna.notebook
 ********************************************************************************
 
-.. currentmodule:: compas_tna.rhino
+.. currentmodule:: compas_tna.notebook
