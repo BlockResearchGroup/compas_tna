@@ -1,205 +1,75 @@
+# flake8: noqa
 # -*- coding: utf-8 -*-
 
-# If your documentation needs a minimal Sphinx version, state it here.
-#
-# needs_sphinx = '1.0'
-
-import sys
-import os
-import inspect
-import importlib
-
-import sphinx_compas_theme
-from sphinx.ext.napoleon.docstring import NumpyDocstring
+from sphinx.writers import html, html5
+import sphinx_compas2_theme
 
 # -- General configuration ------------------------------------------------
 
-project   = 'COMPAS TNA'
-copyright = 'Block Research Group - ETH Zurich'
-author    = 'Tom Van Mele'
+project = "COMPAS Thrust Network Analysis"
+copyright = "Block Research Group - ETH Zurich"
+author = "Tom Van Mele"
+package = "compas_tna"
+organization = "blockresearchgroup"
 
-release = '0.2.0'
-version = '.'.join(release.split('.')[0:2])
-
-master_doc       = 'index'
-source_suffix    = ['.rst', ]
-templates_path   = ['_templates', ]
-exclude_patterns = []
-
-pygments_style   = 'sphinx'
-show_authors     = True
+master_doc = "index"
+source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
+templates_path = sphinx_compas2_theme.get_autosummary_templates_path()
+exclude_patterns = sphinx_compas2_theme.default_exclude_patterns
 add_module_names = True
-language         = None
+language = "en"
 
+latest_version = sphinx_compas2_theme.get_latest_version()
+
+if latest_version == "Unreleased":
+    release = "Unreleased"
+    version = "latest"
+else:
+    release = latest_version
+    version = ".".join(release.split(".")[0:2])  # type: ignore
 
 # -- Extension configuration ------------------------------------------------
 
-extensions = [
-    "sphinx.ext.autodoc",
-    "sphinx.ext.autosummary",
-    "sphinx.ext.doctest",
-    "sphinx.ext.intersphinx",
-    "sphinx.ext.mathjax",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.linkcode",
-    "sphinx.ext.extlinks",
-    "sphinx.ext.githubpages",
-    "sphinx.ext.coverage",
-    "sphinx.ext.inheritance_diagram",
-    "sphinx.ext.graphviz",
-    "matplotlib.sphinxext.plot_directive",
-    "m2r2",
-    "nbsphinx",
-    "sphinx.ext.autodoc.typehints",
-    "tabs"
-]
+extensions = sphinx_compas2_theme.default_extensions
+extensions.remove("sphinx.ext.linkcode")
+
+# numpydoc options
+
+numpydoc_show_class_members = False
+numpydoc_class_members_toctree = False
+numpydoc_attributes_as_param_list = True
+
+# bibtex options
 
 # autodoc options
 
 autodoc_type_aliases = {}
 
-# this does not work properly yet
-autodoc_typehints = "none"
-autodoc_typehints_format = "short"
 autodoc_typehints_description_target = "documented"
-
-autodoc_mock_imports = [
-    "System",
-    "clr",
-    "Eto",
-    "Rhino",
-    "Grasshopper",
-    "scriptcontext",
-    "rhinoscriptsyntax",
-    "bpy",
-    "bmesh",
-    "mathutils"
-]
-
+autodoc_mock_imports = sphinx_compas2_theme.default_mock_imports
 autodoc_default_options = {
     "undoc-members": True,
     "show-inheritance": True,
 }
-
 autodoc_member_order = "groupwise"
+autodoc_typehints = "description"
+autodoc_class_signature = "separated"
 
 autoclass_content = "class"
 
 
-def skip(app, what, name, obj, would_skip, options):
-    if name.startswith('_'):
-        return True
-    return would_skip
-
-
 def setup(app):
-    app.connect("autodoc-skip-member", skip)
+    app.connect("autodoc-skip-member", sphinx_compas2_theme.skip)
 
 
 # autosummary options
 
 autosummary_generate = True
-autosummary_mock_imports = [
-    "System",
-    "clr",
-    "Eto",
-    "Rhino",
-    "Grasshopper",
-    "scriptcontext",
-    "rhinoscriptsyntax",
-    "bpy",
-    "bmesh",
-    "mathutils"
-]
+autosummary_mock_imports = sphinx_compas2_theme.default_mock_imports
 
 # graph options
 
-inheritance_graph_attrs = dict(rankdir="LR", resolution=150)
-inheritance_node_attrs = dict(fontsize=8)
-
-# napoleon options
-
-napoleon_google_docstring = False
-napoleon_numpy_docstring = True
-napoleon_include_init_with_doc = False
-napoleon_include_private_with_doc = False
-napoleon_include_special_with_doc = True
-napoleon_use_admonition_for_examples = False
-napoleon_use_admonition_for_notes = False
-napoleon_use_admonition_for_references = False
-napoleon_use_ivar = False
-napoleon_use_param = False
-napoleon_use_rtype = False
-
-
-# first, we define new methods for any new sections and add them to the class
-def parse_keys_section(self, section):
-    return self._format_fields("Keys", self._consume_fields())
-
-
-NumpyDocstring._parse_keys_section = parse_keys_section
-
-
-def parse_attributes_section(self, section):
-    return self._format_fields("Attributes", self._consume_fields())
-
-
-NumpyDocstring._parse_attributes_section = parse_attributes_section
-
-
-def parse_class_attributes_section(self, section):
-    return self._format_fields("Class Attributes", self._consume_fields())
-
-
-NumpyDocstring._parse_class_attributes_section = parse_class_attributes_section
-
-
-def parse_other_attributes_section(self, section):
-    return self._format_fields("Other Attributes", self._consume_fields())
-
-
-NumpyDocstring._parse_other_attributes_section = parse_other_attributes_section
-
-
-# we now patch the parse method to guarantee that the the above methods are
-# assigned to the _section dict
-def patched_parse(self):
-    self._sections["keys"] = self._parse_keys_section
-    self._sections["attributes"] = self._parse_attributes_section
-    self._sections["class attributes"] = self._parse_class_attributes_section
-    self._sections["others attributes"] = self._parse_other_attributes_section
-    self._unpatched_parse()
-
-
-NumpyDocstring._unpatched_parse = NumpyDocstring._parse
-NumpyDocstring._parse = patched_parse
-
-
 # plot options
-
-plot_include_source = False
-plot_html_show_source_link = False
-plot_html_show_formats = False
-plot_formats = ['png']
-# plot_pre_code
-# plot_basedir
-# plot_rcparams
-# plot_apply_rcparams
-# plot_working_directory
-
-plot_template = """
-{{ only_html }}
-
-   {% for img in images %}
-   {% set has_class = false %}
-
-   .. figure:: {{ build_dir }}/{{ img.basename }}.{{ default_fmt }}
-      :class: figure-img img-fluid
-
-      {{ caption }}
-
-   {% endfor %}
-"""
 
 # intersphinx options
 
@@ -210,77 +80,78 @@ intersphinx_mapping = {
 
 # linkcode
 
-
-def linkcode_resolve(domain, info):
-    if domain != 'py':
-        return None
-    if not info['module']:
-        return None
-    if not info['fullname']:
-        return None
-
-    package = info['module'].split('.')[0]
-    if not package.startswith('compas_tna'):
-        return None
-
-    module = importlib.import_module(info['module'])
-    parts = info['fullname'].split('.')
-
-    if len(parts) == 1:
-        obj = getattr(module, info['fullname'])
-        mod = inspect.getmodule(obj)
-        if not mod:
-            return None
-        filename = mod.__name__.replace('.', '/')
-        lineno = inspect.getsourcelines(obj)[1]
-    elif len(parts) == 2:
-        obj_name, attr_name = parts
-        obj = getattr(module, obj_name)
-        attr = getattr(obj, attr_name)
-        if inspect.isfunction(attr):
-            mod = inspect.getmodule(attr)
-            if not mod:
-                return None
-            filename = mod.__name__.replace('.', '/')
-            lineno = inspect.getsourcelines(attr)[1]
-        else:
-            return None
-    else:
-        return None
-
-    return f"https://github.com/blockresearchgroup/compas_tna/blob/main/src/{filename}.py#L{lineno}"
-
+# linkcode_resolve = sphinx_compas2_theme.get_linkcode_resolve(organization, package)
 
 # extlinks
 
+extlinks = {}
 
-extlinks = {
-    "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s"),
-    "blender": ("https://docs.blender.org/api/2.93/%s.html", "%s")
-}
+# from pytorch
 
+sphinx_compas2_theme.replace(html.HTMLTranslator)
+sphinx_compas2_theme.replace(html5.HTML5Translator)
 
 # -- Options for HTML output ----------------------------------------------
 
-html_theme = 'compaspkg'
-html_theme_path = sphinx_compas_theme.get_html_theme_path()
+html_theme = "sidebaronly"
+html_title = project
+
+favicons = [
+    {
+        "rel": "icon",
+        "href": "compas.ico",
+    }
+]
+
 html_theme_options = {
-    "package_name"       : "compas_tna",
-    "package_title"      : project,
-    "package_version"    : release,
-    "package_author"     : "Tom Van Mele",
-    "package_description": "COMPAS package for Thrust Network Analysis",
-    "package_repo"       : "https://github.com/BlockResearchGroup/compas_tna",
-    "package_docs"       : "https://blockresearchgroup.github.io/compas_tna/",
-    "package_old_versions_txt" : "https://blockresearchgroup.github.io/compas_tna/doc_versions.txt"
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": f"https://github.com/{organization}/{package}",
+            "icon": "fa-brands fa-github",
+            "type": "fontawesome",
+        },
+        {
+            "name": "Discourse",
+            "url": "http://forum.compas-framework.org/",
+            "icon": "fa-brands fa-discourse",
+            "type": "fontawesome",
+        },
+        {
+            "name": "PyPI",
+            "url": f"https://pypi.org/project/{package}/",
+            "icon": "fa-brands fa-python",
+            "type": "fontawesome",
+        },
+    ],
+    "switcher": {
+        "json_url": f"https://raw.githubusercontent.com/{organization}/{package}/gh-pages/versions.json",
+        "version_match": version,
+    },
+    "check_switcher": False,
+    "logo": {
+        "image_light": "_static/compas_icon_white.png",
+        "image_dark": "_static/compas_icon_white.png",
+        "text": project,
+    },
+    "navigation_depth": 3,
 }
-html_context = {}
-html_static_path = sphinx_compas_theme.get_html_static_path()
+
+
+html_context = {
+    "github_url": "https://github.com",
+    "github_user": organization,
+    "github_repo": package,
+    "github_version": "main",
+    "doc_path": "docs",
+}
+
+html_static_path = sphinx_compas2_theme.get_html_static_path() + ["_static"]
+html_css_files = []
 html_extra_path = []
 html_last_updated_fmt = ""
 html_copy_source = False
-html_show_sourcelink = False
+html_show_sourcelink = True
 html_permalinks = False
 html_permalinks_icon = ""
-html_experimental_html5_writer = False
 html_compact_lists = True

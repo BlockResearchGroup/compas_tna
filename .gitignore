@@ -115,3 +115,5 @@ docsource/api/generated
 
 .vscode/
 .pytest_cache/
+
+generated
