@@ -5,12 +5,18 @@ from __future__ import division
 from compas.geometry import midpoint_point_point_xy
 
 
-__all__ = [
-    'parallelise_edges',
-]
-
-
-def parallelise_edges(xy, edges, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=None, lmax=None, callback=None):
+def parallelise_edges(
+    xy,
+    edges,
+    targets,
+    i_nbrs,
+    ij_e,
+    fixed=None,
+    kmax=100,
+    lmin=None,
+    lmax=None,
+    callback=None,
+):
     """Parallelise the edges of a mesh to given target vectors.
 
     Parameters
@@ -48,10 +54,11 @@ def parallelise_edges(xy, edges, targets, i_nbrs, ij_e, fixed=None, kmax=100, lm
     Examples
     --------
     >>>
+
     """
     if callback:
         if not callable(callback):
-            raise Exception('The provided callback is not callable.')
+            raise Exception("The provided callback is not callable.")
 
     fixed = fixed or []
     fixed = set(fixed)
@@ -61,7 +68,7 @@ def parallelise_edges(xy, edges, targets, i_nbrs, ij_e, fixed=None, kmax=100, lm
     for k in range(kmax):
         xy0 = [[x, y] for x, y in xy]
         uv = [[xy[j][0] - xy[i][0], xy[j][1] - xy[i][1]] for i, j in edges]
-        lengths = [(dx**2 + dy**2)**0.5 for dx, dy in uv]
+        lengths = [(dx**2 + dy**2) ** 0.5 for dx, dy in uv]
 
         if lmin:
             lengths[:] = [max(a, b) for a, b in zip(lengths, lmin)]
@@ -96,7 +103,7 @@ def parallelise_edges(xy, edges, targets, i_nbrs, ij_e, fixed=None, kmax=100, lm
             xy[j][0] = x / len(nbrs)
             xy[j][1] = y / len(nbrs)
 
-        for (i, j) in ij_e:
+        for i, j in ij_e:
             e = ij_e[(i, j)]
 
             if lengths[e] == 0.0:

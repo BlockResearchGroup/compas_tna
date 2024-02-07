@@ -2,13 +2,12 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas_rhino.artists import MeshArtist
+
+from compas_tna.scene import ForceObject
+from .diagramobject import RhinoDiagramObject
 
 
-__all__ = ['ForceArtist']
-
-
-class ForceArtist(MeshArtist):
+class RhinoForceObject(RhinoDiagramObject, ForceObject):
     """Artist for force diagrams.
 
     Parameters
@@ -38,13 +37,16 @@ class ForceArtist(MeshArtist):
 
     def __init__(self, force, layer=None, settings=None):
         super(ForceArtist, self).__init__(force, layer=layer)
-        self.settings.update({
-            'color.vertex': (255, 255, 255),
-            'color.edge': (0, 0, 0),
-            'color.face': (210, 210, 210),
-            'show.vertices': True,
-            'show.edges': True,
-            'show.faces': False})
+        self.settings.update(
+            {
+                "color.vertex": (255, 255, 255),
+                "color.edge": (0, 0, 0),
+                "color.face": (210, 210, 210),
+                "show.vertices": True,
+                "show.edges": True,
+                "show.faces": False,
+            }
+        )
         if settings:
             self.settings.update(settings)
 
@@ -66,13 +68,13 @@ class ForceArtist(MeshArtist):
         self.clear()
         if self.layer:
             self.clear_layer()
-        if self.settings['show.vertices']:
-            vertexcolor = {key: self.settings['color.vertices'] for key in self.vertices()}
+        if self.settings["show.vertices"]:
+            vertexcolor = {
+                key: self.settings["color.vertices"] for key in self.vertices()
+            }
             self.draw_vertices(color=vertexcolor)
-        if self.settings['show.edges']:
-            self.draw_edges(
-                color=self.settings['color.edges'])
-        if self.settings['show.faces']:
-            self.draw_faces(
-                color=self.settings['color.faces'])
+        if self.settings["show.edges"]:
+            self.draw_edges(color=self.settings["color.edges"])
+        if self.settings["show.faces"]:
+            self.draw_faces(color=self.settings["color.faces"])
         self.redraw()

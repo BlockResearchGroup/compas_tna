@@ -5,8 +5,5 @@ from __future__ import division
 from compas.datastructures import Mesh
 
 
-__all__ = ['Diagram']
-
-
 class Diagram(Mesh):
     """Base diagram implementing attributes shared between the form and force diagram."""

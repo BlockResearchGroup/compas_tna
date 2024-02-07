@@ -2,121 +2,19 @@ import sys
 
 from numpy import empty_like
 from numpy.linalg import cond
-
-from scipy.linalg import cho_factor
-from scipy.linalg import cho_solve
 from scipy.linalg import lstsq
 from scipy.linalg import solve
 from scipy.linalg import norm
-
 from scipy.sparse.linalg import factorized
 
-from compas.numerical import connectivity_matrix
-from compas.numerical import normrow
-from compas.numerical import chofactor
-from compas.numerical import lufactorized
-from compas.numerical import dof
-from compas.numerical import rref
-from compas.numerical import nonpivots
-from compas.numerical import equilibrium_matrix
-
-
-__all__ = [
-    "parallelise",
-    "parallelise_sparse",
-    "parallelise_nodal",
-    "rot90",
-    "apply_bounds",
-    "update_z",
-    "update_q_from_qind",
-    "form_count_dof",
-    "form_identify_dof",
-]
+from compas.matrices import connectivity_matrix
+from compas.matrices import equilibrium_matrix
+from compas.geometry.linalg import dof
+from compas.geometry.linalg import rref
+from compas.geometry.linalg import nonpivots
 
 
 EPS = 1 / sys.float_info.epsilon
-
-
-def parallelise(A, B, X, known, k=1, key=None):
-    unknown = list(set(range(X.shape[0])) - set(known))
-    A11 = A[unknown, :][:, unknown]
-    A12 = A[unknown, :][:, known]
-    b = B[unknown] - A12.dot(X[known])
-    if cond(A11) < EPS:
-        if key:
-            Y = cho_solve(chofactor(A11, key), b)
-        else:
-            Y = cho_solve(cho_factor(A11), b)
-        X[unknown] = Y
-        return X
-    Y = lstsq(A11, b)
-    Y = Y[0]
-    X[unknown] = Y
-    return X
-
-
-def parallelise_sparse(A, B, X, known, k=1, key=None):
-    unknown = list(set(range(X.shape[0])) - set(known))
-    A11 = A[unknown, :][:, unknown]
-    A12 = A[unknown, :][:, known]
-    b = B[unknown] - A12.dot(X[known])
-    if key:
-        solve = lufactorized(A11, key)
-        Y = solve(b)
-    else:
-        solve = factorized(A11)
-        Y = solve(b)
-    X[unknown] = Y
-    return X
-
-
-def parallelise_nodal(
-    xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=None, lmax=None
-):
-    fixed = fixed or []
-    fixed = set(fixed)
-
-    n = xy.shape[0]
-
-    for k in range(kmax):
-        xy0 = xy.copy()
-        uv = C.dot(xy)
-        l = normrow(uv)  # noqa: E741
-
-        if lmin is not None and lmax is not None:
-            apply_bounds(l, lmin, lmax)
-
-        for j in range(n):
-            if j in fixed:
-                continue
-
-            nbrs = i_nbrs[j]
-            xy[j, :] = 0.0
-
-            for i in nbrs:
-                if (i, j) in ij_e:
-                    e = ij_e[(i, j)]
-                    t = targets[e]
-                elif (j, i) in ij_e:
-                    e = ij_e[(j, i)]
-                    t = -targets[e]
-                else:
-                    continue
-
-                xy[j] += xy0[i] + l[e, 0] * t
-
-            # add damping factor?
-            xy[j] /= len(nbrs)
-
-        for i, j in ij_e:
-            e = ij_e[(i, j)]
-
-            if l[e, 0] == 0.0:
-                a = xy[i]
-                b = xy[j]
-                c = 0.5 * (a + b)
-                xy[i] = c[:]
-                xy[j] = c[:]
 
 
 def rot90(xy, zdir=1.0):
@@ -205,12 +103,18 @@ def update_q_from_qind(E, q, dep, ind):
     q[dep] = qd
 
 
-# ==============================================================================
-# Form Diagram Functions
-# ==============================================================================
-
-
 def form_count_dof(form):
+    """Count the DOF of the FormDiagram.
+
+    Parameters
+    ----------
+    form : :class:`compas_tna.diagrams.FormDiagram`
+
+    Returns
+    -------
+    int
+
+    """
     k2i = form.vertex_index()
     xyz = form.vertices_attributes("xyz")
     fixed = [k2i[key] for key in form.anchors()]

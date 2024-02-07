@@ -1,71 +1,59 @@
+from typing import Tuple
+
 from numpy import array
 from numpy import float64
-
 from scipy.sparse import diags
 from scipy.sparse.linalg import spsolve
 
-from compas.numerical import connectivity_matrix
-from compas.numerical import normrow
+from compas.matrices import connectivity_matrix
+from compas.geometry.linalg import normrow
 
 from compas_tna.diagrams import FormDiagram
+from compas_tna.diagrams import ForceDiagram  # noqa: F401
+from compas_tna.loads import LoadUpdater
 
-from compas_tna.utilities import LoadUpdater
-from compas_tna.utilities import update_z
-
-
-__all__ = [
-    "vertical_from_zmax",
-    "vertical_from_q",
-    "vertical_from_zmax_proxy",
-    "vertical_from_q_proxy",
-]
-
-
-def vertical_from_zmax_proxy(formdata, *args, **kwargs):
-    form = FormDiagram.from_data(formdata)
-    _, scale = vertical_from_zmax(form, *args, **kwargs)
-    return form.to_data(), scale
-
-
-def vertical_from_q_proxy(formdata, *args, **kwargs):
-    form = FormDiagram.from_data(formdata)
-    vertical_from_q(form, *args, **kwargs)
-    return form.to_data()
+from .diagrams import update_z
 
 
 def vertical_from_zmax(
-    form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, display=False
-):
+    form: FormDiagram,
+    zmax: float,
+    kmax: int = 100,
+    xtol: float = 1e-2,
+    rtol: float = 1e-3,
+    density: float = 1.0,
+    display: bool = False,
+) -> Tuple[FormDiagram, float]:
     """For the given form and force diagram, compute the scale of the force
     diagram for which the highest point of the thrust network is equal to a
     specified value.
 
     Parameters
     ----------
-    form : compas_tna.diagrams.formdiagram.FormDiagram
+    form : :class:`FormDiagram`
         The form diagram
-    force : compas_tna.diagrams.forcediagram.ForceDiagram
+    force : :class:`ForceDiagram`
         The corresponding force diagram.
-    zmax : float
+    zmax : float, optional
         The maximum height of the thrust network (the default is None, which
         implies that the maximum height will be equal to a quarter of the diagonal
         of the bounding box of the form diagram).
-    kmax : int
+    kmax : int, optional
         The maximum number of iterations for computing vertical equilibrium
         (the default is 100).
-    tol : float
+    tol : float, optional
         The stopping criterion.
-    density : float
+    density : float, optional
         The density for computation of the self-weight of the thrust network
         (the default is 1.0). Set this to 0.0 to ignore self-weight and only
         consider specified point loads.
-    display : bool
+    display : bool, optional
         If True, information about the current iteration will be displayed.
         Default is False.
 
     Returns
     -------
-    float
+    tuple[:class:`FormDiagram`, float]
         The scale of the forcedensities.
 
     """
@@ -134,7 +122,16 @@ def vertical_from_zmax(
     Q = diags([q.ravel()], [0])
 
     update_z(
-        xyz, Q, C, p, free, fixed, update_loads, tol=rtol, kmax=kmax, display=display
+        xyz,
+        Q,
+        C,
+        p,
+        free,
+        fixed,
+        update_loads,
+        tol=rtol,
+        kmax=kmax,
+        display=display,
     )
     # --------------------------------------------------------------------------
     # update

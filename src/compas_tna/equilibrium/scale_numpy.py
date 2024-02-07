@@ -1,29 +1,30 @@
 import sys
-
 from numpy import array
 from numpy import float64
-
 from scipy.sparse import diags
 from scipy.sparse.linalg import spsolve
 
-from compas.numerical import connectivity_matrix
-from compas.numerical import normrow
+from compas.matrices import connectivity_matrix
+from compas.geometry.linalg import normrow
+from compas_tna.diagrams import FormDiagram
+from compas_tna.diagrams import ForceDiagram
+from compas_tna.loads import LoadUpdater
 
-from compas_tna.utilities import LoadUpdater
-from compas_tna.utilities import update_z
-
-
-__all__ = [
-    "scale_from_target",
-]
+from .diagrams import update_z
 
 
 EPS = 1 / sys.float_info.epsilon
 
 
 def scale_from_target(
-    form, zmax, kmax=100, xtol=1e-2, rtol=1e-3, density=1.0, display=False
-):
+    form: FormDiagram,
+    zmax: ForceDiagram,
+    kmax: int = 100,
+    xtol: float = 1e-2,
+    rtol: float = 1e-3,
+    density: float = 1.0,
+    display: bool = False,
+) -> float:
     """For the given form and force diagram, compute the scale of the force
     diagram for which the highest point of the thrust network is equal to a
     specified value.

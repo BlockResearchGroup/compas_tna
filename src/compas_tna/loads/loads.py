@@ -2,10 +2,7 @@ from numpy import zeros
 
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
-from compas.numerical import face_matrix
-
-
-__all__ = ["LoadUpdater"]
+from compas.matrices import face_matrix
 
 
 class LoadUpdater(object):

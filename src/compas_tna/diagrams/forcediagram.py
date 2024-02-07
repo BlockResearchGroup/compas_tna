@@ -5,9 +5,6 @@ from __future__ import division
 from compas_tna.diagrams import Diagram
 
 
-__all__ = ['ForceDiagram']
-
-
 class ForceDiagram(Diagram):
     """The ``ForceDiagram`` defines a TNA force diagram.
 
@@ -39,30 +36,34 @@ class ForceDiagram(Diagram):
 
     """
 
-    def __init__(self):
-        super(ForceDiagram, self).__init__()
+    def __init__(self, *args, **kwargs):
+        super(ForceDiagram, self).__init__(*args, **kwargs)
         self.primal = None
         self.scale = 1.0
-        self.default_vertex_attributes.update({
-            'x': 0.0,
-            'y': 0.0,
-            'z': 0.0,
-            'is_fixed': False,
-        })
-        self.default_edge_attributes.update({
-            'lmin': 0.0,
-            'lmax': 1e+7,
-
-            '_a': 0.0,
-        })
-        self.attributes.update({
-            'name': 'ForceDiagram',
-            'scale': 1.0,
-
-            'color.vertex': (255, 255, 255),
-            'color.edge': (0, 0, 0),
-            'color.face': (210, 210, 210),
-        })
+        self.default_vertex_attributes.update(
+            {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0,
+                "is_fixed": False,
+            }
+        )
+        self.default_edge_attributes.update(
+            {
+                "lmin": 0.0,
+                "lmax": 1e7,
+                "_a": 0.0,
+            }
+        )
+        self.attributes.update(
+            {
+                "name": "ForceDiagram",
+                "scale": 1.0,
+                "color.vertex": (255, 255, 255),
+                "color.edge": (0, 0, 0),
+                "color.face": (210, 210, 210),
+            }
+        )
 
     # --------------------------------------------------------------------------
     # Constructors
@@ -84,7 +85,7 @@ class ForceDiagram(Diagram):
 
         """
         dual = formdiagram.dual_diagram(cls)
-        dual.vertices_attribute('z', 0.0)
+        dual.vertices_attribute("z", 0.0)
         dual.primal = formdiagram
         formdiagram.dual = dual
         return dual
@@ -101,7 +102,7 @@ class ForceDiagram(Diagram):
         generator
             A generator object for iteration over vertex keys that are fixed.
         """
-        return self.vertices_where({'is_fixed': True})
+        return self.vertices_where({"is_fixed": True})
 
     # --------------------------------------------------------------------------
     # Helpers
@@ -123,7 +124,7 @@ class ForceDiagram(Diagram):
         if not form:
             return {uv: index for index, uv in enumerate(self.edges())}
         uv_index = dict()
-        for index, (u, v) in enumerate(form.edges_where({'_is_edge': True})):
+        for index, (u, v) in enumerate(form.edges_where({"_is_edge": True})):
             f1 = form.halfedge[u][v]
             f2 = form.halfedge[v][u]
             uv_index[(f1, f2)] = index
@@ -153,40 +154,3 @@ class ForceDiagram(Diagram):
             if form.halfedge[v][u] == f2:
                 break
         return form.edge_attribute((u, v), name, value=value)
-
-    # --------------------------------------------------------------------------
-    # visualisation
-    # --------------------------------------------------------------------------
-
-    def plot(self):
-        """Plot a force diagram with a plotter with all the default settings."""
-        from compas_plotters import MeshPlotter
-        plotter = MeshPlotter(self, figsize=(12, 8), tight=True)
-        plotter.draw_vertices(radius=0.05)
-        plotter.draw_edges()
-        plotter.show()
-
-    def draw(self, layer=None, clear_layer=True, settings=None):
-        """Draw the force diagram in Rhino.
-
-        Parameters
-        ----------
-        layer : str, optional
-            The layer in which the drawing should be contained.
-        clear_layer : bool, optional
-            Clear the layer if ``True``.
-            Default is ``True``.
-        settings : dict, optional
-            A dictionary of settings overwriting the default settings of the artist.
-        """
-        from compas_tna.rhino import ForceArtist
-        artist = ForceArtist(self, layer=layer)
-        if clear_layer:
-            artist.clear_layer()
-        if not settings:
-            settings = {}
-        vertexcolor = {}
-        vertexcolor.update({key: '#00ff00' for key in self.vertices_where({'is_fixed': True})})
-        artist.draw_vertices(color=vertexcolor)
-        artist.draw_edges()
-        artist.redraw()

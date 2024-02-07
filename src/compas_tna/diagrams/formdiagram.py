@@ -2,14 +2,10 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
-from compas.datastructures import network_find_cycles
-from compas.datastructures import Network
+from compas.datastructures import Graph
 from compas.utilities import pairwise
 
 from compas_tna.diagrams import Diagram
-
-
-__all__ = ["FormDiagram"]
 
 
 class FormDiagram(Diagram):
@@ -54,8 +50,8 @@ class FormDiagram(Diagram):
 
     """
 
-    def __init__(self):
-        super(FormDiagram, self).__init__()
+    def __init__(self, *args, **kwargs):
+        super(FormDiagram, self).__init__(*args, **kwargs)
         self.dual = None
         self.default_vertex_attributes.update(
             {
@@ -148,9 +144,9 @@ face degree: {}/{}
         >>> lines = [(vertices[u], vertices[v]) for u, v in edges]
         >>> form = FormDiagram.from_lines(lines)
         """
-        network = Network.from_lines(lines, precision=precision)
-        points = network.to_points()
-        cycles = network_find_cycles(network, breakpoints=network.leaves())
+        graph = Graph.from_lines(lines, precision=precision)
+        points = graph.to_points()
+        cycles = graph.find_cycles(breakpoints=graph.leaves())
         form = cls.from_vertices_and_faces(points, cycles)
         if delete_boundary_face:
             form.delete_face(0)
@@ -487,7 +483,7 @@ face degree: {}/{}
                     i = boundary.index(start)
                     j = boundary.index(end)
                     if i < j:
-                        segment = boundary[i : j + 1]
+                        segment = boundary[i : j + 1]  # noqa: E203
                     elif i > j:
                         segment = boundary[i:] + boundary[: j + 1]
                     else:
@@ -499,44 +495,3 @@ face degree: {}/{}
                         continue
                     self.add_face(vertices, _is_loaded=False)
                     self.edge_attribute((vertices[0], vertices[-1]), "_is_edge", False)
-
-    # --------------------------------------------------------------------------
-    # visualisation
-    # --------------------------------------------------------------------------
-
-    def plot(self):
-        """Plot a form diagram with a plotter with all the default settings."""
-        from compas_plotters import MeshPlotter
-
-        plotter = MeshPlotter(self, figsize=(12, 8), tight=True)
-        vertexcolor = {}
-        vertexcolor.update(
-            {key: "#00ff00" for key in self.vertices_where({"is_fixed": True})}
-        )
-        vertexcolor.update(
-            {key: "#ff0000" for key in self.vertices_where({"is_anchor": True})}
-        )
-        plotter.draw_vertices(facecolor=vertexcolor)
-        plotter.draw_edges(keys=list(self.edges_where({"_is_edge": True})))
-        plotter.draw_faces(keys=list(self.faces_where({"_is_loaded": True})))
-        plotter.show()
-
-    def draw(self, layer=None, clear_layer=True, settings=None):
-        """Draw the form diagram in Rhino.
-
-        Parameters
-        ----------
-        layer : str, optional
-            The layer in which the drawing should be contained.
-        clear_layer : bool, optional
-            Clear the layer if ``True``.
-            Default is ``True``.
-        settings : dict, optional
-            A dictionary of settings overwriting the default settings of the artist.
-        """
-        from compas_tna.rhino import FormArtist
-
-        artist = FormArtist(self, layer=layer, settings=settings)
-        if clear_layer:
-            artist.clear_layer()
-        artist.draw()

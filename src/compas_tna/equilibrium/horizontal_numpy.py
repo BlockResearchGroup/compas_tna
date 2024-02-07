@@ -1,57 +1,49 @@
+from typing import Tuple
 from compas.geometry import angle_vectors_xy
 
 from numpy import array
 from numpy import float64
 from numpy import where
 
-from compas.numerical import connectivity_matrix
-from compas.numerical import normrow
-from compas.numerical import normalizerow
+from compas.matrices import connectivity_matrix
+from compas.geometry.linalg import normrow
+from compas.geometry.linalg import normalizerow
 
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram
 
-from compas_tna.utilities import rot90
-from compas_tna.utilities import apply_bounds
-from compas_tna.utilities import parallelise_sparse
-from compas_tna.utilities import parallelise_nodal
+from .diagrams import rot90
+from .diagrams import apply_bounds
+from .parallelisation_numpy import parallelise_sparse
+from .parallelisation_numpy import parallelise_nodal
 
 
-__all__ = [
-    "horizontal_numpy",
-    "horizontal_nodal_numpy",
-    "horizontal_numpy_proxy",
-    "horizontal_nodal_numpy_proxy",
-]
-
-
-def horizontal_numpy_proxy(formdata, forcedata, *args, **kwargs):
-    form = FormDiagram.from_data(formdata)
-    force = ForceDiagram.from_data(forcedata)
-    horizontal_numpy(form, force, *args, **kwargs)
-    return form.to_data(), force.to_data()
-
-
-def horizontal_nodal_numpy_proxy(formdata, forcedata, *args, **kwargs):
-    form = FormDiagram.from_data(formdata)
-    force = ForceDiagram.from_data(forcedata)
-    horizontal_nodal_numpy(form, force, *args, **kwargs)
-    return form.to_data(), force.to_data()
-
-
-def horizontal_numpy(form, force, alpha=100.0, kmax=100):
+def horizontal_numpy(
+    form: FormDiagram,
+    force: ForceDiagram,
+    alpha: float = 100.0,
+    kmax: int = 100,
+) -> Tuple[FormDiagram, ForceDiagram]:
     r"""Compute horizontal equilibrium.
 
     Parameters
     ----------
-    form : compas_tna.diagrams.formdiagram.FormDiagram
-    force : compas_tna.diagrams.forcediagram.ForceDiagram
-    alpha : float
+    form : :class:`FormDiagram`
+        A FormFiagram.
+    force : :class:`ForceDiagram`
+        A ForceDiagram
+    alpha : float, optional
         Weighting factor for computation of the target vectors (the default is
         100.0, which implies that the target vectors are the edges of the form diagram).
         If 0.0, the target vectors are the edges of the force diagram.
-    kmax : int
+    kmax : int, optional
        Maximum number of iterations (the default is 100).
+
+    Returns
+    -------
+    tuple[:class:`FormDiagram`, :class:`ForceDiagram`]
+        The updated form and force diagram.
+        These return values are for compatibility with RPCs.
 
     Notes
     -----
@@ -201,21 +193,38 @@ def horizontal_numpy(form, force, alpha=100.0, kmax=100):
             i = _uv_i[(v, u)]
         attr["_l"] = _l[i, 0]
         attr["_a"] = a[i]
+    # --------------------------------------------------------------------------
+    # return to make rpc compatible
+    # --------------------------------------------------------------------------
+    return form, force
 
 
-def horizontal_nodal_numpy(form, force, alpha=100, kmax=100):
+def horizontal_nodal_numpy(
+    form: FormDiagram,
+    force: ForceDiagram,
+    alpha: float = 100,
+    kmax: int = 100,
+) -> Tuple[FormDiagram, ForceDiagram]:
     """Compute horizontal equilibrium using a node-per-node approach.
 
     Parameters
     ----------
-    form : compas_tna.diagrams.FormDiagram
-    force : compas_tna.diagrams.ForceDiagram
-    alpha : float
+    form : :class:`FormDiagram`
+        A FormDiagram
+    force : :class:`ForceDiagram`
+        A ForceDiagram
+    alpha : float, optional
         Weighting factor for computation of the target vectors (the default is
         100.0, which implies that the target vectors are the edges of the form diagram).
         If 0.0, the target vectors are the edges of the force diagram.
-    kmax : int
+    kmax : int, optional
        Maximum number of iterations (the default is 100).
+
+    Returns
+    -------
+    tuple[:class:`FormDiagram`, :class:`ForceDiagram`]
+        The updated form and force diagram.
+        These return values are for compatibility with RPCs.
 
     """
     alpha = float(alpha) / 100.0
@@ -326,11 +335,26 @@ def horizontal_nodal_numpy(form, force, alpha=100, kmax=100):
     # --------------------------------------------------------------------------
     if alpha < 1:
         parallelise_nodal(
-            xy, C, targets, i_nbrs, ij_e, fixed=fixed, kmax=kmax, lmin=lmin, lmax=lmax
+            xy,
+            C,
+            targets,
+            i_nbrs,
+            ij_e,
+            fixed=fixed,
+            kmax=kmax,
+            lmin=lmin,
+            lmax=lmax,
         )
     if alpha > 0:
         parallelise_nodal(
-            _xy, _C, targets, _i_nbrs, _ij_e, kmax=kmax, lmin=_lmin, lmax=_lmax
+            _xy,
+            _C,
+            targets,
+            _i_nbrs,
+            _ij_e,
+            kmax=kmax,
+            lmin=_lmin,
+            lmax=_lmax,
         )
     # --------------------------------------------------------------------------
     # update the coordinate difference vectors
@@ -381,3 +405,7 @@ def horizontal_nodal_numpy(form, force, alpha=100, kmax=100):
             i = _uv_i[(v, u)]
         attr["_l"] = _l[i, 0]
         attr["_a"] = a[i]
+    # --------------------------------------------------------------------------
+    # return to make rpc compatible
+    # --------------------------------------------------------------------------
+    return form, force

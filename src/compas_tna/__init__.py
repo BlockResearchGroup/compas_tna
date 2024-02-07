@@ -1,42 +1,25 @@
-"""
-********************************************************************************
-compas_tna
-********************************************************************************
-
-.. currentmodule:: compas_tna
-
-
-.. toctree::
-    :maxdepth: 1
-
-    compas_tna.diagrams
-    compas_tna.equilibrium
-    compas_tna.rhino
-    compas_tna.utilities
-
-"""
 from __future__ import print_function
 
 import os
 import sys
 
 
-__author__ = ['Tom Van Mele', ]
-__copyright__ = 'Copyright 2017 - Block Research Group, ETH Zurich'
-__license__ = 'MIT License'
-__email__ = 'vanmelet@ethz.ch'
+__author__ = ["Tom Van Mele"]
+__copyright__ = "Copyright 2017 - Block Research Group, ETH Zurich"
+__license__ = "MIT License"
+__email__ = "tom.v.mele@gmail.com"
 
-__version__ = '0.2.0'
+__version__ = "0.2.0"
 
 
 PY3 = sys.version_info.major == 3
 
 HERE = os.path.dirname(__file__)
 
-HOME = os.path.abspath(os.path.join(HERE, '../../'))
-DATA = os.path.abspath(os.path.join(HOME, 'data'))
-DOCS = os.path.abspath(os.path.join(HOME, 'docs'))
-TEMP = os.path.abspath(os.path.join(HOME, 'temp'))
+HOME = os.path.abspath(os.path.join(HERE, "../../"))
+DATA = os.path.abspath(os.path.join(HOME, "data"))
+DOCS = os.path.abspath(os.path.join(HOME, "docs"))
+TEMP = os.path.abspath(os.path.join(HOME, "temp"))
 
 
 def get(filename):
@@ -71,11 +54,13 @@ def get(filename):
     >>> form = FormDiagram.from_obj(compas.get('faces.obj'))
 
     """
-    filename = filename.strip('/')
+    filename = filename.strip("/")
 
     localpath = os.path.abspath(os.path.join(DATA, filename))
 
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://raw.githubusercontent.com/BlockResearchGroup/compas_tna/master/data/{}".format(filename)
+        return "https://raw.githubusercontent.com/BlockResearchGroup/compas_tna/master/data/{}".format(
+            filename
+        )

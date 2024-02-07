@@ -3,12 +3,7 @@ from __future__ import absolute_import
 from __future__ import division
 
 from compas.geometry import angle_vectors_xy
-from compas_tna.equilibrium.parallelisation import parallelise_edges
-
-
-__all__ = [
-    "horizontal_nodal",
-]
+from .parallelisation import parallelise_edges
 
 
 def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):

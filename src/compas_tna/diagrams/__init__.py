@@ -1,36 +1,11 @@
-"""
-********************************************************************************
-compas_tna.diagrams
-********************************************************************************
-
-.. currentmodule:: compas_tna.diagrams
-
-
-Classes
-=======
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    FormDiagram
-    ForceDiagram
-
-
-Bases
-=====
-
-.. autosummary::
-    :toctree: generated/
-    :nosignatures:
-
-    Diagram
-
-"""
 from __future__ import absolute_import
 
-from .diagram import *  # noqa: F401 F403
-from .formdiagram import *  # noqa: F401 F403
-from .forcediagram import *  # noqa: F401 F403
+from .diagram import Diagram
+from .formdiagram import FormDiagram
+from .forcediagram import ForceDiagram
 
-__all__ = [name for name in dir() if not name.startswith('_')]
+__all__ = [
+    "Diagram",
+    "FormDiagram",
+    "ForceDiagram",
+]
