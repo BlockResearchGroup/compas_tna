@@ -65,8 +65,8 @@ def vertical_from_zmax(
     uv_i = form.uv_index()
 
     vcount = len(form.vertex)
-    anchors = list(form.anchors())
-    fixed = [k_i[key] for key in anchors]
+    supports = list(form.supports())
+    fixed = [k_i[key] for key in supports]
     free = list(set(range(vcount)) - set(fixed))
     xyz = array(form.vertices_attributes("xyz"), dtype=float64)
     thick = array(form.vertices_attribute("t"), dtype=float64).reshape((-1, 1))
@@ -194,8 +194,8 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Fa
     uv_i = form.uv_index()
 
     vcount = form.number_of_vertices()
-    anchors = list(form.anchors())
-    fixed = [k_i[key] for key in anchors]
+    supports = list(form.supports())
+    fixed = [k_i[key] for key in supports]
     free = list(set(range(vcount)) - set(fixed))
     xyz = array(form.vertices_attributes("xyz"), dtype=float64)
     thick = array(form.vertices_attribute("t"), dtype=float64).reshape((-1, 1))

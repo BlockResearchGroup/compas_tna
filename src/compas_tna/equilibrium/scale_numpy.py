@@ -64,9 +64,9 @@ def scale_from_target(
     k_i = form.vertex_index()
     uv_i = form.uv_index()
     vcount = len(form.vertex)
-    anchors = list(form.anchors())
+    supports = list(form.supports())
     fixed = list(form.fixed())
-    fixed = set(anchors + fixed)
+    fixed = set(supports + fixed)
     fixed = [k_i[key] for key in fixed]
     free = list(set(range(vcount)) - set(fixed))
     edges = [(k_i[u], k_i[v]) for u, v in form.edges_where({"is_edge": True})]

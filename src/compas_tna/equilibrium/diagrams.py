@@ -117,7 +117,7 @@ def form_count_dof(form):
     """
     k2i = form.vertex_index()
     xyz = form.vertices_attributes("xyz")
-    fixed = [k2i[key] for key in form.anchors()]
+    fixed = [k2i[key] for key in form.supports()]
     free = list(set(range(form.number_of_vertices())) - set(fixed))
     edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({"_is_edge": True})]
     C = connectivity_matrix(edges)
@@ -129,7 +129,7 @@ def form_identify_dof(form, **kwargs):
     algo = kwargs.get("algo") or "sympy"
     k2i = form.vertex_index()
     xyz = form.vertices_attributes("xyz")
-    fixed = [k2i[key] for key in form.anchors()]
+    fixed = [k2i[key] for key in form.supports()]
     free = list(set(range(form.number_of_vertices())) - set(fixed))
     edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({"_is_edge": True})]
     C = connectivity_matrix(edges)

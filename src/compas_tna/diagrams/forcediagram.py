@@ -36,8 +36,8 @@ class ForceDiagram(Diagram):
 
     """
 
-    def __init__(self, *args, **kwargs):
-        super(ForceDiagram, self).__init__(*args, **kwargs)
+    def __init__(self, *args, name="ForceDiagram", **kwargs):
+        super(ForceDiagram, self).__init__(*args, name=name, **kwargs)
         self.primal = None
         self.scale = 1.0
         self.default_vertex_attributes.update(
@@ -57,7 +57,6 @@ class ForceDiagram(Diagram):
         )
         self.attributes.update(
             {
-                "name": "ForceDiagram",
                 "scale": 1.0,
                 "color.vertex": (255, 255, 255),
                 "color.edge": (0, 0, 0),
@@ -101,8 +100,9 @@ class ForceDiagram(Diagram):
         -------
         generator
             A generator object for iteration over vertex keys that are fixed.
+
         """
-        return self.vertices_where({"is_fixed": True})
+        return self.vertices_where(is_fixed=True)
 
     # --------------------------------------------------------------------------
     # Helpers
@@ -120,11 +120,12 @@ class ForceDiagram(Diagram):
         -------
         dict
             A dict mapping edge uv tuples to indices in an (ordered) edge list.
+
         """
         if not form:
             return {uv: index for index, uv in enumerate(self.edges())}
         uv_index = dict()
-        for index, (u, v) in enumerate(form.edges_where({"_is_edge": True})):
+        for index, (u, v) in enumerate(form.edges_where(_is_edge=True)):
             f1 = form.halfedge[u][v]
             f2 = form.halfedge[v][u]
             uv_index[(f1, f2)] = index
@@ -142,6 +143,7 @@ class ForceDiagram(Diagram):
         -------
         list
             A list of edge uv tuples.
+
         """
         uv_index = self.uv_index(form=form)
         index_uv = {index: uv for uv, index in iter(uv_index.items())}

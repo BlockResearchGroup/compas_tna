@@ -55,7 +55,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
         k_i[key]: [k_i[nbr] for nbr in form.vertex_neighbors(key)]
         for key in form.vertices()
     }
-    fixed = set(list(form.anchors()) + list(form.fixed()))
+    fixed = set(list(form.supports()) + list(form.fixed()))
     fixed = [k_i[key] for key in fixed]
     xy = form.vertices_attributes("xy")
 

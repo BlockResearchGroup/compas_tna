@@ -2,6 +2,7 @@ from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
 
+from compas.geometry import Vector
 from compas.datastructures import Graph
 from compas.utilities import pairwise
 
@@ -18,10 +19,6 @@ class FormDiagram(Diagram):
     *   ``from_obj`` : Construct a diagram from the geometry described in an OBJ file. Only points, lines, and faces are taken into account.
     *   ``from_json`` : Construct a diagram from a JSON file containing a serialised "data" dictionary.
     *   ``from_lines`` : Construct a diagram from pairs of line start and end points.
-    *   ``from_mesh`` : Construct a diagram from a Mesh.
-    *   ``from_rhinomesh`` : Construct a diagram from a Rhino mesh.
-    *   ``from_rhinosurface`` : Construct a diagram from a Rhino surface, using the U and V isolines.
-    *   ``from_rhinolines`` : Construct a diagram from a selection of Rhino lines (i.e. curves of degree 1).
 
     Default vertex/edge/face attributes can be "public" or "protected".
     Protected attributes are usually only for internal use and should only be modified by the algorithms that rely on them.
@@ -50,8 +47,8 @@ class FormDiagram(Diagram):
 
     """
 
-    def __init__(self, *args, **kwargs):
-        super(FormDiagram, self).__init__(*args, **kwargs)
+    def __init__(self, *args, name="FormDiagram", **kwargs):
+        super(FormDiagram, self).__init__(*args, name=name, **kwargs)
         self.dual = None
         self.default_vertex_attributes.update(
             {
@@ -62,7 +59,7 @@ class FormDiagram(Diagram):
                 "py": 0.0,
                 "pz": 0.0,
                 "t": 1.0,
-                "is_anchor": False,
+                "is_support": False,
                 "is_fixed": False,
                 "_rx": 0.0,
                 "_ry": 0.0,
@@ -85,16 +82,11 @@ class FormDiagram(Diagram):
             }
         )
         self.default_face_attributes.update({"_is_loaded": True})
-        self.attributes.update(
-            {
-                "name": "FormDiagram",
-            }
-        )
 
     def __str__(self):
         """Compile a mesh summary of the form diagram."""
         numv = self.number_of_vertices()
-        nume = len(list(self.edges_where({"_is_edge": True})))
+        nume = len(list(self.edges_where(_is_edge=True)))
         numf = self.number_of_faces()
         vmin = self.vertex_min_degree()
         vmax = self.vertex_max_degree()
@@ -143,6 +135,7 @@ face degree: {}/{}
         >>> edges = obj.parser.lines
         >>> lines = [(vertices[u], vertices[v]) for u, v in edges]
         >>> form = FormDiagram.from_lines(lines)
+
         """
         graph = Graph.from_lines(lines, precision=precision)
         points = graph.to_points()
@@ -153,149 +146,6 @@ face degree: {}/{}
         if "name" in kwargs:
             form.name = kwargs["name"]
         return form
-
-    @classmethod
-    def from_mesh(cls, mesh, **kwargs):
-        """Construct a FormDiagram from a Mesh.
-
-        Parameters
-        ----------
-        mesh : compas.datastructures.Mesh
-            The mesh to be taken as reference.
-            The keys of the faces and vertices of the base mesh will be kept.
-            Only the XY coordinates per vertex are stored. Z = 0.0
-
-        Returns
-        -------
-        FormDiagram
-            A FormDiagram object.
-
-        Examples
-        --------
-        >>> import compas
-        >>> from compas.datastructures import Mesh
-        >>> from compas_tna.diagrams import FormDiagram
-
-        >>> mesh = Mesh.from_obj(compas.get('faces.obj'))
-        >>> form = FormDiagram.from_mesh(mesh)
-        >>> form.plot()
-        """
-        form = cls()
-        for vkey, attr in mesh.vertices(True):
-            form.add_vertex(key=vkey, x=attr["x"], y=attr["y"], z=0.0)
-        for fkey in mesh.faces():
-            form.add_face(vertices=mesh.face_vertices(fkey), fkey=fkey)
-        if "name" in kwargs:
-            mesh.name = kwargs["name"]
-        return form
-
-    @classmethod
-    def from_rhinomesh(cls, guid, **kwargs):
-        """Construct a FormDiagram from a Rhino mesh represented by a guid.
-
-        Parameters
-        ----------
-        guid : str
-            A globally unique identifier.
-
-        Returns
-        -------
-        FormDiagram
-            A FormDiagram object.
-
-        Examples
-        --------
-        .. code-block:: python
-
-            import compas_rhino
-            from compas_tna.diagrams import FormDiagram
-
-            guid = compas_rhino.select_mesh()
-            form = FormDiagram.from_rhinomesh(guid)
-
-        """
-        from compas_rhino.geometry import RhinoMesh
-
-        mesh = RhinoMesh.from_guid(guid).to_compas(cls)
-        if "name" in kwargs:
-            mesh.name = kwargs["name"]
-        return mesh
-
-    @classmethod
-    def from_rhinosurface(cls, guid, **kwargs):
-        """Construct a FormDiagram from a Rhino surface represented by its GUID.
-
-        Parameters
-        ----------
-        guid : str
-            A globally unique identifier.
-
-        Returns
-        -------
-        FormDiagram
-            A FormDiagram object.
-
-        Examples
-        --------
-        .. code-block:: python
-
-            import compas_rhino
-            from compas_tna.diagrams import FormDiagram
-
-            guid = compas_rhino.select_surface()
-            form = FormDiagram.from_rhinosurface(guid)
-
-        """
-        from compas_rhino.geometry import RhinoSurface
-
-        mesh = RhinoSurface.from_guid(guid).uv_to_compas(cls, **kwargs)
-        if "name" in kwargs:
-            mesh.name = kwargs["name"]
-        return mesh
-
-    @classmethod
-    def from_rhinolines(
-        cls, guids, delete_boundary_face=True, precision=None, **kwargs
-    ):
-        """Construct a FormDiagram from a set of Rhino lines represented by their GUIDs.
-
-        Parameters
-        ----------
-        guids : list
-            A list of GUIDs.
-        delete_boundary_face : bool, optional
-            Set ``True`` to delete the face on the outside of the boundary, ``False`` to keep it.
-            Default is ``True``.
-        precision: str, optional
-            The precision of the geometric map that is used to connect the lines.
-            If not specified, the global precision stored in ``compas.PRECISION`` will be used.
-
-        Returns
-        -------
-        FormDiagram
-            A FormDiagram object.
-
-        Examples
-        --------
-        .. code-block:: python
-
-            import compas_rhino
-            from compas_tna.diagrams import FormDiagram
-
-            guids = compas_rhino.select_lines()
-            form = FormDiagram.from_rhinolines(guids)
-
-        """
-        import compas_rhino
-
-        lines = compas_rhino.get_line_coordinates(guids)
-        mesh = FormDiagram.from_lines(
-            lines,
-            delete_boundary_face=delete_boundary_face,
-            precision=precision,
-            **kwargs
-        )
-        return mesh
 
     def uv_index(self):
         """Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)
@@ -308,7 +158,7 @@ face degree: {}/{}
         """
         return {
             (u, v): index
-            for index, (u, v) in enumerate(self.edges_where({"_is_edge": True}))
+            for index, (u, v) in enumerate(self.edges_where(_is_edge=True))
         }
 
     def index_uv(self):
@@ -320,7 +170,7 @@ face degree: {}/{}
         dict
             A dictionary of index-uv pairs.
         """
-        return dict(enumerate(self.edges_where({"_is_edge": True})))
+        return dict(enumerate(self.edges_where(_is_edge=True)))
 
     # --------------------------------------------------------------------------
     # dual and reciprocal
@@ -342,7 +192,7 @@ face degree: {}/{}
         Notes
         -----
         Construction of the dual diagram is based on the faces around the inner, free vertices of the form diagram.
-        This means not only the vertices on the boundary are ignored, but also the vertices that are anchored.
+        This means not only the vertices on the boundary are ignored, but also the vertices that are supported.
 
         """
         dual = cls()
@@ -350,7 +200,7 @@ face degree: {}/{}
         inner = list(
             set(self.vertices())
             - set(self.vertices_on_boundary())
-            - set(self.anchors())
+            - set(self.supports())
         )
         vertices = {}
         faces = {}
@@ -371,59 +221,113 @@ face degree: {}/{}
     # --------------------------------------------------------------------------
 
     def leaves(self):
-        """Vertices with degree 1.
+        """Find vertices with degree 1.
 
         Returns
         -------
         generator
             A generator object for iteration over vertex keys that are leaves.
+
         """
-        return self.vertices_where({"vertex_degree": 1})
+        return self.vertices_where(vertex_degree=1)
 
     def corners(self):
-        """Vertices with degree 2.
+        """Find vertices with degree 2.
 
         Returns
         -------
         generator
             A generator object for iteration over vertex keys that are corners.
-        """
-        return self.vertices_where({"vertex_degree": 2})
 
-    def anchors(self):
-        """Vertices with ``is_anchor`` set to ``True``.
+        """
+        return self.vertices_where(vertex_degree=2)
+
+    def supports(self):
+        """Find vertices with ``is_support`` set to ``True``.
 
         Returns
         -------
         generator
-            A generator object for iteration over vertex keys that are anchors.
+            A generator object for iteration over vertex keys that are supports.
+
         """
-        return self.vertices_where({"is_anchor": True})
+        return self.vertices_where(is_support=True)
 
     def fixed(self):
-        """Vertices with ``is_fixed`` set to ``True``.
+        """Find vertices with ``is_fixed`` set to ``True``.
 
         Returns
         -------
         generator
             A generator object for iteration over vertex keys that are fixed.
+
         """
-        return self.vertices_where({"is_fixed": True})
+        return self.vertices_where(is_fixed=True)
 
-    # def residual(self):
-    #     R = 0
-    #     for vertex in self.vertices_where({'is_anchor': False, 'is_fixed': False}):
-    #         rx, ry, rz = self.vertex_attributes(vertex, ['_rx', '_ry', '_rz'])
-    #         R += rx ** 2 + ry ** 2 + rz ** 2
-    #     return sqrt(R)
+    def vertex_load(self, vertex):
+        """Get the load of a vertex.
 
-    # --------------------------------------------------------------------------
-    # helpers
-    # --------------------------------------------------------------------------
+        Parameters
+        ----------
+        vertex : int
+            The identifier of the vertex.
 
-    # --------------------------------------------------------------------------
-    # postprocess
-    # --------------------------------------------------------------------------
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+
+        """
+        px, py, pz = self.vertex_attributes(vertex, ["px", "py", "pz"])
+        return Vector(px, py, pz)
+
+    def vertex_selfweight(self, vertex):
+        """Get the selfweight of a vertex.
+
+        Parameters
+        ----------
+        vertex : int
+            The identifier of the vertex.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+
+        """
+        t = self.vertex_attribute(vertex, "t")
+        a = self.vertex_area(vertex)
+        return Vector(0, 0, -t * a)
+
+    def vertex_reaction(self, vertex):
+        """Get the reaction force at a vertex.
+
+        Parameters
+        ----------
+        vertex : int
+            The identifier of the vertex.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+
+        """
+        rx, ry, rz = self.vertex_attributes(vertex, ["rx", "ry", "rz"])
+        return Vector(-rx, -ry, -rz)
+
+    def vertex_residual(self, vertex):
+        """Get the residual force at a vertex.
+
+        Parameters
+        ----------
+        vertex : int
+            The identifier of the vertex.
+
+        Returns
+        -------
+        :class:`compas.geometry.Vector`
+
+        """
+        rx, ry, rz = self.vertex_attributes(vertex, ["rx", "ry", "rz"])
+        return Vector(rx, ry, rz)
 
     # --------------------------------------------------------------------------
     # boundary conditions
@@ -431,17 +335,17 @@ face degree: {}/{}
 
     def update_boundaries(self):
         """Update the boundaries to add outside faces."""
-        # mark all "anchored edges" as '_is_edge=False'
+        # mark all "supported edges" as '_is_edge=False'
         # they will be ignored in any futher steps
         # this is what indierectly creates isolated vertices
         # and for example the corner cutoffs in orthogonal grids
         for edge in self.edges():
-            if all(self.vertices_attribute("is_anchor", keys=edge)):
+            if all(self.vertices_attribute("is_support", keys=edge)):
                 if self.is_edge_on_boundary(edge):
                     self.edge_attribute(edge, "_is_edge", False)
         # delete isolated (corner) vertices
         # technically this can happen for vertices with degree of any kind
-        for vertex in list(self.vertices_where({"vertex_degree": 2})):
+        for vertex in list(self.vertices_where(vertex_degree=2)):
             nbrs = self.vertex_neighbors(vertex)
             if all(not self.edge_attribute((vertex, nbr), "_is_edge") for nbr in nbrs):
                 for nbr in nbrs:
@@ -456,30 +360,30 @@ face degree: {}/{}
                 self.delete_vertex(vertex)
         # boundaries
         for boundary in self.vertices_on_boundaries():
-            anchors = [
+            supports = [
                 vertex
                 for vertex in boundary
-                if self.vertex_attribute(vertex, "is_anchor")
+                if self.vertex_attribute(vertex, "is_support")
             ]
-            if len(anchors) == 0:
-                # if the boundary contains no anchors
+            if len(supports) == 0:
+                # if the boundary contains no supports
                 # only an additional face has to be added
                 # this tends to only be the case with openings/holes
                 vertices = boundary
                 self.add_face(vertices, _is_loaded=False)
-            elif len(anchors) == 1:
-                # if the boundary has exactly 1 anchor
-                # the boundary just has to be cut at the anchor and pasted back together
+            elif len(supports) == 1:
+                # if the boundary has exactly 1 support
+                # the boundary just has to be cut at the support and pasted back together
                 # and then a face has to be added
-                i = boundary.index(anchors[0])
+                i = boundary.index(supports[0])
                 vertices = boundary[i:] + boundary[:i]
                 self.add_face(vertices, _is_loaded=False)
             else:
-                # if the boundary has more than 1 anchor
-                # split the boundary into segments between the anchors
+                # if the boundary has more than 1 support
+                # split the boundary into segments between the supports
                 # and add a boundary face for every segment
                 segments = []
-                for start, end in pairwise(anchors + anchors[:1]):
+                for start, end in pairwise(supports + supports[:1]):
                     i = boundary.index(start)
                     j = boundary.index(end)
                     if i < j:

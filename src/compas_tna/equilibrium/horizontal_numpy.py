@@ -67,7 +67,7 @@ def horizontal_numpy(
     # --------------------------------------------------------------------------
     k_i = form.vertex_index()
     uv_i = form.uv_index()
-    fixed = set(list(form.anchors()) + list(form.fixed()))
+    fixed = set(list(form.supports()) + list(form.fixed()))
     fixed = [k_i[key] for key in fixed]
     xy = array(form.vertices_attributes("xy"), dtype=float64)
 
@@ -239,7 +239,7 @@ def horizontal_nodal_numpy(
         for key in form.vertices()
     }
     ij_e = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
-    fixed = set(list(form.anchors()) + list(form.fixed()))
+    fixed = set(list(form.supports()) + list(form.fixed()))
     fixed = [k_i[key] for key in fixed]
     edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({"_is_edge": True})]
     lmin = array(
