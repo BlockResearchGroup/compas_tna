@@ -6,7 +6,7 @@ from scipy.sparse import diags
 from scipy.sparse.linalg import spsolve
 
 from compas.matrices import connectivity_matrix
-from compas.geometry.linalg import normrow
+from compas.linalg import normrow
 
 from compas_tna.diagrams import FormDiagram
 from compas_tna.diagrams import ForceDiagram  # noqa: F401

@@ -6,9 +6,9 @@ from scipy.linalg import cho_solve
 from scipy.linalg import lstsq
 from scipy.sparse.linalg import factorized
 
-from compas.geometry.linalg import normrow
-from compas.geometry.linalg import chofactor
-from compas.geometry.linalg import lufactorized
+from compas.linalg import normrow
+from compas.linalg import chofactor
+from compas.linalg import lufactorized
 
 
 EPS = 1 / sys.float_info.epsilon

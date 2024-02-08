@@ -9,9 +9,9 @@ from scipy.sparse.linalg import factorized
 
 from compas.matrices import connectivity_matrix
 from compas.matrices import equilibrium_matrix
-from compas.geometry.linalg import dof
-from compas.geometry.linalg import rref
-from compas.geometry.linalg import nonpivots
+from compas.linalg import dof
+from compas.linalg import rref
+from compas.linalg import nonpivots
 
 
 EPS = 1 / sys.float_info.epsilon
