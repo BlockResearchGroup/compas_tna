@@ -1,7 +1,6 @@
 from __future__ import print_function
 
 import os
-import sys
 
 
 __author__ = ["Tom Van Mele"]
@@ -11,8 +10,6 @@ __email__ = "tom.v.mele@gmail.com"
 
 __version__ = "0.2.0"
 
-
-PY3 = sys.version_info.major == 3
 
 HERE = os.path.dirname(__file__)
 
@@ -64,3 +61,9 @@ def get(filename):
         return "https://raw.githubusercontent.com/BlockResearchGroup/compas_tna/master/data/{}".format(
             filename
         )
+
+
+__all_plugins__ = [
+    "compas_tna.notebook.scene",
+    "compas_tna.rhino.scene",
+]
