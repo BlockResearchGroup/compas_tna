@@ -14,7 +14,7 @@ class FormDiagram(Diagram):
 
     Notes
     -----
-    A ``FormDiagram`` has the following constructor functions
+    A FormDiagram has the following constructor functions
 
     *   ``from_obj`` : Construct a diagram from the geometry described in an OBJ file. Only points, lines, and faces are taken into account.
     *   ``from_json`` : Construct a diagram from a JSON file containing a serialised "data" dictionary.
@@ -27,13 +27,13 @@ class FormDiagram(Diagram):
     Protected edge attributes are: ``_h, _f, _a, _is_edge, _is_tension``.
     Protected face attributes are: ``_is_loaded``.
 
-    The ``FormDiagram`` is a mesh.
+    The FormDiagram is a mesh.
     Since edges are implicit objects in COMPAS meshes, those edges that are not relevant from a TNA perspective have to be marked as ``_is_edge=False``.
     Usually, the user should not have to worry about this.
     Furthermore, changing an edge to ``_is_edge=False`` requires an equivalent change in the force diagram.
     Therefore, the attribute ``_is_edge`` is marked as "protected".
 
-    The ``FormDiagram`` holds the information of the form diagram as well as the corresponding thrust surface.
+    The FormDiagram holds the information of the form diagram as well as the corresponding thrust surface.
     This means that the form diagram contains both 2D and 3D geometry and force information.
     During calculations and manipulations related to horizontal equilibrium, only the 2D information is used.
     The relationship between force density, length, axial force, horizontal force of form diagram edges
