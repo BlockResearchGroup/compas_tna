@@ -2,3 +2,4 @@ compas >=2.0
 compas_fd
 compas_notebook
 typing_extensions
+nptyping >=2.3.1
