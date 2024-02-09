@@ -12,6 +12,7 @@ include AUTHORS.md
 include CHANGELOG.md
 include requirements.txt
 include conftest.py
+include compas_tna.png
 
 exclude requirements-dev.txt
 exclude pytest.ini .bumpversion.cfg .editorconfig
