@@ -6,22 +6,12 @@ from compas_tna.diagrams import Diagram
 
 
 class ForceDiagram(Diagram):
-    """The ``ForceDiagram`` defines a TNA force diagram.
+    """Class representing a TNA force diagram.
 
     Attributes
     ----------
     primal : :class:`compas_tna.diagrams.FormDiagram`
         The TNA form diagram corresponding to the force diagram.
-    scale : float
-        The scale factor for calculating horizontal forces based on edge lengths.
-        The horizontal force in an edge of the form diagram is equal
-        to the length of the corresponding edge in the force diagram multiplied by the scale factor.
-    default_vertex_attributes : dict
-        The names and default values of the attributes of vertices.
-    default_edge_attributes : dict
-        The names and default values of the attributes of the edges.
-    default_face_attributes : dict
-        The names and default values of the attributes of the faces.
 
     Notes
     -----
@@ -39,7 +29,6 @@ class ForceDiagram(Diagram):
     def __init__(self, *args, name="ForceDiagram", **kwargs):
         super(ForceDiagram, self).__init__(*args, name=name, **kwargs)
         self.primal = None
-        self.scale = 1.0
         self.default_vertex_attributes.update(
             {
                 "x": 0.0,

@@ -6,7 +6,7 @@ import sphinx_compas2_theme
 
 # -- General configuration ------------------------------------------------
 
-project = "COMPAS Thrust Network Analysis"
+project = "COMPAS TNA"
 copyright = "Block Research Group - ETH Zurich"
 author = "Tom Van Mele"
 package = "compas_tna"
@@ -84,7 +84,9 @@ intersphinx_mapping = {
 
 # extlinks
 
-extlinks = {}
+extlinks = {
+    "rhino": ("https://developer.rhino3d.com/api/RhinoCommon/html/T_%s.htm", "%s"),
+}
 
 # from pytorch
 

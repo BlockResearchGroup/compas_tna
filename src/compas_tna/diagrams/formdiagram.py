@@ -10,7 +10,7 @@ from compas_tna.diagrams import Diagram
 
 
 class FormDiagram(Diagram):
-    r"""The ``FormDiagram`` defines a TNA form diagram.
+    r"""Class representing a TNA form diagram.
 
     Notes
     -----
