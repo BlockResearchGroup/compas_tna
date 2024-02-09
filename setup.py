@@ -23,7 +23,7 @@ optional_requirements = {}
 
 setup(
     name="compas_tna",
-    version="0.2.0",
+    version="0.3.0",
     description="COMPAS package for Thrust Network Analysis",
     long_description=long_description,
     long_description_content_type="text/markdown",
