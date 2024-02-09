@@ -1,4 +1,4 @@
-from .loads import LoadUpdater
+from .loadupdater import LoadUpdater
 
 __all__ = [
     "LoadUpdater",

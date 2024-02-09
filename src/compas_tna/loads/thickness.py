@@ -1,9 +1,21 @@
 from numpy import array
 from scipy.interpolate import griddata
+from compas_tna.diagrams import FormDiagram
 
 
-def distribute_thickness(formdiagram):
-    """Distribute thickness by interpolating provided values over the vertex grid."""
+def distribute_thickness(formdiagram: FormDiagram) -> None:
+    """Distribute thickness by interpolating provided values over the vertex grid.
+
+    Parameters
+    ----------
+    formdiagram : :class:`FormDiagram`
+
+    Returns
+    -------
+    None
+        The missing thickness values are updated directly in the FormDiagram.
+
+    """
     points = []
     values = []
     xi = []

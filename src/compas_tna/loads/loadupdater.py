@@ -1,5 +1,11 @@
-from numpy import zeros
+from typing import Literal
+from nptyping import NDArray
+from nptyping import Float64
 
+import numpy
+import scipy.sparse
+
+from compas.datastructures import Mesh
 from compas.geometry import length_vector
 from compas.geometry import cross_vectors
 from compas.matrices import face_matrix
@@ -10,7 +16,7 @@ class LoadUpdater(object):
 
     Parameters
     ----------
-    mesh : :class:`compas_tna.diagrams.FormDiagram`
+    mesh : :class:`Mesh`
         A form diagram mesh.
     p0 : ndarray (number_of_vertices x 3)
         The additional (fixed) loads at the vertices.
@@ -37,27 +43,56 @@ class LoadUpdater(object):
     After the geometry changes, update the loads by recomputing selfweight.
 
     >>> updateloads(p, xyz)
+
     """
 
-    def __init__(self, mesh, p0, thickness=1.0, density=1.0, live=0.0):
+    def __init__(
+        self,
+        mesh: Mesh,
+        p0: NDArray[Literal["*, 3"], Float64],
+        thickness: float = 1.0,
+        density: float = 1.0,
+        live: float = 0.0,
+    ):
         self.mesh = mesh
         self.p0 = p0
         self.thickness = thickness
         self.density = density
         self.live = live
         self.vertex_index = mesh.vertex_index()
-        self.fvertex_index = {fkey: index for index, fkey in enumerate(mesh.faces())}
+        self.fvertex_index = {face: index for index, face in enumerate(mesh.faces())}
         self.is_loaded = {
-            fkey: mesh.face_attribute(fkey, "_is_loaded") for fkey in mesh.faces()
+            face: mesh.face_attribute(face, "_is_loaded") for face in mesh.faces()
         }
-        self.F = self._face_matrix()
+        self.F = self.face_matrix()
 
-    def __call__(self, p, xyz):
-        ta = self._tributary_areas(xyz)
+    def __call__(
+        self,
+        p: NDArray[Literal["*, 3"], Float64],
+        xyz: NDArray[Literal["*, 3"], Float64],
+    ) -> None:
+        """Update the vertex loads using the current vertex coordinates.
+
+        Returns
+        -------
+        None
+            The loads are updated in place.
+
+        """
+        ta = self.tributary_areas(xyz)
         sw = ta * self.thickness * self.density + ta * self.live
         p[:, 2] = self.p0[:, 2] + sw[:, 0]
 
-    def _face_matrix(self):
+    def face_matrix(self) -> scipy.sparse.csr_matrix:
+        """Compute the face matrix of the mesh.
+
+        The face matrix can be used to efficiently compute the centroid of each face.
+
+        Returns
+        -------
+        scipy.sparse.csr_matrix
+
+        """
         face_vertices = [None] * self.mesh.number_of_faces()
         for fkey in self.mesh.faces():
             face_vertices[self.fvertex_index[fkey]] = [
@@ -65,13 +100,28 @@ class LoadUpdater(object):
             ]
         return face_matrix(face_vertices, rtype="csr", normalize=True)
 
-    def _tributary_areas(self, xyz):
+    def tributary_areas(
+        self,
+        xyz: NDArray[Literal["*, 3"], Float64],
+    ) -> NDArray[Literal["*, 1"], Float64]:
+        """Compute the tributary area per vertex.
+
+        Parameters
+        ----------
+        xyz : ndarray (number_of_vertices x 3)
+            The current vertex coordinates.
+
+        Returns
+        -------
+        ndarray (number_of_vertices x 1)
+
+        """
         mesh = self.mesh
         vertex_index = self.vertex_index
         fvertex_index = self.fvertex_index
         is_loaded = self.is_loaded
         C = self.F.dot(xyz)
-        areas = zeros((xyz.shape[0], 1))
+        areas = numpy.zeros((xyz.shape[0], 1))
         for u in mesh.vertices():
             p0 = xyz[vertex_index[u]]
             a = 0
