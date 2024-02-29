@@ -86,7 +86,7 @@ commit = true
 tag = true
 
 [[tool.bumpversion.files]]
-filename = "compas_tna/__init__.py"
+filename = "src/compas_tna/__init__.py"
 search = "{current_version}"
 replace = "{new_version}"
 
