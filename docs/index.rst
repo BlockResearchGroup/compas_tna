@@ -26,4 +26,4 @@ Table of Contents
    tutorial
    api
    license
-   citing
+   acknowledgements

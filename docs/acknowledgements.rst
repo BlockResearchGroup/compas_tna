@@ -1,10 +1,10 @@
 ********************************************************************************
-Citing
+Acknowledgements
 ********************************************************************************
 
 .. rst-class:: lead
 
-    If you use ``compas_tna`` in your work, please cite one of the references below.
+If you use ``compas_tna`` in your work, please cite one of the references below.
 
 Code
 ====
