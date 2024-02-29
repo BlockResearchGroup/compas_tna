@@ -1,9 +1,9 @@
+from typing import Annotated
 from typing import Literal
 
 import numpy
+import numpy.typing as npt
 import scipy.sparse
-from nptyping import Float64
-from nptyping import NDArray
 
 from compas.datastructures import Mesh
 from compas.geometry import cross_vectors
@@ -49,7 +49,7 @@ class LoadUpdater(object):
     def __init__(
         self,
         mesh: Mesh,
-        p0: NDArray[Literal["*, 3"], Float64],
+        p0: Annotated[npt.NDArray[numpy.float64], Literal["*, 3"]],
         thickness: float = 1.0,
         density: float = 1.0,
         live: float = 0.0,
@@ -66,8 +66,8 @@ class LoadUpdater(object):
 
     def __call__(
         self,
-        p: NDArray[Literal["*, 3"], Float64],
-        xyz: NDArray[Literal["*, 3"], Float64],
+        p: Annotated[npt.NDArray[numpy.float64], Literal["*, 3"]],
+        xyz: Annotated[npt.NDArray[numpy.float64], Literal["*, 3"]],
     ) -> None:
         """Update the vertex loads using the current vertex coordinates.
 
@@ -98,8 +98,8 @@ class LoadUpdater(object):
 
     def tributary_areas(
         self,
-        xyz: NDArray[Literal["*, 3"], Float64],
-    ) -> NDArray[Literal["*, 1"], Float64]:
+        xyz: Annotated[npt.NDArray[numpy.float64], Literal["*, 3"]],
+    ) -> Annotated[npt.NDArray[numpy.float64], Literal["*, 1"]]:
         """Compute the tributary area per vertex.
 
         Parameters

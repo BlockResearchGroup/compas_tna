@@ -4,7 +4,7 @@ import os
 
 
 __author__ = ["Tom Van Mele"]
-__copyright__ = "Copyright 2017 - Block Research Group, ETH Zurich"
+__copyright__ = "ETH Zurich - Block Research Group"
 __license__ = "MIT License"
 __email__ = "tom.v.mele@gmail.com"
 
@@ -58,7 +58,7 @@ def get(filename):
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://raw.githubusercontent.com/BlockResearchGroup/compas_tna/master/data/{}".format(filename)
+        return "https://raw.githubusercontent.com/blockresearchgroup/compas_tna/main/data/{}".format(filename)
 
 
 __all_plugins__ = [
