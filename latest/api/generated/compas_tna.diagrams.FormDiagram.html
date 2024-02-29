@@ -192,8 +192,8 @@
                 <div class="dropdown-menu">
                     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../citing.html">
-                        Citing
+                      <a class="nav-link nav-internal" href="../../acknowledgements.html">
+                        Acknowledgements
                       </a>
                     </li>
                 
@@ -373,8 +373,8 @@ document.write(`
                 <div class="dropdown-menu">
                     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../citing.html">
-                        Citing
+                      <a class="nav-link nav-internal" href="../../acknowledgements.html">
+                        Acknowledgements
                       </a>
                     </li>
                 
@@ -480,7 +480,7 @@ document.write(`
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
 </ul>
 
     </div>
@@ -562,18 +562,21 @@ document.write(`
 <p class="rubric">Notes</p>
 <p>A FormDiagram has the following constructor functions</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">from_obj</span></code> : Construct a diagram from the geometry described in an OBJ file. Only points, lines, and faces are taken into account.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">from_obj</span></code> : Construct a diagram from the geometry described in an OBJ file.
+Only points, lines, and faces are taken into account.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">from_json</span></code> : Construct a diagram from a JSON file containing a serialised “data” dictionary.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">from_lines</span></code> : Construct a diagram from pairs of line start and end points.</p></li>
 </ul>
 <p>Default vertex/edge/face attributes can be “public” or “protected”.
-Protected attributes are usually only for internal use and should only be modified by the algorithms that rely on them.
+Protected attributes are usually only for internal use
+and should only be modified by the algorithms that rely on them.
 If you do change them, do so with care…
 Protected vertex attributes are: <code class="docutils literal notranslate"><span class="pre">_sw,</span> <span class="pre">_rx,</span> <span class="pre">_ry,</span> <span class="pre">_rz</span></code>.
 Protected edge attributes are: <code class="docutils literal notranslate"><span class="pre">_h,</span> <span class="pre">_f,</span> <span class="pre">_a,</span> <span class="pre">_is_edge,</span> <span class="pre">_is_tension</span></code>.
 Protected face attributes are: <code class="docutils literal notranslate"><span class="pre">_is_loaded</span></code>.</p>
 <p>The FormDiagram is a mesh.
-Since edges are implicit objects in COMPAS meshes, those edges that are not relevant from a TNA perspective have to be marked as <code class="docutils literal notranslate"><span class="pre">_is_edge=False</span></code>.
+Since edges are implicit objects in COMPAS meshes,
+those edges that are not relevant from a TNA perspective have to be marked as <code class="docutils literal notranslate"><span class="pre">_is_edge=False</span></code>.
 Usually, the user should not have to worry about this.
 Furthermore, changing an edge to <code class="docutils literal notranslate"><span class="pre">_is_edge=False</span></code> requires an equivalent change in the force diagram.
 Therefore, the attribute <code class="docutils literal notranslate"><span class="pre">_is_edge</span></code> is marked as “protected”.</p>
