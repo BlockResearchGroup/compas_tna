@@ -5,11 +5,10 @@ from numpy import float64
 from scipy.sparse import diags
 from scipy.sparse.linalg import spsolve
 
-from compas.matrices import connectivity_matrix
 from compas.linalg import normrow
-
-from compas_tna.diagrams import FormDiagram
+from compas.matrices import connectivity_matrix
 from compas_tna.diagrams import ForceDiagram  # noqa: F401
+from compas_tna.diagrams import FormDiagram
 from compas_tna.loads import LoadUpdater
 
 from .diagrams import update_z
@@ -179,7 +178,8 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Fa
 
     Notes
     -----
-    The force densities stored in the Form Diagram are the ratios of lengths of corresponding edges in the Form and Force Diagram.
+    The force densities stored in the Form Diagram are
+    the ratios of lengths of corresponding edges in the Form and Force Diagram.
     This means they are not yet scaled with the scale of the horizontal forces.
     The horizontal forces stored in the diagram are scaled.
 
@@ -223,9 +223,7 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Fa
     # --------------------------------------------------------------------------
     # compute vertical
     # --------------------------------------------------------------------------
-    update_z(
-        xyz, Q, C, p, free, fixed, update_loads, tol=tol, kmax=kmax, display=display
-    )
+    update_z(xyz, Q, C, p, free, fixed, update_loads, tol=tol, kmax=kmax, display=display)
     # --------------------------------------------------------------------------
     # update
     # --------------------------------------------------------------------------

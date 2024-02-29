@@ -1,11 +1,10 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
-from compas.geometry import Vector
 from compas.datastructures import Graph
+from compas.geometry import Vector
 from compas.utilities import pairwise
-
 from compas_tna.diagrams import Diagram
 
 
@@ -16,19 +15,22 @@ class FormDiagram(Diagram):
     -----
     A FormDiagram has the following constructor functions
 
-    *   ``from_obj`` : Construct a diagram from the geometry described in an OBJ file. Only points, lines, and faces are taken into account.
-    *   ``from_json`` : Construct a diagram from a JSON file containing a serialised "data" dictionary.
-    *   ``from_lines`` : Construct a diagram from pairs of line start and end points.
+    * ``from_obj`` : Construct a diagram from the geometry described in an OBJ file.
+      Only points, lines, and faces are taken into account.
+    * ``from_json`` : Construct a diagram from a JSON file containing a serialised "data" dictionary.
+    * ``from_lines`` : Construct a diagram from pairs of line start and end points.
 
     Default vertex/edge/face attributes can be "public" or "protected".
-    Protected attributes are usually only for internal use and should only be modified by the algorithms that rely on them.
+    Protected attributes are usually only for internal use
+    and should only be modified by the algorithms that rely on them.
     If you do change them, do so with care...
     Protected vertex attributes are: ``_sw, _rx, _ry, _rz``.
     Protected edge attributes are: ``_h, _f, _a, _is_edge, _is_tension``.
     Protected face attributes are: ``_is_loaded``.
 
     The FormDiagram is a mesh.
-    Since edges are implicit objects in COMPAS meshes, those edges that are not relevant from a TNA perspective have to be marked as ``_is_edge=False``.
+    Since edges are implicit objects in COMPAS meshes,
+    those edges that are not relevant from a TNA perspective have to be marked as ``_is_edge=False``.
     Usually, the user should not have to worry about this.
     Furthermore, changing an edge to ``_is_edge=False`` requires an equivalent change in the force diagram.
     Therefore, the attribute ``_is_edge`` is marked as "protected".
@@ -130,7 +132,7 @@ face degree: {}/{}
         >>> import compas
         >>> from compas.files import OBJ
         >>> from compas_tna.diagrams import FormDiagram
-        >>> obj = OBJ(compas.get('lines.obj'))
+        >>> obj = OBJ(compas.get("lines.obj"))
         >>> vertices = obj.parser.vertices
         >>> edges = obj.parser.lines
         >>> lines = [(vertices[u], vertices[v]) for u, v in edges]
@@ -156,10 +158,7 @@ face degree: {}/{}
         dict
             A dictionary of uv-index pairs.
         """
-        return {
-            (u, v): index
-            for index, (u, v) in enumerate(self.edges_where(_is_edge=True))
-        }
+        return {(u, v): index for index, (u, v) in enumerate(self.edges_where(_is_edge=True))}
 
     def index_uv(self):
         """Returns a dictionary that maps edges in a list to the corresponding
@@ -197,11 +196,7 @@ face degree: {}/{}
         """
         dual = cls()
         fkey_centroid = {fkey: self.face_centroid(fkey) for fkey in self.faces()}
-        inner = list(
-            set(self.vertices())
-            - set(self.vertices_on_boundary())
-            - set(self.supports())
-        )
+        inner = list(set(self.vertices()) - set(self.vertices_on_boundary()) - set(self.supports()))
         vertices = {}
         faces = {}
         for key in inner:
@@ -360,11 +355,7 @@ face degree: {}/{}
                 self.delete_vertex(vertex)
         # boundaries
         for boundary in self.vertices_on_boundaries():
-            supports = [
-                vertex
-                for vertex in boundary
-                if self.vertex_attribute(vertex, "is_support")
-            ]
+            supports = [vertex for vertex in boundary if self.vertex_attribute(vertex, "is_support")]
             if len(supports) == 0:
                 # if the boundary contains no supports
                 # only an additional face has to be added

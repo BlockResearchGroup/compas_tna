@@ -1,6 +1,7 @@
 """
 This package provides scene object plugins for visualising TNA diagrams in Jupyter Notebooks.
-When working in a notebook, :class:`compas.scene.SceneObject` will automatically use the corresponding scene object for each TNA diagram type.
+When working in a notebook, :class:`compas.scene.SceneObject`
+will automatically use the corresponding scene object for each TNA diagram type.
 """
 
 from __future__ import absolute_import

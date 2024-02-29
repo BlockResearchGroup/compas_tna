@@ -1,8 +1,9 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from compas.geometry import angle_vectors_xy
+
 from .parallelisation import parallelise_edges
 
 
@@ -51,10 +52,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     # form diagram
     # --------------------------------------------------------------------------
     k_i = form.vertex_index()
-    i_nbrs = {
-        k_i[key]: [k_i[nbr] for nbr in form.vertex_neighbors(key)]
-        for key in form.vertices()
-    }
+    i_nbrs = {k_i[key]: [k_i[nbr] for nbr in form.vertex_neighbors(key)] for key in form.vertices()}
     fixed = set(list(form.supports()) + list(form.fixed()))
     fixed = [k_i[key] for key in fixed]
     xy = form.vertices_attributes("xy")
@@ -65,9 +63,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     hmin = form.edges_attribute("hmin", keys=edges)
     hmax = form.edges_attribute("hmax", keys=edges)
 
-    flipmask = [
-        -1.0 if form.edge_attribute(edge, "_is_tension") else 1.0 for edge in edges
-    ]
+    flipmask = [-1.0 if form.edge_attribute(edge, "_is_tension") else 1.0 for edge in edges]
 
     uv_i = form.uv_index()
     ij_e = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
@@ -77,10 +73,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     # force diagram
     # --------------------------------------------------------------------------
     _k_i = force.vertex_index()
-    _i_nbrs = {
-        _k_i[key]: [_k_i[nbr] for nbr in force.vertex_neighbors(key)]
-        for key in force.vertices()
-    }
+    _i_nbrs = {_k_i[key]: [_k_i[nbr] for nbr in force.vertex_neighbors(key)] for key in force.vertices()}
     _fixed = list(force.fixed())
     _fixed = [_k_i[key] for key in _fixed]
     _xy = force.vertices_attributes("xy")
@@ -103,10 +96,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     # that is the (alpha) weighted average of the directions of corresponding
     # edges of the two diagrams
     # --------------------------------------------------------------------------
-    uv = [
-        [factor * (xy[j][0] - xy[i][0]), factor * (xy[j][1] - xy[i][1])]
-        for (i, j), factor in zip(edges, flipmask)
-    ]
+    uv = [[factor * (xy[j][0] - xy[i][0]), factor * (xy[j][1] - xy[i][1])] for (i, j), factor in zip(edges, flipmask)]
     _uv = [[_xy[j][0] - _xy[i][0], _xy[j][1] - _xy[i][1]] for i, j in _edges]
     lengths = [(dx**2 + dy**2) ** 0.5 for dx, dy in uv]
     forces = [(dx**2 + dy**2) ** 0.5 for dx, dy in _uv]
@@ -114,12 +104,11 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     # the target vectors
     # --------------------------------------------------------------------------
     form_targets = [
-        [alpha * v[0] / l, alpha * v[1] / l] if l else [0, 0]
-        for v, l in zip(uv, lengths)
+        [alpha * v[0] / length, alpha * v[1] / length] if length else [0, 0] for v, length in zip(uv, lengths)
     ]
     force_targets = [
-        [(1 - alpha) * v[0] / l, (1 - alpha) * v[1] / l] if l else [0, 0]
-        for v, l in zip(_uv, forces)
+        [(1 - alpha) * v[0] / length, (1 - alpha) * v[1] / length] if length else [0, 0]
+        for v, length in zip(_uv, forces)
     ]
     targets = [[a[0] + b[0], a[1] + b[1]] for a, b in zip(form_targets, force_targets)]
     # --------------------------------------------------------------------------
@@ -168,7 +157,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     # compute the force densities
     # --------------------------------------------------------------------------
     forces[:] = [f * factor for f, factor in zip(forces, flipmask)]
-    q = [f / l for f, l in zip(forces, lengths)]
+    q = [f / length for f, length in zip(forces, lengths)]
     # --------------------------------------------------------------------------
     # rotate the force diagram 90 degrees in CW direction
     # this way the relation between the two diagrams is easier to read
@@ -188,9 +177,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
         form.vertex_attributes(key, "xy", xy[i])
     for uv in form.edges_where({"_is_edge": True}):
         i = uv_i[uv]
-        form.edge_attributes(
-            uv, ["q", "_f", "_l", "_a"], [q[i], forces[i], lengths[i], angles[i]]
-        )
+        form.edge_attributes(uv, ["q", "_f", "_l", "_a"], [q[i], forces[i], lengths[i], angles[i]])
     # --------------------------------------------------------------------------
     # update force
     # --------------------------------------------------------------------------

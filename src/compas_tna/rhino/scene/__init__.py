@@ -1,6 +1,7 @@
 """
 This package provides scene object plugins for visualising TNA diagrams in Rhino.
-When working in Rhino, :class:`compas.scene.SceneObject` will automatically use the corresponding Rhino scene object for each TNA diagram type.
+When working in Rhino, :class:`compas.scene.SceneObject`
+will automatically use the corresponding Rhino scene object for each TNA diagram type.
 """
 
 from __future__ import absolute_import

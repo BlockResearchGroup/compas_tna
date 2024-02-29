@@ -1,6 +1,8 @@
 from typing import List
-from compas_tna.diagrams import FormDiagram
+
 from compas_fd.solvers import fd_numpy
+
+from compas_tna.diagrams import FormDiagram
 
 
 def relax_boundary_openings(form: FormDiagram, fixed: List[int]) -> FormDiagram:

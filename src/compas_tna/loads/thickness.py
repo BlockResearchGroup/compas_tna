@@ -1,5 +1,6 @@
 from numpy import array
 from scipy.interpolate import griddata
+
 from compas_tna.diagrams import FormDiagram
 
 

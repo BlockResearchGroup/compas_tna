@@ -1,6 +1,6 @@
-from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import division
+from __future__ import print_function
 
 from compas_tna.diagrams import Diagram
 
@@ -103,7 +103,8 @@ class ForceDiagram(Diagram):
         Parameters
         ----------
         form : :class:`compas_tna.diagrams.FormDiagram`, optional
-            If provided, this maps edge uv's to the index in a list matching the ordering of corresponding edges in the form diagram.
+            If provided, this maps edge uv's to the index in a list
+            matching the ordering of corresponding edges in the form diagram.
 
         Returns
         -------
@@ -121,7 +122,8 @@ class ForceDiagram(Diagram):
         return uv_index
 
     def ordered_edges(self, form):
-        """Construct an edge list in which the edges are ordered according to the ordering of edges in a corresponding list of form diagram edges.
+        """Construct an edge list in which the edges are ordered
+        according to the ordering of edges in a corresponding list of form diagram edges.
 
         Parameters
         ----------

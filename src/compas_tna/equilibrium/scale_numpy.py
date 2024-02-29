@@ -1,17 +1,17 @@
 import sys
+
 from numpy import array
 from numpy import float64
 from scipy.sparse import diags
 from scipy.sparse.linalg import spsolve
 
-from compas.matrices import connectivity_matrix
 from compas.linalg import normrow
-from compas_tna.diagrams import FormDiagram
+from compas.matrices import connectivity_matrix
 from compas_tna.diagrams import ForceDiagram
+from compas_tna.diagrams import FormDiagram
 from compas_tna.loads import LoadUpdater
 
 from .diagrams import update_z
-
 
 EPS = 1 / sys.float_info.epsilon
 
@@ -119,9 +119,7 @@ def scale_from_target(
     q = scale * q0
     Q = diags([q.ravel()], [0])
 
-    _ = update_z(
-        xyz, Q, C, p, free, fixed, update_loads, tol=rtol, kmax=kmax, display=display
-    )
+    _ = update_z(xyz, Q, C, p, free, fixed, update_loads, tol=rtol, kmax=kmax, display=display)
     # --------------------------------------------------------------------------
     # update
     # --------------------------------------------------------------------------

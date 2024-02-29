@@ -6,10 +6,9 @@ from scipy.linalg import cho_solve
 from scipy.linalg import lstsq
 from scipy.sparse.linalg import factorized
 
-from compas.linalg import normrow
 from compas.linalg import chofactor
 from compas.linalg import lufactorized
-
+from compas.linalg import normrow
 
 EPS = 1 / sys.float_info.epsilon
 
@@ -45,9 +44,7 @@ def parallelise_sparse(A, B, X, known, k=1, key=None):
     return X
 
 
-def parallelise_nodal(
-    xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=None, lmax=None
-):
+def parallelise_nodal(xy, C, targets, i_nbrs, ij_e, fixed=None, kmax=100, lmin=None, lmax=None):
     fixed = fixed or []
     fixed = set(fixed)
 

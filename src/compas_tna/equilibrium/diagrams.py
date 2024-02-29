@@ -3,16 +3,15 @@ import sys
 from numpy import empty_like
 from numpy.linalg import cond
 from scipy.linalg import lstsq
-from scipy.linalg import solve
 from scipy.linalg import norm
+from scipy.linalg import solve
 from scipy.sparse.linalg import factorized
 
+from compas.linalg import dof
+from compas.linalg import nonpivots
+from compas.linalg import rref
 from compas.matrices import connectivity_matrix
 from compas.matrices import equilibrium_matrix
-from compas.linalg import dof
-from compas.linalg import rref
-from compas.linalg import nonpivots
-
 
 EPS = 1 / sys.float_info.epsilon
 

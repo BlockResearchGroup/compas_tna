@@ -1,21 +1,20 @@
 from typing import Tuple
-from compas.geometry import angle_vectors_xy
 
 from numpy import array
 from numpy import float64
 from numpy import where
 
-from compas.matrices import connectivity_matrix
-from compas.linalg import normrow
+from compas.geometry import angle_vectors_xy
 from compas.linalg import normalizerow
-
-from compas_tna.diagrams import FormDiagram
+from compas.linalg import normrow
+from compas.matrices import connectivity_matrix
 from compas_tna.diagrams import ForceDiagram
+from compas_tna.diagrams import FormDiagram
 
-from .diagrams import rot90
 from .diagrams import apply_bounds
-from .parallelisation_numpy import parallelise_sparse
+from .diagrams import rot90
 from .parallelisation_numpy import parallelise_nodal
+from .parallelisation_numpy import parallelise_sparse
 
 
 def horizontal_numpy(
@@ -72,18 +71,10 @@ def horizontal_numpy(
     xy = array(form.vertices_attributes("xy"), dtype=float64)
 
     edges = list(form.edges_where({"_is_edge": True}))
-    lmin = array(form.edges_attribute("lmin", keys=edges), dtype=float64).reshape(
-        (-1, 1)
-    )
-    lmax = array(form.edges_attribute("lmax", keys=edges), dtype=float64).reshape(
-        (-1, 1)
-    )
-    hmin = array(form.edges_attribute("hmin", keys=edges), dtype=float64).reshape(
-        (-1, 1)
-    )
-    hmax = array(form.edges_attribute("hmax", keys=edges), dtype=float64).reshape(
-        (-1, 1)
-    )
+    lmin = array(form.edges_attribute("lmin", keys=edges), dtype=float64).reshape((-1, 1))
+    lmax = array(form.edges_attribute("lmax", keys=edges), dtype=float64).reshape((-1, 1))
+    hmin = array(form.edges_attribute("hmin", keys=edges), dtype=float64).reshape((-1, 1))
+    hmax = array(form.edges_attribute("hmax", keys=edges), dtype=float64).reshape((-1, 1))
     edges = [[k_i[u], k_i[v]] for u, v in edges]
 
     C = connectivity_matrix(edges, "csr")
@@ -100,12 +91,8 @@ def horizontal_numpy(
     _xy = array(force.vertices_attributes("xy"), dtype=float64)
 
     _edges = force.ordered_edges(form)
-    _lmin = array(force.edges_attribute("lmin", keys=_edges), dtype=float64).reshape(
-        (-1, 1)
-    )
-    _lmax = array(force.edges_attribute("lmax", keys=_edges), dtype=float64).reshape(
-        (-1, 1)
-    )
+    _lmin = array(force.edges_attribute("lmin", keys=_edges), dtype=float64).reshape((-1, 1))
+    _lmax = array(force.edges_attribute("lmax", keys=_edges), dtype=float64).reshape((-1, 1))
     _edges = [[_k_i[u], _k_i[v]] for u, v in _edges]
 
     _C = connectivity_matrix(_edges, "csr")
@@ -234,47 +221,29 @@ def horizontal_nodal_numpy(
     # --------------------------------------------------------------------------
     k_i = form.vertex_index()
     uv_i = form.uv_index()
-    i_nbrs = {
-        k_i[key]: [k_i[nbr] for nbr in form.vertex_neighbors(key)]
-        for key in form.vertices()
-    }
+    i_nbrs = {k_i[key]: [k_i[nbr] for nbr in form.vertex_neighbors(key)] for key in form.vertices()}
     ij_e = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
     fixed = set(list(form.supports()) + list(form.fixed()))
     fixed = [k_i[key] for key in fixed]
     edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({"_is_edge": True})]
     lmin = array(
-        [
-            attr.get("lmin", 1e-7)
-            for key, attr in form.edges_where({"_is_edge": True}, True)
-        ],
+        [attr.get("lmin", 1e-7) for key, attr in form.edges_where({"_is_edge": True}, True)],
         dtype=float64,
     ).reshape((-1, 1))
     lmax = array(
-        [
-            attr.get("lmax", 1e7)
-            for key, attr in form.edges_where({"_is_edge": True}, True)
-        ],
+        [attr.get("lmax", 1e7) for key, attr in form.edges_where({"_is_edge": True}, True)],
         dtype=float64,
     ).reshape((-1, 1))
     hmin = array(
-        [
-            attr.get("hmin", 1e-7)
-            for key, attr in form.edges_where({"_is_edge": True}, True)
-        ],
+        [attr.get("hmin", 1e-7) for key, attr in form.edges_where({"_is_edge": True}, True)],
         dtype=float64,
     ).reshape((-1, 1))
     hmax = array(
-        [
-            attr.get("hmax", 1e7)
-            for key, attr in form.edges_where({"_is_edge": True}, True)
-        ],
+        [attr.get("hmax", 1e7) for key, attr in form.edges_where({"_is_edge": True}, True)],
         dtype=float64,
     ).reshape((-1, 1))
     flipmask = array(
-        [
-            1.0 if not attr["_is_tension"] else -1.0
-            for key, attr in form.edges_where({"_is_edge": True}, True)
-        ],
+        [1.0 if not attr["_is_tension"] else -1.0 for key, attr in form.edges_where({"_is_edge": True}, True)],
         dtype=float,
     ).reshape((-1, 1))
     xy = array(form.vertices_attributes("xy"), dtype=float64)
@@ -284,10 +253,7 @@ def horizontal_nodal_numpy(
     # --------------------------------------------------------------------------
     _k_i = force.vertex_index()
     _uv_i = force.uv_index(form=form)
-    _i_nbrs = {
-        _k_i[key]: [_k_i[nbr] for nbr in force.vertex_neighbors(key)]
-        for key in force.vertices()
-    }
+    _i_nbrs = {_k_i[key]: [_k_i[nbr] for nbr in force.vertex_neighbors(key)] for key in force.vertices()}
     _ij_e = {(_k_i[u], _k_i[v]): index for (u, v), index in iter(_uv_i.items())}
     _fixed = list(force.fixed())
     _fixed = [_k_i[key] for key in _fixed]
@@ -295,12 +261,8 @@ def horizontal_nodal_numpy(
 
     _edges = force.ordered_edges(form)
     _xy = array(force.vertices_attributes("xy"), dtype=float64)
-    _lmin = array(
-        [attr.get("lmin", 1e-7) for key, attr in force.edges(True)], dtype=float64
-    ).reshape((-1, 1))
-    _lmax = array(
-        [attr.get("lmax", 1e7) for key, attr in force.edges(True)], dtype=float64
-    ).reshape((-1, 1))
+    _lmin = array([attr.get("lmin", 1e-7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
+    _lmax = array([attr.get("lmax", 1e7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
     _edges = [[_k_i[u], _k_i[v]] for u, v in _edges]
 
     _C = connectivity_matrix(_edges, "csr")

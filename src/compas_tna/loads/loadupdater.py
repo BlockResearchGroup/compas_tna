@@ -1,13 +1,13 @@
 from typing import Literal
-from nptyping import NDArray
-from nptyping import Float64
 
 import numpy
 import scipy.sparse
+from nptyping import Float64
+from nptyping import NDArray
 
 from compas.datastructures import Mesh
-from compas.geometry import length_vector
 from compas.geometry import cross_vectors
+from compas.geometry import length_vector
 from compas.matrices import face_matrix
 
 
@@ -31,8 +31,8 @@ class LoadUpdater(object):
     Examples
     --------
     >>> import numpy
-    >>> xyz = numpy.array(form.vertices_attributes('xyz'))
-    >>> p = numpy.array(form.vertices_attributes(['px', 'py', 'pz']))
+    >>> xyz = numpy.array(form.vertices_attributes("xyz"))
+    >>> p = numpy.array(form.vertices_attributes(["px", "py", "pz"]))
     >>> p0 = p.copy()
 
     Construct a load updater with the (additional) point loads applied at the vertices.
@@ -61,9 +61,7 @@ class LoadUpdater(object):
         self.live = live
         self.vertex_index = mesh.vertex_index()
         self.fvertex_index = {face: index for index, face in enumerate(mesh.faces())}
-        self.is_loaded = {
-            face: mesh.face_attribute(face, "_is_loaded") for face in mesh.faces()
-        }
+        self.is_loaded = {face: mesh.face_attribute(face, "_is_loaded") for face in mesh.faces()}
         self.F = self.face_matrix()
 
     def __call__(
@@ -95,9 +93,7 @@ class LoadUpdater(object):
         """
         face_vertices = [None] * self.mesh.number_of_faces()
         for fkey in self.mesh.faces():
-            face_vertices[self.fvertex_index[fkey]] = [
-                self.vertex_index[key] for key in self.mesh.face_vertices(fkey)
-            ]
+            face_vertices[self.fvertex_index[fkey]] = [self.vertex_index[key] for key in self.mesh.face_vertices(fkey)]
         return face_matrix(face_vertices, rtype="csr", normalize=True)
 
     def tributary_areas(

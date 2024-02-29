@@ -48,7 +48,7 @@ def get(filename):
 
     >>> import compas_tna
     >>> from compas_tna.diagrams import FormDiagram
-    >>> form = FormDiagram.from_obj(compas.get('faces.obj'))
+    >>> form = FormDiagram.from_obj(compas.get("faces.obj"))
 
     """
     filename = filename.strip("/")
@@ -58,9 +58,7 @@ def get(filename):
     if os.path.exists(localpath):
         return localpath
     else:
-        return "https://raw.githubusercontent.com/BlockResearchGroup/compas_tna/master/data/{}".format(
-            filename
-        )
+        return "https://raw.githubusercontent.com/BlockResearchGroup/compas_tna/master/data/{}".format(filename)
 
 
 __all_plugins__ = [

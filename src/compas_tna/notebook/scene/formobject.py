@@ -1,4 +1,5 @@
 from compas_notebook.scene import ThreeMeshObject
+
 from compas_tna.scene import FormDiagramObject
 
 
