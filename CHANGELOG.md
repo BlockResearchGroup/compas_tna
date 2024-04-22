@@ -9,10 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Added `compas_tna.diagrams.FormDiagram.from_mesh`.
+
 ### Changed
 
 ### Removed
-
 
 ## [0.4.0] 2024-03-01
 
@@ -22,7 +23,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-
 ## [0.3.0] 2024-02-09
 
 ### Added
@@ -30,7 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Removed
-
 
 ## [0.2.0] 2022-12-02
 

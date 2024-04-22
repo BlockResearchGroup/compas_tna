@@ -149,6 +149,22 @@ face degree: {}/{}
             form.name = kwargs["name"]
         return form
 
+    @classmethod
+    def from_mesh(cls, mesh):
+        """Construct a Form Diagram from another mesh.
+
+        Parameters
+        ----------
+        mesh : :class:`compas.datastructures.Mesh`
+            The other mesh.
+
+        Returns
+        -------
+        :class:`compas_tna.diagrams.FormDiagram`
+
+        """
+        return mesh.copy(cls=cls)
+
     def uv_index(self):
         """Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)
         to the corresponding edge index in a list or array of edges.
