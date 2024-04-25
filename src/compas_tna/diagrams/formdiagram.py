@@ -4,7 +4,7 @@ from __future__ import print_function
 
 from compas.datastructures import Graph
 from compas.geometry import Vector
-from compas.utilities import pairwise
+from compas.itertools import pairwise
 from compas_tna.diagrams import Diagram
 
 
