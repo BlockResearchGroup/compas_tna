@@ -115,5 +115,6 @@ docsource/api/generated
 
 .vscode/
 .pytest_cache/
+.ruff_cache/
 
 generated
