@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -555,26 +555,11 @@ document.write(`
 <h1>RhinoForceObject.draw_faces</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_tna.rhino.scene.RhinoForceObject.draw_faces">
-<span class="sig-prename descclassname"><span class="pre">RhinoForceObject.</span></span><span class="sig-name descname"><span class="pre">draw_faces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">RhinoForceObject.</span></span><span class="sig-name descname"><span class="pre">draw_faces</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><p>Draw a selection of faces.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>faces</strong><span class="classifier">list[int], optional</span></dt><dd><p>A selection of faces to draw.
-The default is None, in which case all faces are drawn.</p>
-</dd>
-<dt><strong>color</strong><span class="classifier"><a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.colors.Color.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a> | dict[int, <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.colors.Color.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>], optional</span></dt><dd><p>The color of the faces.</p>
-</dd>
-<dt><strong>text</strong><span class="classifier">dict[int, str], optional</span></dt><dd><p>A dictionary of face labels as face-text pairs.</p>
-</dd>
-<dt><strong>fontheight</strong><span class="classifier">int, optional</span></dt><dd><p>Font height of the face labels.</p>
-</dd>
-<dt><strong>fontface</strong><span class="classifier">str, optional</span></dt><dd><p>Font face of the face labels.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
 <dt>list[System.Guid]</dt><dd><p>The GUIDs of the created Rhino mesh objects.</p>
 </dd>
 </dl>

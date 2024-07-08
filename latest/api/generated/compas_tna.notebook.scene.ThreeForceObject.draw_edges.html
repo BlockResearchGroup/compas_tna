@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -60,7 +60,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="ThreeForceObject.draw_faces" href="compas_tna.notebook.scene.ThreeForceObject.draw_faces.html" />
-    <link rel="prev" title="ThreeForceObject.clear_vertices" href="compas_tna.notebook.scene.ThreeForceObject.clear_vertices.html" />
+    <link rel="prev" title="ThreeForceObject.copy" href="compas_tna.notebook.scene.ThreeForceObject.copy.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -557,23 +557,16 @@ document.write(`
 <dt class="sig sig-object py" id="compas_tna.notebook.scene.ThreeForceObject.draw_edges">
 <span class="sig-prename descclassname"><span class="pre">ThreeForceObject.</span></span><span class="sig-name descname"><span class="pre">draw_edges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Draw the edges of the mesh.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>edges</strong><span class="classifier">list[tuple[int, int]], optional</span></dt><dd><p>The edges to include in the drawing.
-Default is all edges.</p>
-</dd>
-<dt><strong>color</strong><span class="classifier">tuple[float, float, float] | <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.colors.Color.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a> | dict[tuple[int, int], tuple[float, float, float] | <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.colors.Color.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>], optional</span></dt><dd><p>The color of the edges,
-as either a single color to be applied to all edges,
-or a color dict, mapping specific edges to specific colors.</p>
-</dd>
-<dt><strong>text</strong><span class="classifier">dict[tuple[int, int], str], optional</span></dt><dd><p>The text labels for the edges
-as a text dict, mapping specific edges to specific text labels.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
+<p>Edges are drawn based on the values of</p>
+<ul class="simple">
+<li><p><cite>self.show_edges</cite></p></li>
+<li><p><cite>self.edgecolor</cite></p></li>
+<li><p><cite>self.edgetext</cite></p></li>
+<li><p><cite>self.edgewidth</cite></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
 <dt>list</dt><dd><p>The identifiers of the objects representing the edges in the visualization context.</p>
 </dd>
 </dl>

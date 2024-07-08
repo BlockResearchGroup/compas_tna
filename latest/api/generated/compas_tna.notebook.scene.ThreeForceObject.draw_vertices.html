@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.5ea377869091fd0449014c60fc090103.min.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
@@ -59,7 +59,7 @@
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="ThreeForceObject.geometry_to_objects" href="compas_tna.notebook.scene.ThreeForceObject.geometry_to_objects.html" />
+    <link rel="next" title="ThreeForceObject.from_json" href="compas_tna.notebook.scene.ThreeForceObject.from_json.html" />
     <link rel="prev" title="ThreeForceObject.draw_mesh" href="compas_tna.notebook.scene.ThreeForceObject.draw_mesh.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -557,23 +557,16 @@ document.write(`
 <dt class="sig sig-object py" id="compas_tna.notebook.scene.ThreeForceObject.draw_vertices">
 <span class="sig-prename descclassname"><span class="pre">ThreeForceObject.</span></span><span class="sig-name descname"><span class="pre">draw_vertices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Draw the vertices of the mesh.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>vertices</strong><span class="classifier">list[int], optional</span></dt><dd><p>The vertices to include in the drawing.
-Default is all vertices.</p>
-</dd>
-<dt><strong>color</strong><span class="classifier">tuple[float, float, float] | <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.colors.Color.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a> | dict[int, tuple[float, float, float] | <a class="reference external" href="https://compas.dev/compas/latest/api/generated/compas.colors.Color.html" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.colors.Color</span></code></a>], optional</span></dt><dd><p>The color of the vertices,
-as either a single color to be applied to all vertices,
-or a color dict, mapping specific vertices to specific colors.</p>
-</dd>
-<dt><strong>text</strong><span class="classifier">dict[int, str], optional</span></dt><dd><p>The text labels for the vertices
-as a text dict, mapping specific vertices to specific text labels.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
+<p>Vertices are drawn based on the values of</p>
+<ul class="simple">
+<li><p><cite>self.show_vertices</cite></p></li>
+<li><p><cite>self.vertexcolor</cite></p></li>
+<li><p><cite>self.vertextext</cite></p></li>
+<li><p><cite>self.vertexsize</cite></p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
 <dt>list</dt><dd><p>The identifiers of the objects representing the vertices in the visualization context.</p>
 </dd>
 </dl>
