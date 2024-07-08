@@ -14,42 +14,33 @@ class RhinoFormObject(RhinoMeshObject, FormDiagramObject):
         self._guids = []
 
         if self.show_vertices:
-            if self.show_vertices is not True:
-                vertices = self.show_vertices
-            else:
-                vertices = list(self.diagram.vertices())
-
             for vertex in self.diagram.vertices_where(is_fixed=True):
                 self.vertexcolor[vertex] = self.vertexcolor_fixed
 
             for vertex in self.diagram.vertices_where(is_support=True):
                 self.vertexcolor[vertex] = self.vertexcolor_support
 
-            self._guids += self.draw_vertices(vertices=vertices, color=self.vertexcolor)
+            self._guids += self.draw_vertices()
 
         if self.show_edges:
-            if self.show_edges is not True:
-                edges = self.show_edges
-            else:
-                edges = list(self.diagram.edges_where(_is_edge=True))
+            if self.show_edges is True:
+                self.show_edges = list(self.diagram.edges_where(_is_edge=True))
 
-            self._guids += self.draw_edges(edges=edges, color=self.edgecolor)
+            self._guids += self.draw_edges()
 
         if self.show_faces:
-            if self.show_faces is not True:
-                faces = self.show_faces
-            else:
-                faces = list(self.diagram.faces_where(_is_loaded=True))
+            if self.show_faces is True:
+                self.show_faces = list(self.diagram.faces_where(_is_loaded=True))
 
-            self._guids += self.draw_faces(faces=faces, color=self.facecolor)
+            self._guids += self.draw_faces()
 
         self._guids += self.draw_loads()
         self._guids += self.draw_selfweight()
         self._guids += self.draw_reactions()
         self._guids += self.draw_residuals()
 
-        self._guids += self.draw_forces()
-        self._guids += self.draw_angles()
+        # self._guids += self.draw_forces()
+        # self._guids += self.draw_angles()
 
         return self.guids
 
