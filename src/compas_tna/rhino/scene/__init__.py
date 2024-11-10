@@ -20,7 +20,8 @@ from .forceobject import RhinoForceObject
 def register_scene_objects():
     register(FormDiagram, RhinoFormObject, context="Rhino")
     register(ForceDiagram, RhinoForceObject, context="Rhino")
-    print("TNA Rhino SceneObjects registered.")
+
+    # print("TNA Rhino SceneObjects registered.")
 
 
 __all__ = [

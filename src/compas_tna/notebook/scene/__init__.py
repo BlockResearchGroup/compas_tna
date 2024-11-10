@@ -19,7 +19,8 @@ from .forceobject import ThreeForceObject
 def register_scene_objects():
     register(FormDiagram, ThreeFormObject, context="Notebook")
     register(ForceDiagram, ThreeForceObject, context="Notebook")
-    print("TNA Notebook SceneObjects registered.")
+
+    # print("TNA Notebook SceneObjects registered.")
 
 
 __all__ = [

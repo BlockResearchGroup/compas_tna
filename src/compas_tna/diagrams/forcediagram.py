@@ -1,8 +1,9 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import Any
+from typing import Generator
+from typing import Optional
 
 from compas_tna.diagrams import Diagram
+from compas_tna.diagrams import FormDiagram
 
 
 class ForceDiagram(Diagram):
@@ -27,8 +28,11 @@ class ForceDiagram(Diagram):
     """
 
     def __init__(self, *args, name="ForceDiagram", **kwargs):
-        super(ForceDiagram, self).__init__(*args, name=name, **kwargs)
+        super().__init__(*args, name=name, **kwargs)
+
         self.primal = None
+        self.attributes["scale"] = 1.0
+
         self.default_vertex_attributes.update(
             {
                 "x": 0.0,
@@ -44,21 +48,13 @@ class ForceDiagram(Diagram):
                 "_a": 0.0,
             }
         )
-        self.attributes.update(
-            {
-                "scale": 1.0,
-                "color.vertex": (255, 255, 255),
-                "color.edge": (0, 0, 0),
-                "color.face": (210, 210, 210),
-            }
-        )
 
     # --------------------------------------------------------------------------
     # Constructors
     # --------------------------------------------------------------------------
 
     @classmethod
-    def from_formdiagram(cls, formdiagram):
+    def from_formdiagram(cls, formdiagram: FormDiagram) -> "ForceDiagram":
         """Construct a force diagram from a given form diagram.
 
         Parameters
@@ -82,7 +78,7 @@ class ForceDiagram(Diagram):
     # Vertices
     # --------------------------------------------------------------------------
 
-    def fixed(self):
+    def fixed(self) -> Generator[int, None, None]:
         """Vertices with ``is_fixed`` set to ``True``.
 
         Returns
@@ -97,7 +93,7 @@ class ForceDiagram(Diagram):
     # Helpers
     # --------------------------------------------------------------------------
 
-    def uv_index(self, form=None):
+    def uv_index(self, form: Optional[FormDiagram] = None) -> dict[tuple[int, int], int]:
         """Construct a map relating edge uv pairs to their index in an edge list.
 
         Parameters
@@ -121,7 +117,7 @@ class ForceDiagram(Diagram):
             uv_index[(f1, f2)] = index
         return uv_index
 
-    def ordered_edges(self, form):
+    def ordered_edges(self, form: FormDiagram) -> list[tuple[int, int]]:
         """Construct an edge list in which the edges are ordered
         according to the ordering of edges in a corresponding list of form diagram edges.
 
@@ -141,8 +137,26 @@ class ForceDiagram(Diagram):
         edges = [index_uv[index] for index in range(self.number_of_edges())]
         return edges
 
-    def get_form_edge_attribute(self, form, key, name, value=None):
-        f1, f2 = key
+    def form_edge_attribute(self, form: FormDiagram, edge: tuple[int, int], name: str, value: Any = None) -> Any:
+        """Get or set the attribute value of the corresponding edge in the form diagam.
+
+        Parameters
+        ----------
+        form : :class:`FormDiagram`
+            The form diagram.
+        edge : tuple[int, int]
+            The identifier of the edge.
+        name : str
+            The name of the attribute.
+        value : Any, optional
+            A new value.
+
+        Returns
+        -------
+        Any
+
+        """
+        f1, f2 = edge
         for u, v in form.face_halfedges(f1):
             if form.halfedge[v][u] == f2:
                 break

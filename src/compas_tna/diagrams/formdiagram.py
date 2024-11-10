@@ -1,8 +1,8 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import Generator
+from typing import Type
 
 from compas.datastructures import Graph
+from compas.datastructures import Mesh
 from compas.geometry import Vector
 from compas.itertools import pairwise
 from compas_tna.diagrams import Diagram
@@ -50,8 +50,10 @@ class FormDiagram(Diagram):
     """
 
     def __init__(self, *args, name="FormDiagram", **kwargs):
-        super(FormDiagram, self).__init__(*args, name=name, **kwargs)
+        super().__init__(*args, name=name, **kwargs)
+
         self.dual = None
+
         self.default_vertex_attributes.update(
             {
                 "x": 0.0,
@@ -103,12 +105,16 @@ number of (real) edges: {}
 number of faces: {}
 vertex degree: {}/{}
 face degree: {}/{}
-""".format(
-            self.name, numv, nume, numf, vmin, vmax, fmin, fmax
-        )
+""".format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
 
     @classmethod
-    def from_lines(cls, lines, delete_boundary_face=True, precision=None, **kwargs):
+    def from_lines(
+        cls,
+        lines: list[list[list[float]]],
+        delete_boundary_face: bool = True,
+        precision: int = None,
+        **kwargs,
+    ) -> "FormDiagram":
         """Construct a FormDiagram from a list of lines described by start and end point coordinates.
 
         Parameters
@@ -118,9 +124,9 @@ face degree: {}/{}
         delete_boundary_face : bool, optional
             Set ``True`` to delete the face on the outside of the boundary, ``False`` to keep it.
             Default is ``True``.
-        precision: str, optional
+        precision: int, optional
             The precision of the geometric map that is used to connect the lines.
-            If not specified, the global precision stored in ``compas.PRECISION`` will be used.
+            If not specified, `compas.geometry.TOL.precision` will be used.
 
         Returns
         -------
@@ -150,7 +156,7 @@ face degree: {}/{}
         return form
 
     @classmethod
-    def from_mesh(cls, mesh):
+    def from_mesh(cls, mesh: Mesh) -> "FormDiagram":
         """Construct a Form Diagram from another mesh.
 
         Parameters
@@ -165,7 +171,7 @@ face degree: {}/{}
         """
         return mesh.copy(cls=cls)
 
-    def uv_index(self):
+    def uv_index(self) -> dict[tuple[int, int], int]:
         """Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)
         to the corresponding edge index in a list or array of edges.
 
@@ -173,10 +179,11 @@ face degree: {}/{}
         -------
         dict
             A dictionary of uv-index pairs.
+
         """
         return {(u, v): index for index, (u, v) in enumerate(self.edges_where(_is_edge=True))}
 
-    def index_uv(self):
+    def index_uv(self) -> dict[int, tuple[int, int]]:
         """Returns a dictionary that maps edges in a list to the corresponding
         vertex key pairs.
 
@@ -184,6 +191,7 @@ face degree: {}/{}
         -------
         dict
             A dictionary of index-uv pairs.
+
         """
         return dict(enumerate(self.edges_where(_is_edge=True)))
 
@@ -191,7 +199,7 @@ face degree: {}/{}
     # dual and reciprocal
     # --------------------------------------------------------------------------
 
-    def dual_diagram(self, cls):
+    def dual_diagram(self, cls: Type[Mesh]) -> Mesh:
         """Construct the dual of the FormDiagram.
 
         Parameters
@@ -231,7 +239,7 @@ face degree: {}/{}
     # vertices
     # --------------------------------------------------------------------------
 
-    def leaves(self):
+    def leaves(self) -> Generator[int, None, None]:
         """Find vertices with degree 1.
 
         Returns
@@ -242,7 +250,7 @@ face degree: {}/{}
         """
         return self.vertices_where(vertex_degree=1)
 
-    def corners(self):
+    def corners(self) -> Generator[int, None, None]:
         """Find vertices with degree 2.
 
         Returns
@@ -253,7 +261,7 @@ face degree: {}/{}
         """
         return self.vertices_where(vertex_degree=2)
 
-    def supports(self):
+    def supports(self) -> Generator[int, None, None]:
         """Find vertices with ``is_support`` set to ``True``.
 
         Returns
@@ -264,7 +272,7 @@ face degree: {}/{}
         """
         return self.vertices_where(is_support=True)
 
-    def fixed(self):
+    def fixed(self) -> Generator[int, None, None]:
         """Find vertices with ``is_fixed`` set to ``True``.
 
         Returns
@@ -275,7 +283,7 @@ face degree: {}/{}
         """
         return self.vertices_where(is_fixed=True)
 
-    def vertex_load(self, vertex):
+    def vertex_load(self, vertex: int) -> Vector:
         """Get the load of a vertex.
 
         Parameters
@@ -291,7 +299,7 @@ face degree: {}/{}
         px, py, pz = self.vertex_attributes(vertex, ["px", "py", "pz"])
         return Vector(px, py, pz)
 
-    def vertex_selfweight(self, vertex):
+    def vertex_selfweight(self, vertex: int) -> Vector:
         """Get the selfweight of a vertex.
 
         Parameters
@@ -308,7 +316,7 @@ face degree: {}/{}
         a = self.vertex_area(vertex)
         return Vector(0, 0, -t * a)
 
-    def vertex_reaction(self, vertex):
+    def vertex_reaction(self, vertex: int) -> Vector:
         """Get the reaction force at a vertex.
 
         Parameters
@@ -324,7 +332,7 @@ face degree: {}/{}
         rx, ry, rz = self.vertex_attributes(vertex, ["rx", "ry", "rz"])
         return Vector(-rx, -ry, -rz)
 
-    def vertex_residual(self, vertex):
+    def vertex_residual(self, vertex: int) -> Vector:
         """Get the residual force at a vertex.
 
         Parameters
@@ -346,6 +354,13 @@ face degree: {}/{}
 
     def update_boundaries(self):
         """Update the boundaries to add outside faces."""
+        # reset edges: set all edges _is_edge=True
+        self.edges_attribute(name="_is_edge", value=True)
+        # reset faces: delete all faces where _is_loaded=False
+        for face in list(self.faces_where(_is_loaded=False)):
+            if self.has_face(face):
+                self.delete_face(face)
+        self.remove_unused_vertices()
         # mark all "supported edges" as '_is_edge=False'
         # they will be ignored in any futher steps
         # this is what indierectly creates isolated vertices

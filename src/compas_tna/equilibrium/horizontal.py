@@ -3,11 +3,14 @@ from __future__ import division
 from __future__ import print_function
 
 from compas.geometry import angle_vectors_xy
+from compas_tna.diagrams import ForceDiagram  # noqa: F401
+from compas_tna.diagrams import FormDiagram  # noqa: F401
 
 from .parallelisation import parallelise_edges
 
 
 def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
+    # type: (FormDiagram, ForceDiagram, int, int, callable) -> None
     r"""Compute horizontal equilibrium using a node-per-node approach.
 
     Parameters
