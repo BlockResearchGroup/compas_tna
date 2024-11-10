@@ -1,2 +1,0 @@
-compas >=2.3
-compas_fd >=0.5.0
