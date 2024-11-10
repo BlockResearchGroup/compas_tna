@@ -33,14 +33,14 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
 
     <script src="../../_static/documentation_options.js?v=bb99e320"></script>
-    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
@@ -559,14 +559,6 @@ document.write(`
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">compas_tna.diagrams.</span></span><span class="sig-name descname"><span class="pre">ForceDiagram</span></span></dt>
 <dd><p>Bases: <a class="reference internal" href="compas_tna.diagrams.Diagram.html#compas_tna.diagrams.Diagram" title="compas_tna.diagrams.diagram.Diagram"><code class="xref py py-class docutils literal notranslate"><span class="pre">Diagram</span></code></a></p>
 <p>Class representing a TNA force diagram.</p>
-<p class="rubric">Notes</p>
-<p>In TNA, a pair of form and force diagrams describe the horizontal equilibrium of a 3D network of forces
-with vertical loads applied to its nodes, if they are reciprocal.
-This means they are each others dual and that corresponding edge pairs are at a constant angle.
-Typically this angle is 0 or 90 degrees, but any other constant angle is sufficient.</p>
-<p>When the force diagram is created from the form diagram, both diagrams are dual.
-However, the reciprocal relationship has to be established separately,
-using one of the horizontal equilibrium solvers.</p>
 <dl class="field-list">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -575,17 +567,25 @@ using one of the horizontal equilibrium solvers.</p>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>In TNA, a pair of form and force diagrams describe the horizontal equilibrium of a 3D network of forces
+with vertical loads applied to its nodes, if they are reciprocal.
+This means they are each others dual and that corresponding edge pairs are at a constant angle.
+Typically this angle is 0 or 90 degrees, but any other constant angle is sufficient.</p>
+<p>When the force diagram is created from the form diagram, both diagrams are dual.
+However, the reciprocal relationship has to be established separately,
+using one of the horizontal equilibrium solvers.</p>
 <p class="rubric">Methods</p>
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.fixed.html#compas_tna.diagrams.ForceDiagram.fixed" title="compas_tna.diagrams.ForceDiagram.fixed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fixed</span></code></a></p></td>
 <td><p>Vertices with <code class="docutils literal notranslate"><span class="pre">is_fixed</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.from_formdiagram.html#compas_tna.diagrams.ForceDiagram.from_formdiagram" title="compas_tna.diagrams.ForceDiagram.from_formdiagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_formdiagram</span></code></a></p></td>
-<td><p>Construct a force diagram from a given form diagram.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.form_edge_attribute.html#compas_tna.diagrams.ForceDiagram.form_edge_attribute" title="compas_tna.diagrams.ForceDiagram.form_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">form_edge_attribute</span></code></a></p></td>
+<td><p>Get or set the attribute value of the corresponding edge in the form diagam.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.get_form_edge_attribute.html#compas_tna.diagrams.ForceDiagram.get_form_edge_attribute" title="compas_tna.diagrams.ForceDiagram.get_form_edge_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_form_edge_attribute</span></code></a></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.from_formdiagram.html#compas_tna.diagrams.ForceDiagram.from_formdiagram" title="compas_tna.diagrams.ForceDiagram.from_formdiagram"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_formdiagram</span></code></a></p></td>
+<td><p>Construct a force diagram from a given form diagram.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="compas_tna.diagrams.ForceDiagram.ordered_edges.html#compas_tna.diagrams.ForceDiagram.ordered_edges" title="compas_tna.diagrams.ForceDiagram.ordered_edges"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ordered_edges</span></code></a></p></td>
 <td><p>Construct an edge list in which the edges are ordered according to the ordering of edges in a corresponding list of form diagram edges.</p></td>
@@ -1282,7 +1282,7 @@ using one of the horizontal equilibrium solvers.</p>
       
         <div class="footer-item">
   <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.3.7.
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
     <br/>
   </p>
 </div>

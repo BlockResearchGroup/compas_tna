@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="../../_static/compas.ico" type="image/x-icon">
-    <title>ForceDiagram.thickened &#8212; COMPAS TNA</title>
+    <title>ForceDiagram.form_edge_attribute &#8212; COMPAS TNA</title>
   
   
   
@@ -52,15 +52,15 @@
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/compas_tna.diagrams.ForceDiagram.thickened';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/compas_tna.diagrams.ForceDiagram.form_edge_attribute';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/blockresearchgroup/compas_tna/gh-pages/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="ForceDiagram.to_json" href="compas_tna.diagrams.ForceDiagram.to_json.html" />
-    <link rel="prev" title="ForceDiagram.summary" href="compas_tna.diagrams.ForceDiagram.summary.html" />
+    <link rel="next" title="ForceDiagram.from_formdiagram" href="compas_tna.diagrams.ForceDiagram.from_formdiagram.html" />
+    <link rel="prev" title="ForceDiagram.fixed" href="compas_tna.diagrams.ForceDiagram.fixed.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -534,7 +534,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="compas_tna.diagrams.ForceDiagram.html" class="nav-link">ForceDiagram</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">ForceDiagram.thickened</li>
+    <li class="breadcrumb-item active" aria-current="page">ForceDiagram.form_edge_attribute</li>
   </ul>
 </nav>
 </div>
@@ -551,43 +551,31 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="forcediagram-thickened">
-<h1>ForceDiagram.thickened</h1>
+  <section id="forcediagram-form-edge-attribute">
+<h1>ForceDiagram.form_edge_attribute</h1>
 <dl class="py method">
-<dt class="sig sig-object py" id="compas_tna.diagrams.ForceDiagram.thickened">
-<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">thickened</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">both</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Generate a thicknened mesh.</p>
-<dl class="field-list simple">
+<dt class="sig sig-object py" id="compas_tna.diagrams.ForceDiagram.form_edge_attribute">
+<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">form_edge_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Get or set the attribute value of the corresponding edge in the form diagam.</p>
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>thickness</strong><span class="classifier">float, optional</span></dt><dd><p>The mesh thickness.
-This should be a positive value.</p>
+<dd class="field-odd"><dl>
+<dt><strong>form</strong><span class="classifier"><a class="reference internal" href="compas_tna.diagrams.FormDiagram.html#compas_tna.diagrams.FormDiagram" title="compas_tna.diagrams.FormDiagram"><code class="xref py py-class docutils literal notranslate"><span class="pre">FormDiagram</span></code></a></span></dt><dd><p>The form diagram.</p>
 </dd>
-<dt><strong>both</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, the mesh is thickened on both sides of the original.
-Otherwise, the mesh is thickened on the side of the positive normal.</p>
+<dt><strong>edge</strong><span class="classifier">tuple[int, int]</span></dt><dd><p>The identifier of the edge.</p>
+</dd>
+<dt><strong>name</strong><span class="classifier">str</span></dt><dd><p>The name of the attribute.</p>
+</dd>
+<dt><strong>value</strong><span class="classifier">Any, optional</span></dt><dd><p>A new value.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt><a class="reference external" href="https://compas.dev/compas/latest/api/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a></dt><dd><p>The thickened mesh.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>ValueError</dt><dd><p>If <cite>thickness</cite> is not a positive number.</p>
-</dd>
+<dt>Any</dt><dd></dd>
 </dl>
 </dd>
 </dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">compas.datastructures</span> <span class="kn">import</span> <span class="n">Mesh</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_vertices_and_faces</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span><span class="o">.</span><span class="n">thickened</span><span class="p">()</span>  
-<span class="go">&lt;compas.datastructures.mesh.mesh.Mesh object at ...&gt;</span>
-</pre></div>
-</div>
 </dd></dl>
 
 </section>
@@ -613,7 +601,7 @@ Otherwise, the mesh is thickened on the side of the positive normal.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compas_tna.diagrams.ForceDiagram.thickened"><code class="docutils literal notranslate"><span class="pre">ForceDiagram.thickened()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compas_tna.diagrams.ForceDiagram.form_edge_attribute"><code class="docutils literal notranslate"><span class="pre">ForceDiagram.form_edge_attribute()</span></code></a></li>
 </ul>
   </nav></div>
 
