@@ -105,7 +105,9 @@ number of (real) edges: {}
 number of faces: {}
 vertex degree: {}/{}
 face degree: {}/{}
-""".format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
+""".format(
+            self.name, numv, nume, numf, vmin, vmax, fmin, fmax
+        )
 
     @classmethod
     def from_lines(

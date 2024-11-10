@@ -106,13 +106,8 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     # --------------------------------------------------------------------------
     # the target vectors
     # --------------------------------------------------------------------------
-    form_targets = [
-        [alpha * v[0] / length, alpha * v[1] / length] if length else [0, 0] for v, length in zip(uv, lengths)
-    ]
-    force_targets = [
-        [(1 - alpha) * v[0] / length, (1 - alpha) * v[1] / length] if length else [0, 0]
-        for v, length in zip(_uv, forces)
-    ]
+    form_targets = [[alpha * v[0] / length, alpha * v[1] / length] if length else [0, 0] for v, length in zip(uv, lengths)]
+    force_targets = [[(1 - alpha) * v[0] / length, (1 - alpha) * v[1] / length] if length else [0, 0] for v, length in zip(_uv, forces)]
     targets = [[a[0] + b[0], a[1] + b[1]] for a, b in zip(form_targets, force_targets)]
     # --------------------------------------------------------------------------
     # proper force bounds
