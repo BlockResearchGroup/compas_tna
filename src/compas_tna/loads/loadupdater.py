@@ -11,7 +11,7 @@ from compas.geometry import length_vector
 from compas.matrices import face_matrix
 
 
-class LoadUpdater(object):
+class LoadUpdater:
     """Class for constructing a callable for updating loads when geometry and selfweight change.
 
     Parameters

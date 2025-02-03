@@ -4,8 +4,6 @@ When working in Rhino, :class:`compas.scene.SceneObject`
 will automatically use the corresponding Rhino scene object for each TNA diagram type.
 """
 
-from __future__ import absolute_import
-
 from compas.plugins import plugin
 from compas.scene import register
 
