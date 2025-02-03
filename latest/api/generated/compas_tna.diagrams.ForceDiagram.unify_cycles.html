@@ -28,7 +28,7 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
 <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/css/compas.css?v=617b33e2" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=4c969af8" />
@@ -555,11 +555,21 @@ document.write(`
 <h1>ForceDiagram.unify_cycles</h1>
 <dl class="py method">
 <dt class="sig sig-object py" id="compas_tna.diagrams.ForceDiagram.unify_cycles">
-<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">unify_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">unify_cycles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Unify the cycles of the mesh.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
+<dt><strong>root</strong><span class="classifier">int, optional</span></dt><dd><p>The key of the root face.</p>
+</dd>
+<dt><strong>nmax</strong><span class="classifier">int, optional</span></dt><dd><p>The maximum number of neighboring faces to consider. If neither nmax nor max_distance is specified, all faces will be considered.</p>
+</dd>
+<dt><strong>max_distance</strong><span class="classifier">float, optional</span></dt><dd><p>The max_distance of the search sphere for neighboring faces. If neither nmax nor max_distance is specified, all faces will be considered.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
 <dt>None</dt><dd><p>The mesh is modified in place.</p>
 </dd>
 </dl>
