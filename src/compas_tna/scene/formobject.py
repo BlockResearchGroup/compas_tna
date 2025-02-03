@@ -12,14 +12,25 @@ class FormDiagramObject(MeshObject):
 
     """
 
-    def __init__(self, *args, **kwargs):
-        super(FormDiagramObject, self).__init__(*args, **kwargs)
-
-        self.vertexcolor = Color.white()
-        self.edgecolor = Color.black()
-        self.facecolor = Color.from_rgb255(210, 210, 210)
-
-        self.vertexsize = 0.3
+    def __init__(
+        self,
+        show_vertices=True,
+        show_edges=True,
+        show_faces=True,
+        vertexcolor=Color.white(),
+        edgecolor=Color.black(),
+        facecolor=Color.from_rgb255(210, 210, 210),
+        **kwargs,
+    ):
+        super().__init__(
+            show_vertices=show_vertices,
+            show_edges=show_edges,
+            show_faces=show_faces,
+            vertexcolor=vertexcolor,
+            edgecolor=edgecolor,
+            facecolor=facecolor,
+            **kwargs,
+        )
 
         self.vertexcolor_fixed = Color.blue()
         self.vertexcolor_support = Color.red()
@@ -42,8 +53,6 @@ class FormDiagramObject(MeshObject):
         self.tol_force = 1e-3
         self.tol_selfweight = 1e-3
 
-        self.show_vertices = True
-        self.show_edges = True
         self.show_selfweight = False
         self.show_loads = False
         self.show_reactions = False

@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Changed assignment of defaults in base scene object for Form Diagrams.
+* Changed assignment of defaults in base scene object for Force Diagrams.
+
 ### Removed
 
 

@@ -12,18 +12,25 @@ class ForceDiagramObject(MeshObject):
 
     """
 
-    def __init__(self, *args, **kwargs):
-        super(ForceDiagramObject, self).__init__(*args, **kwargs)
-
-        self.vertexcolor = Color.white()
-        self.edgecolor = Color.black()
-        self.facecolor = Color.from_rgb255(210, 210, 210)
-
-        self.show_vertices = True
-        self.show_edges = True
-        self.show_faces = False
-
-        self.vertexsize = 0.1
+    def __init__(
+        self,
+        show_vertices=True,
+        show_edges=True,
+        show_faces=False,
+        vertexcolor=Color.white(),
+        edgecolor=Color.black(),
+        facecolor=Color.from_rgb255(210, 210, 210),
+        **kwargs,
+    ):
+        super().__init__(
+            show_vertices=show_vertices,
+            show_edges=show_edges,
+            show_faces=show_faces,
+            vertexcolor=vertexcolor,
+            edgecolor=edgecolor,
+            facecolor=facecolor,
+            **kwargs,
+        )
 
     @property
     def diagram(self):
