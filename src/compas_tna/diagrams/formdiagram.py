@@ -7,13 +7,13 @@ from compas.geometry import Vector
 from compas.itertools import pairwise
 from compas_tna.diagrams import Diagram
 
+from .diagram_arch import create_arch_form_diagram
+
 # TODO: import from compas_pattern
 from .diagram_arch import create_linear_form_diagram
-from .diagram_arch import create_arch_form_diagram
 from .diagram_circular import create_circular_radial_form
 from .diagram_circular import create_circular_radial_spaced_form
 from .diagram_circular import create_circular_spiral_form
-from .diagram_rectangular import create_cross_diagonal
 from .diagram_rectangular import create_cross_form
 from .diagram_rectangular import create_cross_with_diagonal
 from .diagram_rectangular import create_fan_form
@@ -217,7 +217,7 @@ face degree: {}/{}
 
     @classmethod
     def create_fan_form(cls, xy_span=[[0.0, 10.0], [0.0, 10.0]], discretisation=10, supports="corners") -> "FormDiagram":
-        """Helper to construct a FormDiagram based on fan discretiastion with straight lines to the corners.
+        """Helper to construct a FormDiagram based on fan discretisation with straight lines to the corners.
 
         Parameters
         ----------
@@ -242,7 +242,7 @@ face degree: {}/{}
 
     @classmethod
     def create_parametric_form(cls, xy_span=[[0.0, 10.0], [0.0, 10.0]], discretisation=10, lambd=0.5, supports="corners") -> "FormDiagram":
-        """Helper to construct a FormDiagram envelop that includes fan and cross diagrams. The diagram is modified by the parameter lambda.
+        """Helper to construct a FormDiagram envelope that includes fan and cross diagrams. The diagram is modified by the parameter lambda.
 
         Parameters
         ----------
@@ -289,7 +289,7 @@ face degree: {}/{}
         mesh = create_cross_with_diagonal(xy_span=xy_span, discretisation=discretisation)
         form = cls.from_mesh(mesh)
         form.assign_support_type(supports)
-        
+
         return form
 
     @classmethod
@@ -314,7 +314,7 @@ face degree: {}/{}
         mesh = create_ortho_form(xy_span=xy_span, discretisation=discretisation)
         form = cls.from_mesh(mesh)
         form.assign_support_type(supports)
-        
+
         return form
 
     @classmethod
@@ -346,9 +346,7 @@ face degree: {}/{}
         All boundary vertices are considered as supported.
 
         """
-        mesh = create_circular_radial_form(
-            center=center, radius=radius, discretisation=discretisation, r_oculus=r_oculus, diagonal=diagonal, partial_diagonal=partial_diagonal
-        )
+        mesh = create_circular_radial_form(center=center, radius=radius, discretisation=discretisation, r_oculus=r_oculus, diagonal=diagonal, partial_diagonal=partial_diagonal)
         form = cls.from_mesh(mesh)
         form.assign_support_type("all")
         return form
@@ -455,21 +453,22 @@ face degree: {}/{}
 
     @classmethod
     def create_linear_form(cls, L: float = 2.0, x0: float = 0.0, discretisation: int = 100) -> "FormDiagram":
-        """Helper to create a arch linear form-diagram with equaly spaced (in 2D) nodes.
+        """Helper to create a arch linear form-diagram with equally spaced (in 2D) nodes.
 
         Parameters
         ----------
         L : float, optional
-            Span of the arch, by default 2.00
+            Span of the arch, by default 2.0
         x0 : float, optional
-            Initial coordiante of the arch, by default 0.0
+            Initial coordinate of the arch, by default 0.0
         discretisation : int, optional
             Numbers of nodes to be considered in the form diagram, by default 100
 
         Returns
         -------
-        :class:`~compas_tno.diagrams.FormDiagram`
+        :class:`~compas_tna.diagrams.FormDiagram`
             FormDiagram generated according to the parameters.
+
         Notes
         -----
         All boundary vertices are considered as supported.

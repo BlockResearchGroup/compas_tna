@@ -6,13 +6,10 @@ class Diagram(Mesh):
     """Base diagram implementing attributes shared between the form and force diagram."""
 
     def corner_vertices(self, tol=160):
-        """
-        Identify the corner vertices.
+        """Identify the corner vertices.
 
         Parameters
         ----------
-        mesh : Mesh
-            The mesh to analyze
         tol : float, optional
             The threshold value for the angle formed between two edges at a vertex
             for it to be considered a corner.

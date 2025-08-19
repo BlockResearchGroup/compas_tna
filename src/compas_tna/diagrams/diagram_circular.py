@@ -1,21 +1,10 @@
 import math
-from typing import TYPE_CHECKING
-from typing import Annotated
-from typing import Type
-from typing import Union
 
 from compas.datastructures import Mesh
 from compas.geometry import intersection_line_line_xy
 
 
-def create_circular_radial_form(
-    center=[5.0, 5.0],
-    radius=5.0,
-    discretisation=[8, 20],
-    r_oculus=0.0,
-    diagonal=False,
-    partial_diagonal=False,
-) -> Mesh:
+def create_circular_radial_form(center=[5.0, 5.0], radius=5.0, discretisation=[8, 20], r_oculus=0.0, diagonal=False, partial_diagonal=False) -> Mesh:
     """Construct a circular radial FormDiagram with hoops equally spaced in plan.
 
     Parameters
@@ -35,7 +24,7 @@ def create_circular_radial_form(
 
     Returns
     -------
-    :class:`~compas_tno.diagrams.FormDiagram`
+    Mesh
         The FormDiagram created.
 
     """
@@ -115,14 +104,7 @@ def create_circular_radial_form(
     return form
 
 
-def create_circular_radial_spaced_form(
-    center=[5.0, 5.0],
-    radius=5.0,
-    discretisation=[8, 20],
-    r_oculus=0.0,
-    diagonal=False,
-    partial_diagonal=False,
-) -> Mesh:
+def create_circular_radial_spaced_form(center=[5.0, 5.0], radius=5.0, discretisation=[8, 20], r_oculus=0.0, diagonal=False, partial_diagonal=False) -> Mesh:
     """Construct a circular radial FormDiagram with hoops not equally spaced in plan, but equally spaced with regards to the projection on a hemisphere.
 
     Parameters
@@ -142,7 +124,7 @@ def create_circular_radial_spaced_form(
 
     Returns
     -------
-    form : :class:`~compas_tno.diagrams.FormDiagram`
+    Mesh
         The FormDiagram created.
 
     """
@@ -182,7 +164,6 @@ def create_circular_radial_spaced_form(
                     ya = yc + (r_oculus + radius * math.cos((n_radial - nr) / n_radial * math.pi / 2)) * math.sin(theta * nc)
                     yb = yc + (r_oculus + radius * math.cos((n_radial - nr) / n_radial * math.pi / 2)) * math.sin(theta * (nc + 1))
 
-                    radius * math.cos((n_radial - (nr + 1)) / n_radial * math.pi / 2)
                     # Meridian Element i + 1
                     xa_ = xc + (r_oculus + radius * math.cos((n_radial - (nr + 1)) / n_radial * math.pi / 2)) * math.cos(theta * nc)
                     xb_ = xc + (r_oculus + radius * math.cos((n_radial - (nr + 1)) / n_radial * math.pi / 2)) * math.cos(theta * (nc + 1))
@@ -217,12 +198,7 @@ def create_circular_radial_spaced_form(
     return form
 
 
-def create_circular_spiral_form(
-    center=[5.0, 5.0],
-    radius=5.0,
-    discretisation=[8, 20],
-    r_oculus=0.0,
-) -> Mesh:
+def create_circular_spiral_form(center=[5.0, 5.0], radius=5.0, discretisation=[8, 20], r_oculus=0.0) -> Mesh:
     """Construct a circular radial FormDiagram with hoops not equally spaced in plan, but equally spaced with regards to the projection on a hemisphere.
 
     Parameters
@@ -238,7 +214,7 @@ def create_circular_spiral_form(
 
     Returns
     -------
-    :class:`~compas_tno.diagrams.FormDiagram`
+    Mesh
         The FormDiagram created.
 
     """

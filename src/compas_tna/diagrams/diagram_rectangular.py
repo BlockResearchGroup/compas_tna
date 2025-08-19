@@ -1,14 +1,13 @@
 import math
 
 from compas.datastructures import Mesh
-from compas.geometry import distance_point_point_xy
-from compas.geometry import mirror_points_line
-from compas.geometry import rotate_points_xy
-# from compas_tno.utilities import split_intersection_lines
 
+# from compas_tno.utilities import split_intersection_lines
 from compas.geometry import closest_point_in_cloud
 from compas.geometry import distance_point_point_xy
 from compas.geometry import intersection_segment_segment_xy
+from compas.geometry import mirror_points_line
+from compas.geometry import rotate_points_xy
 from compas.geometry import sort_points_xy
 
 
@@ -45,10 +44,12 @@ def append_mirrored_lines(line, list_, line_hor, line_ver):
     list_.append(mirror_b)
     list_.append(mirror_c)
 
+
 def is_point_in_cloud(point, cloud, tol=1e-6):
     if len(cloud) == 0:
         return False
     return closest_point_in_cloud(point, cloud)[0] < tol
+
 
 def split_intersection_lines(lines, tol=1e-6):
     """Split lines at their intersection
@@ -107,10 +108,7 @@ def split_intersection_lines(lines, tol=1e-6):
     return clean_lines
 
 
-def create_cross_form(
-    xy_span=[[0.0, 10.0], [0.0, 10.0]],
-    discretisation=10,
-) -> Mesh:
+def create_cross_form(xy_span=[[0.0, 10.0], [0.0, 10.0]], discretisation=10) -> Mesh:
     """Construct a FormDiagram based on cross discretiastion with orthogonal arrangement and diagonal.
 
     Parameters
@@ -122,11 +120,11 @@ def create_cross_form(
 
     Returns
     -------
-    :class:`~compas_tno.diagrams.FormDiagram`
+    Mesh
         The FormDiagram created.
 
     Notes
-    ----------------------
+    -----
     Position of the quadrants is as in the schema below:
 
         Q3
@@ -203,12 +201,8 @@ def create_cross_form(
     return form
 
 
-def create_cross_diagonal(
-    xy_span=[[0.0, 10.0], [0.0, 10.0]],
-    partial_bracing_modules=None,
-    discretisation=10,
-) -> Mesh:
-    """Construct a FormDiagram based on a mixture of cross and fan discretiastion
+def create_cross_diagonal(xy_span=[[0.0, 10.0], [0.0, 10.0]], partial_bracing_modules=None, discretisation=10) -> Mesh:
+    """Construct a FormDiagram based on a mixture of cross and fan discretisation
 
     Parameters
     ----------
@@ -221,7 +215,7 @@ def create_cross_diagonal(
 
     Returns
     -------
-    :class:`~compas_tno.diagrams.FormDiagram`
+    Mesh
         The FormDiagram created.
 
     """
@@ -307,11 +301,8 @@ def create_cross_diagonal(
     return form
 
 
-def create_cross_with_diagonal(
-    xy_span=[[0.0, 10.0], [0.0, 10.0]],
-    discretisation=10
-) -> Mesh:
-    """Construct a FormDiagram based on cross discretiastion with diagonals.
+def create_cross_with_diagonal(xy_span=[[0.0, 10.0], [0.0, 10.0]], discretisation=10) -> Mesh:
+    """Construct a FormDiagram based on cross discretisation with diagonals.
 
     Parameters
     ----------
@@ -389,11 +380,8 @@ def create_cross_with_diagonal(
     return form
 
 
-def create_fan_form(
-    xy_span=[[0.0, 10.0], [0.0, 10.0]],
-    discretisation=[10, 10]
-) -> Mesh:
-    """Helper to construct a FormDiagram based on fan discretiastion with straight lines to the corners.
+def create_fan_form(xy_span=[[0.0, 10.0], [0.0, 10.0]], discretisation=[10, 10]) -> Mesh:
+    """Helper to construct a FormDiagram based on fan discretisation with straight lines to the corners.
 
     Parameters
     ----------
@@ -496,10 +484,7 @@ def create_fan_form(
     return form
 
 
-def create_ortho_form(
-    xy_span=[[0.0, 10.0], [0.0, 10.0]],
-    discretisation=[10, 10]
-) -> Mesh:
+def create_ortho_form(xy_span=[[0.0, 10.0], [0.0, 10.0]], discretisation=[10, 10]) -> Mesh:
     """Helper to construct a FormDiagram based on a simple orthogonal discretisation.
 
     Parameters
@@ -549,24 +534,19 @@ def create_ortho_form(
                 p4 = (j + 1) * (division_x + 1) + i
                 face = [p1, p2, p3, p4, p1]
                 faces.append(face)
-                print(face)
 
     form = Mesh.from_vertices_and_faces(vertices, faces)
 
     return form
 
 
-def create_parametric_form(
-    xy_span=[[0.0, 10.0], [0.0, 10.0]],
-    discretisation=10,
-    lambd=0.5,
-) -> Mesh:
+def create_parametric_form(xy_span=[[0.0, 10.0], [0.0, 10.0]], discretisation=10, lambd=0.5) -> Mesh:
     """Create a parametric form diagram based on the inclination lambda of the arches
 
     Parameters
     ----------
     xy_span : [[float, float], [float, float]], optional
-        List with initial- and end-points of the vault, by default, by default [[0.0, 10.0], [0.0, 10.0]]
+        List with initial- and end-points of the vault, by default [[0.0, 10.0], [0.0, 10.0]]
     discretisation : int, optional
         Set the density of the grid in x and y directions, by default 10
     lambd : float, optional
@@ -580,7 +560,7 @@ def create_parametric_form(
         The FormDiagram created.
 
     Notes
-    ---------
+    -----
         Diagram implemented after `N. A. Nodargi et al., 2022 <https://doi.org/10.1016/j.engstruct.2022.114878>`_.
     """
     if 0.0 > lambd or lambd > 1.0:
@@ -588,10 +568,8 @@ def create_parametric_form(
 
     x_span = xy_span[0][1] - xy_span[0][0]
     y_span = xy_span[1][1] - xy_span[1][0]
-    is_retangular = False
 
     if abs(x_span - y_span) > 1e-6:
-        is_retangular = True
         y_span = x_span = 10.0
         x0, x1 = y0, y1 = 0.0, 10.0
     else:
