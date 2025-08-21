@@ -6,31 +6,32 @@ class Diagram(Mesh):
     """Base diagram implementing attributes shared between the form and force diagram."""
 
     def corner_vertices(self, tol=160):
-        """Identify the corner vertices.
+        """Identify the corner vertices on the boundary.
 
         Parameters
         ----------
         tol : float, optional
-            The threshold value for the angle formed between two edges at a vertex
-            for it to be considered a corner.
-            Vertices with smaller angles are considered a corner.
+            The threshold value for the angle in degrees formed between two edges
+            at a vertex on the boundary for it to be considered a corner.
+            Vertices with smaller angles than the threshold are considered a corner.
 
         Returns
         -------
-        list[int]
+        vertices : list[int]
+            The list of vertices filtered as corners.
 
         """
-        vkeys = []
-        for key in self.vertices_on_boundary():
-            if self.vertex_degree(key) == 2:
-                vkeys.append(key)
+        vertices = []
+        for vertex in self.vertices_on_boundary():
+            if self.vertex_degree(vertex) == 2:
+                vertices.append(vertex)
             else:
                 nbrs = []
-                for nkey in self.vertex_neighbors(key):
-                    if self.is_edge_on_boundary((key, nkey)):
-                        nbrs.append(nkey)
-                u = self.edge_vector((key, nbrs[0]))
-                v = self.edge_vector((key, nbrs[1]))
+                for nbr in self.vertex_neighbors(vertex):
+                    if self.is_edge_on_boundary((vertex, nbr)):
+                        nbrs.append(nbr)
+                u = self.edge_vector((vertex, nbrs[0]))
+                v = self.edge_vector((vertex, nbrs[1]))
                 if angle_vectors(u, v, deg=True) < tol:
-                    vkeys.append(key)
-        return vkeys
+                    vertices.append(vertex)
+        return vertices
