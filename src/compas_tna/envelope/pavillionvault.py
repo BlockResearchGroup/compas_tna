@@ -6,25 +6,21 @@ from numpy import zeros
 
 from compas.datastructures import Mesh
 from compas_tna.diagrams.diagram_rectangular import create_cross_mesh
+from compas_tna.envelope.envelope import Envelope
 
 
 def create_pavillionvault_envelope(
-    cls,
     x_span: tuple = (0.0, 10.0),
     y_span: tuple = (0.0, 10.0),
     thickness: float = 0.50,
     min_lb: float = 0.0,
     n: int = 100,
     spr_angle: float = 0.0,
-    expanded: bool = False,
-    rho: float = 25.0,
 ):
     """Create an envelope for a pavillion vault geometry with given parameters.
 
     Parameters
     ----------
-    cls : class
-        The Envelope class to use for creating the envelope.
     x_span : tuple, optional
         Span of the vault in x direction, by default (0.0, 10.0)
     y_span : tuple, optional
@@ -37,15 +33,15 @@ def create_pavillionvault_envelope(
         Number of vertices for the mesh, by default 100
     spr_angle : float, optional
         Springing angle, by default 0.0
-    expanded : bool, optional
-        If the extrados should extend beyond the floor plan, by default False
-    rho : float, optional
-        Density of the material in kN/m³, by default 25.0
 
     Returns
     -------
-    envelope : Envelope
-        The created envelope with intrados, extrados, and middle meshes.
+    intrados : Mesh
+        Intrados mesh
+    extrados : Mesh
+        Extrados mesh
+    middle : Mesh
+        Middle mesh
     """
     # Create base topology
     base_topology = create_cross_mesh(x_span=x_span, y_span=y_span, n=n)
@@ -53,9 +49,7 @@ def create_pavillionvault_envelope(
     xi, yi, _ = array(xyz0).transpose()
 
     # Create middle surface
-    zt = pavillionvault_middle_update(
-        xi, yi, x_span=x_span, y_span=y_span, spr_angle=spr_angle, tol=1e-6
-    )
+    zt = pavillionvault_middle_update(xi, yi, x_span=x_span, y_span=y_span, spr_angle=spr_angle, tol=1e-6)
     xyzt = array([xi, yi, zt.flatten()]).transpose()
     middle = Mesh.from_vertices_and_faces(xyzt, faces_i)
     middle.update_default_vertex_attributes(thickness=thickness)
@@ -77,21 +71,10 @@ def create_pavillionvault_envelope(
     extrados = Mesh.from_vertices_and_faces(xyzub, faces_i)
     intrados = Mesh.from_vertices_and_faces(xyzlb, faces_i)
 
-    # Create envelope using the class method
-    envelope = cls.from_meshes(intrados, extrados, middle)
-
-    # Set material properties
-    envelope.thickness = thickness
-    envelope.rho = rho
-
-    envelope.type = 'pavillionvault'
-
-    return envelope
+    return intrados, extrados, middle
 
 
-def pavillionvault_middle_update(
-    x, y, x_span=(0.0, 10.0), y_span=(0.0, 10.0), spr_angle=0.0, tol=1e-6
-):
+def pavillionvault_middle_update(x, y, x_span=(0.0, 10.0), y_span=(0.0, 10.0), spr_angle=0.0, tol=1e-6):
     """Update middle of a pavillion vault based in the parameters
 
     Parameters
@@ -135,21 +118,13 @@ def pavillionvault_middle_update(
 
     for i in range(len(x)):
         xi, yi = x[i], y[i]
-        if (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) <= (y1 - y0) - (
-            xi - x0
-        ) + tol:  # Q1
+        if (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) <= (y1 - y0) - (xi - x0) + tol:  # Q1
             z[i] = math.sqrt((ry) ** 2 - ((yi - y0) - ry) ** 2) - z_
-        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) >= (y1 - y0) - (
-            xi - x0
-        ) - tol:  # Q3
+        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) >= (y1 - y0) - (xi - x0) - tol:  # Q3
             z[i] = math.sqrt((ry) ** 2 - ((yi - y0) - ry) ** 2) - z_
-        elif (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) >= (y1 - y0) - (
-            xi - x0
-        ) - tol:  # Q2
+        elif (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) >= (y1 - y0) - (xi - x0) - tol:  # Q2
             z[i] = math.sqrt((rx) ** 2 - ((xi - x0) - rx) ** 2) - z_
-        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) <= (y1 - y0) - (
-            xi - x0
-        ) + tol:  # Q4
+        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) <= (y1 - y0) - (xi - x0) + tol:  # Q4
             z[i] = math.sqrt((rx) ** 2 - ((xi - x0) - rx) ** 2) - z_
         else:
             print("Error Q. (x,y) = ({0},{1})".format(xi, yi))
@@ -157,9 +132,7 @@ def pavillionvault_middle_update(
     return z
 
 
-def pavillionvault_ub_lb_update(
-    x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), spr_angle=0.0, tol=1e-6
-):
+def pavillionvault_ub_lb_update(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), spr_angle=0.0, tol=1e-6):
     """Update upper and lower bounds of a pavillionvault based in the parameters
 
     Parameters
@@ -225,27 +198,19 @@ def pavillionvault_ub_lb_update(
         intrados_null = False
         if yi > y1_lb or xi > x1_lb or xi < x0_lb or yi < y0_lb:
             intrados_null = True
-        if (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) <= (y1 - y0) - (
-            xi - x0
-        ) + tol:  # Q1
+        if (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) <= (y1 - y0) - (xi - x0) + tol:  # Q1
             ub[i] = math.sqrt((ry_ub) ** 2 - ((yi - y0_ub) - ry_ub) ** 2) - z_
             if not intrados_null:
                 lb[i] = math.sqrt((ry_lb) ** 2 - ((yi - y0_lb) - ry_lb) ** 2) - z_
-        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) >= (y1 - y0) - (
-            xi - x0
-        ) - tol:  # Q3
+        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) >= (y1 - y0) - (xi - x0) - tol:  # Q3
             ub[i] = math.sqrt((ry_ub) ** 2 - ((yi - y0_ub) - ry_ub) ** 2) - z_
             if not intrados_null:
                 lb[i] = math.sqrt((ry_lb) ** 2 - ((yi - y0_lb) - ry_lb) ** 2) - z_
-        elif (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) >= (y1 - y0) - (
-            xi - x0
-        ) - tol:  # Q2
+        elif (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) >= (y1 - y0) - (xi - x0) - tol:  # Q2
             ub[i] = math.sqrt((rx_ub) ** 2 - ((xi - x0_ub) - rx_ub) ** 2) - z_
             if not intrados_null:
                 lb[i] = math.sqrt((rx_lb) ** 2 - ((xi - x0_lb) - rx_lb) ** 2) - z_
-        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) <= (y1 - y0) - (
-            xi - x0
-        ) + tol:  # Q4
+        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) <= (y1 - y0) - (xi - x0) + tol:  # Q4
             ub[i] = math.sqrt((rx_ub) ** 2 - ((xi - x0_ub) - rx_ub) ** 2) - z_
             if not intrados_null:
                 lb[i] = math.sqrt((rx_lb) ** 2 - ((xi - x0_lb) - rx_lb) ** 2) - z_
@@ -255,9 +220,7 @@ def pavillionvault_ub_lb_update(
     return ub, lb
 
 
-def pavillionvault_dub_dlb(
-    x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6
-):
+def pavillionvault_dub_dlb(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
     """Computes the sensitivities of upper and lower bounds in the x, y coordinates and thickness specified.
 
     Parameters
@@ -313,33 +276,25 @@ def pavillionvault_dub_dlb(
         intrados_null = False
         if yi > y1_lb or xi > x1_lb or xi < x0_lb or yi < y0_lb:
             intrados_null = True
-        if (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) <= (y1 - y0) - (
-            xi - x0
-        ) + tol:  # Q1
+        if (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) <= (y1 - y0) - (xi - x0) + tol:  # Q1
             ub[i] = math.sqrt((ry_ub) ** 2 - ((yi - y0_ub) - ry_ub) ** 2)
             dub[i] = 1 / 2 * ry_ub / ub[i]
             if not intrados_null:
                 lb[i] = math.sqrt((ry_lb) ** 2 - ((yi - y0_lb) - ry_lb) ** 2)
                 dlb[i] = -1 / 2 * ry_lb / lb[i]
-        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) >= (y1 - y0) - (
-            xi - x0
-        ) - tol:  # Q3
+        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) >= (y1 - y0) - (xi - x0) - tol:  # Q3
             ub[i] = math.sqrt((ry_ub) ** 2 - ((yi - y0_ub) - ry_ub) ** 2)
             dub[i] = 1 / 2 * ry_ub / ub[i]
             if not intrados_null:
                 lb[i] = math.sqrt((ry_lb) ** 2 - ((yi - y0_lb) - ry_lb) ** 2)
                 dlb[i] = -1 / 2 * ry_lb / lb[i]
-        elif (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) >= (y1 - y0) - (
-            xi - x0
-        ) - tol:  # Q2
+        elif (yi - y0) <= y1 / x1 * (xi - x0) + tol and (yi - y0) >= (y1 - y0) - (xi - x0) - tol:  # Q2
             ub[i] = math.sqrt((rx_ub) ** 2 - ((xi - x0_ub) - rx_ub) ** 2)
             dub[i] = 1 / 2 * rx_ub / ub[i]
             if not intrados_null:
                 lb[i] = math.sqrt((rx_lb) ** 2 - ((xi - x0_lb) - rx_lb) ** 2)
                 dlb[i] = -1 / 2 * rx_lb / lb[i]
-        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) <= (y1 - y0) - (
-            xi - x0
-        ) + tol:  # Q4
+        elif (yi - y0) >= y1 / x1 * (xi - x0) - tol and (yi - y0) <= (y1 - y0) - (xi - x0) + tol:  # Q4
             ub[i] = math.sqrt((rx_ub) ** 2 - ((xi - x0_ub) - rx_ub) ** 2)
             dub[i] = 1 / 2 * rx_ub / ub[i]
             if not intrados_null:
@@ -435,3 +390,72 @@ def pavillionvault_db(x, y, thk, fixed, x_span=(0.0, 10.0), y_span=(0.0, 10.0)):
             db[i, :] += [0, +1 / 2]
 
     return abs(db)
+
+
+class PavillionVaultEnvelope(Envelope):
+    def __init__(
+        self,
+        x_span: tuple = (0.0, 10.0),
+        y_span: tuple = (0.0, 10.0),
+        thickness: float = 0.50,
+        min_lb: float = 0.0,
+        n: int = 100,
+        spr_angle: float = 0.0,
+        **kwargs,
+    ):
+        super().__init__(thickness=thickness, **kwargs)
+        self.x_span = x_span
+        self.y_span = y_span
+        self.min_lb = min_lb
+        self.n = n
+        self.spr_angle = spr_angle
+
+        intrados, extrados, middle = create_pavillionvault_envelope(x_span=x_span, y_span=y_span, thickness=thickness, min_lb=min_lb, n=n, spr_angle=spr_angle)
+
+        self.intrados = intrados
+        self.extrados = extrados
+        self.middle = middle
+
+    @property
+    def __data__(self):
+        data = super().__data__
+        data["x_span"] = self.x_span
+        data["y_span"] = self.y_span
+        data["min_lb"] = self.min_lb
+        data["n"] = self.n
+        data["spr_angle"] = self.spr_angle
+        return data
+
+    def __str__(self):
+        return f"PavillionVaultEnvelope(name={self.name})"
+
+    def callable_middle(self, x, y):
+        return pavillionvault_middle_update(x, y, x_span=self.x_span, y_span=self.y_span, spr_angle=self.spr_angle, tol=1e-6)
+
+    def callable_ub_lb(self, x, y, thickness):
+        if thickness is None:
+            thickness = self.thickness
+        else:
+            self.thickness = thickness
+        return pavillionvault_ub_lb_update(x, y, thickness, self.min_lb, x_span=self.x_span, y_span=self.y_span, spr_angle=self.spr_angle, tol=1e-6)
+
+    def callable_dub_dlb(self, x, y, thickness):
+        if thickness is None:
+            thickness = self.thickness
+        else:
+            self.thickness = thickness
+        return pavillionvault_dub_dlb(x, y, thickness, self.min_lb, x_span=self.x_span, y_span=self.y_span, tol=1e-6)
+
+    def callable_bound_react(self, x, y, thickness, fixed):
+        if thickness is None:
+            thickness = self.thickness
+        else:
+            self.thickness = thickness
+        return pavillionvault_bound_react_update(x, y, thickness, fixed, x_span=self.x_span, y_span=self.y_span, tol=1e-6)
+
+    def callable_db(self, x, y, thickness, fixed):
+        if thickness is None:
+            thickness = self.thickness
+        else:
+            self.thickness = thickness
+        return pavillionvault_db(x, y, thickness, fixed, x_span=self.x_span, y_span=self.y_span, tol=1e-6)

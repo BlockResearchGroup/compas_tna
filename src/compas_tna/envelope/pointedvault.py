@@ -6,10 +6,10 @@ from numpy import zeros
 
 from compas.datastructures import Mesh
 from compas_tna.diagrams.diagram_rectangular import create_cross_mesh
+from compas_tna.envelope.envelope import Envelope
 
 
 def create_pointedvault_envelope(
-    cls,
     x_span: tuple = (0.0, 10.0),
     y_span: tuple = (0.0, 10.0),
     thickness: float = 0.50,
@@ -18,7 +18,6 @@ def create_pointedvault_envelope(
     hc: float = 8.0,
     he: list = None,
     hm: list = None,
-    rho: float = 25.0,
 ):
     """Create an envelope for a pointed cross vault geometry with given parameters.
 
@@ -56,9 +55,7 @@ def create_pointedvault_envelope(
     xi, yi, _ = array(xyz0).transpose()
 
     # Create middle surface
-    zt = pointedvault_middle_update(
-        xi, yi, min_lb, x_span=x_span, y_span=y_span, hc=hc, he=he, hm=hm, tol=1e-6
-    )
+    zt = pointedvault_middle_update(xi, yi, min_lb, x_span=x_span, y_span=y_span, hc=hc, he=he, hm=hm, tol=1e-6)
     xyzt = array([xi, yi, zt.flatten()]).transpose()
     middle = Mesh.from_vertices_and_faces(xyzt, faces_i)
     middle.update_default_vertex_attributes(thickness=thickness)
@@ -82,16 +79,7 @@ def create_pointedvault_envelope(
     extrados = Mesh.from_vertices_and_faces(xyzub, faces_i)
     intrados = Mesh.from_vertices_and_faces(xyzlb, faces_i)
 
-    # Create envelope using the class method
-    envelope = cls.from_meshes(intrados, extrados, middle)
-
-    # Set material properties
-    envelope.thickness = thickness
-    envelope.rho = rho
-
-    envelope.type = 'pointedvault'
-
-    return envelope
+    return intrados, extrados, middle
 
 
 def pointedvault_middle_update(
@@ -147,62 +135,41 @@ def pointedvault_middle_update(
         h3, k3, r3 = _circle_3points_xy([y0, he[3]], [(y1 + y0) / 2, hc], [y1, he[2]])
         h4, k4, r4 = h3, k3, r3
     elif hm and he:
-        h1, k1, r1 = _circle_3points_xy(
-            [(x1 + x0) / 2, hc], [3 * (x1 + x0) / 4, hm[0]], [x1, he[0]]
-        )
-        h2, k2, r2 = _circle_3points_xy(
-            [(x1 + x0) / 2, hc], [1 * (x1 + x0) / 4, hm[1]], [x0, he[1]]
-        )
-        h3, k3, r3 = _circle_3points_xy(
-            [(y1 + y0) / 2, hc], [3 * (y1 + y0) / 4, hm[2]], [y1, he[2]]
-        )
-        h4, k4, r4 = _circle_3points_xy(
-            [(y1 + y0) / 2, hc], [1 * (y1 + y0) / 4, hm[3]], [y0, he[3]]
-        )
+        h1, k1, r1 = _circle_3points_xy([(x1 + x0) / 2, hc], [3 * (x1 + x0) / 4, hm[0]], [x1, he[0]])
+        h2, k2, r2 = _circle_3points_xy([(x1 + x0) / 2, hc], [1 * (x1 + x0) / 4, hm[1]], [x0, he[1]])
+        h3, k3, r3 = _circle_3points_xy([(y1 + y0) / 2, hc], [3 * (y1 + y0) / 4, hm[2]], [y1, he[2]])
+        h4, k4, r4 = _circle_3points_xy([(y1 + y0) / 2, hc], [1 * (y1 + y0) / 4, hm[3]], [y0, he[3]])
 
     middle = zeros((len(x), 1))
 
     for i in range(len(x)):
         xi, yi = x[i], y[i]
 
-        if (
-            yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-            and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-        ):  # Q1
+        if yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol:  # Q1
             # Equation (xi - hx) ** 2 + (hi - kx) ** 2 = rx **2 to find the height of the pointed part (middle of quadrant) with that height one find the equivalent radius
             if he:
                 hi = k1 + math.sqrt(r1**2 - (xi - h1) ** 2)
             else:
                 hi = hc
-            ri = _find_r_given_h_l(
-                hi, ly
-            )  # This in the equation ri ** 2 =  (xi - xc_) ** 2 + (zi - zc_) ** 2  -> zc = 0.0 and xc_ = (x0 + x1)/2
+            ri = _find_r_given_h_l(hi, ly)  # This in the equation ri ** 2 =  (xi - xc_) ** 2 + (zi - zc_) ** 2  -> zc = 0.0 and xc_ = (x0 + x1)/2
             if yi <= (y1 + y0) / 2:
                 zi = _sqrt((ri) ** 2 - (yi - (y0 + ri)) ** 2)
             else:
                 zi = _sqrt((ri) ** 2 - (yi - (y1 - ri)) ** 2)
 
-        elif (
-            yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-            and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-        ):  # Q3
+        elif yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol:  # Q3
             # Equation (xi - hy) ** 2 + (hi - ky) ** 2 = ry **2 to find the height of the pointed part (middle of quadrant) with that height one find the equivalent radius
             if he:
                 hi = k3 + math.sqrt(r3**2 - (yi - h3) ** 2)
             else:
                 hi = hc
-            ri = _find_r_given_h_l(
-                hi, lx
-            )  # This in the equation ri ** 2 =  (xi - xc_) ** 2 + (zi - zc_) ** 2  -> zc = 0.0 and xc_ = (x0 + x1)/2
+            ri = _find_r_given_h_l(hi, lx)  # This in the equation ri ** 2 =  (xi - xc_) ** 2 + (zi - zc_) ** 2  -> zc = 0.0 and xc_ = (x0 + x1)/2
             if xi <= (x0 + x1) / 2:
                 zi = _sqrt((ri) ** 2 - (xi - (x0 + ri)) ** 2)
             else:
                 zi = _sqrt((ri) ** 2 - (xi - (x1 - ri)) ** 2)
 
-        elif (
-            yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-            and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-        ):  # Q2
+        elif yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol:  # Q2
             if he:
                 hi = k2 + math.sqrt(r2**2 - (xi - h2) ** 2)
             else:
@@ -213,10 +180,7 @@ def pointedvault_middle_update(
             else:
                 zi = _sqrt((ri) ** 2 - (yi - (y1 - ri)) ** 2)
 
-        elif (
-            yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-            and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-        ):  # Q4
+        elif yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol:  # Q4
             if he:
                 hi = k4 + math.sqrt(r4**2 - (yi - h4) ** 2)
             else:
@@ -303,7 +267,6 @@ def pointedvault_ub_lb_update(
         raise NotImplementedError()
 
     if he and hm is None:
-
         h1, k1, r1 = _circle_3points_xy([x0, he[1]], [(x1 + x0) / 2, hc], [x1, he[0]])
         h2, k2, r2 = h1, k1, r1
         h3, k3, r3 = _circle_3points_xy([y0, he[3]], [(y1 + y0) / 2, hc], [y1, he[2]])
@@ -315,10 +278,7 @@ def pointedvault_ub_lb_update(
     for i in range(len(x)):
         xi, yi = x[i], y[i]
 
-        if (
-            yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-            and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-        ):  # Q1
+        if yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol:  # Q1
             if he:
                 hi = k1 + math.sqrt(r1**2 - (xi - h1) ** 2)
             else:
@@ -334,10 +294,7 @@ def pointedvault_ub_lb_update(
                 ub[i] = _sqrt((ri_ub) ** 2 - (yi - (y1 - ri)) ** 2)
                 lb[i] = _sqrt((ri_lb) ** 2 - (yi - (y1 - ri)) ** 2)
 
-        elif (
-            yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-            and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-        ):  # Q3
+        elif yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol:  # Q3
             if he:
                 hi = k3 + math.sqrt(r3**2 - (yi - h3) ** 2)
             else:
@@ -352,10 +309,7 @@ def pointedvault_ub_lb_update(
                 ub[i] = _sqrt((ri_ub) ** 2 - (xi - (x1 - ri)) ** 2)
                 lb[i] = _sqrt((ri_lb) ** 2 - (xi - (x1 - ri)) ** 2)
 
-        elif (
-            yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-            and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-        ):  # Q2
+        elif yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol:  # Q2
             if he:
                 hi = k2 + math.sqrt(r2**2 - (xi - h2) ** 2)
             else:
@@ -370,10 +324,7 @@ def pointedvault_ub_lb_update(
                 ub[i] = _sqrt((ri_ub) ** 2 - (yi - (y1 - ri)) ** 2)
                 lb[i] = _sqrt((ri_lb) ** 2 - (yi - (y1 - ri)) ** 2)
 
-        elif (
-            yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-            and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-        ):  # Q4
+        elif yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol:  # Q4
             if he:
                 hi = k4 + math.sqrt(r4**2 - (yi - h4) ** 2)
             else:
@@ -390,9 +341,7 @@ def pointedvault_ub_lb_update(
         else:
             print("Vertex did not belong to any Q. (x,y) = ({0},{1})".format(xi, yi))
 
-        if ((yi) > y1_lb and ((xi) > x1_lb or (xi) < x0_lb)) or (
-            (yi) < y0_lb and ((xi) > x1_lb or (xi) < x0_lb)
-        ):
+        if ((yi) > y1_lb and ((xi) > x1_lb or (xi) < x0_lb)) or ((yi) < y0_lb and ((xi) > x1_lb or (xi) < x0_lb)):
             lb[i] = -1 * min_lb
 
     return ub, lb
@@ -484,10 +433,7 @@ def pointedvault_dub_dlb(
     for i in range(len(x)):
         xi, yi = x[i], y[i]
 
-        if (
-            yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-            and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-        ):  # Q1
+        if yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol:  # Q1
             if he:
                 hi = k1 + math.sqrt(r1**2 - (xi - h1) ** 2)
             else:
@@ -504,10 +450,7 @@ def pointedvault_dub_dlb(
             dub[i] = 1 / 2 * ri_ub / ub[i]
             dlb[i] = -1 / 2 * ri_lb / lb[i]
 
-        elif (
-            yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-            and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-        ):  # Q3
+        elif yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol and yi >= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) - tol:  # Q3
             if he:
                 hi = k3 + math.sqrt(r3**2 - (yi - h3) ** 2)
             else:
@@ -524,10 +467,7 @@ def pointedvault_dub_dlb(
             dub[i] = 1 / 2 * ri_ub / ub[i]
             dlb[i] = -1 / 2 * ri_lb / lb[i]
 
-        elif (
-            yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol
-            and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-        ):  # Q2
+        elif yi >= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) - tol and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol:  # Q2
             if he:
                 hi = k2 + math.sqrt(r2**2 - (xi - h2) ** 2)
             else:
@@ -544,10 +484,7 @@ def pointedvault_dub_dlb(
             dub[i] = 1 / 2 * ri_ub / ub[i]
             dlb[i] = -1 / 2 * ri_lb / lb[i]
 
-        elif (
-            yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-            and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol
-        ):  # Q4
+        elif yi <= y0 + (y1 - y0) / (x1 - x0) * (xi - x0) + tol and yi <= y1 - (y1 - y0) / (x1 - x0) * (xi - x0) + tol:  # Q4
             if he:
                 hi = k4 + math.sqrt(r4**2 - (yi - h4) ** 2)
             else:
@@ -566,9 +503,7 @@ def pointedvault_dub_dlb(
         else:
             print("Vertex did not belong to any Q. (x,y) = ({0},{1})".format(xi, yi))
 
-        if ((yi) > y1_lb and ((xi) > x1_lb or (xi) < x0_lb)) or (
-            (yi) < y0_lb and ((xi) > x1_lb or (xi) < x0_lb)
-        ):
+        if ((yi) > y1_lb and ((xi) > x1_lb or (xi) < x0_lb)) or ((yi) < y0_lb and ((xi) > x1_lb or (xi) < x0_lb)):
             lb[i] = -1 * min_lb
             dlb[i] = 0.0
 
@@ -606,6 +541,7 @@ def pointedvault_db(
     """Compute the sensitivities of the bounds on the reaction vector of the pointed cross vault."""
     pass
 
+
 def _find_r_given_h_l(h, length):
     r = h**2 / length + length / 4
 
@@ -634,12 +570,8 @@ def _circle_3points_xy(p1, p2, p3):
     sx21 = x2**2 - x1**2
     sz21 = z2**2 - z1**2
 
-    f = ((sx13) * (x12) + (sz13) * (x12) + (sx21) * (x13) + (sz21) * (x13)) / (
-        2 * ((z31) * (x12) - (z21) * (x13))
-    )
-    g = ((sx13) * (z12) + (sz13) * (z12) + (sx21) * (z13) + (sz21) * (z13)) / (
-        2 * ((x31) * (z12) - (x21) * (z13))
-    )
+    f = ((sx13) * (x12) + (sz13) * (x12) + (sx21) * (x13) + (sz21) * (x13)) / (2 * ((z31) * (x12) - (z21) * (x13)))
+    g = ((sx13) * (z12) + (sz13) * (z12) + (sx21) * (z13) + (sz21) * (z13)) / (2 * ((x31) * (z12) - (x21) * (z13)))
     c = -(x1**2) - z1**2 - 2 * g * x1 - 2 * f * z1
     h = -g
     k = -f
@@ -658,3 +590,86 @@ def _sqrt(x):
         else:
             sqrt_x = 0.0
     return sqrt_x
+
+
+class PointedVaultEnvelope(Envelope):
+    def __init__(
+        self,
+        x_span: tuple = (0.0, 10.0),
+        y_span: tuple = (0.0, 10.0),
+        thickness: float = 0.50,
+        min_lb: float = 0.0,
+        n: int = 100,
+        hc: float = 5.0,
+        he: list = None,
+        hm: list = None,
+        **kwargs,
+    ):
+        super().__init__(thickness=thickness, **kwargs)
+        self.x_span = x_span
+        self.y_span = y_span
+        self.min_lb = min_lb
+        self.n = n
+        self.hc = hc
+        self.he = he
+        self.hm = hm
+
+        intrados, extrados, middle = create_pointedvault_envelope(
+            x_span=x_span,
+            y_span=y_span,
+            thickness=thickness,
+            min_lb=min_lb,
+            n=n,
+            hc=hc,
+            he=he,
+            hm=hm,
+        )
+        self.intrados = intrados
+        self.extrados = extrados
+        self.middle = middle
+
+    @property
+    def __data__(self):
+        data = super().__data__
+        data["x_span"] = self.x_span
+        data["y_span"] = self.y_span
+        data["min_lb"] = self.min_lb
+        data["n"] = self.n
+        data["hc"] = self.hc
+        data["he"] = self.he
+        data["hm"] = self.hm
+        return data
+
+    def __str__(self):
+        return f"PointedVaultEnvelope(name={self.name})"
+
+    def callable_middle(self, x, y):
+        return pointedvault_middle_update(x, y, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
+
+    def callable_ub_lb(self, x, y, thickness):
+        if thickness is None:
+            thickness = self.thickness
+        else:
+            self.thickness = thickness
+        return pointedvault_ub_lb_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
+
+    def callable_dub_dlb(self, x, y, thickness):
+        if thickness is None:
+            thickness = self.thickness
+        else:
+            self.thickness = thickness
+        return pointedvault_dub_dlb(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
+
+    def callable_bound_react(self, x, y, thickness, fixed):
+        if thickness is None:
+            thickness = self.thickness
+        else:
+            self.thickness = thickness
+        return pointedvault_bound_react_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
+
+    def callable_db(self, x, y, thickness, fixed):
+        if thickness is None:
+            thickness = self.thickness
+        else:
+            self.thickness = thickness
+        return pointedvault_db(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)

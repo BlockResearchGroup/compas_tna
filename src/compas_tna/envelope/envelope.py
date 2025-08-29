@@ -1,17 +1,13 @@
-from typing import Optional, Type, Callable
+import math
+from typing import Optional
+
+import numpy as np
 from numpy import asarray
 from scipy.interpolate import griddata
-import math
-import numpy as np
 
 from compas.data import Data
 from compas.datastructures import Mesh
 from compas_tna.diagrams import FormDiagram
-
-from .crossvault import create_crossvault_envelope
-from .dome import create_dome_envelope
-from .pavillionvault import create_pavillionvault_envelope
-from .pointedvault import create_pointedvault_envelope
 
 
 # TODO: What if intrados and extrados are surfaces?
@@ -44,17 +40,13 @@ def interpolate_middle_mesh(intrados: Mesh, extrados: Mesh) -> Mesh:
     middle_xy = asarray(middle.vertices_attributes("xy"))
 
     # Interpolate Z coordinates from both surfaces
-    zi = griddata(
-        intrados_points[:, :2], intrados_points[:, 2], middle_xy, method='linear'
-    )
-    ze = griddata(
-        extrados_points[:, :2], extrados_points[:, 2], middle_xy, method='linear'
-    )
+    zi = griddata(intrados_points[:, :2], intrados_points[:, 2], middle_xy, method="linear")
+    ze = griddata(extrados_points[:, :2], extrados_points[:, 2], middle_xy, method="linear")
 
     # First loop: set middle Z as average
     for i, key in enumerate(middle.vertices()):
         middle_z = (zi[i] + ze[i]) / 2.0
-        middle.vertex_attribute(key, 'z', middle_z)
+        middle.vertex_attribute(key, "z", middle_z)
 
     # Second loop: calculate and set thickness using correct normals
     for i, key in enumerate(middle.vertices()):
@@ -64,7 +56,7 @@ def interpolate_middle_mesh(intrados: Mesh, extrados: Mesh) -> Mesh:
             thickness = abs(z_diff) * abs(nz)
         else:
             thickness = abs(z_diff)
-        middle.vertex_attribute(key, 'thickness', thickness)
+        middle.vertex_attribute(key, "thickness", thickness)
 
     return middle
 
@@ -99,7 +91,7 @@ def offset_from_middle(middle: Mesh, fixed_xy: bool = True) -> tuple[Mesh, Mesh]
         nx, ny, nz = middle.vertex_normal(key)
 
         # Get thickness for this specific vertex (should be normal-based)
-        thickness = middle.vertex_attribute(key, 'thickness')
+        thickness = middle.vertex_attribute(key, "thickness")
         if thickness is None:
             thickness = 0.5
         half_thick = 0.5 * thickness
@@ -107,24 +99,22 @@ def offset_from_middle(middle: Mesh, fixed_xy: bool = True) -> tuple[Mesh, Mesh]
         if fixed_xy:
             # Prevent division by zero for horizontal normals
             if abs(nz) < 1e-8:
-                raise ValueError(
-                    f"Normal at vertex {key} is (almost) horizontal: {nx, ny, nz}"
-                )
+                raise ValueError(f"Normal at vertex {key} is (almost) horizontal: {nx, ny, nz}")
             dz = half_thick / nz
             extrados_z = z + dz
             intrados_z = z - dz
-            extrados.vertex_attribute(key, 'z', extrados_z)
-            intrados.vertex_attribute(key, 'z', intrados_z)
+            extrados.vertex_attribute(key, "z", extrados_z)
+            intrados.vertex_attribute(key, "z", intrados_z)
         else:
             # Full 3D normal offset - this is the most accurate for curved surfaces
             extrados.vertex_attributes(
                 key,
-                'xyz',
+                "xyz",
                 [x + half_thick * nx, y + half_thick * ny, z + half_thick * nz],
             )
             intrados.vertex_attributes(
                 key,
-                'xyz',
+                "xyz",
                 [x - half_thick * nx, y - half_thick * ny, z - half_thick * nz],
             )
 
@@ -155,14 +145,12 @@ def project_mesh_to_target_vertical(mesh: Mesh, target: Mesh) -> None:
         point = mesh.vertex_point(vertex)
 
         # Find the closest target vertex in XY plane
-        min_distance = float('inf')
+        min_distance = float("inf")
         closest_z = point.z
 
         for target_point in target_points:
             # Calculate XY distance (ignore Z)
-            xy_distance = (
-                (point.x - target_point.x) ** 2 + (point.y - target_point.y) ** 2
-            ) ** 0.5
+            xy_distance = ((point.x - target_point.x) ** 2 + (point.y - target_point.y) ** 2) ** 0.5
 
             if xy_distance < min_distance:
                 min_distance = xy_distance
@@ -174,9 +162,7 @@ def project_mesh_to_target_vertical(mesh: Mesh, target: Mesh) -> None:
         mesh.vertex_attributes(vertex, "xyz", new_point)
 
 
-def pattern_inverse_height_thickness(
-    pattern: Mesh, tmin: Optional[float] = None, tmax: Optional[float] = None
-) -> None:
+def pattern_inverse_height_thickness(pattern: Mesh, tmin: Optional[float] = None, tmax: Optional[float] = None) -> None:
     """Set variable thickness based on inverse height.
 
     Parameters
@@ -218,28 +204,34 @@ def pattern_inverse_height_thickness(
 class Envelope(Data):
     """Pure geometric envelope representing masonry structure boundaries."""
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self, intrados: Mesh = None, extrados: Mesh = None, middle: Mesh = None, fill: Mesh = None, rho: float = 20.0, thickness: float = 0.5, **kwargs):
+        super().__init__(**kwargs)
 
-        # Core geometric surfaces (required)
-        self.intrados: Optional[Mesh] = None
-        self.extrados: Optional[Mesh] = None
-        self.middle: Optional[Mesh] = None
+        # # Core geometric surfaces (required - already in BaseEnvelope)
+        self.intrados = intrados
+        self.extrados = extrados
+        self.middle = middle
+        self.fill = fill
+        self.rho = rho
 
-        # Material properties
-        self._thickness = 0.5
-        self._rho = 20.0
+        # Thickness property
+        self._thickness = thickness
 
         # Computed properties (cached)
         self._area = 0.0
         self._volume = 0.0
         self._total_selfweight = 0.0
 
-        # Optional fill surface
-        self.fill: Optional[Mesh] = None
-
-        # Optional template to be used latter in the optimization process
-        self.type: Optional[str] = None
+    @property
+    def __data__(self):
+        data = {}
+        data["intrados"] = self.intrados
+        data["extrados"] = self.extrados
+        data["middle"] = self.middle
+        data["fill"] = self.fill
+        data["rho"] = self.rho
+        data["thickness"] = self._thickness
+        return data
 
     def __str__(self):
         return f"Envelope(name={self.name})"
@@ -249,9 +241,7 @@ class Envelope(Data):
     # =============================================================================
 
     @classmethod
-    def from_meshes(
-        cls, intrados: Mesh, extrados: Mesh, middle: Optional[Mesh] = None
-    ) -> "Envelope":
+    def from_meshes(cls, intrados: Mesh, extrados: Mesh, middle: Optional[Mesh] = None) -> "Envelope":
         """Construct an envelope from intrados and extrados meshes.
 
         Parameters
@@ -279,9 +269,7 @@ class Envelope(Data):
         return envelope
 
     @classmethod
-    def from_formdiagram(
-        cls, formdiagram: FormDiagram, thickness: Optional[float] = None
-    ) -> "Envelope":
+    def from_formdiagram(cls, formdiagram: FormDiagram, thickness: Optional[float] = None) -> "Envelope":
         """Construct an envelope from a FormDiagram with specified thickness.
 
         Parameters
@@ -299,9 +287,7 @@ class Envelope(Data):
         return cls.from_middle_mesh(formdiagram, thickness)
 
     @classmethod
-    def from_middle_mesh(
-        cls, mesh: Mesh, thickness: Optional[float] = None
-    ) -> "Envelope":
+    def from_middle_mesh(cls, mesh: Mesh, thickness: Optional[float] = None) -> "Envelope":
         """Construct an envelope from a mesh with specified thickness.
 
         Parameters
@@ -330,170 +316,162 @@ class Envelope(Data):
 
         return envelope
 
-    @classmethod
-    def from_crossvault(
-        cls,
-        x_span: tuple[float, float] = (0.0, 10.0),
-        y_span: tuple[float, float] = (0.0, 10.0),
-        thickness: float = 0.50,
-        min_lb: float = 0.0,
-        n: int = 100,
-        rho: float = 25.0,
-    ) -> "Envelope":
-        """Construct an envelope from a crossvault.
+    # @classmethod
+    # def from_crossvault(
+    #     cls,
+    #     x_span: tuple[float, float] = (0.0, 10.0),
+    #     y_span: tuple[float, float] = (0.0, 10.0),
+    #     thickness: float = 0.50,
+    #     min_lb: float = 0.0,
+    #     n: int = 100,
+    #     rho: float = 25.0,
+    # ) -> "Envelope":
+    #     """Construct an envelope from a crossvault.
 
-        Parameters
-        ----------
-        x_span : tuple[float, float], optional
-            Span of the vault in x direction, by default (0.0, 10.0)
-        y_span : tuple[float, float], optional
-            Span of the vault in y direction, by default (0.0, 10.0)
-        thickness : float, optional
-            Thickness of the vault, by default 0.50
-        min_lb : float, optional
-            Parameter for lower bound in nodes in the boundary, by default 0.0
-        n : int, optional
-            Number of vertices for the mesh, by default 100
-        rho : float, optional
-            Density of the material in kN/m³, by default 25.0
+    #     Parameters
+    #     ----------
+    #     x_span : tuple[float, float], optional
+    #         Span of the vault in x direction, by default (0.0, 10.0)
+    #     y_span : tuple[float, float], optional
+    #         Span of the vault in y direction, by default (0.0, 10.0)
+    #     thickness : float, optional
+    #         Thickness of the vault, by default 0.50
+    #     min_lb : float, optional
+    #         Parameter for lower bound in nodes in the boundary, by default 0.0
+    #     n : int, optional
+    #         Number of vertices for the mesh, by default 100
+    #     rho : float, optional
+    #         Density of the material in kN/m³, by default 25.0
 
-        Returns
-        -------
-        :class:`Envelope`
-            The created envelope with intrados, extrados, and middle meshes.
-        """
-        return create_crossvault_envelope(
-            cls, x_span, y_span, thickness, min_lb, n, rho
-        )
+    #     Returns
+    #     -------
+    #     :class:`Envelope`
+    #         The created envelope with intrados, extrados, and middle meshes.
+    #     """
+    #     return create_crossvault_envelope(cls, x_span, y_span, thickness, min_lb, n, rho)
 
-    @classmethod
-    def from_dome(
-        cls,
-        center: tuple[float, float] = (5.0, 5.0),
-        radius: float = 5.0,
-        thickness: float = 0.50,
-        min_lb: float = 0.0,
-        n_hoops: int = 24,
-        n_parallels: int = 40,
-        r_oculus: float = 0.0,
-        rho: float = 25.0,
-    ) -> "Envelope":
-        """Construct an envelope from a dome.
+    # @classmethod
+    # def from_dome(
+    #     cls,
+    #     center: tuple[float, float] = (5.0, 5.0),
+    #     radius: float = 5.0,
+    #     thickness: float = 0.50,
+    #     min_lb: float = 0.0,
+    #     n_hoops: int = 24,
+    #     n_parallels: int = 40,
+    #     r_oculus: float = 0.0,
+    #     rho: float = 25.0,
+    # ) -> "Envelope":
+    #     """Construct an envelope from a dome.
 
-        Parameters
-        ----------
-        center : tuple[float, float], optional
-            x, y coordinates of the center of the dome, by default (5.0, 5.0)
-        radius : float, optional
-            The radius of the dome, by default 5.0
-        thickness : float, optional
-            Thickness of the dome, by default 0.50
-        min_lb : float, optional
-            Parameter for lower bound in nodes in the boundary, by default 0.0
-        n_hoops : int, optional
-            Number of hoops for the mesh, by default 24
-        n_parallels : int, optional
-            Number of parallels for the mesh, by default 40
-        r_oculus : float, optional
-            Radius of the oculus (opening at the top), by default 0.0
-        rho : float, optional
-            Density of the material in kN/m³, by default 25.0
+    #     Parameters
+    #     ----------
+    #     center : tuple[float, float], optional
+    #         x, y coordinates of the center of the dome, by default (5.0, 5.0)
+    #     radius : float, optional
+    #         The radius of the dome, by default 5.0
+    #     thickness : float, optional
+    #         Thickness of the dome, by default 0.50
+    #     min_lb : float, optional
+    #         Parameter for lower bound in nodes in the boundary, by default 0.0
+    #     n_hoops : int, optional
+    #         Number of hoops for the mesh, by default 24
+    #     n_parallels : int, optional
+    #         Number of parallels for the mesh, by default 40
+    #     r_oculus : float, optional
+    #         Radius of the oculus (opening at the top), by default 0.0
+    #     rho : float, optional
+    #         Density of the material in kN/m³, by default 25.0
 
-        Returns
-        -------
-        :class:`Envelope`
-            The created envelope with intrados, extrados, and middle meshes.
-        """
-        return create_dome_envelope(
-            cls, center, radius, thickness, min_lb, n_hoops, n_parallels, r_oculus, rho
-        )
+    #     Returns
+    #     -------
+    #     :class:`Envelope`
+    #         The created envelope with intrados, extrados, and middle meshes.
+    #     """
+    #     return create_dome_envelope(cls, center, radius, thickness, min_lb, n_hoops, n_parallels, r_oculus, rho)
 
-    @classmethod
-    def from_pavillionvault(
-        cls,
-        x_span: tuple[float, float] = (0.0, 10.0),
-        y_span: tuple[float, float] = (0.0, 10.0),
-        thickness: float = 0.50,
-        min_lb: float = 0.0,
-        n: int = 100,
-        spr_angle: float = 0.0,
-        expanded: bool = False,
-        rho: float = 25.0,
-    ) -> "Envelope":
-        """Construct an envelope from a pavillion vault.
+    # @classmethod
+    # def from_pavillionvault(
+    #     cls,
+    #     x_span: tuple[float, float] = (0.0, 10.0),
+    #     y_span: tuple[float, float] = (0.0, 10.0),
+    #     thickness: float = 0.50,
+    #     min_lb: float = 0.0,
+    #     n: int = 100,
+    #     spr_angle: float = 0.0,
+    #     expanded: bool = False,
+    #     rho: float = 25.0,
+    # ) -> "Envelope":
+    #     """Construct an envelope from a pavillion vault.
 
-        Parameters
-        ----------
-        x_span : tuple[float, float], optional
-            Span of the vault in x direction, by default (0.0, 10.0)
-        y_span : tuple[float, float], optional
-            Span of the vault in y direction, by default (0.0, 10.0)
-        thickness : float, optional
-            Thickness of the vault, by default 0.50
-        min_lb : float, optional
-            Parameter for lower bound in nodes in the boundary, by default 0.0
-        n : int, optional
-            Number of vertices for the mesh, by default 100
-        spr_angle : float, optional
-            Springing angle, by default 0.0
-        expanded : bool, optional
-            If the extrados should extend beyond the floor plan, by default False
-        rho : float, optional
-            Density of the material in kN/m³, by default 25.0
+    #     Parameters
+    #     ----------
+    #     x_span : tuple[float, float], optional
+    #         Span of the vault in x direction, by default (0.0, 10.0)
+    #     y_span : tuple[float, float], optional
+    #         Span of the vault in y direction, by default (0.0, 10.0)
+    #     thickness : float, optional
+    #         Thickness of the vault, by default 0.50
+    #     min_lb : float, optional
+    #         Parameter for lower bound in nodes in the boundary, by default 0.0
+    #     n : int, optional
+    #         Number of vertices for the mesh, by default 100
+    #     spr_angle : float, optional
+    #         Springing angle, by default 0.0
+    #     expanded : bool, optional
+    #         If the extrados should extend beyond the floor plan, by default False
+    #     rho : float, optional
+    #         Density of the material in kN/m³, by default 25.0
 
-        Returns
-        -------
-        :class:`Envelope`
-            The created envelope with intrados, extrados, and middle meshes.
-        """
-        return create_pavillionvault_envelope(
-            cls, x_span, y_span, thickness, min_lb, n, spr_angle, expanded, rho
-        )
+    #     Returns
+    #     -------
+    #     :class:`Envelope`
+    #         The created envelope with intrados, extrados, and middle meshes.
+    #     """
+    #     return create_pavillionvault_envelope(cls, x_span, y_span, thickness, min_lb, n, spr_angle, expanded, rho)
 
-    @classmethod
-    def from_pointedvault(
-        cls,
-        x_span: tuple[float, float] = (0.0, 10.0),
-        y_span: tuple[float, float] = (0.0, 10.0),
-        thickness: float = 0.50,
-        min_lb: float = 0.0,
-        n: int = 100,
-        hc: float = 8.0,
-        he: list = None,
-        hm: list = None,
-        rho: float = 25.0,
-    ) -> "Envelope":
-        """Construct an envelope from a pointed cross vault.
+    # @classmethod
+    # def from_pointedvault(
+    #     cls,
+    #     x_span: tuple[float, float] = (0.0, 10.0),
+    #     y_span: tuple[float, float] = (0.0, 10.0),
+    #     thickness: float = 0.50,
+    #     min_lb: float = 0.0,
+    #     n: int = 100,
+    #     hc: float = 8.0,
+    #     he: list = None,
+    #     hm: list = None,
+    #     rho: float = 25.0,
+    # ) -> "Envelope":
+    #     """Construct an envelope from a pointed cross vault.
 
-        Parameters
-        ----------
-        x_span : tuple[float, float], optional
-            Span of the vault in x direction, by default (0.0, 10.0)
-        y_span : tuple[float, float], optional
-            Span of the vault in y direction, by default (0.0, 10.0)
-        thickness : float, optional
-            Thickness of the vault, by default 0.50
-        min_lb : float, optional
-            Parameter for lower bound in nodes in the boundary, by default 0.0
-        n : int, optional
-            Number of vertices for the mesh, by default 100
-        hc : float, optional
-            Height in the middle point of the vault, by default 8.0
-        he : list, optional
-            Height of the opening mid-span for each of the quadrants, by default None
-        hm : list, optional
-            Height of each quadrant center (spadrel), by default None
-        rho : float, optional
-            Density of the material in kN/m³, by default 25.0
+    #     Parameters
+    #     ----------
+    #     x_span : tuple[float, float], optional
+    #         Span of the vault in x direction, by default (0.0, 10.0)
+    #     y_span : tuple[float, float], optional
+    #         Span of the vault in y direction, by default (0.0, 10.0)
+    #     thickness : float, optional
+    #         Thickness of the vault, by default 0.50
+    #     min_lb : float, optional
+    #         Parameter for lower bound in nodes in the boundary, by default 0.0
+    #     n : int, optional
+    #         Number of vertices for the mesh, by default 100
+    #     hc : float, optional
+    #         Height in the middle point of the vault, by default 8.0
+    #     he : list, optional
+    #         Height of the opening mid-span for each of the quadrants, by default None
+    #     hm : list, optional
+    #         Height of each quadrant center (spadrel), by default None
+    #     rho : float, optional
+    #         Density of the material in kN/m³, by default 25.0
 
-        Returns
-        -------
-        :class:`Envelope`
-            The created envelope with intrados, extrados, and middle meshes.
-        """
-        return create_pointedvault_envelope(
-            cls, x_span, y_span, thickness, min_lb, n, hc, he, hm, rho
-        )
+    #     Returns
+    #     -------
+    #     :class:`Envelope`
+    #         The created envelope with intrados, extrados, and middle meshes.
+    #     """
+    #     return create_pointedvault_envelope(cls, x_span, y_span, thickness, min_lb, n, hc, he, hm, rho)
 
     # =============================================================================
     # Properties
@@ -533,7 +511,7 @@ class Envelope(Data):
             # Return average thickness from middle mesh vertices
             thicknesses = []
             for key in self.middle.vertices():
-                thickness = self.middle.vertex_attribute(key, 'thickness')
+                thickness = self.middle.vertex_attribute(key, "thickness")
                 if thickness is not None:
                     thicknesses.append(thickness)
 
@@ -556,7 +534,7 @@ class Envelope(Data):
         # Update middle mesh if it exists
         if self.middle is not None:
             for key in self.middle.vertices():
-                self.middle.vertex_attribute(key, 'thickness', value)
+                self.middle.vertex_attribute(key, "thickness", value)
 
     @property
     def rho(self) -> float:
@@ -584,9 +562,7 @@ class Envelope(Data):
     # Geometric operations
     # =============================================================================
 
-    def set_variable_thickness(
-        self, tmin: Optional[float] = None, tmax: Optional[float] = None
-    ) -> None:
+    def set_variable_thickness(self, tmin: Optional[float] = None, tmax: Optional[float] = None) -> None:
         """Set variable thickness based on inverse height using the pattern_inverse_height_thickness function.
 
         This method applies thickness variation based on the height of vertices in the middle mesh,
@@ -600,9 +576,7 @@ class Envelope(Data):
             Maximum thickness. If None, will be calculated as 50/1000 of the diagonal of the xy bounding box.
         """
         if self.middle is None:
-            raise ValueError(
-                "Middle mesh is not available. Cannot set variable thickness."
-            )
+            raise ValueError("Middle mesh is not available. Cannot set variable thickness.")
 
         # Apply the pattern_inverse_height_thickness function to the middle mesh
         pattern_inverse_height_thickness(self.middle, tmin=tmin, tmax=tmax)
@@ -627,7 +601,7 @@ class Envelope(Data):
 
         # Use variable thickness from middle mesh vertices
         for vertex in middle.vertices():
-            thickness = middle.vertex_attribute(vertex, 'thickness')
+            thickness = middle.vertex_attribute(vertex, "thickness")
             if thickness is None:
                 thickness = self._thickness
             vertex_area = middle.vertex_area(vertex)  # should be projected area
@@ -649,9 +623,7 @@ class Envelope(Data):
             if self.intrados is not None and self.extrados is not None:
                 self.middle = interpolate_middle_mesh(self.intrados, self.extrados)
             else:
-                raise ValueError(
-                    "Middle mesh is not available and cannot be interpolated."
-                )
+                raise ValueError("Middle mesh is not available and cannot be interpolated.")
 
         middle = self.middle
         rho = self.rho
@@ -659,7 +631,7 @@ class Envelope(Data):
 
         # Use variable thickness from middle mesh vertices
         for vertex in middle.vertices():
-            thickness = middle.vertex_attribute(vertex, 'thickness')
+            thickness = middle.vertex_attribute(vertex, "thickness")
             if thickness is None:
                 thickness = self._thickness
             vertex_area = middle.vertex_area(vertex)
@@ -673,9 +645,7 @@ class Envelope(Data):
     # TNA-specific operations (accept formdiagram as parameter)
     # =============================================================================
 
-    def apply_selfweight_to_formdiagram(
-        self, formdiagram: FormDiagram, normalize=True
-    ) -> None:
+    def apply_selfweight_to_formdiagram(self, formdiagram: FormDiagram, normalize=True) -> None:
         """Apply selfweight to the nodes of a form diagram based on the middle surface and local thicknesses.
 
         Parameters
@@ -696,9 +666,7 @@ class Envelope(Data):
             if self.intrados is not None and self.extrados is not None:
                 self.middle = interpolate_middle_mesh(self.intrados, self.extrados)
             else:
-                raise ValueError(
-                    "Middle mesh is not set. Please set the middle mesh before applying selfweight."
-                )
+                raise ValueError("Middle mesh is not set. Please set the middle mesh before applying selfweight.")
 
         # Step 2: Compute the selfweight of the shell
         total_selfweight = self.compute_selfweight()
@@ -715,20 +683,20 @@ class Envelope(Data):
             xy = np.array(form_.vertices_attributes("xy"))
             zt = list(self.callable_zt(xy[:, 0], xy[:, 1]).flatten().tolist())
             for i, key in enumerate(form_.vertices()):
-                form_.vertex_attribute(key, 'z', zt[i])
+                form_.vertex_attribute(key, "z", zt[i])
 
         # Step 5: Compute and lump selfweight at vertices
         total_pz = 0.0
         for vertex in form_.vertices():
             # Get vertex area and thickness
             vertex_area = form_.vertex_area(vertex)
-            thickness = form_.vertex_attribute(vertex, 'thickness')
+            thickness = form_.vertex_attribute(vertex, "thickness")
 
             # Compute selfweight contribution (negative for downward direction)
             pz = -vertex_area * thickness * self.rho
 
             # Store in form diagram
-            formdiagram.vertex_attribute(vertex, 'pz', pz)
+            formdiagram.vertex_attribute(vertex, "pz", pz)
             total_pz += abs(pz)  # Sum absolute values for normalization
 
         # Step 6: Scale to match total selfweight if normalize=True
@@ -738,12 +706,10 @@ class Envelope(Data):
                 print(f"Scaled selfweight by factor: {scale_factor}")
 
             for vertex in formdiagram.vertices():
-                pz = formdiagram.vertex_attribute(vertex, 'pz')
-                formdiagram.vertex_attribute(vertex, 'pz', pz * scale_factor)
+                pz = formdiagram.vertex_attribute(vertex, "pz")
+                formdiagram.vertex_attribute(vertex, "pz", pz * scale_factor)
 
-        print(
-            f"Selfweight applied to form diagram. Total load: {sum(abs(formdiagram.vertex_attribute(vertex, 'pz')) for vertex in formdiagram.vertices())}"
-        )
+        print(f"Selfweight applied to form diagram. Total load: {sum(abs(formdiagram.vertex_attribute(vertex, 'pz')) for vertex in formdiagram.vertices())}")
 
     def apply_bounds_to_formdiagram(self, formdiagram: FormDiagram) -> None:
         """Apply envelope bounds to a form diagram based on the intrados and extrados surfaces.
@@ -763,9 +729,7 @@ class Envelope(Data):
         """
         # Step 1: Check that intrados and extrados are present
         if self.intrados is None or self.extrados is None:
-            raise ValueError(
-                "Intra/Extrados not set. Please set them before applying bounds."
-            )
+            raise ValueError("Intra/Extrados not set. Please set them before applying bounds.")
 
         # Step 2: Copy the form diagram for projection
         form_ub = formdiagram.copy()  # For upper bound (extrados)
@@ -779,8 +743,8 @@ class Envelope(Data):
             xy = np.array(form_ub.vertices_attributes("xy"))
             zub, zlb = self.callable_ub_lb(xy[:, 0], xy[:, 1])
             for i, key in enumerate(form_ub.vertices()):
-                form_ub.vertex_attribute(key, 'z', float(zub[i]))
-                form_lb.vertex_attribute(key, 'z', float(zlb[i]))
+                form_ub.vertex_attribute(key, "z", float(zub[i]))
+                form_lb.vertex_attribute(key, "z", float(zlb[i]))
 
         # Step 4: Collect heights and assign to form diagram
         for vertex in formdiagram.vertices():
@@ -790,13 +754,13 @@ class Envelope(Data):
                 _, _, z_lb = form_lb.vertex_coordinates(vertex)
 
                 # Assign to form diagram
-                formdiagram.vertex_attribute(vertex, 'ub', z_ub)
-                formdiagram.vertex_attribute(vertex, 'lb', z_lb)
+                formdiagram.vertex_attribute(vertex, "ub", z_ub)
+                formdiagram.vertex_attribute(vertex, "lb", z_lb)
             else:
                 print(f"Warning: Vertex {vertex} not found in projected meshes")
                 # Set default values if vertex not found
-                formdiagram.vertex_attribute(vertex, 'ub', float('inf'))
-                formdiagram.vertex_attribute(vertex, 'lb', float('-inf'))
+                formdiagram.vertex_attribute(vertex, "ub", float("inf"))
+                formdiagram.vertex_attribute(vertex, "lb", float("-inf"))
 
     def apply_target_heights_to_formdiagram(self, formdiagram: FormDiagram) -> None:
         """Apply target heights to a form diagram based on the Envelope middle surface.
@@ -805,9 +769,7 @@ class Envelope(Data):
         and assigns the heights to 'target' property. This assignment can later be used to compute a bestfit optimization.
         """
         if self.middle is None:
-            raise ValueError(
-                "Middle mesh is not set. Please set the middle mesh before applying target heights."
-            )
+            raise ValueError("Middle mesh is not set. Please set the middle mesh before applying target heights.")
 
         # Step 1: Copy the form diagram for projection
         form_target = formdiagram.copy()  # For upper bound (extrados)
@@ -819,13 +781,13 @@ class Envelope(Data):
             xy = np.array(form_target.vertices_attributes("xy"))
             zt = list(self.callable_zt(xy[:, 0], xy[:, 1]).flatten().tolist())
             for i, key in enumerate(form_target.vertices()):
-                form_target.vertex_attribute(key, 'z', zt[i])
+                form_target.vertex_attribute(key, "z", zt[i])
 
         # Step 3: Collect heights and assign to form diagram
         for vertex in formdiagram.vertices():
             if vertex in form_target.vertices():
-                z_target = form_target.vertex_attribute(vertex, 'z')
-                formdiagram.vertex_attribute(vertex, 'target', z_target)
+                z_target = form_target.vertex_attribute(vertex, "z")
+                formdiagram.vertex_attribute(vertex, "target", z_target)
 
     def apply_reaction_bounds_to_formdiagram(self, formdiagram: FormDiagram) -> None:
         """Apply reaction bounds to a form diagram based on the Envelope middle surface.
@@ -835,15 +797,11 @@ class Envelope(Data):
         """
 
         if not self.callable_bound_react:
-            raise ValueError(
-                "Callable bound reaction is not set. Please set this limit manually."
-            )
+            raise ValueError("Callable bound reaction is not set. Please set this limit manually.")
 
         ## TODO: Implement this
 
-    def sync_thickness_to_formdiagram(
-        self, formdiagram: FormDiagram, method='linear', extrapolate=True
-    ) -> None:
+    def sync_thickness_to_formdiagram(self, formdiagram: FormDiagram, method="linear", extrapolate=True) -> None:
         """Synchronize thickness attributes from middle mesh to form diagram using continuous interpolation.
 
         This method creates a continuous thickness map from the middle mesh and interpolates
@@ -864,9 +822,7 @@ class Envelope(Data):
 
         # Validate data
         if not middle_xy or not middle_thickness:
-            raise ValueError(
-                "Middle mesh must have both 'xy' and 'thickness' attributes."
-            )
+            raise ValueError("Middle mesh must have both 'xy' and 'thickness' attributes.")
 
         # Convert to numpy arrays
         middle_xy_array = asarray(middle_xy)
@@ -897,10 +853,25 @@ class Envelope(Data):
                 # Ensure thickness is positive and reasonable
                 if thickness_value <= 0 or math.isnan(thickness_value):
                     thickness_value = self._thickness
-                formdiagram.vertex_attribute(vertex, 'thickness', thickness_value)
+                formdiagram.vertex_attribute(vertex, "thickness", thickness_value)
 
         except Exception as e:
             print(f"Warning: Interpolation failed, using default thickness. Error: {e}")
             # Fallback: assign default thickness to all vertices
             for vertex in formdiagram.vertices():
-                formdiagram.vertex_attribute(vertex, 'thickness', self._thickness)
+                formdiagram.vertex_attribute(vertex, "thickness", self._thickness)
+
+    def callable_middle(self, x, y):
+        return NotImplementedError("Callable middle update only available for analytical envelopes")
+
+    def callable_ub_lb(self, x, y, thickness):
+        return NotImplementedError("Callable ub_lb update only available for analytical envelopes")
+
+    def callable_dub_dlb(self, x, y):
+        return NotImplementedError("Callable dub_dlb only available for analytical envelopes")
+
+    def callable_bound_react(self, x, y, thickness, fixed):
+        return NotImplementedError("Callable bound_react update only available for analytical envelopes")
+
+    def callable_db(self, x, y, thickness, fixed):
+        return NotImplementedError("Callable db only available for analytical envelopes")
