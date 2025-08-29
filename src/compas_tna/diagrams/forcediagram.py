@@ -68,10 +68,10 @@ class ForceDiagram(Diagram):
             The dual force diagram.
 
         """
-        dual = formdiagram.dual_diagram(cls)
+        dual: ForceDiagram = formdiagram.dual_diagram(cls)  # type: ignore
         dual.vertices_attribute("z", 0.0)
         dual.primal = formdiagram
-        formdiagram.dual = dual
+        formdiagram.dual = dual  # type: ignore
         return dual
 
     # --------------------------------------------------------------------------
@@ -87,7 +87,7 @@ class ForceDiagram(Diagram):
             A generator object for iteration over vertex keys that are fixed.
 
         """
-        return self.vertices_where(is_fixed=True)
+        return self.vertices_where(is_fixed=True)  # type: ignore
 
     # --------------------------------------------------------------------------
     # Helpers
@@ -109,7 +109,7 @@ class ForceDiagram(Diagram):
 
         """
         if not form:
-            return {uv: index for index, uv in enumerate(self.edges())}
+            return {uv: index for index, uv in enumerate(self.edges())}  # type: ignore
         uv_index = dict()
         for index, (u, v) in enumerate(form.edges_where(_is_edge=True)):
             f1 = form.halfedge[u][v]
@@ -157,7 +157,10 @@ class ForceDiagram(Diagram):
 
         """
         f1, f2 = edge
+        u = None
+        v = None
         for u, v in form.face_halfedges(f1):
             if form.halfedge[v][u] == f2:
                 break
-        return form.edge_attribute((u, v), name, value=value)
+        if u is not None and v is not None:
+            return form.edge_attribute((u, v), name, value=value)

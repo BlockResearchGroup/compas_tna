@@ -3,7 +3,7 @@ from compas_notebook.scene import ThreeMeshObject
 from compas_tna.scene import FormDiagramObject
 
 
-class ThreeFormObject(ThreeMeshObject, FormDiagramObject):
+class ThreeFormObject(ThreeMeshObject, FormDiagramObject):  # type: ignore
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -17,10 +17,13 @@ class ThreeFormObject(ThreeMeshObject, FormDiagramObject):
         if self.show_vertices:
             if self.show_vertices is not True:
                 vertices = self.show_vertices
+
             for vertex in self.diagram.vertices_where(is_fixed=True):
-                self.vertexcolor[vertex] = self.vertexcolor_fixed
+                self.vertexcolor[vertex] = self.vertexcolor_fixed  # type: ignore
+
             for vertex in self.diagram.vertices_where(is_support=True):
-                self.vertexcolor[vertex] = self.vertexcolor_support
+                self.vertexcolor[vertex] = self.vertexcolor_support  # type: ignore
+
             self._guids.append(self.draw_vertices(vertices, self.vertexcolor))
 
         if self.show_edges:

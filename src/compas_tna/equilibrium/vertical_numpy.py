@@ -1,5 +1,3 @@
-from typing import Tuple
-
 from numpy import array
 from numpy import float64
 from scipy.sparse import diags
@@ -22,7 +20,7 @@ def vertical_from_zmax(
     rtol: float = 1e-3,
     density: float = 1.0,
     display: bool = False,
-) -> Tuple[FormDiagram, float]:
+) -> tuple[FormDiagram, float]:
     """For the given form and force diagram, compute the scale of the force
     diagram for which the highest point of the thrust network is equal to a
     specified value.
@@ -88,7 +86,7 @@ def vertical_from_zmax(
     # --------------------------------------------------------------------------
     # load updater
     # --------------------------------------------------------------------------
-    update_loads = LoadUpdater(form, p0, thickness=thick, density=density)
+    update_loads = LoadUpdater(form, p0, thickness=thick, density=density)  # type: ignore
     # --------------------------------------------------------------------------
     # scale to zmax
     # note that zmax should not exceed scale * diagonal
@@ -102,7 +100,7 @@ def vertical_from_zmax(
         update_loads(p, xyz)
 
         q = scale * q0
-        Q = diags([q.ravel()], [0])
+        Q = diags([q.ravel()], [0])  # type: ignore
         A = Cit.dot(Q).dot(Ci)
         b = p[free, 2] - Cit.dot(Q).dot(Cf).dot(xyz[fixed, 2])
         xyz[free, 2] = spsolve(A, b)
@@ -118,7 +116,7 @@ def vertical_from_zmax(
     # vertical
     # --------------------------------------------------------------------------
     q = scale * q0
-    Q = diags([q.ravel()], [0])
+    Q = diags([q.ravel()], [0])  # type: ignore
 
     update_z(
         xyz,
@@ -146,7 +144,7 @@ def vertical_from_zmax(
         form.vertex_attributes(vertex, ["_rx", "_ry", "_rz"], r[index])
 
     for edge in form.edges_where({"_is_edge": True}):
-        index = uv_i[edge]
+        index = uv_i[edge]  # type: ignore
         form.edge_attributes(edge, ["q", "_f"], [q[index, 0], f[index, 0]])
 
     return form, scale
@@ -214,12 +212,12 @@ def vertical_from_q(form, scale=1.0, density=1.0, kmax=100, tol=1e-3, display=Fa
     # --------------------------------------------------------------------------
     # load updater
     # --------------------------------------------------------------------------
-    update_loads = LoadUpdater(form, p0, thickness=thick, density=density)
+    update_loads = LoadUpdater(form, p0, thickness=thick, density=density)  # type: ignore
     # --------------------------------------------------------------------------
     # update forcedensity based on given q[ind]
     # --------------------------------------------------------------------------
     q = scale * q0
-    Q = diags([q.ravel()], [0])
+    Q = diags([q.ravel()], [0])  # type: ignore
     # --------------------------------------------------------------------------
     # compute vertical
     # --------------------------------------------------------------------------

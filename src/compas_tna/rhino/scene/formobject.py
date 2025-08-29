@@ -2,19 +2,22 @@ import scriptcontext as sc  # type: ignore
 from compas_rhino.conversions import line_to_rhino
 from compas_rhino.scene import RhinoMeshObject
 
+from compas_tna.diagrams import FormDiagram
 from compas_tna.scene import FormDiagramObject
 
 
 class RhinoFormObject(RhinoMeshObject, FormDiagramObject):
+    diagram: FormDiagram  # type: ignore
+
     def draw(self):
         self._guids = []
 
         if self.show_vertices:
             for vertex in self.diagram.vertices_where(is_fixed=True):
-                self.vertexcolor[vertex] = self.vertexcolor_fixed
+                self.vertexcolor[vertex] = self.vertexcolor_fixed  # type: ignore
 
             for vertex in self.diagram.vertices_where(is_support=True):
-                self.vertexcolor[vertex] = self.vertexcolor_support
+                self.vertexcolor[vertex] = self.vertexcolor_support  # type: ignore
 
             self._guids += self.draw_vertices()
 
@@ -50,7 +53,7 @@ class RhinoFormObject(RhinoMeshObject, FormDiagramObject):
             return guids
 
         for vertex in self.diagram.vertices_where(is_support=False):
-            load = self.diagram.vertex_load(vertex)
+            load = self.diagram.vertex_load(vertex)  # type: ignore
             load.scale(self.scale_load)
 
             if load.length < self.tol_load:
@@ -75,7 +78,7 @@ class RhinoFormObject(RhinoMeshObject, FormDiagramObject):
             return guids
 
         for vertex in self.diagram.vertices_where(is_support=False):
-            selfweight = self.diagram.vertex_selfweight(vertex)
+            selfweight = self.diagram.vertex_selfweight(vertex)  # type: ignore
             selfweight.scale(self.scale_selfweight)
 
             if selfweight.length < self.tol_selfweight:
@@ -100,7 +103,7 @@ class RhinoFormObject(RhinoMeshObject, FormDiagramObject):
             return guids
 
         for vertex in self.diagram.vertices_where(is_support=True):
-            reaction = self.diagram.vertex_reaction(vertex)
+            reaction = self.diagram.vertex_reaction(vertex)  # type: ignore
             reaction.scale(self.scale_reaction)
 
             if reaction.length < self.tol_reaction:
@@ -125,7 +128,7 @@ class RhinoFormObject(RhinoMeshObject, FormDiagramObject):
             return guids
 
         for vertex in self.diagram.vertices_where(is_support=False):
-            residual = self.diagram.vertex_residual(vertex)
+            residual = self.diagram.vertex_residual(vertex)  # type: ignore
             residual.scale(self.scale_residual)
 
             if residual.length < self.tol_residual:

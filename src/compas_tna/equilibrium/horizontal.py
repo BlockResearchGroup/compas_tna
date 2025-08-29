@@ -1,16 +1,20 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from typing import Callable
+from typing import Optional
 
 from compas.geometry import angle_vectors_xy
-from compas_tna.diagrams import ForceDiagram  # noqa: F401
-from compas_tna.diagrams import FormDiagram  # noqa: F401
+from compas_tna.diagrams import ForceDiagram
+from compas_tna.diagrams import FormDiagram
 
 from .parallelisation import parallelise_edges
 
 
-def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
-    # type: (FormDiagram, ForceDiagram, int, int, callable) -> None
+def horizontal_nodal(
+    form: FormDiagram,
+    force: ForceDiagram,
+    alpha: float = 100,
+    kmax: int = 100,
+    callback: Optional[Callable] = None,
+) -> None:
     r"""Compute horizontal equilibrium using a node-per-node approach.
 
     Parameters
@@ -58,17 +62,17 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     i_nbrs = {k_i[key]: [k_i[nbr] for nbr in form.vertex_neighbors(key)] for key in form.vertices()}
     fixed = set(list(form.supports()) + list(form.fixed()))
     fixed = [k_i[key] for key in fixed]
-    xy = form.vertices_attributes("xy")
+    xy: list[list[float]] = form.vertices_attributes("xy")  # type: ignore
 
     edges = list(form.edges_where({"_is_edge": True}))
-    lmin = form.edges_attribute("lmin", keys=edges)
-    lmax = form.edges_attribute("lmax", keys=edges)
-    hmin = form.edges_attribute("hmin", keys=edges)
-    hmax = form.edges_attribute("hmax", keys=edges)
+    lmin: list[float] = form.edges_attribute("lmin", keys=edges)  # type: ignore
+    lmax: list[float] = form.edges_attribute("lmax", keys=edges)  # type: ignore
+    hmin: list[float] = form.edges_attribute("hmin", keys=edges)  # type: ignore
+    hmax: list[float] = form.edges_attribute("hmax", keys=edges)  # type: ignore
 
     flipmask = [-1.0 if form.edge_attribute(edge, "_is_tension") else 1.0 for edge in edges]
 
-    uv_i = form.uv_index()
+    uv_i: dict[tuple[int, int], int] = form.uv_index()
     ij_e = {(k_i[u], k_i[v]): index for (u, v), index in iter(uv_i.items())}
 
     edges = [[k_i[u], k_i[v]] for u, v in edges]
@@ -79,13 +83,13 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
     _i_nbrs = {_k_i[key]: [_k_i[nbr] for nbr in force.vertex_neighbors(key)] for key in force.vertices()}
     _fixed = list(force.fixed())
     _fixed = [_k_i[key] for key in _fixed]
-    _xy = force.vertices_attributes("xy")
+    _xy: list[list[float]] = force.vertices_attributes("xy")  # type: ignore
 
     _edges = force.ordered_edges(form)
     _uv_i = {uv: index for index, uv in enumerate(_edges)}
     _ij_e = {(_k_i[u], _k_i[v]): index for (u, v), index in iter(_uv_i.items())}
-    _lmin = force.edges_attribute("lmin", keys=_edges)
-    _lmax = force.edges_attribute("lmax", keys=_edges)
+    _lmin: list[float] = force.edges_attribute("lmin", keys=_edges)  # type: ignore
+    _lmax: list[float] = force.edges_attribute("lmax", keys=_edges)  # type: ignore
     _edges = [[_k_i[u], _k_i[v]] for u, v in _edges]
     scale = force.attributes.get("scale", 1.0)
     # --------------------------------------------------------------------------
@@ -174,7 +178,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
         i = k_i[key]
         form.vertex_attributes(key, "xy", xy[i])
     for uv in form.edges_where({"_is_edge": True}):
-        i = uv_i[uv]
+        i = uv_i[uv]  # type: ignore
         form.edge_attributes(uv, ["q", "_f", "_l", "_a"], [q[i], forces[i], lengths[i], angles[i]])
     # --------------------------------------------------------------------------
     # update force
@@ -184,7 +188,7 @@ def horizontal_nodal(form, force, alpha=100, kmax=100, callback=None):
         force.vertex_attributes(key, "xy", _xy[i])
     for u, v in force.edges():
         if (u, v) in _uv_i:
-            i = _uv_i[(u, v)]
+            i = _uv_i[(u, v)]  # type: ignore
         else:
-            i = _uv_i[(v, u)]
+            i = _uv_i[(v, u)]  # type: ignore
         force.edge_attributes((u, v), ["_l", "_a"], [forces[i], angles[i]])

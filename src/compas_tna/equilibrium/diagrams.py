@@ -1,4 +1,5 @@
 import sys
+from typing import TYPE_CHECKING
 
 from numpy import empty_like
 from numpy.linalg import cond
@@ -12,6 +13,9 @@ from compas.linalg import nonpivots
 from compas.linalg import rref
 from compas.matrices import connectivity_matrix
 from compas.matrices import equilibrium_matrix
+
+if TYPE_CHECKING:
+    from compas_tna.diagrams import FormDiagram
 
 EPS = 1 / sys.float_info.epsilon
 
@@ -41,6 +45,8 @@ def update_z(xyz, Q, C, p, free, fixed, updateloads, tol=1e-3, kmax=100, display
     CtQC = Ct.dot(Q).dot(C)
 
     updateloads(p, xyz)
+
+    residual = 0
 
     for k in range(kmax):
         if display:
@@ -96,13 +102,13 @@ def update_q_from_qind(E, q, dep, ind):
         b = Ei.dot(qi)
     if cond(A) > EPS:
         res = lstsq(-A, b)
-        qd = res[0]
+        qd = res[0]  # type: ignore
     else:
         qd = solve(-A, b)
     q[dep] = qd
 
 
-def form_count_dof(form):
+def form_count_dof(form: "FormDiagram"):
     """Count the DOF of the FormDiagram.
 
     Parameters
@@ -124,8 +130,7 @@ def form_count_dof(form):
     return dof(E)
 
 
-def form_identify_dof(form, **kwargs):
-    algo = kwargs.get("algo") or "sympy"
+def form_identify_dof(form: "FormDiagram", **kwargs):
     k2i = form.vertex_index()
     xyz = form.vertices_attributes("xyz")
     fixed = [k2i[key] for key in form.supports()]
@@ -133,4 +138,4 @@ def form_identify_dof(form, **kwargs):
     edges = [(k2i[u], k2i[v]) for u, v in form.edges_where({"_is_edge": True})]
     C = connectivity_matrix(edges)
     E = equilibrium_matrix(C, xyz, free)
-    return nonpivots(rref(E, algo=algo))
+    return nonpivots(rref(E))

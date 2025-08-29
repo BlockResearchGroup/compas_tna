@@ -1,5 +1,3 @@
-from typing import Tuple
-
 from numpy import array
 from numpy import float64
 from numpy import where
@@ -22,7 +20,7 @@ def horizontal_numpy(
     force: ForceDiagram,
     alpha: float = 100.0,
     kmax: int = 100,
-) -> Tuple[FormDiagram, ForceDiagram]:
+) -> tuple[FormDiagram, ForceDiagram]:
     r"""Compute horizontal equilibrium.
 
     Parameters
@@ -129,13 +127,13 @@ def horizontal_numpy(
         if alpha != 1.0:
             # if emphasis is not entirely on the form
             # update the form diagram
-            xy = parallelise_sparse(CtC, Ct.dot(l * t), xy, fixed, "CtC")
+            xy = parallelise_sparse(CtC, Ct.dot(l * t), xy, fixed, key="CtC")
             uv = C.dot(xy)
             l = normrow(uv)  # noqa: E741
         if alpha != 0.0:
             # if emphasis is not entirely on the force
             # update the force diagram
-            _xy = parallelise_sparse(_Ct_C, _Ct.dot(_l * t), _xy, _fixed, "_Ct_C")
+            _xy = parallelise_sparse(_Ct_C, _Ct.dot(_l * t), _xy, _fixed, key="_Ct_C")
             _uv = _C.dot(_xy)
             _l = normrow(_uv)
     # --------------------------------------------------------------------------
@@ -156,12 +154,13 @@ def horizontal_numpy(
     # --------------------------------------------------------------------------
     # update form
     # --------------------------------------------------------------------------
-    for key, attr in form.vertices(True):
+    attr: dict
+    for key, attr in form.vertices(data=True):  # type: ignore
         i = k_i[key]
         attr["x"] = xy[i, 0]
         attr["y"] = xy[i, 1]
-    for (u, v), attr in form.edges_where({"_is_edge": True}, True):
-        i = uv_i[(u, v)]
+    for (u, v), attr in form.edges_where({"_is_edge": True}, True):  # type: ignore
+        i = uv_i[(u, v)]  # type: ignore
         attr["q"] = q[i, 0]
         attr["_f"] = f[i, 0]
         attr["_l"] = l[i, 0]
@@ -169,15 +168,15 @@ def horizontal_numpy(
     # --------------------------------------------------------------------------
     # update force
     # --------------------------------------------------------------------------
-    for key, attr in force.vertices(True):
+    for key, attr in force.vertices(True):  # type: ignore
         i = _k_i[key]
         attr["x"] = _xy[i, 0]
         attr["y"] = _xy[i, 1]
-    for (u, v), attr in force.edges(True):
+    for (u, v), attr in force.edges(True):  # type: ignore
         if (u, v) in _uv_i:
-            i = _uv_i[(u, v)]
+            i = _uv_i[(u, v)]  # type: ignore
         else:
-            i = _uv_i[(v, u)]
+            i = _uv_i[(v, u)]  # type: ignore
         attr["_l"] = _l[i, 0]
         attr["_a"] = a[i]
     # --------------------------------------------------------------------------
@@ -191,7 +190,7 @@ def horizontal_nodal_numpy(
     force: ForceDiagram,
     alpha: float = 100,
     kmax: int = 100,
-) -> Tuple[FormDiagram, ForceDiagram]:
+) -> tuple[FormDiagram, ForceDiagram]:
     """Compute horizontal equilibrium using a node-per-node approach.
 
     Parameters
@@ -227,23 +226,23 @@ def horizontal_nodal_numpy(
     fixed = [k_i[key] for key in fixed]
     edges = [[k_i[u], k_i[v]] for u, v in form.edges_where({"_is_edge": True})]
     lmin = array(
-        [attr.get("lmin", 1e-7) for key, attr in form.edges_where({"_is_edge": True}, True)],
+        [attr.get("lmin", 1e-7) for key, attr in form.edges_where({"_is_edge": True}, True)],  # type: ignore
         dtype=float64,
     ).reshape((-1, 1))
     lmax = array(
-        [attr.get("lmax", 1e7) for key, attr in form.edges_where({"_is_edge": True}, True)],
+        [attr.get("lmax", 1e7) for key, attr in form.edges_where({"_is_edge": True}, True)],  # type: ignore
         dtype=float64,
     ).reshape((-1, 1))
     hmin = array(
-        [attr.get("hmin", 1e-7) for key, attr in form.edges_where({"_is_edge": True}, True)],
+        [attr.get("hmin", 1e-7) for key, attr in form.edges_where({"_is_edge": True}, True)],  # type: ignore
         dtype=float64,
     ).reshape((-1, 1))
     hmax = array(
-        [attr.get("hmax", 1e7) for key, attr in form.edges_where({"_is_edge": True}, True)],
+        [attr.get("hmax", 1e7) for key, attr in form.edges_where({"_is_edge": True}, True)],  # type: ignore
         dtype=float64,
     ).reshape((-1, 1))
     flipmask = array(
-        [1.0 if not attr["_is_tension"] else -1.0 for key, attr in form.edges_where({"_is_edge": True}, True)],
+        [1.0 if not attr["_is_tension"] else -1.0 for key, attr in form.edges_where({"_is_edge": True}, True)],  # type: ignore
         dtype=float,
     ).reshape((-1, 1))
     xy = array(form.vertices_attributes("xy"), dtype=float64)
@@ -261,8 +260,8 @@ def horizontal_nodal_numpy(
 
     _edges = force.ordered_edges(form)
     _xy = array(force.vertices_attributes("xy"), dtype=float64)
-    _lmin = array([attr.get("lmin", 1e-7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
-    _lmax = array([attr.get("lmax", 1e7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))
+    _lmin = array([attr.get("lmin", 1e-7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))  # type: ignore
+    _lmax = array([attr.get("lmax", 1e7) for key, attr in force.edges(True)], dtype=float64).reshape((-1, 1))  # type: ignore
     _edges = [[_k_i[u], _k_i[v]] for u, v in _edges]
 
     _C = connectivity_matrix(_edges, "csr")
@@ -343,12 +342,13 @@ def horizontal_nodal_numpy(
     # --------------------------------------------------------------------------
     # update form
     # --------------------------------------------------------------------------
-    for key, attr in form.vertices(True):
+    attr: dict
+    for key, attr in form.vertices(True):  # type: ignore
         i = k_i[key]
         attr["x"] = xy[i, 0]
         attr["y"] = xy[i, 1]
-    for (u, v), attr in form.edges_where({"_is_edge": True}, True):
-        i = uv_i[(u, v)]
+    for (u, v), attr in form.edges_where({"_is_edge": True}, True):  # type: ignore
+        i = uv_i[(u, v)]  # type: ignore
         attr["q"] = q[i, 0]
         attr["_f"] = f[i, 0]
         attr["_l"] = l[i, 0]
@@ -356,15 +356,15 @@ def horizontal_nodal_numpy(
     # --------------------------------------------------------------------------
     # update force
     # --------------------------------------------------------------------------
-    for key, attr in force.vertices(True):
+    for key, attr in force.vertices(True):  # type: ignore
         i = _k_i[key]
         attr["x"] = _xy[i, 0]
         attr["y"] = _xy[i, 1]
-    for (u, v), attr in force.edges(True):
+    for (u, v), attr in force.edges(True):  # type: ignore
         if (u, v) in _uv_i:
-            i = _uv_i[(u, v)]
+            i = _uv_i[(u, v)]  # type: ignore
         else:
-            i = _uv_i[(v, u)]
+            i = _uv_i[(v, u)]  # type: ignore
         attr["_l"] = _l[i, 0]
         attr["_a"] = a[i]
     # --------------------------------------------------------------------------

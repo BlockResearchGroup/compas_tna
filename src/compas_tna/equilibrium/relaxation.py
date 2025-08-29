@@ -1,11 +1,9 @@
-from typing import List
-
 from compas_fd.solvers import fd_numpy
 
 from compas_tna.diagrams import FormDiagram
 
 
-def relax_boundary_openings(form: FormDiagram, fixed: List[int]) -> FormDiagram:
+def relax_boundary_openings(form: FormDiagram, fixed: list[int]) -> FormDiagram:
     """Relax the FormDiagram to create a smooth starting geometry with inward curving unsupported boundaries.
 
     Parameters
@@ -23,11 +21,11 @@ def relax_boundary_openings(form: FormDiagram, fixed: List[int]) -> FormDiagram:
 
     """
     k_i = form.vertex_index()
-    xyz = form.vertices_attributes("xyz")
+    xyz: list[list[float]] = form.vertices_attributes("xyz")  # type: ignore
     edges = [(k_i[u], k_i[v]) for u, v in form.edges()]
     fixed = [k_i[key] for key in fixed]
-    q = form.edges_attribute("q")
-    loads = form.vertices_attributes(("px", "py", "pz"))
+    q: list[float] = form.edges_attribute("q")  # type: ignore
+    loads: list[list[float]] = form.vertices_attributes(("px", "py", "pz"))  # type: ignore
     result = fd_numpy(
         vertices=xyz,
         fixed=fixed,

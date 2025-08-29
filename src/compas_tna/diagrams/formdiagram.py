@@ -1,4 +1,5 @@
 from typing import Generator
+from typing import Optional
 from typing import Type
 
 from compas.datastructures import Graph
@@ -105,16 +106,14 @@ number of (real) edges: {}
 number of faces: {}
 vertex degree: {}/{}
 face degree: {}/{}
-""".format(
-            self.name, numv, nume, numf, vmin, vmax, fmin, fmax
-        )
+""".format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
 
     @classmethod
     def from_lines(
         cls,
         lines: list[list[list[float]]],
         delete_boundary_face: bool = True,
-        precision: int = None,
+        precision: Optional[int] = None,
         **kwargs,
     ) -> "FormDiagram":
         """Construct a FormDiagram from a list of lines described by start and end point coordinates.
@@ -150,7 +149,7 @@ face degree: {}/{}
         graph = Graph.from_lines(lines, precision=precision)
         points = graph.to_points()
         cycles = graph.find_cycles(breakpoints=graph.leaves())
-        form = cls.from_vertices_and_faces(points, cycles)
+        form: "FormDiagram" = cls.from_vertices_and_faces(points, cycles)  # type: ignore
         if delete_boundary_face:
             form.delete_face(0)
         if "name" in kwargs:
@@ -183,7 +182,7 @@ face degree: {}/{}
             A dictionary of uv-index pairs.
 
         """
-        return {(u, v): index for index, (u, v) in enumerate(self.edges_where(_is_edge=True))}
+        return {(u, v): index for index, (u, v) in enumerate(self.edges_where(_is_edge=True))}  # type: ignore
 
     def index_uv(self) -> dict[int, tuple[int, int]]:
         """Returns a dictionary that maps edges in a list to the corresponding
@@ -195,7 +194,7 @@ face degree: {}/{}
             A dictionary of index-uv pairs.
 
         """
-        return dict(enumerate(self.edges_where(_is_edge=True)))
+        return dict(enumerate(self.edges_where(_is_edge=True)))  # type: ignore
 
     # --------------------------------------------------------------------------
     # dual and reciprocal
@@ -250,7 +249,7 @@ face degree: {}/{}
             A generator object for iteration over vertex keys that are leaves.
 
         """
-        return self.vertices_where(vertex_degree=1)
+        return self.vertices_where(vertex_degree=1)  # type: ignore
 
     def corners(self) -> Generator[int, None, None]:
         """Find vertices with degree 2.
@@ -261,7 +260,7 @@ face degree: {}/{}
             A generator object for iteration over vertex keys that are corners.
 
         """
-        return self.vertices_where(vertex_degree=2)
+        return self.vertices_where(vertex_degree=2)  # type: ignore
 
     def supports(self) -> Generator[int, None, None]:
         """Find vertices with ``is_support`` set to ``True``.
@@ -272,7 +271,7 @@ face degree: {}/{}
             A generator object for iteration over vertex keys that are supports.
 
         """
-        return self.vertices_where(is_support=True)
+        return self.vertices_where(is_support=True)  # type: ignore
 
     def fixed(self) -> Generator[int, None, None]:
         """Find vertices with ``is_fixed`` set to ``True``.
@@ -283,7 +282,7 @@ face degree: {}/{}
             A generator object for iteration over vertex keys that are fixed.
 
         """
-        return self.vertices_where(is_fixed=True)
+        return self.vertices_where(is_fixed=True)  # type: ignore
 
     def vertex_load(self, vertex: int) -> Vector:
         """Get the load of a vertex.
@@ -298,7 +297,7 @@ face degree: {}/{}
         :class:`compas.geometry.Vector`
 
         """
-        px, py, pz = self.vertex_attributes(vertex, ["px", "py", "pz"])
+        px, py, pz = self.vertex_attributes(vertex, ["px", "py", "pz"])  # type: ignore
         return Vector(px, py, pz)
 
     def vertex_selfweight(self, vertex: int) -> Vector:
@@ -314,7 +313,7 @@ face degree: {}/{}
         :class:`compas.geometry.Vector`
 
         """
-        t = self.vertex_attribute(vertex, "t")
+        t = self.vertex_attribute(vertex, "t") or 0
         a = self.vertex_area(vertex)
         return Vector(0, 0, -t * a)
 
@@ -331,7 +330,7 @@ face degree: {}/{}
         :class:`compas.geometry.Vector`
 
         """
-        rx, ry, rz = self.vertex_attributes(vertex, ["rx", "ry", "rz"])
+        rx, ry, rz = self.vertex_attributes(vertex, ["rx", "ry", "rz"])  # type: ignore
         return Vector(-rx, -ry, -rz)
 
     def vertex_residual(self, vertex: int) -> Vector:
@@ -347,7 +346,7 @@ face degree: {}/{}
         :class:`compas.geometry.Vector`
 
         """
-        rx, ry, rz = self.vertex_attributes(vertex, ["rx", "ry", "rz"])
+        rx, ry, rz = self.vertex_attributes(vertex, ["rx", "ry", "rz"])  # type: ignore
         return Vector(rx, ry, rz)
 
     # --------------------------------------------------------------------------
@@ -368,7 +367,7 @@ face degree: {}/{}
         # this is what indierectly creates isolated vertices
         # and for example the corner cutoffs in orthogonal grids
         for edge in self.edges():
-            if all(self.vertices_attribute("is_support", keys=edge)):
+            if all(self.vertices_attribute("is_support", keys=edge)):  # type: ignore
                 if self.is_edge_on_boundary(edge):
                     self.edge_attribute(edge, "_is_edge", False)
         # delete isolated (corner) vertices
@@ -376,6 +375,8 @@ face degree: {}/{}
         for vertex in list(self.vertices_where(vertex_degree=2)):
             nbrs = self.vertex_neighbors(vertex)
             if all(not self.edge_attribute((vertex, nbr), "_is_edge") for nbr in nbrs):
+                face = None
+                nbr = None
                 for nbr in nbrs:
                     face = self.halfedge[vertex][nbr]
                     if face is not None:

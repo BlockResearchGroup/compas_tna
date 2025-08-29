@@ -93,8 +93,8 @@ class LoadUpdater:
         """
         face_vertices = [None] * self.mesh.number_of_faces()
         for fkey in self.mesh.faces():
-            face_vertices[self.fvertex_index[fkey]] = [self.vertex_index[key] for key in self.mesh.face_vertices(fkey)]
-        return face_matrix(face_vertices, rtype="csr", normalize=True)
+            face_vertices[self.fvertex_index[fkey]] = [self.vertex_index[key] for key in self.mesh.face_vertices(fkey)]  # type: ignore
+        return face_matrix(face_vertices, rtype="csr", normalize=True)  # type: ignore
 
     def tributary_areas(
         self,

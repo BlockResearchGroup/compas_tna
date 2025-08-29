@@ -3,7 +3,7 @@ from compas_notebook.scene import ThreeMeshObject
 from compas_tna.scene import ForceDiagramObject
 
 
-class ThreeForceObject(ThreeMeshObject, ForceDiagramObject):
+class ThreeForceObject(ThreeMeshObject, ForceDiagramObject):  # type: ignore
     def draw(self):
         self._guids = []
 
