@@ -8,6 +8,19 @@ from compas.geometry import Vector
 from compas.itertools import pairwise
 from compas_tna.diagrams import Diagram
 
+from .diagram_arch import create_arch_linear_equally_spaced_mesh
+from .diagram_arch import create_arch_linear_mesh
+
+# TODO: import from compas_pattern
+from .diagram_circular import create_circular_radial_mesh
+from .diagram_circular import create_circular_radial_spaced_mesh
+from .diagram_circular import create_circular_spiral_mesh
+from .diagram_rectangular import create_cross_mesh
+from .diagram_rectangular import create_cross_with_diagonal_mesh
+from .diagram_rectangular import create_fan_mesh
+from .diagram_rectangular import create_ortho_mesh
+from .diagram_rectangular import create_parametric_fan_mesh
+
 
 class FormDiagram(Diagram):
     r"""Class representing a TNA form diagram.
@@ -171,6 +184,350 @@ face degree: {}/{}
 
         """
         return mesh.copy(cls=cls)
+
+    # --------------------------------------------------------------------------
+    # create form diagrams from templates
+    # --------------------------------------------------------------------------
+
+    @classmethod
+    def create_cross(cls, x_span=(0.0, 10.0), y_span=(0.0, 10.0), n=10, supports="corners") -> "FormDiagram":
+        """Construct a FormDiagram based on cross discretisation with orthogonal arrangement and quad diagonals.
+
+        Parameters
+        ----------
+        x_span : tuple, optional
+            Tuple with initial- and end-points of the vault in x direction, by default (0.0, 10.0)
+        y_span : tuple, optional
+            Tuple with initial- and end-points of the vault in y direction, by default (0.0, 10.0)
+        n : int, optional
+            Set the density of the mesh, by default 10.
+        supports : str, optional
+            Option to select the constrained nodes: 'corners', 'all' are accepted., by default 'corners'
+
+        Returns
+        -------
+        :class:`~compas_tna.diagrams.FormDiagram`
+            The FormDiagram created.
+
+        """
+        mesh = create_cross_mesh(x_span=x_span, y_span=y_span, n=n)
+        form = cls.from_mesh(mesh)
+        form.assign_support_type(supports)
+
+        return form
+
+    @classmethod
+    def create_fan(cls, x_span=(0.0, 10.0), y_span=(0.0, 10.0), n_fans=10, n_hoops=10, supports="corners") -> "FormDiagram":
+        """Construct a FormDiagram based on fan discretisation with straight lines to the corners.
+
+        Parameters
+        ----------
+        x_span : tuple, optional
+            Tuple with initial- and end-points of the vault in x direction, by default (0.0, 10.0)
+        y_span : tuple, optional
+            Tuple with initial- and end-points of the vault in y direction, by default (0.0, 10.0)
+        n_fans : int, optional
+            Number of segments from ridge to supports, by default 10
+        n_hoops : int, optional
+            Number of hoop divisions that cut across the spikes, by default 10
+        supports : str, optional
+            Option to select the constrained nodes: 'corners', 'all' are accepted, by default 'corners'
+
+        Returns
+        -------
+        :class:`~compas_tna.diagrams.FormDiagram`
+            The FormDiagram created.
+
+        """
+        mesh = create_fan_mesh(x_span=x_span, y_span=y_span, n_fans=n_fans, n_hoops=n_hoops)
+        form = cls.from_mesh(mesh)
+        form.assign_support_type(supports)
+
+        return form
+
+    @classmethod
+    def create_parametric_fan(cls, x_span=(0.0, 10.0), y_span=(0.0, 10.0), n=10, lambd=0.5, supports="corners") -> "FormDiagram":
+        """Construct a FormDiagram envelope that includes fan and cross diagrams. The diagram is modified by the parameter lambda.
+
+        Parameters
+        ----------
+        x_span : tuple, optional
+            Tuple with initial- and end-points of the vault in x direction, by default (0.0, 10.0)
+        y_span : tuple, optional
+            Tuple with initial- and end-points of the vault in y direction, by default (0.0, 10.0)
+        n : int, optional
+            Set the density of the mesh, by default 10.
+        lambd : float, optional
+            Inclination of the arches in the diagram (0.0 will result in cross and 1.0 in fan diagrams), by default 0.5
+        supports : str, optional
+            Option to select the constrained nodes: 'corners', 'all' are accepted, by default 'corners'
+
+        Returns
+        -------
+        :class:`~compas_tna.diagrams.FormDiagram`
+            The FormDiagram created.
+
+        """
+        mesh = create_parametric_fan_mesh(x_span=x_span, y_span=y_span, n=n, lambd=lambd)
+        form = cls.from_mesh(mesh)
+        form.assign_support_type(supports)
+
+        return form
+
+    @classmethod
+    def create_cross_with_diagonal(cls, x_span=(0.0, 10.0), y_span=(0.0, 10.0), n=10, supports="corners") -> "FormDiagram":
+        """Construct a FormDiagram based on cross discretisation with diagonal lines.
+
+        Parameters
+        ----------
+        x_span : tuple, optional
+            Tuple with initial- and end-points of the vault in x direction, by default (0.0, 10.0)
+        y_span : tuple, optional
+            Tuple with initial- and end-points of the vault in y direction, by default (0.0, 10.0)
+        n : int, optional
+            Set the density of the mesh, by default 10.
+        supports : str, optional
+            Option to select the constrained nodes: 'corners', 'all' are accepted, by default 'corners'
+
+        Returns
+        -------
+        :class:`~compas_tna.diagrams.FormDiagram`
+            The FormDiagram created.
+
+        """
+        mesh = create_cross_with_diagonal_mesh(x_span=x_span, y_span=y_span, n=n)
+        form = cls.from_mesh(mesh)
+        form.assign_support_type(supports)
+
+        return form
+
+    @classmethod
+    def create_ortho(cls, x_span=(0.0, 10.0), y_span=(0.0, 10.0), nx=10, ny=10, supports="corners") -> "FormDiagram":
+        """Construct a FormDiagram based on orthogonal discretisation.
+
+        Parameters
+        ----------
+        x_span : tuple, optional
+            Tuple with initial- and end-points of the vault in x direction, by default (0.0, 10.0)
+        y_span : tuple, optional
+            Tuple with initial- and end-points of the vault in y direction, by default (0.0, 10.0)
+        nx : int, optional
+            Set the density of the mesh in the x direction, by default 10
+        ny : int, optional
+            Set the density of the mesh in the y direction, by default 10
+        supports : str, optional
+            Option to select the constrained nodes: 'corners', 'all' are accepted, by default 'corners'
+
+        Returns
+        -------
+        :class:`~compas_tna.diagrams.FormDiagram`
+            The FormDiagram created.
+
+        """
+        mesh = create_ortho_mesh(x_span=x_span, y_span=y_span, nx=nx, ny=ny)
+        form = cls.from_mesh(mesh)
+        form.assign_support_type(supports)
+
+        return form
+
+    @classmethod
+    def create_circular_radial(cls, center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, partial_diagonal=False) -> "FormDiagram":
+        """Construct a circular radial FormDiagram with hoops not equally spaced in plan.
+
+        Parameters
+        ----------
+        center : tuple, optional
+            Planar coordinates of the form-diagram (xc, yc), by default (5.0, 5.0)
+        radius : float, optional
+            Radius of the form diagram, by default 5.0
+        n_hoops : int, optional
+            Number of hoops of the dome form diagram, by default 8
+        n_parallels : int, optional
+            Number of parallels of the dome form diagram, by default 20
+        r_oculus : float, optional
+            Value of the radius of the oculus, if no oculus is present should be set to zero, by default 0.0
+        diagonal : bool, optional
+            Activate diagonal in the quads, by default False
+        partial_diagonal : bool, optional
+            Activate partial diagonal in the quads, by default False
+
+        Returns
+        -------
+        :class:`~compas_tna.diagrams.FormDiagram`
+            The FormDiagram created.
+
+        Notes
+        -----
+        All boundary vertices are considered as supported.
+
+        """
+        mesh = create_circular_radial_mesh(
+            center=center, radius=radius, n_hoops=n_hoops, n_parallels=n_parallels, r_oculus=r_oculus, diagonal=diagonal, partial_diagonal=partial_diagonal
+        )
+        form = cls.from_mesh(mesh)
+        form.assign_support_type("all")
+        return form
+
+    @classmethod
+    def create_circular_radial_spaced(cls, center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, partial_diagonal=False) -> "FormDiagram":
+        """Construct a circular radial FormDiagram with hoops not equally spaced in plan,
+        but equally spaced with regards to the projection on a hemisphere.
+
+        Parameters
+        ----------
+        center : tuple, optional
+            Planar coordinates of the form-diagram (xc, yc), by default (5.0, 5.0)
+        radius : float, optional
+            Radius of the form diagram, by default 5.0
+        n_hoops : int, optional
+            Number of hoops of the dome form diagram, by default 8
+        n_parallels : int, optional
+            Number of parallels of the dome form diagram, by default 20
+        r_oculus : float, optional
+            Value of the radius of the oculus, if no oculus is present should be set to zero, by default 0.0
+        diagonal : bool, optional
+            Activate diagonal in the quads, by default False
+        partial_diagonal : bool, optional
+            Activate partial diagonal in the quads, by default False
+
+        Returns
+        -------
+        :class:`~compas_tna.diagrams.FormDiagram`
+            The FormDiagram created.
+
+        Notes
+        -----
+        All boundary vertices are considered as supported.
+
+        """
+        mesh = create_circular_radial_spaced_mesh(
+            center=center, radius=radius, n_hoops=n_hoops, n_parallels=n_parallels, r_oculus=r_oculus, diagonal=diagonal, partial_diagonal=partial_diagonal
+        )
+        form = cls.from_mesh(mesh)
+        form.assign_support_type("all")
+        return form
+
+    @classmethod
+    def create_circular_spiral(cls, center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0) -> "FormDiagram":
+        """Construct a circular spiral FormDiagram with hoops not equally spaced in plan,
+        but equally spaced with regards to the projection on a hemisphere.
+
+        Parameters
+        ----------
+        center : tuple, optional
+            Planar coordinates of the form-diagram (xc, yc), by default (5.0, 5.0)
+        radius : float, optional
+            Radius of the form diagram, by default 5.0
+        n_hoops : int, optional
+            Number of hoops of the dome form diagram, by default 8
+            The number of spiral intersections in the diagram equals the number of hoops.
+        n_parallels : int, optional
+            Number of parallels of the dome form diagram, by default 20
+            The number of spirals in the diagram equals the number of parallels.
+        r_oculus : float, optional
+            Value of the radius of the oculus, if no oculus is present should be set to zero, by default 0.0
+
+        Returns
+        -------
+        :class:`~compas_tna.diagrams.FormDiagram`
+            The FormDiagram created.
+
+        Notes
+        -----
+        All boundary vertices are considered as supported.
+
+        """
+        mesh = create_circular_spiral_mesh(center=center, radius=radius, n_hoops=n_hoops, n_parallels=n_parallels, r_oculus=r_oculus)
+        form = cls.from_mesh(mesh)
+        form.assign_support_type("all")
+        return form
+
+    @classmethod
+    def create_arch(cls, H: float = 1.00, L: float = 2.00, x0: float = 0.0, n: int = 100) -> "FormDiagram":
+        """Construct a FormDiagram based on an arch linear discretisation by
+        spacing the nodes of the form diagram following a projection in a semicircular arch.
+
+        Parameters
+        ----------
+        H : float, optional
+            Height of the arch, by default 1.00
+        L : float, optional
+            Span of the arch, by default 2.00
+        x0 : float, optional
+            Initial coordiante of the arch, by default 0.0
+        n : int, optional
+            Number of nodes to be considered in the form diagram, by default 100
+
+        Returns
+        -------
+        :class:`~compas_tno.diagrams.FormDiagram`
+            The FormDiagram created.
+
+        Notes
+        -----
+        All boundary vertices are considered as supported.
+
+        """
+        mesh = create_arch_linear_mesh(H=H, L=L, x0=x0, n=n)
+        form = cls.from_mesh(mesh)
+        vertices = list(form.vertices())
+        form.vertices_attribute(name="is_support", value=True, keys=[vertices[0], vertices[-1]])
+        return form
+
+    @classmethod
+    def create_arch_equally_spaced(cls, L: float = 2.0, x0: float = 0.0, n: int = 100) -> "FormDiagram":
+        """Construct a FormDiagram based on an arch linear discretisation by spacing the nodes of the form diagram equally in plan.
+
+        Parameters
+        ----------
+        L : float, optional
+            Span of the arch, by default 2.0
+        x0 : float, optional
+            Initial coordinate of the arch, by default 0.0
+        n : int, optional
+            Number of nodes to be considered in the form diagram, by default 100
+
+        Returns
+        -------
+        :class:`~compas_tna.diagrams.FormDiagram`
+            FormDiagram generated according to the parameters.
+
+        Notes
+        -----
+        All boundary vertices are considered as supported.
+
+        """
+        mesh = create_arch_linear_equally_spaced_mesh(L=L, x0=x0, n=n)
+        form = cls.from_mesh(mesh)
+        vertices = list(form.vertices())
+        form.vertices_attribute(name="is_support", value=True, keys=[vertices[0], vertices[-1]])
+        return form
+
+    # --------------------------------------------------------------------------
+    # Helpers to create form diagrams from templates
+    # --------------------------------------------------------------------------
+
+    def assign_support_type(self, support_type: str = "corners"):
+        """Assign supports to the form diagram.
+
+        Parameters
+        ----------
+        supports : str, optional
+            The type of supports to assign, by default "corners". Options accepted are "all" and "corners".
+
+        Notes
+        -----
+        If the supports are assigned to "all", the supports are assigned to the vertices on the first boundary of the form diagram.
+
+        """
+        if support_type == "all":
+            bounds = self.vertices_on_boundaries()
+            self.vertices_attribute(name="is_support", value=True, keys=bounds[0])
+        elif support_type == "corners":
+            corners = self.corner_vertices()
+            self.vertices_attribute(name="is_support", value=True, keys=corners)
+        else:
+            raise ValueError(f"Invalid supports type: {support_type}")
 
     def uv_index(self) -> dict[tuple[int, int], int]:
         """Returns a dictionary that maps edge keys (i.e. pairs of vertex keys)
