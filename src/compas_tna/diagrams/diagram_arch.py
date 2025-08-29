@@ -5,7 +5,8 @@ from compas.datastructures import Mesh
 
 def create_arch_linear_mesh(H: float = 1.0, L: float = 2.0, x0: float = 0.0, n: int = 100) -> Mesh:
     """Construct a Mesh based on an arch linear discretisation.
-    Note: The nodes of the mesh are spaced following a projection in a semicircular arch.
+
+    The nodes of the mesh are spaced following a projection in a semicircular arch.
 
     Parameters
     ----------
@@ -18,9 +19,18 @@ def create_arch_linear_mesh(H: float = 1.0, L: float = 2.0, x0: float = 0.0, n: 
     n : int, optional
         Numbers of nodes to be considered in the mesh, by default 100
 
+    Raises
+    ------
+    ValueError
+        If `n` is less than 2.
+    ValueError
+        If `H` of `L` are not strictly positive numbers.
+    ValueError
+        If `L` is less than `2 * H`.
+
     Returns
     -------
-    mesh : Mesh
+    mesh : :class:`Mesh`
         The Mesh created.
 
     """
@@ -65,9 +75,16 @@ def create_arch_linear_equally_spaced_mesh(L: float = 2.0, x0: float = 0.0, n: i
     n : int, optional
         Numbers of nodes to be considered in the mesh, by default 100
 
+    Raises
+    ------
+    ValueError
+        If `n` is less than 2.
+    ValueError
+        If `L` is not a strictly positive number.
+
     Returns
     -------
-    mesh : Mesh
+    mesh : :class:`Mesh`
         The Mesh created.
 
     """
