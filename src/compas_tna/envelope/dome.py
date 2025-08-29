@@ -302,18 +302,7 @@ class DomeEnvelope(Envelope):
         self.n_parallels = n_parallels
         self.r_oculus = r_oculus
 
-        intrados, extrados, middle = create_dome_envelope(
-            center=center,
-            radius=radius,
-            thickness=thickness,
-            min_lb=min_lb,
-            n_hoops=n_hoops,
-            n_parallels=n_parallels,
-            r_oculus=r_oculus,
-        )
-        self.intrados = intrados
-        self.extrados = extrados
-        self.middle = middle
+        self.update()
 
     @property
     def __data__(self):
@@ -329,31 +318,45 @@ class DomeEnvelope(Envelope):
     def __str__(self):
         return f"DomeEnvelope(name={self.name})"
 
+    def update(self):
+        intrados, extrados, middle = create_dome_envelope(
+            center=self.center,
+            radius=self.radius,
+            thickness=self.thickness,
+            min_lb=self.min_lb,
+            n_hoops=self.n_hoops,
+            n_parallels=self.n_parallels,
+            r_oculus=self.r_oculus,
+        )
+        self.intrados = intrados
+        self.extrados = extrados
+        self.middle = middle
+
     def callable_middle(self, x, y):
         return dome_middle_update(x, y, self.radius, self.min_lb, self.center)
 
-    def callable_ub_lb(self, x, y, thickness):
+    def callable_ub_lb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return dome_ub_lb_update(x, y, thickness, self.min_lb, self.center, self.radius)
 
-    def callable_dub_dlb(self, x, y, thickness):
+    def callable_dub_dlb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return dome_dub_dlb(x, y, thickness, self.min_lb, self.center, self.radius)
 
-    def callable_bound_react(self, x, y, thickness, fixed):
+    def callable_bound_react(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return dome_bound_react_update(x, y, thickness, fixed, self.center, self.radius)
 
-    def callable_db(self, x, y, thickness, fixed):
+    def callable_db(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:

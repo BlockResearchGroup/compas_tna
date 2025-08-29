@@ -677,11 +677,11 @@ class Envelope(Data):
         # Step 4: Copy the form diagram and project it onto the middle mesh vertically
         form_ = formdiagram.copy()
 
-        if not self.callable_zt:
+        if not self.callable_middle:
             project_mesh_to_target_vertical(form_, self.middle)
         else:
             xy = np.array(form_.vertices_attributes("xy"))
-            zt = list(self.callable_zt(xy[:, 0], xy[:, 1]).flatten().tolist())
+            zt = list(self.callable_middle(xy[:, 0], xy[:, 1]).flatten().tolist())
             for i, key in enumerate(form_.vertices()):
                 form_.vertex_attribute(key, "z", zt[i])
 
@@ -775,7 +775,7 @@ class Envelope(Data):
         form_target = formdiagram.copy()  # For upper bound (extrados)
 
         # Step 2: Project form diagram onto the middle mesh
-        if not self.callable_zt:
+        if not self.callable_middle:
             project_mesh_to_target_vertical(form_target, self.middle)
         else:
             xy = np.array(form_target.vertices_attributes("xy"))
@@ -862,16 +862,16 @@ class Envelope(Data):
                 formdiagram.vertex_attribute(vertex, "thickness", self._thickness)
 
     def callable_middle(self, x, y):
-        return NotImplementedError("Callable middle update only available for analytical envelopes")
+        return
 
     def callable_ub_lb(self, x, y, thickness):
-        return NotImplementedError("Callable ub_lb update only available for analytical envelopes")
+        return
 
     def callable_dub_dlb(self, x, y):
-        return NotImplementedError("Callable dub_dlb only available for analytical envelopes")
+        return
 
     def callable_bound_react(self, x, y, thickness, fixed):
-        return NotImplementedError("Callable bound_react update only available for analytical envelopes")
+        return
 
     def callable_db(self, x, y, thickness, fixed):
-        return NotImplementedError("Callable db only available for analytical envelopes")
+        return

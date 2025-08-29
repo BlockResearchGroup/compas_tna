@@ -406,10 +406,7 @@ class CrossVaultEnvelope(Envelope):
         self.min_lb = min_lb
         self.n = n
 
-        intrados, extrados, middle = create_crossvault_envelope(x_span=x_span, y_span=y_span, thickness=thickness, min_lb=min_lb, n=n)
-        self.intrados = intrados
-        self.extrados = extrados
-        self.middle = middle
+        self.update()
 
     @property
     def __data__(self):
@@ -423,31 +420,37 @@ class CrossVaultEnvelope(Envelope):
     def __str__(self):
         return f"CrossVaultEnvelope(name={self.name})"
 
+    def update(self):
+        intrados, extrados, middle = create_crossvault_envelope(x_span=self.x_span, y_span=self.y_span, thickness=self.thickness, min_lb=self.min_lb, n=self.n)
+        self.intrados = intrados
+        self.extrados = extrados
+        self.middle = middle
+
     def callable_middle(self, x, y):
         return crossvault_middle_update(x, y, self.min_lb, self.x_span, self.y_span, tol=1e-6)
 
-    def callable_ub_lb(self, x, y, thickness):
+    def callable_ub_lb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return crossvault_ub_lb_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, tol=1e-6)
 
-    def callable_dub_dlb(self, x, y, thickness):
+    def callable_dub_dlb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return crossvault_dub_dlb(x, y, thickness, self.min_lb, self.x_span, self.y_span, tol=1e-6)
 
-    def callable_bound_react(self, x, y, thickness, fixed):
+    def callable_bound_react(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return crossvault_bound_react_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, tol=1e-6)
 
-    def callable_db(self, x, y, thickness, fixed):
+    def callable_db(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:

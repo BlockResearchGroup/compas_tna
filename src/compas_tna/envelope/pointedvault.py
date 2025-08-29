@@ -614,19 +614,7 @@ class PointedVaultEnvelope(Envelope):
         self.he = he
         self.hm = hm
 
-        intrados, extrados, middle = create_pointedvault_envelope(
-            x_span=x_span,
-            y_span=y_span,
-            thickness=thickness,
-            min_lb=min_lb,
-            n=n,
-            hc=hc,
-            he=he,
-            hm=hm,
-        )
-        self.intrados = intrados
-        self.extrados = extrados
-        self.middle = middle
+        self.update()
 
     @property
     def __data__(self):
@@ -643,31 +631,39 @@ class PointedVaultEnvelope(Envelope):
     def __str__(self):
         return f"PointedVaultEnvelope(name={self.name})"
 
+    def update(self):
+        intrados, extrados, middle = create_pointedvault_envelope(
+            x_span=self.x_span, y_span=self.y_span, thickness=self.thickness, min_lb=self.min_lb, n=self.n, hc=self.hc, he=self.he, hm=self.hm
+        )
+        self.intrados = intrados
+        self.extrados = extrados
+        self.middle = middle
+
     def callable_middle(self, x, y):
         return pointedvault_middle_update(x, y, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
-    def callable_ub_lb(self, x, y, thickness):
+    def callable_ub_lb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return pointedvault_ub_lb_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
-    def callable_dub_dlb(self, x, y, thickness):
+    def callable_dub_dlb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return pointedvault_dub_dlb(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
-    def callable_bound_react(self, x, y, thickness, fixed):
+    def callable_bound_react(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return pointedvault_bound_react_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
-    def callable_db(self, x, y, thickness, fixed):
+    def callable_db(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
