@@ -213,7 +213,6 @@ class MeshEnvelope(Envelope):
 
         # Thickness property
         self._thickness = thickness
-        self.is_parametric = False
 
     @property
     def __data__(self):
@@ -223,7 +222,6 @@ class MeshEnvelope(Envelope):
         data["middle"] = self.middle
         data["fill"] = self.fill
         data["thickness"] = self._thickness
-        data["is_parametric"] = self.is_parametric
         return data
 
     def __str__(self):
@@ -350,6 +348,11 @@ class MeshEnvelope(Envelope):
         if self.middle is not None:
             for key in self.middle.vertices():
                 self.middle.vertex_attribute(key, "thickness", value)
+
+    @property
+    def is_parametric(self) -> bool:
+        """Check if the envelope is parametric."""
+        return False
 
     # =============================================================================
     # Geometric operations

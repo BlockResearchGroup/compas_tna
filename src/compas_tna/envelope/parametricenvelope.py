@@ -11,7 +11,6 @@ class ParametricEnvelope(Envelope):
         super().__init__(**kwargs)
 
         self._thickness = thickness
-        self.is_parametric = True
 
     def __str__(self):
         return f"ParametricEnvelope(name={self.name})"
@@ -20,7 +19,6 @@ class ParametricEnvelope(Envelope):
     def __data__(self):
         data = super().__data__
         data["thickness"] = self._thickness
-        data["is_parametric"] = self.is_parametric
         return data
 
     # =============================================================================
@@ -48,6 +46,11 @@ class ParametricEnvelope(Envelope):
             The thickness value to set.
         """
         self._thickness = value
+
+    @property
+    def is_parametric(self) -> bool:
+        """Check if the envelope is parametric."""
+        return True
 
     # =============================================================================
     # Envelope Generator

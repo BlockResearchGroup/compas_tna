@@ -51,28 +51,6 @@ class Envelope(Data):
             self._total_selfweight = self.compute_selfweight()
         return self._total_selfweight
 
-    @property
-    def rho(self) -> float:
-        """Get the density of the envelope.
-
-        Returns
-        -------
-        float
-            The density of the envelope in kg/m³.
-        """
-        return self._rho
-
-    @rho.setter
-    def rho(self, value: float) -> None:
-        """Set the density of the envelope.
-
-        Parameters
-        -------
-        value : float
-            The density value to set in kg/m³.
-        """
-        self._rho = value
-
     # =============================================================================
     # Geometry operations
     # =============================================================================
