@@ -6,7 +6,7 @@ from numpy import zeros
 
 from compas.datastructures import Mesh
 from compas_tna.diagrams.diagram_rectangular import create_cross_mesh
-from compas_tna.envelope.envelope import Envelope
+from compas_tna.envelope.parametricenvelope import ParametricEnvelope
 
 
 def create_pointedvault_envelope(
@@ -592,7 +592,7 @@ def _sqrt(x):
     return sqrt_x
 
 
-class PointedVaultEnvelope(Envelope):
+class PointedVaultEnvelope(ParametricEnvelope):
     def __init__(
         self,
         x_span: tuple = (0.0, 10.0),
@@ -614,7 +614,7 @@ class PointedVaultEnvelope(Envelope):
         self.he = he
         self.hm = hm
 
-        self.update()
+        self.update_envelope()  # Generate the intra/extra/middle meshes
 
     @property
     def __data__(self):
@@ -631,7 +631,7 @@ class PointedVaultEnvelope(Envelope):
     def __str__(self):
         return f"PointedVaultEnvelope(name={self.name})"
 
-    def update(self):
+    def update_envelope(self):
         intrados, extrados, middle = create_pointedvault_envelope(
             x_span=self.x_span, y_span=self.y_span, thickness=self.thickness, min_lb=self.min_lb, n=self.n, hc=self.hc, he=self.he, hm=self.hm
         )
@@ -639,31 +639,31 @@ class PointedVaultEnvelope(Envelope):
         self.extrados = extrados
         self.middle = middle
 
-    def callable_middle(self, x, y):
+    def compute_middle(self, x, y):
         return pointedvault_middle_update(x, y, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
-    def callable_ub_lb(self, x, y, thickness=None):
+    def compute_ub_lb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return pointedvault_ub_lb_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
-    def callable_dub_dlb(self, x, y, thickness=None):
+    def compute_dub_dlb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return pointedvault_dub_dlb(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
-    def callable_bound_react(self, x, y, thickness=None, fixed=None):
+    def compute_bound_react(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return pointedvault_bound_react_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
-    def callable_db(self, x, y, thickness=None, fixed=None):
+    def compute_db(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:

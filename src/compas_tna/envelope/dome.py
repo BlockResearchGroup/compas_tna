@@ -6,7 +6,7 @@ from numpy import zeros
 
 from compas.datastructures import Mesh
 from compas_tna.diagrams.diagram_circular import create_circular_radial_spaced_mesh
-from compas_tna.envelope.envelope import Envelope
+from compas_tna.envelope.parametricenvelope import ParametricEnvelope
 
 
 def create_dome_envelope(
@@ -282,7 +282,7 @@ def dome_db_sensitivity(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0):
     return db
 
 
-class DomeEnvelope(Envelope):
+class DomeEnvelope(ParametricEnvelope):
     def __init__(
         self,
         center: tuple = (5.0, 5.0),
@@ -302,7 +302,7 @@ class DomeEnvelope(Envelope):
         self.n_parallels = n_parallels
         self.r_oculus = r_oculus
 
-        self.update()
+        self.update_envelope()  # Generate the intra/extra/middle meshes
 
     @property
     def __data__(self):
@@ -318,7 +318,7 @@ class DomeEnvelope(Envelope):
     def __str__(self):
         return f"DomeEnvelope(name={self.name})"
 
-    def update(self):
+    def update_envelope(self):
         intrados, extrados, middle = create_dome_envelope(
             center=self.center,
             radius=self.radius,
@@ -332,31 +332,31 @@ class DomeEnvelope(Envelope):
         self.extrados = extrados
         self.middle = middle
 
-    def callable_middle(self, x, y):
+    def compute_middle(self, x, y):
         return dome_middle_update(x, y, self.radius, self.min_lb, self.center)
 
-    def callable_ub_lb(self, x, y, thickness=None):
+    def compute_ub_lb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return dome_ub_lb_update(x, y, thickness, self.min_lb, self.center, self.radius)
 
-    def callable_dub_dlb(self, x, y, thickness=None):
+    def compute_dub_dlb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return dome_dub_dlb(x, y, thickness, self.min_lb, self.center, self.radius)
 
-    def callable_bound_react(self, x, y, thickness=None, fixed=None):
+    def compute_bound_react(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return dome_bound_react_update(x, y, thickness, fixed, self.center, self.radius)
 
-    def callable_db(self, x, y, thickness=None, fixed=None):
+    def compute_db(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:

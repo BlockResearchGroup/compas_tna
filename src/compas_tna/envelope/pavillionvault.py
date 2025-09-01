@@ -6,7 +6,7 @@ from numpy import zeros
 
 from compas.datastructures import Mesh
 from compas_tna.diagrams.diagram_rectangular import create_cross_mesh
-from compas_tna.envelope.envelope import Envelope
+from compas_tna.envelope.parametricenvelope import ParametricEnvelope
 
 
 def create_pavillionvault_envelope(
@@ -392,7 +392,7 @@ def pavillionvault_db(x, y, thk, fixed, x_span=(0.0, 10.0), y_span=(0.0, 10.0)):
     return abs(db)
 
 
-class PavillionVaultEnvelope(Envelope):
+class PavillionVaultEnvelope(ParametricEnvelope):
     def __init__(
         self,
         x_span: tuple = (0.0, 10.0),
@@ -410,7 +410,7 @@ class PavillionVaultEnvelope(Envelope):
         self.n = n
         self.spr_angle = spr_angle
 
-        self.update()
+        self.update_envelope()  # Generate the intra/extra/middle meshes
 
     @property
     def __data__(self):
@@ -425,7 +425,7 @@ class PavillionVaultEnvelope(Envelope):
     def __str__(self):
         return f"PavillionVaultEnvelope(name={self.name})"
 
-    def update(self):
+    def update_envelope(self):
         intrados, extrados, middle = create_pavillionvault_envelope(
             x_span=self.x_span, y_span=self.y_span, thickness=self.thickness, min_lb=self.min_lb, n=self.n, spr_angle=self.spr_angle
         )
@@ -433,31 +433,31 @@ class PavillionVaultEnvelope(Envelope):
         self.extrados = extrados
         self.middle = middle
 
-    def callable_middle(self, x, y):
+    def compute_middle(self, x, y):
         return pavillionvault_middle_update(x, y, x_span=self.x_span, y_span=self.y_span, spr_angle=self.spr_angle, tol=1e-6)
 
-    def callable_ub_lb(self, x, y, thickness=None):
+    def compute_ub_lb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return pavillionvault_ub_lb_update(x, y, thickness, self.min_lb, x_span=self.x_span, y_span=self.y_span, spr_angle=self.spr_angle, tol=1e-6)
 
-    def callable_dub_dlb(self, x, y, thickness=None):
+    def compute_dub_dlb(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return pavillionvault_dub_dlb(x, y, thickness, self.min_lb, x_span=self.x_span, y_span=self.y_span, tol=1e-6)
 
-    def callable_bound_react(self, x, y, thickness=None, fixed=None):
+    def compute_bound_react(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
         return pavillionvault_bound_react_update(x, y, thickness, fixed, x_span=self.x_span, y_span=self.y_span, tol=1e-6)
 
-    def callable_db(self, x, y, thickness=None, fixed=None):
+    def compute_db(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
