@@ -8,6 +8,22 @@
 
 COMPAS package for Thrust Network Analaysis.
 
+## Installation
+
+Stable releases can be installed from PyPI.
+
+```bash
+pip install compas_tna
+```
+
+To install the latest version for development, do:
+
+```bash
+git clone https://github.com/blockresearchgroup/compas_tna.git
+cd compas_tna
+pip install -e ".[dev]"
+```
+
 ## Documentation
 
 To get started with `compas_tna` have a look at [the documentation](https://github.com/blockresearchgroup/compas_tna).
