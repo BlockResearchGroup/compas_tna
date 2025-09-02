@@ -38,15 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* Refactored parameter passing from `xy_span=[[x0, x1], [y0, y1]]` to `x_span=(x0, x1), y_span=(y0, y1)` for better API consistency
-* Changed `center` parameter from list to tuple in circular diagram functions for immutability and consistency
-* Updated function signatures to use single-line format for Black compatibility
-* Improved code formatting and linting across all diagram generation files
-* Fixed various spelling errors and documentation formatting issues
-* Renamed `create_delta_form()` to `create_cross_with_diagonal()` for better clarity
-* Updated support assignment to use `is_support` attribute instead of deprecated `is_fixed`
-* Removed deprecated `form.parameters` usage from all form creation methods
-
 ### Removed
 
 
