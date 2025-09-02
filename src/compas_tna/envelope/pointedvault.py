@@ -9,7 +9,7 @@ from compas_tna.diagrams.diagram_rectangular import create_cross_mesh
 from compas_tna.envelope.parametricenvelope import ParametricEnvelope
 
 
-def create_pointedvault_envelope(
+def pointedvault_envelope(
     x_span: tuple = (0.0, 10.0),
     y_span: tuple = (0.0, 10.0),
     thickness: float = 0.50,
@@ -55,24 +55,13 @@ def create_pointedvault_envelope(
     xi, yi, _ = array(xyz0).transpose()
 
     # Create middle surface
-    zt = pointedvault_middle_update(xi, yi, min_lb, x_span=x_span, y_span=y_span, hc=hc, he=he, hm=hm, tol=1e-6)
+    zt = pointedvault_middle(xi, yi, min_lb, x_span=x_span, y_span=y_span, hc=hc, he=he, hm=hm, tol=1e-6)
     xyzt = array([xi, yi, zt.flatten()]).transpose()
     middle = Mesh.from_vertices_and_faces(xyzt, faces_i)
     middle.update_default_vertex_attributes(thickness=thickness)
 
     # Create upper and lower bounds
-    zub, zlb = pointedvault_ub_lb_update(
-        xi,
-        yi,
-        thickness,
-        min_lb,
-        x_span=x_span,
-        y_span=y_span,
-        hc=hc,
-        he=he,
-        hm=hm,
-        tol=1e-6,
-    )
+    zub, zlb = pointedvault_bounds(xi, yi, thickness, min_lb, x_span=x_span, y_span=y_span, hc=hc, he=he, hm=hm, tol=1e-6)
     xyzub = array([xi, yi, zub.flatten()]).transpose()
     xyzlb = array([xi, yi, zlb.flatten()]).transpose()
 
@@ -82,7 +71,7 @@ def create_pointedvault_envelope(
     return intrados, extrados, middle
 
 
-def pointedvault_middle_update(
+def pointedvault_middle(
     x,
     y,
     min_lb,
@@ -199,7 +188,7 @@ def pointedvault_middle_update(
     return middle
 
 
-def pointedvault_ub_lb_update(
+def pointedvault_bounds(
     x,
     y,
     thk,
@@ -347,7 +336,7 @@ def pointedvault_ub_lb_update(
     return ub, lb
 
 
-def pointedvault_dub_dlb(
+def pointedvault_bounds_derivatives(
     x,
     y,
     thk,
@@ -510,7 +499,7 @@ def pointedvault_dub_dlb(
     return dub, dlb  # ub, lb
 
 
-def pointedvault_bound_react_update(
+def pointedvault_bound_react(
     x,
     y,
     thk,
@@ -526,7 +515,7 @@ def pointedvault_bound_react_update(
     pass
 
 
-def pointedvault_db(
+def pointedvault_bound_react_derivatives(
     x,
     y,
     thk,
@@ -632,7 +621,7 @@ class PointedVaultEnvelope(ParametricEnvelope):
         return f"PointedVaultEnvelope(name={self.name})"
 
     def update_envelope(self):
-        intrados, extrados, middle = create_pointedvault_envelope(
+        intrados, extrados, middle = pointedvault_envelope(
             x_span=self.x_span, y_span=self.y_span, thickness=self.thickness, min_lb=self.min_lb, n=self.n, hc=self.hc, he=self.he, hm=self.hm
         )
         self.intrados = intrados
@@ -640,32 +629,32 @@ class PointedVaultEnvelope(ParametricEnvelope):
         self.middle = middle
 
     def compute_middle(self, x, y):
-        return pointedvault_middle_update(x, y, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
+        return pointedvault_middle(x, y, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
-    def compute_ub_lb(self, x, y, thickness=None):
+    def compute_bounds(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return pointedvault_ub_lb_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
+        return pointedvault_bounds(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
-    def compute_dub_dlb(self, x, y, thickness=None):
+    def compute_bounds_derivatives(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return pointedvault_dub_dlb(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
+        return pointedvault_bounds_derivatives(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
     def compute_bound_react(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return pointedvault_bound_react_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
+        return pointedvault_bound_react(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
 
-    def compute_db(self, x, y, thickness=None, fixed=None):
+    def compute_bound_react_derivatives(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return pointedvault_db(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)
+        return pointedvault_bound_react_derivatives(x, y, thickness, self.min_lb, self.x_span, self.y_span, self.hc, self.he, self.hm)

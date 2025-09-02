@@ -10,6 +10,7 @@ class ParametricEnvelope(Envelope):
     def __init__(self, thickness: float = 0.50, **kwargs):
         super().__init__(**kwargs)
 
+        self.is_parametric = True
         self._thickness = thickness
 
     def __str__(self):
@@ -46,11 +47,6 @@ class ParametricEnvelope(Envelope):
             The thickness value to set.
         """
         self._thickness = value
-
-    @property
-    def is_parametric(self) -> bool:
-        """Check if the envelope is parametric."""
-        return True
 
     # =============================================================================
     # Envelope Generator
@@ -176,7 +172,7 @@ class ParametricEnvelope(Envelope):
         """
 
         xy = np.array(formdiagram.vertices_attributes("xy"))
-        zub, zlb = self.compute_ub_lb(xy[:, 0], xy[:, 1])
+        zub, zlb = self.compute_bounds(xy[:, 0], xy[:, 1])
         for i, key in enumerate(formdiagram.vertices()):
             formdiagram.vertex_attribute(key, "ub", float(zub[i]))
             formdiagram.vertex_attribute(key, "lb", float(zlb[i]))
@@ -207,14 +203,14 @@ class ParametricEnvelope(Envelope):
     def compute_middle(self, x, y):
         raise NotImplementedError("Implement compute_middle for specific envelope type.")
 
-    def compute_ub_lb(self, x, y, thickness):
-        raise NotImplementedError("Implement compute_ub_lb for specific envelope type.")
+    def compute_bounds(self, x, y, thickness):
+        raise NotImplementedError("Implement compute_bounds for specific envelope type.")
 
-    def compute_dub_dlb(self, x, y):
-        raise NotImplementedError("Implement compute_dub_dlb for specific envelope type.")
+    def compute_bounds_derivatives(self, x, y):
+        raise NotImplementedError("Implement compute_bounds_derivatives for specific envelope type.")
 
     def compute_bound_react(self, x, y, thickness, fixed):
         raise NotImplementedError("Implement compute_bound_react for specific envelope type.")
 
-    def compute_db(self, x, y, thickness, fixed):
-        return
+    def compute_bound_react_derivatives(self, x, y, thickness, fixed):
+        raise NotImplementedError("Implement compute_bound_react_derivatives for specific envelope type.")

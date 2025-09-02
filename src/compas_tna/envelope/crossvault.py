@@ -9,7 +9,7 @@ from compas_tna.diagrams.diagram_rectangular import create_cross_mesh
 from compas_tna.envelope.parametricenvelope import ParametricEnvelope
 
 
-def create_crossvault_envelope(
+def crossvault_envelope(
     x_span: tuple = (0.0, 10.0),
     y_span: tuple = (0.0, 10.0),
     thickness: float = 0.50,
@@ -46,13 +46,13 @@ def create_crossvault_envelope(
     xi, yi, _ = array(xyz0).transpose()
 
     # Create middle surface
-    zt = crossvault_middle_update(xi, yi, min_lb, x_span=x_span, y_span=y_span, tol=1e-6)
+    zt = crossvault_middle(xi, yi, min_lb, x_span=x_span, y_span=y_span, tol=1e-6)
     xyzt = array([xi, yi, zt.flatten()]).transpose()
     middle = Mesh.from_vertices_and_faces(xyzt, faces_i)
     middle.update_default_vertex_attributes(thickness=thickness)
 
     # Create upper and lower bounds
-    zub, zlb = crossvault_ub_lb_update(xi, yi, thickness, min_lb, x_span=x_span, y_span=y_span, tol=1e-6)
+    zub, zlb = crossvault_bounds(xi, yi, thickness, min_lb, x_span=x_span, y_span=y_span, tol=1e-6)
     xyzub = array([xi, yi, zub.flatten()]).transpose()
     xyzlb = array([xi, yi, zlb.flatten()]).transpose()
 
@@ -62,7 +62,7 @@ def create_crossvault_envelope(
     return intrados, extrados, middle
 
 
-def crossvault_middle_update(x, y, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
+def crossvault_middle(x, y, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
     """Update middle of a crossvault based in the parameters
 
     Parameters
@@ -126,7 +126,7 @@ def crossvault_middle_update(x, y, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0
     return z
 
 
-def crossvault_ub_lb_update(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
+def crossvault_bounds(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
     """Update upper and lower bounds of an crossvault based in the parameters
 
     Parameters
@@ -230,7 +230,7 @@ def crossvault_ub_lb_update(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 
     return ub, lb
 
 
-def crossvault_dub_dlb(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
+def crossvault_bounds_derivatives(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
     """Computes the sensitivities of upper and lower bounds in the x, y coordinates and thickness specified.
 
     Parameters
@@ -368,12 +368,12 @@ def crossvault_dub_dlb(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0)
     return dub, dlb, dubdx, dubdy, dlbdx, dlbdy
 
 
-def crossvault_bound_react_update(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
+def crossvault_bound_react(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
     """Compute the bounds on the reaction vector of the crossvault."""
     pass
 
 
-def crossvault_db(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
+def crossvault_bound_react_derivatives(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
     """Compute the sensitivities of the bounds on the reaction vector of the crossvault."""
     pass
 
@@ -421,38 +421,38 @@ class CrossVaultEnvelope(ParametricEnvelope):
         return f"CrossVaultEnvelope(name={self.name})"
 
     def update_envelope(self):
-        intrados, extrados, middle = create_crossvault_envelope(x_span=self.x_span, y_span=self.y_span, thickness=self.thickness, min_lb=self.min_lb, n=self.n)
+        intrados, extrados, middle = crossvault_envelope(x_span=self.x_span, y_span=self.y_span, thickness=self.thickness, min_lb=self.min_lb, n=self.n)
         self.intrados = intrados
         self.extrados = extrados
         self.middle = middle
 
     def compute_middle(self, x, y):
-        return crossvault_middle_update(x, y, self.min_lb, self.x_span, self.y_span, tol=1e-6)
+        return crossvault_middle(x, y, self.min_lb, self.x_span, self.y_span, tol=1e-6)
 
-    def compute_ub_lb(self, x, y, thickness=None):
+    def compute_bounds(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return crossvault_ub_lb_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, tol=1e-6)
+        return crossvault_bounds(x, y, thickness, self.min_lb, self.x_span, self.y_span, tol=1e-6)
 
-    def compute_dub_dlb(self, x, y, thickness=None):
+    def compute_bounds_derivatives(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return crossvault_dub_dlb(x, y, thickness, self.min_lb, self.x_span, self.y_span, tol=1e-6)
+        return crossvault_bounds_derivatives(x, y, thickness, self.min_lb, self.x_span, self.y_span, tol=1e-6)
 
     def compute_bound_react(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return crossvault_bound_react_update(x, y, thickness, self.min_lb, self.x_span, self.y_span, tol=1e-6)
+        return crossvault_bound_react(x, y, thickness, self.min_lb, self.x_span, self.y_span, tol=1e-6)
 
-    def compute_db(self, x, y, thickness=None, fixed=None):
+    def compute_bound_react_derivatives(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return crossvault_db(x, y, thickness, self.min_lb, self.x_span, self.y_span, tol=1e-6)
+        return crossvault_bound_react_derivatives(x, y, thickness, self.min_lb, self.x_span, self.y_span, tol=1e-6)

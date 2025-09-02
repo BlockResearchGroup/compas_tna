@@ -10,10 +10,11 @@ from compas_tna.diagrams import FormDiagram
 class Envelope(Data):
     """Pure geometric envelope representing masonry structure boundaries."""
 
-    def __init__(self, rho: Optional[float] = 20.0, **kwargs):
+    def __init__(self, rho: Optional[float] = 20.0, is_parametric: bool = False, **kwargs):
         super().__init__(**kwargs)
 
         self.rho = rho
+        self.is_parametric = is_parametric
 
         # Computed properties (cached)
         self._area = 0.0
@@ -24,6 +25,7 @@ class Envelope(Data):
     def __data__(self):
         data = {}
         data["rho"] = self.rho
+        data["is_parametric"] = self.is_parametric
         return data
 
     def __str__(self):
@@ -103,22 +105,22 @@ class Envelope(Data):
 
         raise NotImplementedError("Implement compute_middle for specific envelope type.")
 
-    def compute_ub_lb(self, x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    def compute_bounds(self, x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """Compute the upper and lower bounds of the envelope based on the appropriate method."""
 
-        raise NotImplementedError("Implement compute_ub_lb for specific envelope type.")
+        raise NotImplementedError("Implement compute_bounds for specific envelope type.")
 
-    def compute_dub_dlb(self, x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-        """Compute the upper and lower bounds of the envelope based on the appropriate method."""
+    def compute_bounds_derivatives(self, x: np.ndarray, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+        """Compute the upper and lower bounds  derivativesof the envelope based on the appropriate method."""
 
-        raise NotImplementedError("Implement compute_dub_dlb for specific envelope type.")
+        raise NotImplementedError("Implement compute_bounds_derivatives for specific envelope type.")
 
     def compute_bound_react(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
         """Compute the reaction bounds of the envelope based on the appropriate method."""
 
         raise NotImplementedError("Implement compute_bound_react for specific envelope type.")
 
-    def compute_db(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
-        """Compute the db of the envelope based on the appropriate method."""
+    def compute_bound_react_derivatives(self, x: np.ndarray, y: np.ndarray) -> np.ndarray:
+        """Compute the bound_react_derivatives of the envelope based on the appropriate method."""
 
-        raise NotImplementedError("Implement compute_db for specific envelope type.")
+        raise NotImplementedError("Implement compute_bound_react_derivatives for specific envelope type.")

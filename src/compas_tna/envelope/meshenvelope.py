@@ -644,14 +644,14 @@ class MeshEnvelope(Envelope):
     def compute_middle(self, x, y):
         raise NotImplementedError("Implement compute_middle for specific envelope type.")
 
-    def compute_ub_lb(self, x, y, thickness):
-        raise NotImplementedError("Implement compute_ub_lb for specific envelope type.")
+    def compute_bounds(self, x, y, thickness):
+        raise NotImplementedError("Implement compute_bounds for specific envelope type.")
 
-    def compute_dub_dlb(self, x, y):
-        raise NotImplementedError("Implement compute_dub_dlb for specific envelope type.")
+    def compute_bounds_derivatives(self, x, y):
+        raise NotImplementedError("Implement compute_bounds_derivatives for specific envelope type.")
 
     def compute_bound_react(self, x, y, thickness, fixed):
         raise NotImplementedError("Implement compute_bound_react for specific envelope type.")
 
-    def compute_db(self, x, y, thickness, fixed):
-        return
+    def compute_bound_react_derivatives(self, x, y, thickness, fixed):
+        raise NotImplementedError("Implement compute_bound_react_derivatives for specific envelope type.")

@@ -9,7 +9,7 @@ from compas_tna.diagrams.diagram_rectangular import create_cross_mesh
 from compas_tna.envelope.parametricenvelope import ParametricEnvelope
 
 
-def create_pavillionvault_envelope(
+def pavillionvault_envelope(
     x_span: tuple = (0.0, 10.0),
     y_span: tuple = (0.0, 10.0),
     thickness: float = 0.50,
@@ -49,32 +49,29 @@ def create_pavillionvault_envelope(
     xi, yi, _ = array(xyz0).transpose()
 
     # Create middle surface
-    zt = pavillionvault_middle_update(xi, yi, x_span=x_span, y_span=y_span, spr_angle=spr_angle, tol=1e-6)
+    zt = pavillionvault_middle(xi, yi, x_span=x_span, y_span=y_span, spr_angle=spr_angle, tol=1e-6)
     xyzt = array([xi, yi, zt.flatten()]).transpose()
     middle = Mesh.from_vertices_and_faces(xyzt, faces_i)
     middle.update_default_vertex_attributes(thickness=thickness)
 
     # Create upper and lower bounds
-    zub, zlb = pavillionvault_ub_lb_update(
-        xi,
-        yi,
-        thickness,
-        min_lb,
-        x_span=x_span,
-        y_span=y_span,
-        spr_angle=spr_angle,
-        tol=1e-6,
-    )
-    xyzub = array([xi, yi, zub.flatten()]).transpose()
+    zub, zlb = pavillionvault_bounds(xi, yi, thickness, min_lb, x_span=x_span, y_span=y_span, spr_angle=spr_angle, tol=1e-6)
     xyzlb = array([xi, yi, zlb.flatten()]).transpose()
-
-    extrados = Mesh.from_vertices_and_faces(xyzub, faces_i)
     intrados = Mesh.from_vertices_and_faces(xyzlb, faces_i)
+
+    x_span_extra = (x_span[0] - thickness / 2 / math.cos(math.radians(spr_angle)), x_span[1] + thickness / 2 / math.cos(math.radians(spr_angle)))
+    y_span_extra = (y_span[0] - thickness / 2 / math.cos(math.radians(spr_angle)), y_span[1] + thickness / 2 / math.cos(math.radians(spr_angle)))
+    extra_topology = create_cross_mesh(x_span=x_span_extra, y_span=y_span_extra, n=n)
+    xyz0, faces_i = extra_topology.to_vertices_and_faces()
+    xi, yi, _ = array(xyz0).transpose()
+    zub, zlb = pavillionvault_bounds(xi, yi, thickness, min_lb, x_span=x_span, y_span=y_span, spr_angle=spr_angle, tol=1e-6)
+    xyzub = array([xi, yi, zub.flatten()]).transpose()
+    extrados = Mesh.from_vertices_and_faces(xyzub, faces_i)
 
     return intrados, extrados, middle
 
 
-def pavillionvault_middle_update(x, y, x_span=(0.0, 10.0), y_span=(0.0, 10.0), spr_angle=0.0, tol=1e-6):
+def pavillionvault_middle(x, y, x_span=(0.0, 10.0), y_span=(0.0, 10.0), spr_angle=0.0, tol=1e-6):
     """Update middle of a pavillion vault based in the parameters
 
     Parameters
@@ -132,7 +129,7 @@ def pavillionvault_middle_update(x, y, x_span=(0.0, 10.0), y_span=(0.0, 10.0), s
     return z
 
 
-def pavillionvault_ub_lb_update(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), spr_angle=0.0, tol=1e-6):
+def pavillionvault_bounds(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), spr_angle=0.0, tol=1e-6):
     """Update upper and lower bounds of a pavillionvault based in the parameters
 
     Parameters
@@ -220,7 +217,7 @@ def pavillionvault_ub_lb_update(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0
     return ub, lb
 
 
-def pavillionvault_dub_dlb(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
+def pavillionvault_bounds_derivatives(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
     """Computes the sensitivities of upper and lower bounds in the x, y coordinates and thickness specified.
 
     Parameters
@@ -306,7 +303,7 @@ def pavillionvault_dub_dlb(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 1
     return dub, dlb  # ub, lb
 
 
-def pavillionvault_bound_react_update(x, y, thk, fixed, x_span=(0.0, 10.0), y_span=(0.0, 10.0)):
+def pavillionvault_bound_react(x, y, thk, fixed, x_span=(0.0, 10.0), y_span=(0.0, 10.0)):
     """Computes the ``b`` of parameter x, y coordinates and thickness specified.
 
     Parameters
@@ -349,7 +346,7 @@ def pavillionvault_bound_react_update(x, y, thk, fixed, x_span=(0.0, 10.0), y_sp
     return abs(b)
 
 
-def pavillionvault_db(x, y, thk, fixed, x_span=(0.0, 10.0), y_span=(0.0, 10.0)):
+def pavillionvault_bound_react_derivatives(x, y, thk, fixed, x_span=(0.0, 10.0), y_span=(0.0, 10.0)):
     """Computes the sensitivities of the ``b`` parameter in the x, y coordinates and thickness specified.
 
     Parameters
@@ -426,7 +423,7 @@ class PavillionVaultEnvelope(ParametricEnvelope):
         return f"PavillionVaultEnvelope(name={self.name})"
 
     def update_envelope(self):
-        intrados, extrados, middle = create_pavillionvault_envelope(
+        intrados, extrados, middle = pavillionvault_envelope(
             x_span=self.x_span, y_span=self.y_span, thickness=self.thickness, min_lb=self.min_lb, n=self.n, spr_angle=self.spr_angle
         )
         self.intrados = intrados
@@ -434,32 +431,32 @@ class PavillionVaultEnvelope(ParametricEnvelope):
         self.middle = middle
 
     def compute_middle(self, x, y):
-        return pavillionvault_middle_update(x, y, x_span=self.x_span, y_span=self.y_span, spr_angle=self.spr_angle, tol=1e-6)
+        return pavillionvault_middle(x, y, x_span=self.x_span, y_span=self.y_span, spr_angle=self.spr_angle, tol=1e-6)
 
-    def compute_ub_lb(self, x, y, thickness=None):
+    def compute_bounds(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return pavillionvault_ub_lb_update(x, y, thickness, self.min_lb, x_span=self.x_span, y_span=self.y_span, spr_angle=self.spr_angle, tol=1e-6)
+        return pavillionvault_bounds(x, y, thickness, self.min_lb, x_span=self.x_span, y_span=self.y_span, spr_angle=self.spr_angle, tol=1e-6)
 
-    def compute_dub_dlb(self, x, y, thickness=None):
+    def compute_bounds_derivatives(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return pavillionvault_dub_dlb(x, y, thickness, self.min_lb, x_span=self.x_span, y_span=self.y_span, tol=1e-6)
+        return pavillionvault_bounds_derivatives(x, y, thickness, self.min_lb, x_span=self.x_span, y_span=self.y_span, tol=1e-6)
 
     def compute_bound_react(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return pavillionvault_bound_react_update(x, y, thickness, fixed, x_span=self.x_span, y_span=self.y_span, tol=1e-6)
+        return pavillionvault_bound_react(x, y, thickness, fixed, x_span=self.x_span, y_span=self.y_span, tol=1e-6)
 
-    def compute_db(self, x, y, thickness=None, fixed=None):
+    def compute_bound_react_derivatives(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return pavillionvault_db(x, y, thickness, fixed, x_span=self.x_span, y_span=self.y_span, tol=1e-6)
+        return pavillionvault_bound_react_derivatives(x, y, thickness, fixed, x_span=self.x_span, y_span=self.y_span, tol=1e-6)

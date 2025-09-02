@@ -9,7 +9,7 @@ from compas_tna.diagrams.diagram_circular import create_circular_radial_spaced_m
 from compas_tna.envelope.parametricenvelope import ParametricEnvelope
 
 
-def create_dome_envelope(
+def dome_envelope(
     center: tuple = (5.0, 5.0),
     radius: float = 5.0,
     thickness: float = 0.50,
@@ -57,7 +57,7 @@ def create_dome_envelope(
         )
         xyz0, faces_i = base_topology.to_vertices_and_faces()
         xi, yi, _ = array(xyz0).transpose()
-        zt = dome_middle_update(xi, yi, radius_current, min_lb, center=center)
+        zt = dome_middle(xi, yi, radius_current, min_lb, center=center)
         xyzt = array([xi, yi, zt.flatten()]).transpose()
 
         if radius_current == radius:
@@ -75,7 +75,7 @@ def create_dome_envelope(
     return intrados, extrados, middle
 
 
-def dome_middle_update(x, y, radius, min_lb, center=(5.0, 5.0)):
+def dome_middle(x, y, radius, min_lb, center=(5.0, 5.0)):
     """Update middle of the dome based in the parameters
 
     Parameters
@@ -111,7 +111,7 @@ def dome_middle_update(x, y, radius, min_lb, center=(5.0, 5.0)):
     return zt
 
 
-def dome_ub_lb_update(x, y, thk, min_lb, center=(5.0, 5.0), radius=5.0):
+def dome_bounds(x, y, thk, min_lb, center=(5.0, 5.0), radius=5.0):
     """Update upper and lower bounds of the dome based in the parameters
 
     Parameters
@@ -154,7 +154,7 @@ def dome_ub_lb_update(x, y, thk, min_lb, center=(5.0, 5.0), radius=5.0):
     return ub, lb
 
 
-def dome_dub_dlb(x, y, thk, min_lb, center=(5.0, 5.0), radius=5.0):
+def dome_bounds_derivatives(x, y, thk, min_lb, center=(5.0, 5.0), radius=5.0):
     """Update sensitivities of upper and lower bounds of the dome based in the parameters
 
     Parameters
@@ -207,7 +207,7 @@ def dome_dub_dlb(x, y, thk, min_lb, center=(5.0, 5.0), radius=5.0):
     return dub, dlb, dubdx, dubdy, dlbdx, dlbdy
 
 
-def dome_bound_react_update(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0):
+def dome_bound_react(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0):
     """Updates the ``b`` parameter of a dome for a given thickness
 
     Parameters
@@ -245,7 +245,7 @@ def dome_bound_react_update(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0):
     return b
 
 
-def dome_db_sensitivity(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0):
+def dome_bound_react_derivatives(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0):
     """Updates the ``db`` parameter of a dome for a given thickness
 
     Parameters
@@ -319,7 +319,7 @@ class DomeEnvelope(ParametricEnvelope):
         return f"DomeEnvelope(name={self.name})"
 
     def update_envelope(self):
-        intrados, extrados, middle = create_dome_envelope(
+        intrados, extrados, middle = dome_envelope(
             center=self.center,
             radius=self.radius,
             thickness=self.thickness,
@@ -333,32 +333,32 @@ class DomeEnvelope(ParametricEnvelope):
         self.middle = middle
 
     def compute_middle(self, x, y):
-        return dome_middle_update(x, y, self.radius, self.min_lb, self.center)
+        return dome_middle(x, y, self.radius, self.min_lb, self.center)
 
-    def compute_ub_lb(self, x, y, thickness=None):
+    def compute_bounds(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return dome_ub_lb_update(x, y, thickness, self.min_lb, self.center, self.radius)
+        return dome_bounds(x, y, thickness, self.min_lb, self.center, self.radius)
 
-    def compute_dub_dlb(self, x, y, thickness=None):
+    def compute_bounds_derivatives(self, x, y, thickness=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return dome_dub_dlb(x, y, thickness, self.min_lb, self.center, self.radius)
+        return dome_bounds_derivatives(x, y, thickness, self.min_lb, self.center, self.radius)
 
     def compute_bound_react(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return dome_bound_react_update(x, y, thickness, fixed, self.center, self.radius)
+        return dome_bound_react(x, y, thickness, fixed, self.center, self.radius)
 
-    def compute_db(self, x, y, thickness=None, fixed=None):
+    def compute_bound_react_derivatives(self, x, y, thickness=None, fixed=None):
         if thickness is None:
             thickness = self.thickness
         else:
             self.thickness = thickness
-        return dome_db_sensitivity(x, y, thickness, fixed, self.center, self.radius)
+        return dome_bound_react_derivatives(x, y, thickness, fixed, self.center, self.radius)
