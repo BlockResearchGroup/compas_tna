@@ -82,7 +82,7 @@ def pointedvault_middle(
     hm=None,
     tol=1e-6,
 ):
-    """Update middle of a pointed vault based in the parameters
+    """Compute middle of a pointed vault based on the parameters.
 
     Parameters
     ----------
@@ -200,7 +200,7 @@ def pointedvault_bounds(
     hm=None,
     tol=1e-6,
 ):
-    """Update upper and lower bounds of a pointed vault based in the parameters
+    """Compute upper and lower bounds of a pointed vault based on the parameters.
 
     Parameters
     ----------

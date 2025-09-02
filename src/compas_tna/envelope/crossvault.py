@@ -63,7 +63,7 @@ def crossvault_envelope(
 
 
 def crossvault_middle(x, y, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
-    """Update middle of a crossvault based in the parameters
+    """Compute middle of a crossvault based on the parameters.
 
     Parameters
     ----------
@@ -127,7 +127,7 @@ def crossvault_middle(x, y, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=
 
 
 def crossvault_bounds(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), tol=1e-6):
-    """Update upper and lower bounds of an crossvault based in the parameters
+    """Compute upper and lower bounds of an crossvault based on the parameters.
 
     Parameters
     ----------

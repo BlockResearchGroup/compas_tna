@@ -76,7 +76,7 @@ def dome_envelope(
 
 
 def dome_middle(x, y, radius, min_lb, center=(5.0, 5.0)):
-    """Update middle of the dome based in the parameters
+    """Compute middle of the dome based on the parameters.
 
     Parameters
     ----------
@@ -112,7 +112,7 @@ def dome_middle(x, y, radius, min_lb, center=(5.0, 5.0)):
 
 
 def dome_bounds(x, y, thk, min_lb, center=(5.0, 5.0), radius=5.0):
-    """Update upper and lower bounds of the dome based in the parameters
+    """Compute upper and lower bounds of the dome based on the parameters.
 
     Parameters
     ----------
@@ -155,7 +155,7 @@ def dome_bounds(x, y, thk, min_lb, center=(5.0, 5.0), radius=5.0):
 
 
 def dome_bounds_derivatives(x, y, thk, min_lb, center=(5.0, 5.0), radius=5.0):
-    """Update sensitivities of upper and lower bounds of the dome based in the parameters
+    """Compute sensitivities of upper and lower bounds of the dome based on the parameters.
 
     Parameters
     ----------
@@ -204,11 +204,11 @@ def dome_bounds_derivatives(x, y, thk, min_lb, center=(5.0, 5.0), radius=5.0):
             dlbdx[i, i] = 1 / 2 / zi * -2 * (x[i] - xc)
             dlbdy[i, i] = 1 / 2 / zi * -2 * (y[i] - yc)
 
-    return dub, dlb, dubdx, dubdy, dlbdx, dlbdy
+    return dub, dlb
 
 
 def dome_bound_react(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0):
-    """Updates the ``b`` parameter of a dome for a given thickness
+    """Computes the reaction bounds of a dome for a given thickness
 
     Parameters
     ----------
@@ -228,7 +228,7 @@ def dome_bound_react(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0):
     Returns
     -------
     b : array
-        The ``b`` parameter
+        The reaction bounds
     """
 
     [xc, yc] = center[:2]
@@ -246,7 +246,7 @@ def dome_bound_react(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0):
 
 
 def dome_bound_react_derivatives(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0):
-    """Updates the ``db`` parameter of a dome for a given thickness
+    """Computes the reaction bounds derivatives of a dome for a given thickness
 
     Parameters
     ----------
@@ -266,7 +266,7 @@ def dome_bound_react_derivatives(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0
     Returns
     -------
     db : array
-        The sensitivity of the ``b`` parameter
+        The sensitivity of the reaction bounds
     """
 
     [xc, yc] = center[:2]

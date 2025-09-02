@@ -72,7 +72,7 @@ def pavillionvault_envelope(
 
 
 def pavillionvault_middle(x, y, x_span=(0.0, 10.0), y_span=(0.0, 10.0), spr_angle=0.0, tol=1e-6):
-    """Update middle of a pavillion vault based in the parameters
+    """Compute middle of a pavillion vault based on the parameters.
 
     Parameters
     ----------
@@ -130,7 +130,7 @@ def pavillionvault_middle(x, y, x_span=(0.0, 10.0), y_span=(0.0, 10.0), spr_angl
 
 
 def pavillionvault_bounds(x, y, thk, min_lb, x_span=(0.0, 10.0), y_span=(0.0, 10.0), spr_angle=0.0, tol=1e-6):
-    """Update upper and lower bounds of a pavillionvault based in the parameters
+    """Compute upper and lower bounds of a pavillionvault based on the parameters.
 
     Parameters
     ----------
@@ -304,7 +304,7 @@ def pavillionvault_bounds_derivatives(x, y, thk, min_lb, x_span=(0.0, 10.0), y_s
 
 
 def pavillionvault_bound_react(x, y, thk, fixed, x_span=(0.0, 10.0), y_span=(0.0, 10.0)):
-    """Computes the ``b`` of parameter x, y coordinates and thickness specified.
+    """Computes the reaction bounds of a pavillion vault for a given thickness
 
     Parameters
     ----------
@@ -324,7 +324,7 @@ def pavillionvault_bound_react(x, y, thk, fixed, x_span=(0.0, 10.0), y_span=(0.0
     Returns
     -------
     b : array
-        Values of the ``b`` parameter
+        Values of the reaction bounds
     """
 
     x0, x1 = x_span
@@ -347,7 +347,7 @@ def pavillionvault_bound_react(x, y, thk, fixed, x_span=(0.0, 10.0), y_span=(0.0
 
 
 def pavillionvault_bound_react_derivatives(x, y, thk, fixed, x_span=(0.0, 10.0), y_span=(0.0, 10.0)):
-    """Computes the sensitivities of the ``b`` parameter in the x, y coordinates and thickness specified.
+    """Computes the sensitivities of the reaction bounds of a pavillion vault for a given thickness
 
     Parameters
     ----------
@@ -367,7 +367,7 @@ def pavillionvault_bound_react_derivatives(x, y, thk, fixed, x_span=(0.0, 10.0),
     Returns
     -------
     db : array
-        Values of the sensitivities of the ``b`` parameter in the points
+        Values of the sensitivities of the reaction bounds in the points
     """
 
     x0, x1 = x_span
