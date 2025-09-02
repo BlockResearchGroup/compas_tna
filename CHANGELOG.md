@@ -9,23 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added `Envelope` class for masonry structure boundaries with intrados, extrados, and middle meshes
-* Added direct envelope creation methods to `Envelope` class:
-  * `from_crossvault()` - Creates cross vault envelopes with configurable spans and thickness
-  * `from_dome()` - Creates dome envelopes with configurable radius, center, and oculus
-  * `from_pavillionvault()` - Creates pavillion vault envelopes with spring angle support
-  * `from_pointedvault()` - Creates pointed vault envelopes with height control parameters
-* Added envelope creation functions for each vault type:
-  * `create_crossvault_envelope()` - Generates cross vault meshes and callables
-  * `create_dome_envelope()` - Generates dome meshes with circular topology
-  * `create_pavillionvault_envelope()` - Generates pavillion vault meshes with expanded option
-  * `create_pointedvault_envelope()` - Generates pointed vault meshes with height parameters
-* Added vault-specific update functions for optimization:
-  * `crossvault_middle_update()`, `crossvault_ub_lb_update()`, `crossvault_dub_dlb()`
-  * `dome_middle_update()`, `dome_ub_lb_update()`, `dome_dub_dlb()`
-  * `pavillionvault_middle_update()`, `pavillionvault_ub_lb_update()`, `pavillionvault_dub_dlb()`
-  * `pointedvault_middle_update()`, `pointedvault_ub_lb_update()`, `pointedvault_dub_dlb()`
-
+* Added `Envelope` base class for masonry structure boundaries with intrados, extrados, and middle meshes
+* Added especialized `MeshEnvelope`, `ParametricEnvelope`, and `BrepEnvelope` to deal with different evelope inputs.
+* Added direct parametric envelope creation methods inheriting from `ParametricEnvelope` class:
+  * `CrossVaultEnvelope` - Creates cross vault envelopes with configurable spans and thickness
+  * `DomeEnvelope` - Creates dome envelopes with configurable radius, center, and oculus
+  * `PavillionVaultEnvelope` - Creates pavillion vault envelopes with spring angle support
+  * `PointedVaultEnvelope` - Creates pointed vault envelopes with height control parameters
+* The infrastructure around these classes has been updated to enable assigning constraints to the form diagrams.
 * Added comprehensive form diagram creation methods to `FormDiagram` class:
   * `create_cross()` - Creates cross discretisation with orthogonal arrangement and quad diagonals
   * `create_fan()` - Creates fan discretisation with straight lines to corners
@@ -42,18 +33,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added corner detection functionality:
   * `corner_vertices()` - Identifies corner vertices on boundary with configurable angle threshold
 * Added comprehensive mesh creation functions in `diagram_rectangular.py`:
-  * `create_cross_mesh()` - Creates cross pattern meshes
-  * `create_fan_mesh()` - Creates fan pattern meshes
-  * `create_parametric_fan_mesh()` - Creates parametric fan meshes with lambda interpolation
-  * `create_cross_with_diagonal_mesh()` - Creates cross meshes with diagonals
-  * `create_ortho_mesh()` - Creates orthogonal grid meshes
 * Added circular mesh creation functions in `diagram_circular.py`:
-  * `create_circular_radial_mesh()` - Creates circular radial meshes
-  * `create_circular_radial_spaced_mesh()` - Creates hemispherically spaced circular meshes
-  * `create_circular_spiral_mesh()` - Creates circular spiral meshes
 * Added arch mesh creation functions in `diagram_arch.py`:
-  * `create_arch_linear_mesh()` - Creates arch meshes with semicircular projection
-  * `create_arch_linear_equally_spaced_mesh()` - Creates arch meshes with equally spaced nodes
 
 ### Changed
 
