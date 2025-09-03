@@ -157,9 +157,6 @@ class ParametricEnvelope(Envelope):
     def apply_bounds_to_formdiagram(self, formdiagram: FormDiagram) -> None:
         """Apply envelope bounds to a form diagram based on the intrados and extrados surfaces.
 
-        This method projects the form diagram onto both intrados and extrados surfaces
-        and assigns the heights to 'ub' (upper bound) and 'lb' (lower bound) properties.
-
         Parameters
         ----------
         formdiagram : FormDiagram
@@ -181,8 +178,15 @@ class ParametricEnvelope(Envelope):
     def apply_target_heights_to_formdiagram(self, formdiagram: FormDiagram) -> None:
         """Apply target heights to a form diagram based on the Envelope middle surface.
 
-        This method projects the form diagram onto the Envelope middle surface
-        and assigns the heights to 'target' property. This assignment can later be used to compute a bestfit optimization.
+        Parameters
+        ----------
+        formdiagram : FormDiagram
+            The form diagram to apply target heights to.
+
+        Returns
+        -------
+        None
+            The FormDiagram is modified in place.
         """
 
         xy = np.array(formdiagram.vertices_attributes("xy"))
@@ -192,13 +196,23 @@ class ParametricEnvelope(Envelope):
         # TODO: Future Cached properties could be added here
 
     def apply_reaction_bounds_to_formdiagram(self, formdiagram: FormDiagram) -> None:
-        """Apply reaction bounds to a form diagram based on the Envelope middle surface.
+        """Apply reaction bounds the supports of the form diagram based on the Envelope.
 
-        This method projects the form diagram onto the Envelope middle surface
-        and assigns the heights to 'target' property. This assignment can later be used to compute a bestfit optimization.
+        Parameters
+        ----------
+        formdiagram : FormDiagram
+            The form diagram to apply reaction bounds to.
+
+        Returns
+        -------
+        None
+            The FormDiagram is modified in place.
         """
-        raise NotImplementedError("Implement apply_reaction_bounds_to_formdiagram for specific envelope type.")
-        ## TODO: Implement this
+        fixed: list[int] = formdiagram.vertices_where({"is_support": True})
+        xy = np.array(formdiagram.vertices_attributes("xy"))
+        bound_react = self.compute_bound_react(xy[:, 0], xy[:, 1], self.thickness, fixed)
+        for i, key in enumerate(fixed):
+            formdiagram.vertex_attribute(key, "b", bound_react[i])
 
     def compute_middle(self, x, y):
         raise NotImplementedError("Implement compute_middle for specific envelope type.")

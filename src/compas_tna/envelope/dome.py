@@ -57,7 +57,7 @@ def dome_envelope(
         )
         xyz0, faces_i = base_topology.to_vertices_and_faces()
         xi, yi, _ = array(xyz0).transpose()
-        zt = dome_middle(xi, yi, radius_current, min_lb, center=center)
+        zt = dome_middle(xi, yi, radius_current, center=center)
         xyzt = array([xi, yi, zt.flatten()]).transpose()
 
         if radius_current == radius:
@@ -75,7 +75,7 @@ def dome_envelope(
     return intrados, extrados, middle
 
 
-def dome_middle(x, y, radius, min_lb, center=(5.0, 5.0)):
+def dome_middle(x, y, radius, center=(5.0, 5.0)):
     """Compute middle of the dome based on the parameters.
 
     Parameters
@@ -86,8 +86,6 @@ def dome_middle(x, y, radius, min_lb, center=(5.0, 5.0)):
         y-coordinates of the points
     radius : float, optional
         The radius of the dome, by default 5.0
-    min_lb : float
-        Parameter for lower bound in nodes in the boundary
     center : tuple, optional
         x, y coordinates of the center of the dome, by default (5.0, 5.0)
 
@@ -333,7 +331,7 @@ class DomeEnvelope(ParametricEnvelope):
         self.middle = middle
 
     def compute_middle(self, x, y):
-        return dome_middle(x, y, self.radius, self.min_lb, self.center)
+        return dome_middle(x, y, self.radius, self.center)
 
     def compute_bounds(self, x, y, thickness=None):
         if thickness is None:
