@@ -4,7 +4,7 @@ from compas.datastructures import Mesh
 from compas.geometry import intersection_line_line_xy
 
 
-def create_circular_radial_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, diagonal_type='split') -> Mesh:
+def create_circular_radial_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, diagonal_type="split") -> Mesh:
     """Construct a circular radial FormDiagram with hoops equally spaced in plan.
 
     Parameters
@@ -22,8 +22,8 @@ def create_circular_radial_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_para
     diagonal : bool, optional
         Activate diagonal in the quads, by default False
     diagonal_type : str, optional
-        Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"] 
-        Default is "split", when the X diagonals will be split at their intersection. 
+        Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"]
+        Default is "split", when the X diagonals will be split at their intersection.
         If "straight" the both quad diagonals are added as straight lines.
         If "right" the diagonals will point to the right (x positive) of the diagram.
         If "left" the diagonals will point to the left (x negative) of the diagram.
@@ -110,7 +110,7 @@ def create_circular_radial_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_para
     return mesh
 
 
-def create_circular_radial_spaced_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, diagonal_type='split') -> Mesh:
+def create_circular_radial_spaced_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, diagonal_type="split") -> Mesh:
     """Construct a circular radial FormDiagram with hoops not equally spaced in plan, but equally spaced with regards to the projection on a hemisphere.
 
     Parameters
@@ -128,8 +128,8 @@ def create_circular_radial_spaced_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8,
     diagonal : bool, optional
         Activate diagonal X diagonals in the quads. See diagonal_type for more details.
     diagonal_type : str, optional
-        Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"] 
-        Default is "split", when the X diagonals will be split at their intersection. 
+        Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"]
+        Default is "split", when the X diagonals will be split at their intersection.
         If "straight" the both quad diagonals are added as straight lines.
         If "right" the diagonals will point to the right (x positive) of the diagram.
         If "left" the diagonals will point to the left (x negative) of the diagram.

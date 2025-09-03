@@ -6,7 +6,6 @@ from numpy import zeros
 
 from compas.datastructures import Mesh
 from compas_tna.diagrams.diagram_circular import create_circular_radial_spaced_mesh
-from compas_tna.diagrams.diagram_circular import create_circular_radial_mesh
 from compas_tna.envelope.parametricenvelope import ParametricEnvelope
 
 

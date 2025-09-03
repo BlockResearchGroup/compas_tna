@@ -119,7 +119,16 @@ number of (real) edges: {}
 number of faces: {}
 vertex degree: {}/{}
 face degree: {}/{}
-""".format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
+""".format(
+            self.name,
+            numv,
+            nume,
+            numf,
+            vmin,
+            vmax,
+            fmin,
+            fmax,
+        )
 
     @classmethod
     def from_lines(
@@ -331,7 +340,7 @@ face degree: {}/{}
         return form
 
     @classmethod
-    def create_circular_radial(cls, center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, diagonal_type='split') -> "FormDiagram":
+    def create_circular_radial(cls, center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, diagonal_type="split") -> "FormDiagram":
         """Construct a circular radial FormDiagram with hoops not equally spaced in plan.
 
         Parameters
@@ -349,8 +358,8 @@ face degree: {}/{}
         diagonal : bool, optional
             Activate diagonal in the quads, by default False
         diagonal_type : str, optional
-            Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"] 
-            Default is "split", when the X diagonals will be split at their intersection. 
+            Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"]
+            Default is "split", when the X diagonals will be split at their intersection.
             If "straight" the both quad diagonals are added as straight lines.
             If "right" the diagonals will point to the right (x positive) of the diagram.
             If "left" the diagonals will point to the left (x negative) of the diagram.
@@ -392,8 +401,8 @@ face degree: {}/{}
         diagonal : bool, optional
             Activate diagonal in the quads, by default False
         diagonal_type : str, optional
-            Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"] 
-            Default is "split", when the X diagonals will be split at their intersection. 
+            Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"]
+            Default is "split", when the X diagonals will be split at their intersection.
             If "straight" the both quad diagonals are added as straight lines.
             If "right" the diagonals will point to the right (x positive) of the diagram.
             If "left" the diagonals will point to the left (x negative) of the diagram.
