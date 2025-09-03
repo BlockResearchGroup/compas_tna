@@ -24,9 +24,9 @@ def create_circular_radial_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_para
     diagonal_type : str, optional
         Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"]
         Default is "split", when the X diagonals will be split at their intersection.
-        If "straight" the both quad diagonals are added as straight lines.
-        If "right" the diagonals will point to the right (x positive) of the diagram.
-        If "left" the diagonals will point to the left (x negative) of the diagram.
+        If "straight", both quad diagonals are added as straight lines.
+        If "right", the diagonals will point to the right (x positive) of the diagram.
+        If "left", the diagonals will point to the left (x negative) of the diagram.
 
     Returns
     -------
@@ -130,9 +130,9 @@ def create_circular_radial_spaced_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8,
     diagonal_type : str, optional
         Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"]
         Default is "split", when the X diagonals will be split at their intersection.
-        If "straight" the both quad diagonals are added as straight lines.
-        If "right" the diagonals will point to the right (x positive) of the diagram.
-        If "left" the diagonals will point to the left (x negative) of the diagram.
+        If "straight", both quad diagonals are added as straight lines.
+        If "right", the diagonals will point to the right (x positive) of the diagram.
+        If "left", the diagonals will point to the left (x negative) of the diagram.
 
     Returns
     -------
