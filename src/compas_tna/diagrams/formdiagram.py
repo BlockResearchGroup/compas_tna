@@ -119,7 +119,16 @@ number of (real) edges: {}
 number of faces: {}
 vertex degree: {}/{}
 face degree: {}/{}
-""".format(self.name, numv, nume, numf, vmin, vmax, fmin, fmax)
+""".format(
+            self.name,
+            numv,
+            nume,
+            numf,
+            vmin,
+            vmax,
+            fmin,
+            fmax,
+        )
 
     @classmethod
     def from_lines(
@@ -331,7 +340,7 @@ face degree: {}/{}
         return form
 
     @classmethod
-    def create_circular_radial(cls, center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, partial_diagonal=False) -> "FormDiagram":
+    def create_circular_radial(cls, center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, diagonal_type="split") -> "FormDiagram":
         """Construct a circular radial FormDiagram with hoops not equally spaced in plan.
 
         Parameters
@@ -348,9 +357,12 @@ face degree: {}/{}
             Value of the radius of the oculus, if no oculus is present should be set to zero, by default 0.0
         diagonal : bool, optional
             Activate diagonal in the quads, by default False
-        partial_diagonal : bool, optional
-            Activate partial diagonal in the quads, by default False
-
+        diagonal_type : str, optional
+            Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"]
+            Default is "split", when the X diagonals will be split at their intersection.
+            If "straight", both quad diagonals are added as straight lines.
+            If "right", the diagonals will point to the right (x positive) of the diagram.
+            If "left", the diagonals will point to the left (x negative) of the diagram.
         Returns
         -------
         :class:`~compas_tna.diagrams.FormDiagram`
@@ -362,14 +374,14 @@ face degree: {}/{}
 
         """
         mesh = create_circular_radial_mesh(
-            center=center, radius=radius, n_hoops=n_hoops, n_parallels=n_parallels, r_oculus=r_oculus, diagonal=diagonal, partial_diagonal=partial_diagonal
+            center=center, radius=radius, n_hoops=n_hoops, n_parallels=n_parallels, r_oculus=r_oculus, diagonal=diagonal, diagonal_type=diagonal_type
         )
         form = cls.from_mesh(mesh)
         form.assign_support_type("all")
         return form
 
     @classmethod
-    def create_circular_radial_spaced(cls, center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, partial_diagonal=False) -> "FormDiagram":
+    def create_circular_radial_spaced(cls, center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, diagonal_type="split") -> "FormDiagram":
         """Construct a circular radial FormDiagram with hoops not equally spaced in plan,
         but equally spaced with regards to the projection on a hemisphere.
 
@@ -387,8 +399,12 @@ face degree: {}/{}
             Value of the radius of the oculus, if no oculus is present should be set to zero, by default 0.0
         diagonal : bool, optional
             Activate diagonal in the quads, by default False
-        partial_diagonal : bool, optional
-            Activate partial diagonal in the quads, by default False
+        diagonal_type : str, optional
+            Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"]
+            Default is "split", when the X diagonals will be split at their intersection.
+            If "straight", both quad diagonals are added as straight lines.
+            If "right", the diagonals will point to the right (x positive) of the diagram.
+            If "left", the diagonals will point to the left (x negative) of the diagram.
 
         Returns
         -------
@@ -401,7 +417,7 @@ face degree: {}/{}
 
         """
         mesh = create_circular_radial_spaced_mesh(
-            center=center, radius=radius, n_hoops=n_hoops, n_parallels=n_parallels, r_oculus=r_oculus, diagonal=diagonal, partial_diagonal=partial_diagonal
+            center=center, radius=radius, n_hoops=n_hoops, n_parallels=n_parallels, r_oculus=r_oculus, diagonal=diagonal, diagonal_type=diagonal_type
         )
         form = cls.from_mesh(mesh)
         form.assign_support_type("all")

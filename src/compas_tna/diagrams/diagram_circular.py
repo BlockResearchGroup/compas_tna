@@ -4,7 +4,7 @@ from compas.datastructures import Mesh
 from compas.geometry import intersection_line_line_xy
 
 
-def create_circular_radial_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, partial_diagonal=False) -> Mesh:
+def create_circular_radial_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, diagonal_type="split") -> Mesh:
     """Construct a circular radial FormDiagram with hoops equally spaced in plan.
 
     Parameters
@@ -21,8 +21,12 @@ def create_circular_radial_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_para
         Value of the radius of the oculus, if no oculus is present should be set to zero, by default 0.0
     diagonal : bool, optional
         Activate diagonal in the quads, by default False
-    partial_diagonal : bool, optional
-        Activate partial diagonal in the quads, by default False
+    diagonal_type : str, optional
+        Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"]
+        Default is "split", when the X diagonals will be split at their intersection.
+        If "straight", both quad diagonals are added as straight lines.
+        If "right", the diagonals will point to the right (x positive) of the diagram.
+        If "left", the diagonals will point to the left (x negative) of the diagram.
 
     Returns
     -------
@@ -73,38 +77,40 @@ def create_circular_radial_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_para
                     ya_ = yc + (r_oculus + (nr + 1) * r_div) * math.sin(theta * nc)
                     yb_ = yc + (r_oculus + (nr + 1) * r_div) * math.sin(theta * (nc + 1))
 
-                    if partial_diagonal == "right":
+                    if diagonal_type == "right":
                         if nc + 1 > n_parallels / 2:
                             lines.append([[xa, ya, 0.0], [xb_, yb_, 0.0]])
                         else:
                             lines.append([[xa_, ya_, 0.0], [xb, yb, 0.0]])
-                    elif partial_diagonal == "left":
+                    elif diagonal_type == "left":
                         if nc + 1 > n_parallels / 2:
                             lines.append([[xa_, ya_, 0.0], [xb, yb, 0.0]])
                         else:
                             lines.append([[xa, ya, 0.0], [xb_, yb_, 0.0]])
-                    elif partial_diagonal == "rotation":
-                        lines.append([[xa, ya, 0.0], [xb_, yb_, 0.0]])
-                    elif partial_diagonal == "straight":
+                    elif diagonal_type == "straight":
                         midx, midy, _ = intersection_line_line_xy([[xa, ya], [xb_, yb_]], [[xa_, ya_], [xb, yb]])  # type: ignore
                         lines.append([[xa, ya, 0.0], [midx, midy, 0.0]])
                         lines.append([[midx, midy, 0.0], [xb_, yb_, 0.0]])
                         lines.append([[xa_, ya_, 0.0], [midx, midy, 0.0]])
                         lines.append([[midx, midy, 0.0], [xb, yb, 0.0]])
-                    else:
+                    elif diagonal_type == "split":
                         midx = (xa + xa_ + xb + xb_) / 4
                         midy = (ya + ya_ + yb + yb_) / 4
                         lines.append([[xa, ya, 0.0], [midx, midy, 0.0]])
                         lines.append([[midx, midy, 0.0], [xb_, yb_, 0.0]])
                         lines.append([[xa_, ya_, 0.0], [midx, midy, 0.0]])
                         lines.append([[midx, midy, 0.0], [xb, yb, 0.0]])
+                    else:
+                        raise ValueError(f"Invalid diagonal type: {diagonal_type}. Choose from ['split', 'straight', 'right', 'left']")
 
     mesh = Mesh.from_lines(lines, delete_boundary_face=True)
+    if r_oculus > 0.0:
+        mesh.delete_face(1)
 
     return mesh
 
 
-def create_circular_radial_spaced_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, partial_diagonal=False) -> Mesh:
+def create_circular_radial_spaced_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_parallels=20, r_oculus=0.0, diagonal=False, diagonal_type="split") -> Mesh:
     """Construct a circular radial FormDiagram with hoops not equally spaced in plan, but equally spaced with regards to the projection on a hemisphere.
 
     Parameters
@@ -120,9 +126,13 @@ def create_circular_radial_spaced_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8,
     r_oculus : float, optional
         Value of the radius of the oculus, if no oculus is present should be set to zero, by default 0.0
     diagonal : bool, optional
-        Activate diagonal in the quads, by default False
-    partial_diagonal : bool, optional
-        Activate partial diagonal in the quads, by default False
+        Activate diagonal X diagonals in the quads. See diagonal_type for more details.
+    diagonal_type : str, optional
+        Control how diagonals are placed in the quads Options are ["split", "straight", "right", "left"]
+        Default is "split", when the X diagonals will be split at their intersection.
+        If "straight", both quad diagonals are added as straight lines.
+        If "right", the diagonals will point to the right (x positive) of the diagram.
+        If "left", the diagonals will point to the left (x negative) of the diagram.
 
     Returns
     -------
@@ -134,6 +144,7 @@ def create_circular_radial_spaced_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8,
     yc = center[1]
     theta = 2 * math.pi / n_parallels
     r_div = (radius - r_oculus) / n_hoops
+    radius = radius - r_oculus
     lines = []
 
     for nr in range(n_hoops + 1):
@@ -169,31 +180,35 @@ def create_circular_radial_spaced_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8,
                     xb_ = xc + (r_oculus + radius * math.cos((n_hoops - (nr + 1)) / n_hoops * math.pi / 2)) * math.cos(theta * (nc + 1))
                     ya_ = yc + (r_oculus + radius * math.cos((n_hoops - (nr + 1)) / n_hoops * math.pi / 2)) * math.sin(theta * nc)
                     yb_ = yc + (r_oculus + radius * math.cos((n_hoops - (nr + 1)) / n_hoops * math.pi / 2)) * math.sin(theta * (nc + 1))
-                    if partial_diagonal == "right":
+                    if diagonal_type == "right":
                         if nc + 1 > n_parallels / 2:
                             lines.append([[xa, ya, 0.0], [xb_, yb_, 0.0]])
                         else:
                             lines.append([[xa_, ya_, 0.0], [xb, yb, 0.0]])
-                    elif partial_diagonal == "left":
+                    elif diagonal_type == "left":
                         if nc + 1 > n_parallels / 2:
                             lines.append([[xa_, ya_, 0.0], [xb, yb, 0.0]])
                         else:
                             lines.append([[xa, ya, 0.0], [xb_, yb_, 0.0]])
-                    elif partial_diagonal == "straight":
+                    elif diagonal_type == "straight":
                         midx, midy, _ = intersection_line_line_xy([[xa, ya], [xb_, yb_]], [[xa_, ya_], [xb, yb]])  # type: ignore
                         lines.append([[xa, ya, 0.0], [midx, midy, 0.0]])
                         lines.append([[midx, midy, 0.0], [xb_, yb_, 0.0]])
                         lines.append([[xa_, ya_, 0.0], [midx, midy, 0.0]])
                         lines.append([[midx, midy, 0.0], [xb, yb, 0.0]])
-                    else:
+                    elif diagonal_type == "split":
                         midx = (xa + xa_ + xb + xb_) / 4
                         midy = (ya + ya_ + yb + yb_) / 4
                         lines.append([[xa, ya, 0.0], [midx, midy, 0.0]])
                         lines.append([[midx, midy, 0.0], [xb_, yb_, 0.0]])
                         lines.append([[xa_, ya_, 0.0], [midx, midy, 0.0]])
                         lines.append([[midx, midy, 0.0], [xb, yb, 0.0]])
+                    else:
+                        raise ValueError(f"Invalid diagonal type: {diagonal_type}. Choose from ['split', 'straight', 'right', 'left']")
 
     mesh = Mesh.from_lines(lines, delete_boundary_face=True)
+    if r_oculus > 0.0:
+        mesh.delete_face(1)
 
     return mesh
 
@@ -276,5 +291,7 @@ def create_circular_spiral_mesh(center=(5.0, 5.0), radius=5.0, n_hoops=8, n_para
                 lines.append([[xa, ya, 0.0], [xb, yb, 0.0]])
 
     mesh = Mesh.from_lines(lines, delete_boundary_face=True)
+    if r_oculus > 0.0:
+        mesh.delete_face(1)
 
     return mesh

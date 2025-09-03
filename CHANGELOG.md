@@ -33,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added corner detection functionality:
   * `corner_vertices()` - Identifies corner vertices on boundary with configurable angle threshold
 * Added comprehensive mesh creation functions in `diagram_rectangular.py`:
-* Added circular mesh creation functions in `diagram_circular.py`:
+* Added circular mesh creation functions in `diagram_circular.py` and corrected oculus and diagonal properties.
 * Added arch mesh creation functions in `diagram_arch.py`:
 
 ### Changed
