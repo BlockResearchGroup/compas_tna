@@ -186,8 +186,6 @@ def project_mesh_to_target_vertical(mesh: Mesh, target: Mesh) -> None:
     for key, i in enumerate(mesh.vertices()):
         mesh.vertex_attribute(key, "z", z_target[i])
 
-    # mesh.vertices_attribute("z", z_target)
-
 
 def pattern_inverse_height_thickness(pattern: Mesh, tmin: Optional[float] = None, tmax: Optional[float] = None) -> None:
     """Set variable thickness based on inverse height.
