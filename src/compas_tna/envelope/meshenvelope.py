@@ -9,6 +9,29 @@ from compas_tna.diagrams import FormDiagram
 from compas_tna.envelope import Envelope
 
 
+def griddata_project(xy: list[list[float]], xyz_target: list[list[float]], method="linear"):
+    """Project a point cloud onto a target point cloud using griddata interpolation.
+
+    Parameters
+    ----------
+    xy : list[list[float]]
+        The XY coordinates of the points to project.
+    xyz_target : list[list[float]]
+        The XYZ coordinates of the target points.
+    method : str, optional
+        The method to use for interpolation. Default is "linear".
+
+    Returns
+    -------
+    list[float]
+        The projected Z coordinates.
+    """
+    xy = asarray(xy)
+    xy_target = asarray(xyz_target)[:, :2]
+    z_target = asarray(xyz_target)[:, 2]
+    return griddata(xy_target, z_target, xy, method=method).tolist()
+
+
 def interpolate_middle_mesh(intrados: Mesh, extrados: Mesh) -> Mesh:
     """Interpolate a middle mesh between intrados and extrados meshes.
 
@@ -30,25 +53,18 @@ def interpolate_middle_mesh(intrados: Mesh, extrados: Mesh) -> Mesh:
     # Use the intrados as base topology
     middle = intrados.copy()
 
-    # Get point clouds for interpolation
-    intrados_points = asarray(intrados.vertices_attributes("xyz"))
-    extrados_points = asarray(extrados.vertices_attributes("xyz"))
+    # Get Z coordinates from both surfaces based on the same XY coordinates
+    zi = middle.vertices_attribute("z")
+    ze = griddata_project(middle.vertices_attributes("xy"), extrados.vertices_attributes("xyz"), method="linear")
 
-    # Get XY coordinates of middle mesh
-    middle_xy = asarray(middle.vertices_attributes("xy"))
-
-    # Interpolate Z coordinates from both surfaces
-    zi = griddata(intrados_points[:, :2], intrados_points[:, 2], middle_xy, method="linear")
-    ze = griddata(extrados_points[:, :2], extrados_points[:, 2], middle_xy, method="linear")
-
-    # First loop: set middle Z as average
+    # First loop: set middle Z as average of intrados and extrados
     for i, key in enumerate(middle.vertices()):
         middle_z = (zi[i] + ze[i]) / 2.0
         middle.vertex_attribute(key, "z", middle_z)
 
     # Second loop: calculate and set thickness using correct normals
     for i, key in enumerate(middle.vertices()):
-        nx, ny, nz = middle.vertex_normal(key)
+        _, _, nz = middle.vertex_normal(key)
         z_diff = ze[i] - zi[i]
         if abs(nz) > 0.1:
             thickness = abs(z_diff) * abs(nz)
@@ -158,7 +174,6 @@ def project_mesh_to_target_vertica_nearest(mesh: Mesh, target: Mesh) -> None:
         mesh.vertex_attributes(vertex, "xyz", new_point)
 
 
-# TODO: What if the target is a surface and not a mesh?
 def project_mesh_to_target_vertical(mesh: Mesh, target: Mesh) -> None:
     """Project a mesh vertically (in Z direction) onto a target mesh.
 
@@ -174,14 +189,7 @@ def project_mesh_to_target_vertical(mesh: Mesh, target: Mesh) -> None:
     None
         The mesh is modified in place.
     """
-    # Get point clouds for interpolation
-    target_points = asarray(target.vertices_attributes("xyz"))
-
-    # Get XY coordinates of middle mesh
-    mesh_xy = asarray(mesh.vertices_attributes("xy"))
-
-    # Interpolate Z coordinates from both surfaces
-    z_target = griddata(target_points[:, :2], target_points[:, 2], mesh_xy, method="linear").tolist()
+    z_target = griddata_project(mesh.vertices_attributes("xy"), target.vertices_attributes("xyz"), method="linear")
 
     for key, i in enumerate(mesh.vertices()):
         mesh.vertex_attribute(key, "z", z_target[i])
@@ -477,7 +485,7 @@ class MeshEnvelope(Envelope):
         return self.middle.area()
 
     # =============================================================================
-    # TNA-specific operations (accept formdiagram as parameter)
+    # Loads operations
     # =============================================================================
 
     def apply_selfweight_to_formdiagram(self, formdiagram: FormDiagram, normalize=True) -> None:
@@ -538,6 +546,51 @@ class MeshEnvelope(Envelope):
                 formdiagram.vertex_attribute(vertex, "pz", pz * scale_factor)
 
         print(f"Selfweight applied to form diagram. Total load: {sum(abs(formdiagram.vertex_attribute(vertex, 'pz')) for vertex in formdiagram.vertices())}")
+
+    def apply_fill_weight_to_formdiagram(self, formdiagram: FormDiagram) -> None:
+        """Apply fill weight to the nodes of a form diagram based on the fill surface and local thicknesses."""
+        if self.fill is None or self.extrados is None:
+            raise ValueError("Fill mesh is not set. Please set the fill mesh and extrados before applying fill weight.")
+
+        # Step 2: Copy the form diagram for projection
+        form_fill = formdiagram.copy()  # For upper bound (extrados)
+        form_ub = formdiagram.copy()  # For lower bound (intrados)
+        form_zero = formdiagram.copy()  # For zero bound (extrados)
+        form_zero.vertices_attribute("z", 0.0)
+
+        # Step 3: Project form diagram onto extrados (upper bound)
+        project_mesh_to_target_vertical(form_fill, self.fill)
+        project_mesh_to_target_vertical(form_ub, self.extrados)
+
+        fill_weight = 0.0
+
+        # Step 4: Collect heights and assign to form diagram
+        for vertex in formdiagram.vertices():
+            if vertex in form_ub.vertices() and vertex in form_fill.vertices():
+                # Get z coordinates from projected meshes
+                _, _, z_fill = form_fill.vertex_coordinates(vertex)
+                _, _, z_ub = form_ub.vertex_coordinates(vertex)
+                a0 = form_zero.vertex_area(vertex)
+
+                if z_fill < z_ub:
+                    z_fill = z_ub
+
+                zdiff = z_fill - z_ub
+                pz_fill = -a0 * zdiff * self.rho_fill
+                pz0 = formdiagram.vertex_attribute(vertex, "pz")
+                formdiagram.vertex_attribute(vertex, "pz", pz_fill + pz0)
+                fill_weight += abs(pz_fill)
+
+                # Store z_fill
+                formdiagram.vertex_attribute(vertex, "zfill", z_fill)
+            else:
+                print(f"Warning: Vertex {vertex} not found in projected meshes")
+
+        print(f"Fill weight applied to form diagram. Total load: {fill_weight}")
+
+    # =============================================================================
+    # Envelope and target projection operations
+    # =============================================================================
 
     def apply_bounds_to_formdiagram(self, formdiagram: FormDiagram) -> None:
         """Apply envelope bounds to a form diagram based on the intrados and extrados surfaces.

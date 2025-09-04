@@ -225,18 +225,17 @@ def dome_bound_react(x, y, thk, fixed, center=(5.0, 5.0), radius=5.0):
 
     Returns
     -------
-    b : array
+    b : array (nb x 2)
         The reaction bounds
     """
-
     [xc, yc] = center[:2]
     b = zeros((len(fixed), 2))
 
     for i in range(len(fixed)):
         i_ = fixed[i]
         theta = math.atan2((y[i_] - yc), (x[i_] - xc))
-        x_ = abs(thk / 2 * math.cos(theta))
-        y_ = abs(thk / 2 * math.sin(theta))
+        x_ = thk / 2 * math.cos(theta)
+        y_ = thk / 2 * math.sin(theta)
         b[i, 0] = x_
         b[i, 1] = y_
 
