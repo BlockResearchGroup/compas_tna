@@ -214,6 +214,9 @@ class MeshEnvelope(Envelope):
         # Thickness property
         self._thickness = thickness
 
+    def __str__(self):
+        return f"MeshEnvelope(name={self.name})"
+
     @property
     def __data__(self):
         data = super().__data__
@@ -223,9 +226,6 @@ class MeshEnvelope(Envelope):
         data["fill"] = self.fill
         data["thickness"] = self._thickness
         return data
-
-    def __str__(self):
-        return f"Envelope(name={self.name})"
 
     # =============================================================================
     # Factory methods
