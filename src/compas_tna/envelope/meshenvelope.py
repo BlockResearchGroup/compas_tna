@@ -9,7 +9,6 @@ from compas_tna.diagrams import FormDiagram
 from compas_tna.envelope import Envelope
 
 
-# TODO: What if intrados and extrados are surfaces?
 def interpolate_middle_mesh(intrados: Mesh, extrados: Mesh) -> Mesh:
     """Interpolate a middle mesh between intrados and extrados meshes.
 
@@ -60,7 +59,6 @@ def interpolate_middle_mesh(intrados: Mesh, extrados: Mesh) -> Mesh:
     return middle
 
 
-# TODO: What if middle is a surface and not a mesh?
 def offset_from_middle(middle: Mesh, fixed_xy: bool = True) -> tuple[Mesh, Mesh]:
     """
     Offset a middle surface mesh to obtain extrados and intrados meshes using thickness attributes.
@@ -120,8 +118,7 @@ def offset_from_middle(middle: Mesh, fixed_xy: bool = True) -> tuple[Mesh, Mesh]
     return intrados, extrados
 
 
-# TODO: What if the target is a surface and not a mesh?
-def project_mesh_to_target_vertical(mesh: Mesh, target: Mesh) -> None:
+def project_mesh_to_target_vertica_nearest(mesh: Mesh, target: Mesh) -> None:
     """Project a mesh vertically (in Z direction) onto a target mesh.
 
     Parameters
@@ -159,6 +156,35 @@ def project_mesh_to_target_vertical(mesh: Mesh, target: Mesh) -> None:
         new_point = point.copy()
         new_point.z = closest_z
         mesh.vertex_attributes(vertex, "xyz", new_point)
+
+
+# TODO: What if the target is a surface and not a mesh?
+def project_mesh_to_target_vertical(mesh: Mesh, target: Mesh) -> None:
+    """Project a mesh vertically (in Z direction) onto a target mesh.
+
+    Parameters
+    ----------
+    mesh : Mesh
+        The mesh to be projected.
+    target : Mesh
+        The target mesh to project onto.
+
+    Returns
+    -------
+    None
+        The mesh is modified in place.
+    """
+    # Get point clouds for interpolation
+    target_points = asarray(target.vertices_attributes("xyz"))
+
+    # Get XY coordinates of middle mesh
+    mesh_xy = asarray(mesh.vertices_attributes("xy"))
+
+    # Interpolate Z coordinates from both surfaces
+    z_target = griddata(target_points[:, :2], target_points[:, 2], mesh_xy, method="linear").tolist()
+
+    for key, i in enumerate(mesh.vertices()):
+        mesh.vertex_attribute(key, "z", z_target[i])
 
 
 def pattern_inverse_height_thickness(pattern: Mesh, tmin: Optional[float] = None, tmax: Optional[float] = None) -> None:
@@ -214,6 +240,9 @@ class MeshEnvelope(Envelope):
         # Thickness property
         self._thickness = thickness
 
+    def __str__(self):
+        return f"MeshEnvelope(name={self.name})"
+
     @property
     def __data__(self):
         data = super().__data__
@@ -223,9 +252,6 @@ class MeshEnvelope(Envelope):
         data["fill"] = self.fill
         data["thickness"] = self._thickness
         return data
-
-    def __str__(self):
-        return f"Envelope(name={self.name})"
 
     # =============================================================================
     # Factory methods
