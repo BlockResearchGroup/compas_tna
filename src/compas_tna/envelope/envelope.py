@@ -14,7 +14,7 @@ class Envelope(Data):
         super().__init__(**kwargs)
 
         self.rho = rho
-        self.is_parametric = is_parametric
+        self._is_parametric = is_parametric
 
         # Computed properties (cached)
         self._area = 0.0
@@ -52,6 +52,14 @@ class Envelope(Data):
         if not self._total_selfweight:
             self._total_selfweight = self.compute_selfweight()
         return self._total_selfweight
+
+    @property
+    def is_parametric(self) -> bool:
+        return self._is_parametric
+
+    @is_parametric.setter
+    def is_parametric(self, value: bool) -> None:
+        self._is_parametric = value
 
     # =============================================================================
     # Geometry operations
