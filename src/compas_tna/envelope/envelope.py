@@ -52,7 +52,7 @@ class Envelope(Data):
         if not self._total_selfweight:
             self._total_selfweight = self.compute_selfweight()
         return self._total_selfweight
-    
+
     @property
     def is_parametric(self) -> bool:
         return self._is_parametric
