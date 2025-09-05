@@ -90,7 +90,7 @@ class Envelope(Data):
         """Apply selfweight to the nodes of a form diagram based on the appropriate method."""
 
         raise NotImplementedError("Implement apply_selfweight_to_formdiagram for specific envelope type.")
-    
+
     def apply_fill_weight_to_formdiagram(self, formdiagram: FormDiagram) -> None:
         """Apply selfweight to the nodes of a form diagram based on the appropriate method."""
 

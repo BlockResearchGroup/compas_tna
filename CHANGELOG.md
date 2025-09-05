@@ -35,6 +35,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added comprehensive mesh creation functions in `diagram_rectangular.py`:
 * Added circular mesh creation functions in `diagram_circular.py` and corrected oculus and diagonal properties.
 * Added arch mesh creation functions in `diagram_arch.py`:
+* Added option to add `fill` to envelope. TODO: properly deal with 'pz' summation in future
 
 ### Changed
 
