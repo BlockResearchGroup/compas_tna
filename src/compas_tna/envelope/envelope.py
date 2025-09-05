@@ -10,12 +10,12 @@ from compas_tna.diagrams import FormDiagram
 class Envelope(Data):
     """Pure geometric envelope representing masonry structure boundaries."""
 
-    def __init__(self, rho: Optional[float] = 20.0, rho_fill: Optional[float] = 14.0, fill=None, is_parametric: bool = False, **kwargs):
+    def __init__(self, rho: Optional[float] = 20.0, rho_fill: Optional[float] = 14.0, is_parametric: bool = False, **kwargs):
         super().__init__(**kwargs)
 
         self.rho = rho
+        self.fill = None
         self.rho_fill = rho_fill
-        self.fill = fill
         self._is_parametric = is_parametric
 
         # Computed properties (cached)
@@ -28,7 +28,6 @@ class Envelope(Data):
         data = {}
         data["rho"] = self.rho
         data["rho_fill"] = self.rho_fill
-        data["fill"] = self.fill
         data["is_parametric"] = self.is_parametric
         return data
 
