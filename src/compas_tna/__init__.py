@@ -62,5 +62,5 @@ def get(filename):
 
 __all_plugins__ = [
     "compas_tna.notebook.scene",
-    "compas_tna.rhino.scene",
+    # "compas_tna.rhino.scene",
 ]
