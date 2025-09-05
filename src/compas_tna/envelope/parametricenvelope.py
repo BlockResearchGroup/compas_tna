@@ -208,7 +208,7 @@ class ParametricEnvelope(Envelope):
         None
             The FormDiagram is modified in place.
         """
-        fixed: list[int] = formdiagram.vertices_where({"is_support": True})
+        fixed: list[int] = list(formdiagram.vertices_where({"is_support": True}))
         xy = np.array(formdiagram.vertices_attributes("xy"))
         bound_react = self.compute_bound_react(xy[:, 0], xy[:, 1], self.thickness, fixed)
         for i, key in enumerate(fixed):
