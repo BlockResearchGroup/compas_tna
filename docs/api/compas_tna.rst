@@ -10,6 +10,7 @@ compas_tna
 
     compas_tna.diagrams
     compas_tna.equilibrium
+    compas_tna.envelope
     compas_tna.loads
     compas_tna.notebook
     compas_tna.rhino
