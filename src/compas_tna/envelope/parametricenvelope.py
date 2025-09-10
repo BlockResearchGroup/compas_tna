@@ -146,13 +146,13 @@ class ParametricEnvelope(Envelope):
         if normalize and total_pz > 0:
             scale_factor = total_selfweight / total_pz
             if scale_factor != 1.0:
-                print(f"Scaled selfweight by factor: {scale_factor}")
+                print(f"Scaled selfweight by factor: {scale_factor:.3f}")
 
             for vertex in formdiagram.vertices():
                 pz = formdiagram.vertex_attribute(vertex, "pz")
                 formdiagram.vertex_attribute(vertex, "pz", pz * scale_factor)
 
-        print(f"Selfweight applied to form diagram. Total load: {sum(abs(formdiagram.vertex_attribute(vertex, 'pz')) for vertex in formdiagram.vertices())}")
+        print(f"Selfweight applied to form diagram. Total load: {sum(abs(formdiagram.vertex_attribute(vertex, 'pz')) for vertex in formdiagram.vertices()):.1f}")
 
     def apply_bounds_to_formdiagram(self, formdiagram: FormDiagram) -> None:
         """Apply envelope bounds to a form diagram based on the intrados and extrados surfaces.
