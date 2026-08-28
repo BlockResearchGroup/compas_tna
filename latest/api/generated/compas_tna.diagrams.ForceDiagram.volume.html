@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
     <link rel="icon" href="../../_static/compas.ico" type="image/x-icon">
-    <title>ForceDiagram.weld &#8212; COMPAS TNA</title>
+    <title>ForceDiagram.volume &#8212; COMPAS TNA</title>
   
   
   
@@ -52,15 +52,15 @@
     <script src="../../_static/togglebutton.js"></script>
     <script src="../../_static/design-tabs.js"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/compas_tna.diagrams.ForceDiagram.weld';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/generated/compas_tna.diagrams.ForceDiagram.volume';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/blockresearchgroup/compas_tna/gh-pages/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         </script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="compas_tna.equilibrium" href="../compas_tna.equilibrium.html" />
-    <link rel="prev" title="ForceDiagram.volume" href="compas_tna.diagrams.ForceDiagram.volume.html" />
+    <link rel="next" title="ForceDiagram.weld" href="compas_tna.diagrams.ForceDiagram.weld.html" />
+    <link rel="prev" title="ForceDiagram.vertices_where_predicate" href="compas_tna.diagrams.ForceDiagram.vertices_where_predicate.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -535,7 +535,7 @@ document.write(`
     
     <li class="breadcrumb-item"><a href="compas_tna.diagrams.ForceDiagram.html" class="nav-link">ForceDiagram</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page">ForceDiagram.weld</li>
+    <li class="breadcrumb-item active" aria-current="page">ForceDiagram.volume</li>
   </ul>
 </nav>
 </div>
@@ -552,27 +552,51 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section id="forcediagram-weld">
-<h1>ForceDiagram.weld</h1>
+  <section id="forcediagram-volume">
+<h1>ForceDiagram.volume</h1>
 <dl class="py method">
-<dt class="sig sig-object py" id="compas_tna.diagrams.ForceDiagram.weld">
-<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">weld</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
-<dd><p>Weld vertices that are closer than a given precision.</p>
+<dt class="sig sig-object py" id="compas_tna.diagrams.ForceDiagram.volume">
+<span class="sig-prename descclassname"><span class="pre">ForceDiagram.</span></span><span class="sig-name descname"><span class="pre">volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unify_cycles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Calculate the volume of the mesh.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>precision</strong><span class="classifier">int, optional</span></dt><dd><p>The precision of the geometric map that is used to connect the lines.
-Defaults to the value of <code class="xref py py-attr docutils literal notranslate"><span class="pre">compas.PRECISION</span></code>.</p>
+<dt><strong>copy</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, a copy of the mesh is made before computation to avoid modifying the original.
+Default is True.</p>
+</dd>
+<dt><strong>unify_cycles</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, face cycles are unified to ensure consistent orientation.
+Default is True.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>None</dt><dd><p>The mesh is modified in place.</p>
+<dt>float | None</dt><dd><p>The volume of the mesh if the mesh is closed, None otherwise.</p>
 </dd>
 </dl>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>The volume is computed using the signed volume of tetrahedra formed by each
+triangulated face and the origin. This method works for both convex and
+non-convex meshes, as long as they are closed and properly oriented.</p>
+<p>The volume is only meaningful for closed meshes. For open meshes, this method
+returns None.</p>
+<p>When faces are non-convex, the triangulation might not be correct, since it uses
+the centroid of the face. For accurate results with non-convex faces, consider
+using a mesh with triangulated faces.</p>
+<p>By default, the mesh is copied internally and face cycles are unified to ensure
+correct orientation before computing the volume. These operations can be disabled
+by setting <code class="docutils literal notranslate"><span class="pre">copy=False</span></code> and <code class="docutils literal notranslate"><span class="pre">unify_cycles=False</span></code> for performance in cases where
+the mesh is already correctly oriented or when the original mesh can be modified.</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">compas.datastructures</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mesh</span> <span class="o">=</span> <span class="n">Mesh</span><span class="o">.</span><span class="n">from_polyhedron</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>  <span class="c1"># Create a cube</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volume</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">volume</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">volume</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
@@ -598,7 +622,7 @@ Defaults to the value of <code class="xref py py-attr docutils literal notransla
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compas_tna.diagrams.ForceDiagram.weld"><code class="docutils literal notranslate"><span class="pre">ForceDiagram.weld()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#compas_tna.diagrams.ForceDiagram.volume"><code class="docutils literal notranslate"><span class="pre">ForceDiagram.volume()</span></code></a></li>
 </ul>
   </nav></div>
 
