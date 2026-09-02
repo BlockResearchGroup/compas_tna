@@ -133,6 +133,9 @@ class ParametricEnvelope(Envelope):
         for i, key in enumerate(form_.vertices()):
             form_.vertex_attribute(key, "z", zt[i])
 
+        for face in list(form_.faces_where(_is_loaded=False)):
+            form_.delete_face(face)
+
         # Step 4: Compute and lump selfweight at vertices
         total_pz = 0.0
         for vertex in form_.vertices():
@@ -143,16 +146,19 @@ class ParametricEnvelope(Envelope):
             total_pz += abs(pz)
 
         # Step 5: Scale to match total selfweight if normalize=True
+        scale_factor = total_selfweight / total_pz if total_pz > 0 else 1.0
         if normalize and total_pz > 0:
-            scale_factor = total_selfweight / total_pz
-            if scale_factor != 1.0:
-                print(f"Scaled selfweight by factor: {scale_factor:.3f}")
-
             for vertex in formdiagram.vertices():
                 pz = formdiagram.vertex_attribute(vertex, "pz")
                 formdiagram.vertex_attribute(vertex, "pz", pz * scale_factor)
 
-        print(f"Selfweight applied to form diagram. Total load: {sum(abs(formdiagram.vertex_attribute(vertex, 'pz')) for vertex in formdiagram.vertices()):.1f}")
+        total_applied = sum(abs(formdiagram.vertex_attribute(vertex, "pz")) for vertex in formdiagram.vertices())
+        print("Selfweight applied to form diagram.")
+        print(f"Envelope selfweight: {total_selfweight:.1f}")
+        print(f"Tributary selfweight before scaling: {total_pz:.1f}")
+        print(f"Required scale factor: {scale_factor:.3f}")
+        print(f"Normalization applied: {normalize}")
+        print(f"Total applied load: {total_applied:.1f}")
 
     def apply_bounds_to_formdiagram(self, formdiagram: FormDiagram) -> None:
         """Apply envelope bounds to a form diagram based on the intrados and extrados surfaces.

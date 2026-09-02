@@ -10,7 +10,6 @@ from numpy import nan
 from scipy.interpolate import griddata
 
 from compas.datastructures import Mesh
-from compas.geometry import distance_point_point
 from compas_tna.diagrams import FormDiagram
 from compas_tna.envelope import Envelope
 
@@ -45,11 +44,67 @@ def griddata_project(xy: list[list[float]], xyz_target: list[list[float]]) -> li
     return z_proj.tolist()
 
 
+def sanitize_envelope_mesh(mesh: Mesh, precision: Optional[int] = None) -> Mesh:
+    """Prepare an input mesh for use as an envelope surface.
+
+    The input mesh is copied, coincident vertices are welded, the resulting
+    topology is validated, adjacent face cycles are unified, and the mesh is
+    oriented such that its area-weighted average normal points upward.
+
+    This function does not remesh the surface or modify the input mesh. It also
+    does not verify that the surface is single-valued in the vertical direction.
+
+    Parameters
+    ----------
+    mesh : :class:`compas.datastructures.Mesh`
+        The envelope mesh to sanitize.
+    precision : int, optional
+        The precision used by :meth:`Mesh.weld` to identify coincident vertices.
+
+    Returns
+    -------
+    :class:`compas.datastructures.Mesh`
+        A sanitized copy of the input mesh.
+
+    Raises
+    ------
+    ValueError
+        If welding produces degenerate faces, or if the resulting mesh is
+        disconnected, non-manifold, or cannot be cycle-unified.
+
+    """
+    mesh_ = mesh.copy(cls=Mesh)
+    mesh_.weld(precision=precision)
+
+    degenerate = [face for face in mesh_.faces() if len(mesh_.face_vertices(face)) < 3 or mesh_.face_area(face) <= 0.0]
+    if degenerate:
+        raise ValueError(f"Envelope mesh has degenerate faces after welding: {degenerate}")
+
+    if not mesh_.is_connected():
+        raise ValueError("Envelope mesh must be connected after welding.")
+
+    if not mesh_.is_manifold():
+        raise ValueError("Envelope mesh must be manifold after welding.")
+
+    try:
+        mesh_.unify_cycles()
+    except Exception as error:
+        raise ValueError("Envelope mesh face cycles could not be unified.") from error
+
+    if mesh_.normal()[2] < 0.0:
+        mesh_.flip_cycles()
+
+    return mesh_
+
+
 def interpolate_middle_mesh(intrados: Mesh, extrados: Mesh) -> Mesh:
     """Interpolate a middle mesh between intrados and extrados meshes.
 
-    This function properly calculates thickness by considering the normal vector
-    at each point, ensuring accurate thickness measurements on curved surfaces.
+    The intrados vertices are projected vertically onto the extrados. The
+    resulting middle mesh therefore retains the XY coordinates and topology of
+    the intrados, including at creases. Local thickness is obtained by
+    correcting the vertical separation with the Z component of the middle-mesh
+    vertex normal.
 
     Parameters
     ----------
@@ -61,26 +116,29 @@ def interpolate_middle_mesh(intrados: Mesh, extrados: Mesh) -> Mesh:
     Returns
     -------
     Mesh
-        The interpolated middle mesh with proper normal-based thickness stored.
+        The interpolated middle mesh with normal-corrected thickness stored.
     """
 
     points, faces = intrados.to_vertices_and_faces()
 
-    normals = [intrados.vertex_normal(key) for key in intrados.vertices()]
-
-    pulled_points = pull_points_on_mesh(points, normals, extrados)
+    directions = [[0.0, 0.0, 1.0] for _ in points]
+    pulled_points = pull_points_on_mesh(points, directions, extrados)
 
     midpoints = []
-    thicknesses = []
+    vertical_gaps = []
 
-    for i, xyz in enumerate(pulled_points):
-        midpoints.append([(xyz[0] + points[i][0]) / 2, (xyz[1] + points[i][1]) / 2, (xyz[2] + points[i][2]) / 2])
-        thicknesses.append(distance_point_point(xyz, points[i]))
+    for lower, upper in zip(points, pulled_points):
+        vertical_gap = upper[2] - lower[2]
+        if vertical_gap <= 1e-8:
+            raise ValueError("Extrados must be vertically above the intrados at every intrados vertex.")
+        midpoints.append([lower[0], lower[1], 0.5 * (lower[2] + upper[2])])
+        vertical_gaps.append(vertical_gap)
 
     middle = Mesh.from_vertices_and_faces(midpoints, faces)
 
-    for i, vertex in enumerate(middle.vertices()):
-        middle.vertex_attribute(vertex, "thickness", thicknesses[i])
+    for vertex, vertical_gap in zip(middle.vertices(), vertical_gaps):
+        nz = abs(middle.vertex_normal(vertex)[2])
+        middle.vertex_attribute(vertex, "thickness", vertical_gap * nz)
 
     return middle
 
@@ -254,12 +312,12 @@ class MeshEnvelope(Envelope):
 
         """
         envelope = cls()
-        envelope.intrados = intrados
-        envelope.extrados = extrados
+        envelope.intrados = sanitize_envelope_mesh(intrados)
+        envelope.extrados = sanitize_envelope_mesh(extrados)
         if middle is not None:
-            envelope.middle = middle
+            envelope.middle = sanitize_envelope_mesh(middle)
         else:
-            envelope.middle = interpolate_middle_mesh(intrados, extrados)
+            envelope.middle = interpolate_middle_mesh(envelope.intrados, envelope.extrados)
 
         return envelope
 
@@ -269,10 +327,10 @@ class MeshEnvelope(Envelope):
 
         Parameters
         ----------
-        formdiagram : FormDiagram
-            The form diagram to create the envelope from.
+        mesh : :class:`compas.datastructures.Mesh`
+            The middle mesh from which to create the envelope.
         thickness : float, optional
-            The thickness of the envelope. If None, uses thickness values stored in formdiagram vertices.
+            The thickness of the envelope. If None, uses thickness values stored on the mesh vertices.
 
         Returns
         -------
@@ -281,15 +339,15 @@ class MeshEnvelope(Envelope):
         """
         envelope = cls()
 
-        envelope.middle = mesh.copy(cls=Mesh)
+        envelope.middle = sanitize_envelope_mesh(mesh)
 
         if thickness is not None:
             envelope.thickness = thickness
 
             # Create intrados and extrados using thickness from middle mesh
             intrados, extrados = offset_from_middle(envelope.middle)
-            envelope.intrados = intrados
-            envelope.extrados = extrados
+            envelope.intrados = sanitize_envelope_mesh(intrados)
+            envelope.extrados = sanitize_envelope_mesh(extrados)
 
         return envelope
 
@@ -491,6 +549,9 @@ class MeshEnvelope(Envelope):
         form_ = formdiagram.copy()
         project_mesh_to_target_vertical(form_, self.middle)
 
+        for face in list(form_.faces_where(_is_loaded=False)):
+            form_.delete_face(face)
+
         # Step 5: Compute and lump selfweight at vertices
         total_pz = 0.0
         for vertex in form_.vertices():
@@ -506,16 +567,19 @@ class MeshEnvelope(Envelope):
             total_pz += abs(pz)  # Sum absolute values for normalization
 
         # Step 6: Scale to match total selfweight if normalize=True
+        scale_factor = total_selfweight / total_pz if total_pz > 0 else 1.0
         if normalize and total_pz > 0:
-            scale_factor = total_selfweight / total_pz
-            if scale_factor != 1.0:
-                print(f"Scaled selfweight by factor: {scale_factor:.3f}")
-
             for vertex in formdiagram.vertices():
                 pz = formdiagram.vertex_attribute(vertex, "pz")
                 formdiagram.vertex_attribute(vertex, "pz", pz * scale_factor)
 
-        print(f"Selfweight applied to form diagram. Total load: {sum(abs(formdiagram.vertex_attribute(vertex, 'pz')) for vertex in formdiagram.vertices()):.1f}")
+        total_applied = sum(abs(formdiagram.vertex_attribute(vertex, "pz")) for vertex in formdiagram.vertices())
+        print("Selfweight applied to form diagram.")
+        print(f"Envelope selfweight: {total_selfweight:.1f}")
+        print(f"Tributary selfweight before scaling: {total_pz:.1f}")
+        print(f"Required scale factor: {scale_factor:.3f}")
+        print(f"Normalization applied: {normalize}")
+        print(f"Total applied load: {total_applied:.1f}")
 
     def apply_fill_weight_to_formdiagram(self, formdiagram: FormDiagram) -> None:
         """Apply fill weight to the nodes of a form diagram based on the fill surface and local thicknesses."""
@@ -527,6 +591,8 @@ class MeshEnvelope(Envelope):
         form_ub = formdiagram.copy()  # For lower bound (intrados)
         form_zero = formdiagram.copy()  # For zero bound (extrados)
         form_zero.vertices_attribute("z", 0.0)
+        for face in list(form_zero.faces_where(_is_loaded=False)):
+            form_zero.delete_face(face)
 
         # Step 3: Project form diagram onto extrados (upper bound)
         project_mesh_to_target_vertical(form_fill, self.fill)

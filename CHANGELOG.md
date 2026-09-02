@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Fixed an error on the SWT disregarding the unloaded faces
+* Reviewed the way that middle meshes are interpolated from UB LB
+* Added a welding step to the intrados and extrados meshes against rhino improper meshes
+
 ### Changed
 
 ### Removed
