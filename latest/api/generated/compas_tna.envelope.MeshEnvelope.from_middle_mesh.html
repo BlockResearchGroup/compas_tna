@@ -558,12 +558,12 @@ document.write(`
 <dt class="sig sig-object py" id="compas_tna.envelope.MeshEnvelope.from_middle_mesh">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">MeshEnvelope.</span></span><span class="sig-name descname"><span class="pre">from_middle_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Construct an envelope from a mesh with specified thickness.</p>
-<dl class="field-list simple">
+<dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>formdiagram</strong><span class="classifier">FormDiagram</span></dt><dd><p>The form diagram to create the envelope from.</p>
+<dd class="field-odd"><dl>
+<dt><strong>mesh</strong><span class="classifier"><a class="reference external" href="https://compas.dev/compas/latest/api/compas.datastructures.Mesh.html#compas.datastructures.Mesh" title="(in COMPAS vlatest)"><code class="xref py py-class docutils literal notranslate"><span class="pre">compas.datastructures.Mesh</span></code></a></span></dt><dd><p>The middle mesh from which to create the envelope.</p>
 </dd>
-<dt><strong>thickness</strong><span class="classifier">float, optional</span></dt><dd><p>The thickness of the envelope. If None, uses thickness values stored in formdiagram vertices.</p>
+<dt><strong>thickness</strong><span class="classifier">float, optional</span></dt><dd><p>The thickness of the envelope. If None, uses thickness values stored on the mesh vertices.</p>
 </dd>
 </dl>
 </dd>
